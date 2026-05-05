@@ -6,6 +6,8 @@ em QUALQUER fluxo — snapshot único ou comparação múltipla.
 """
 
 import os
+import io
+import sys
 import json
 import pandas as pd
 import plotly.graph_objects as go
@@ -29,6 +31,9 @@ from evolution_functions import (
     get_evolution_color,
     get_evolution_emoji
 )
+
+if sys.stdout.encoding != 'utf-8':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 def _coingecko_get(url: str, params: Optional[Dict[str, Any]] = None, timeout: int = 30) -> Any:
     key = os.environ.get('COINGECKO_API_KEY')
@@ -181,63 +186,34 @@ def _load_macro_timing() -> dict:
         base_dir = os.path.dirname(__file__)
         macro_path = os.path.join(base_dir, 'data', 'macro', 'macro_timing.json')
 
-        # If no cache file, build fresh data
         if not os.path.exists(macro_path):
             print("🔄 No macro timing cache found, building fresh data...")
             return _build_macro_timing()
 
-        # Load cached data
         with open(macro_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-        # Check if cache is expired (1 hour = 3600 seconds)
+        # --- Trecho a ser substituído dentro de _load_macro_timing ---
         generated_at = data.get('generated_at')
         if generated_at:
+            # 1. Converte o texto para data (mantendo o fuso horário UTC)
+            # O .replace('Z', '+00:00') ajuda o Python a ler o formato ISO
             cache_time = datetime.fromisoformat(generated_at.replace('Z', '+00:00'))
             now = datetime.now(timezone.utc)
 
-            # Remove timezone info for comparison if present
-            if cache_time.tzinfo:
-                cache_time = cache_time.replace(tzinfo=None)
-            if now.tzinfo:
-                now = now.replace(tzinfo=None)
-
+            # 2. Calcula a idade em segundos (Sem remover o tzinfo, a conta é exata)
             age_seconds = (now - cache_time).total_seconds()
 
-            if age_seconds > 3600:  # 1 hour expired
+            if age_seconds > 3600:  # 1 hora
                 print(f"🔄 Macro timing cache expired ({age_seconds/60:.1f} min old), refreshing...")
                 return _build_macro_timing()
             else:
                 print(f"✅ Using fresh macro timing cache ({age_seconds/60:.1f} min old)")
                 return data
-        else:
-            # No timestamp, rebuild
-            print("🔄 No timestamp in cache, rebuilding...")
-            return _build_macro_timing()
-
+        return _build_macro_timing()
     except Exception as e:
         print(f"⚠️ Error loading macro timing cache: {e}")
-        print("🔄 Building fresh data as fallback...")
-        try:
-            return _build_macro_timing()
-        except RuntimeError as tv_error:
-            print(f"⚠️ TradingView connection error: {tv_error}")
-            print("🔄 Attempting to use expired cache...")
-            try:
-                # Try to use any existing cache even if expired
-                base_dir = os.path.dirname(__file__)
-                macro_path = os.path.join(base_dir, 'data', 'macro', 'macro_timing.json')
-                if os.path.exists(macro_path):
-                    with open(macro_path, 'r', encoding='utf-8') as f:
-                        data = json.load(f)
-                    print("✅ Using expired cache as fallback")
-                    return data
-                else:
-                    print("❌ No cache available, cannot continue")
-                    raise
-            except Exception:
-                print("❌ No cache available and TradingView connection failed")
-                raise
+        return _build_macro_timing()
 
 def _macro_timing_panel_html() -> str:
     payload = _load_macro_timing()
@@ -327,7 +303,7 @@ def plot_usdt_debug_html(usdt_monthly, m_usdt_bbp):
 
     fig.update_layout(
         height=700,
-        title="DEBUG USDT.D vs BB%B",
+        title="USDT.D vs BB%B (Weekly)",
         template="plotly_dark"
     )
 
@@ -2609,75 +2585,29 @@ def show_latest_csv(specific_file=None):
         print(f"❌ Erro ao processar CSV: {e}")
 
 
-def main():
-    print("📊 GEMS SYSTEM - VISUALIZADOR INTERATIVO (PLOTLY)")
-    print("=" * 60)
-    print()
+if __name__ == "__main__":
+    import subprocess
 
-    # 🔄 Initialize macro timing automatically with cache
-    print("🔄 Initializing Macro Timing...")
-    _load_macro_timing()  # This will auto-refresh if cache is expired
-    print()
-
-    # 🔍 Check gems cache age and auto-execute gems_finder if needed
-    cache_path = os.path.join(os.path.dirname(__file__), 'data', 'gems_cache.json')
-    auto_run_needed = False
-
-    if os.path.exists(cache_path):
-        try:
-            with open(cache_path, 'r', encoding='utf-8') as f:
-                cache_data = json.load(f)
-            if 'cached_time' in cache_data:
-                cache_time = datetime.fromisoformat(cache_data['cached_time'].replace('Z', '+00:00'))
-                now = datetime.now(timezone.utc)
-                if cache_time.tzinfo:
-                    cache_time = cache_time.replace(tzinfo=None)
-                if now.tzinfo:
-                    now = now.replace(tzinfo=None)
-                age_seconds = (now - cache_time).total_seconds()
-                age_hours = age_seconds / 3600
-
-                if age_hours > 12:
-                    print(f"⚠️ Cache expirado: {age_hours:.1f} horas (limite: 12 horas)")
-                    auto_run_needed = True
-                else:
-                    print(f"✅ Cache válido: {age_hours:.1f} horas")
+    def check_and_run_gems_finder():
+        cache_path = os.path.join("data", "gems_cache.json")
+        if os.path.exists(cache_path):
+            file_age = datetime.now().timestamp() - os.path.getmtime(cache_path)
+            # 12 horas em segundos = 12 * 3600
+            if file_age > 12 * 3600:
+                print("⚠️ Cache de Gems expirado. Iniciando busca automática...")
+                subprocess.run([sys.executable, "gems_finder.py"])
             else:
-                print("⚠️ Cache sem timestamp - executando busca...")
-                auto_run_needed = True
-        except Exception as e:
-            print(f"⚠️ Erro ao ler cache: {e} - executando busca...")
-            auto_run_needed = True
-    else:
-        print("⚠️ Cache não encontrado - executando busca...")
-        auto_run_needed = True
+                print("✅ Cache de Gems está atualizado.")
+        else:
+            print("🔍 Nenhum cache de Gems encontrado. Rodando gems_finder pela primeira vez...")
+            subprocess.run([sys.executable, "gems_finder.py"])
 
-    if auto_run_needed:
-        print("🔄 Executando gems_finder.py automaticamente...")
-        print("=" * 60)
-        try:
-            import subprocess
-            import sys
-            result = subprocess.run([sys.executable, 'gems_finder.py'],
-                                  cwd=os.path.dirname(__file__),
-                                  capture_output=True, text=True)
-            if result.returncode == 0:
-                print("✅ gems_finder.py executado com sucesso!")
-                # Show last few lines of output
-                output_lines = result.stdout.strip().split('\n')
-                for line in output_lines[-5:]:
-                    print(f"   {line}")
-            else:
-                print(f"❌ Erro ao executar gems_finder.py: {result.stderr}")
-        except Exception as e:
-            print(f"❌ Erro ao executar gems_finder.py: {e}")
-        print("=" * 60)
-        print()
+    # 1. Executa a checagem e atualização do Gems Finder
+    check_and_run_gems_finder()
 
-    print()
-
+    # 2. Exibe o menu principal
     while True:
-        print("Escolha uma opção:")
+        print("\nEscolha uma opção:")
         print("1. ⭐ Comparar snapshots (DASHBOARD AVANÇADO)")
         print("2. 📊 Ver snapshot mais recente")
         print("3. 📊 Escolher snapshot específico")
@@ -2716,7 +2646,3 @@ def main():
         else:
             print("❌ Opção inválida")
         print()
-
-
-if __name__ == "__main__":
-    main()

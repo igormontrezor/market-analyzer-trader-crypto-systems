@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-05-05T01:53:20.460395+00:00",
+  "generated_at": "2026-05-05T16:34:55.918748+00:00",
   "weekly": {
     "date": "2026-05-03",
-    "others_bbp": 0.5026587354062841,
-    "usdt_d_bbp": 0.45513088347094366,
+    "others_bbp": 0.5525120235065166,
+    "usdt_d_bbp": 0.43380876714559585,
     "others_touch_low": false,
     "usdt_touch_high": false,
     "usdt_touch_low": false
   },
   "monthly": {
-    "usdt_d_bbp": 0.816398389760805
+    "usdt_d_bbp": 0.8051293466281367
   },
   "regime": {
     "buy_mode": true,

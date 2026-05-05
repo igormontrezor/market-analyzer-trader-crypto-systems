@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-04T23:19:45.974610",
-  "total_candidates": 2,
+  "last_updated": "2026-05-05T12:45:23.872055",
+  "total_candidates": 4,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -27,6 +27,32 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 48.04987360447623
+    },
+    {
+      "symbol": "upeg",
+      "name": "Unipeg",
+      "detected_at": "2026-05-05T12:45:23.871036",
+      "ratio_now": 1.0568946220600968,
+      "market_cap": 16333020,
+      "volume": 17262281,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 45.3045591078686
+    },
+    {
+      "symbol": "upeg",
+      "name": "Unipeg",
+      "detected_at": "2026-05-05T12:45:23.871083",
+      "ratio_now": 1.042554044830496,
+      "market_cap": 16580633,
+      "volume": 17286206,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 45.017747563276586
     }
   ]
 }

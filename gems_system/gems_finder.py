@@ -7,6 +7,8 @@ import requests
 import time
 import json
 import os
+import io
+import sys
 from datetime import datetime, timedelta
 from typing import List, Optional, Dict, Any
 import pandas as pd
@@ -20,6 +22,9 @@ from accumulation_sector import (
     print_sector_report,
     get_sector,
 )
+
+if sys.stdout.encoding != 'utf-8':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 class GemsFinder:
 
@@ -172,14 +177,14 @@ class GemsFinder:
                 df['dt'] = pd.to_datetime(df['ts'], unit='ms')
                 df = df.dropna(subset=['dt']).set_index('dt').sort_index()
                 s = df['mc'].astype(float).reindex(total.index, method='nearest')
-                top10_sum = top10_sum.add(s.fillna(method='ffill').fillna(method='bfill'), fill_value=0.0)
+                top10_sum = top10_sum.add(s.ffill().bfill(), fill_value=0.0)
 
             usdt_pts = raw.get('usdt_market_caps', [])
             usdt_df = pd.DataFrame(usdt_pts, columns=['ts', 'usdt_mc'])
             usdt_df['dt'] = pd.to_datetime(usdt_df['ts'], unit='ms')
             usdt_df = usdt_df.dropna(subset=['dt']).set_index('dt').sort_index()
             usdt_mc = usdt_df['usdt_mc'].astype(float).reindex(total.index, method='nearest')
-            usdt_mc = usdt_mc.fillna(method='ffill').fillna(method='bfill')
+            usdt_mc = usdt_mc.ffill().bfill()
 
             others_mc = (total - top10_sum).clip(lower=0.0)
             usdt_d = (usdt_mc / total).clip(lower=0.0)
