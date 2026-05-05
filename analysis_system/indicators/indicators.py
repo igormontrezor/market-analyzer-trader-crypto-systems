@@ -3,8 +3,15 @@ from dataclasses import dataclass, field
 import numpy as np
 import pandas as pd
 from typing import Union
+import sys
+import os
 
-from ..assets.asset import Asset
+# Adicionar o diretório raiz ao path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+analysis_system_root = os.path.dirname(current_dir)
+sys.path.insert(0, analysis_system_root)
+
+from assets.asset import Asset
 
 
 @dataclass

@@ -800,56 +800,229 @@ def create_interactive_dashboard(df, file_name):
         height=800, showlegend=False, template='plotly_white'
     )
 
-    fig_table = create_interactive_table(df)
+    table_html = create_interactive_table(df)
 
     # --- ✅ Bloco global histórico ---
     snapshot_info = [{'file': file_name, 'date': datetime.now().strftime('%Y-%m-%d %H:%M'), 'index': 0, 'count': len(df)}]
     js_block, summary_html, hall_html = build_global_evolution_block([df], snapshot_info)
     global_html = _global_block_html(js_block, summary_html, hall_html)
 
-    # --- HTML final ---
+    # --- HTML final com layout padronizado ---
     html_content = f"""
     <!DOCTYPE html>
     <html>
     <head>
-        <title>🚀 GEMS SYSTEM DASHBOARD</title>
+        <title>🚀 GEMS SYSTEM - DASHBOARD PROFESSIONAL</title>
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
         <style>
-            body {{ font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }}
-            .container {{ background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
-            h1 {{ color: #2c3e50; text-align: center; }}
-            h2 {{ color: #34495e; margin-top: 30px; }}
-            .stats {{ background-color: #ecf0f1; padding: 15px; border-radius: 5px; margin: 20px 0; }}
+            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+
+            body {{
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                transition: all 0.3s ease;
+            }}
+
+            body.dark-mode {{
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }}
+
+            .dashboard-container {{
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 20px;
+            }}
+
+            .header {{
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 30px;
+                margin-bottom: 30px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }}
+
+            .header h1 {{
+                font-size: 2.5rem;
+                font-weight: 800;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                margin-bottom: 10px;
+            }}
+
+            .header .subtitle {{
+                color: #666;
+                font-size: 1.1rem;
+                margin-bottom: 20px;
+            }}
+
+            .kpi-grid {{
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                margin-bottom: 30px;
+            }}
+
+            .kpi-card {{
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 15px;
+                padding: 25px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                transition: all 0.3s ease;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }}
+
+            .kpi-card:hover {{
+                transform: translateY(-5px);
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            }}
+
+            .kpi-value {{
+                font-size: 2rem;
+                font-weight: 700;
+                color: #2c3e50;
+                margin-bottom: 5px;
+            }}
+
+            .kpi-label {{
+                color: #7f8c8d;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }}
+
+            .content-card {{
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 30px;
+                margin-bottom: 30px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            }}
+
+            .section-title {{
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: #2c3e50;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }}
+
+            .chart-container {{
+                background: white;
+                border-radius: 15px;
+                padding: 20px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+                margin-bottom: 20px;
+            }}
+
+            .dark-mode-toggle {{
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(255, 255, 255, 0.9);
+                border: none;
+                border-radius: 50px;
+                padding: 12px 20px;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                font-size: 1.2rem;
+                transition: all 0.3s ease;
+                z-index: 1000;
+            }}
+
+            .dark-mode-toggle:hover {{
+                transform: scale(1.05);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            }}
+
+            @media (max-width: 768px) {{
+                .dashboard-container {{
+                    padding: 10px;
+                }}
+                .header h1 {{
+                    font-size: 2rem;
+                }}
+                .kpi-grid {{
+                    grid-template-columns: 1fr;
+                }}
+            }}
         </style>
     </head>
     <body>
-        <div class="container">
-            <h1>🚀 GEMS SYSTEM DASHBOARD</h1>
-            <p><strong>Arquivo:</strong> {file_name}</p>
-            <p><strong>Data:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
-            <p><strong>Gems:</strong> {len(df)} | <strong>Colunas:</strong> {len(df.columns)}</p>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
 
-            <div class="stats">
-                <h3>📊 Estatísticas do Snapshot</h3>
-                <p><strong>Market Cap Médio:</strong> ${df['market_cap'].mean():,.0f}</p>
-                <p><strong>Volume Total:</strong> ${df['total_volume'].sum():,.0f}</p>
-                <p><strong>Variação 24h Positivas:</strong>
-                    {(df['price_change_percentage_24h'] > 0).sum()}/{len(df)}
-                    ({(df['price_change_percentage_24h'] > 0).mean()*100:.1f}%)
-                </p>
+        <div class="dashboard-container">
+            <div class="header">
+                <h1>🚀 GEMS SYSTEM DASHBOARD</h1>
+                <div class="subtitle">
+                    <strong>Arquivo:</strong> {file_name} |
+                    <strong>Data:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} |
+                    <strong>Gems:</strong> {len(df)}
+                </div>
             </div>
 
-            <!-- Gráficos do snapshot -->
-            <div id="dashboard"></div>
-            <div id="table" style="margin-top: 30px;"></div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-value">${df['market_cap'].mean():,.0f}</div>
+                    <div class="kpi-label">Market Cap Médio</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value">${df['total_volume'].sum():,.0f}</div>
+                    <div class="kpi-label">Volume Total</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value">{(df['price_change_percentage_24h'] > 0).sum()}/{len(df)}</div>
+                    <div class="kpi-label">Variações Positivas 24h</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value">{(df['price_change_percentage_24h'] > 0).mean()*100:.1f}%</div>
+                    <div class="kpi-label">% Positivas 24h</div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2 class="section-title">📊 Análise do Snapshot</h2>
+                <div class="chart-container">
+                    <div id="dashboard"></div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2 class="section-title">📋 Tabela de Dados Interativa</h2>
+                <div class="chart-container">
+                    {table_html}
+                </div>
+            </div>
 
             <!-- ✅ Bloco global histórico (aparece sempre) -->
             {global_html}
         </div>
 
         <script>
+            // Função de modo escuro
+            function toggleDarkMode() {{
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+                document.querySelector('.dark-mode-toggle').textContent = isDark ? '☀️' : '🌙';
+            }}
+
+            // Restaurar preferência de modo escuro
+            if (localStorage.getItem('darkMode') === 'true') {{
+                document.body.classList.add('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = '☀️';
+            }}
+
+            // Renderizar gráficos
             {fig.to_html(div_id="dashboard", include_plotlyjs=False)}
-            {fig_table.to_html(div_id="table", include_plotlyjs=False)}
         </script>
     </body>
     </html>
@@ -2222,7 +2395,7 @@ def create_advanced_summary_table(top10, crypto_ranking, total_periods, historic
 
 
 def create_interactive_table(df):
-    """Tabela interativa Plotly com todas as colunas disponíveis."""
+    """Tabela HTML estilizada igual à da comparação múltipla."""
 
     display_cols = ['symbol', 'name', 'market_cap', 'total_volume', 'price_change_percentage_24h']
     for col in ['ratio', 'final_score',
@@ -2234,18 +2407,16 @@ def create_interactive_table(df):
 
     table_df = df[[c for c in display_cols if c in df.columns]].copy()
 
+    # Ordenar por score se disponível
+    sort_col = 'final_score' if 'final_score' in table_df.columns else 'ratio' if 'ratio' in table_df.columns else None
+    if sort_col:
+        table_df = table_df.sort_values(sort_col, ascending=False)
+
     table_df['market_cap']                  = table_df['market_cap'].apply(lambda x: f"${x:,.0f}" if pd.notna(x) else 'N/A')
     table_df['total_volume']                = table_df['total_volume'].apply(lambda x: f"${x:,.0f}" if pd.notna(x) else 'N/A')
     table_df['price_change_percentage_24h'] = table_df['price_change_percentage_24h'].apply(lambda x: f"{x:.1f}%" if pd.notna(x) else 'N/A')
-
     if 'ratio'       in table_df.columns: table_df['ratio']       = table_df['ratio'].apply(lambda x: f"{x:.2f}" if pd.notna(x) else 'N/A')
     if 'final_score' in table_df.columns: table_df['final_score'] = table_df['final_score'].apply(lambda x: f"{x:.2f}" if pd.notna(x) else 'N/A')
-
-    if 'persistence_count_3d' in table_df.columns:
-        for c in ['persistence_count_3d', 'persistence_count_7d', 'persistence_count_14d']:
-            if c in table_df.columns:
-                table_df[c] = table_df[c].apply(lambda x: f"{x}x")
-
     if 'is_confirmed_leader' in table_df.columns:
         table_df['is_confirmed_leader'] = table_df['is_confirmed_leader'].apply(lambda x: '👑 YES' if x else '❌ NO')
 
@@ -2258,12 +2429,95 @@ def create_interactive_table(df):
     }
     table_df.rename(columns=column_mapping, inplace=True)
 
-    fig_table = go.Figure(data=[go.Table(
-        header=dict(values=list(table_df.columns), fill_color='#3498db', align='left', font=dict(color='white', size=12)),
-        cells=dict(values=[table_df[col] for col in table_df.columns], fill_color='lavender', align='left', font=dict(color='black', size=11))
-    )])
-    fig_table.update_layout(title="📊 DADOS COMPLETOS", title_x=0.5, height=600, template='plotly_white')
-    return fig_table
+    # Create styled HTML table
+    table_html = table_df.to_html(classes='table table-striped', index=False)
+
+    # Add CSS styling igual à da comparação múltipla
+    styled_html = f"""
+    <style>
+        .table {{
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }}
+        .table th {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            padding: 12px 6px;
+            border: 1px solid #fff;
+            font-size: 12px;
+        }}
+        .table td {{
+            padding: 8px 6px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            font-weight: 500;
+        }}
+        .table-striped tbody tr:nth-of-type(odd) {{
+            background-color: #f8f9fa;
+        }}
+        .table-striped tbody tr:nth-of-type(even) {{
+            background-color: #ffffff;
+        }}
+        .table-striped tbody tr:hover {{
+            background-color: #e3f2fd;
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }}
+        /* Color for positive values */
+        .table td:nth-child(5) {{
+            color: #2e7d32;
+            font-weight: bold;
+        }}
+        /* Color for negative values */
+        .table td:nth-child(5):contains("-") {{
+            color: #c62828;
+        }}
+        /* Highlight high scores */
+        .table td:nth-child(7) {{
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(76,175,80,0.1) 50%,
+                rgba(255,255,255,0) 100%);
+        }}
+        .table td:nth-child(7):contains("0.9"),
+        .table td:nth-child(7):contains("1.0") {{
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(76,175,80,0.3) 50%,
+                rgba(255,255,255,0) 100%);
+            font-weight: bold;
+            color: #2e7d32;
+        }}
+        /* Style boolean columns */
+        .table td:nth-child(11),
+        .table td:nth-child(14),
+        .table td:nth-child(15) {{
+            font-weight: bold;
+        }}
+        .table td:nth-child(11):contains("True") {{
+            color: #2e7d32;
+            background-color: #e8f5e8;
+        }}
+        .table td:nth-child(14):contains("True") {{
+            color: #f57c00;
+            background-color: #fff3e0;
+        }}
+        .table td:nth-child(15):contains("True") {{
+            color: #1976d2;
+            background-color: #e3f2fd;
+        }}
+    </style>
+    {table_html}
+    """
+
+    # Retornar HTML puro para ser injetado diretamente no dashboard
+    return styled_html
 
 
 def create_period_html(df, snapshot_info, index):

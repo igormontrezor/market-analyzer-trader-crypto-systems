@@ -8,14 +8,14 @@ from .asset import Asset
 @dataclass
 class Portfolio:
     name: str
-    positions: List[Position] = field(default_factory=list)
+    positions: List['Position'] = field(default_factory=list)
 
-    def add_position(self, position: Position):
+    def add_position(self, position: 'Position'):
         if position.quantity <= 0:
             raise ValueError("quantity must be positive")
         self.positions.append(position)
 
-    def del_position(self, position: Position):
+    def del_position(self, position: 'Position'):
         if position not in self.positions:
             raise ValueError("Position not found")
         self.positions.remove(position)
@@ -26,12 +26,12 @@ class Portfolio:
     def total_pnl(self) -> float:
         return sum(position.calculate_pnl() for position in self.positions)
 
-    def __getitem__(self, index: int) -> Position:
+    def __getitem__(self, index: int) -> 'Position':
         return self.positions[index]
 
 @dataclass
 class Position(ABC):
-    asset: Asset
+    asset: 'Asset'
     quantity: float = 1
 
     @abstractmethod

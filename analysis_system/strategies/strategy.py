@@ -1,10 +1,18 @@
 from dataclasses import dataclass, field
 from typing import List
-from ..indicators.indicators import (
+import sys
+import os
+
+# Adicionar o diretório raiz ao path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+analysis_system_root = os.path.dirname(current_dir)
+sys.path.insert(0, analysis_system_root)
+
+from indicators.indicators import (
     SimpleMovingAverage, ExponentialMovingAverage, Rsi, StochRsi,
     BollingerBands, Macd, SharpeRatio, SortinoRatio
 )
-from ..signals.signals import (
+from signals.signals import (
     RsiSignal, StochRsiSignal, BollingerBandsSignal,
     MacdSignal, SharpeSignal, SortinoSignal, CombinedSignal
 )

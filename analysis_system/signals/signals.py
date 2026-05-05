@@ -3,9 +3,16 @@ from dataclasses import dataclass, field
 from typing import List, Union
 import numpy as np
 import pandas as pd
+import sys
+import os
 
-from ..assets.asset import Asset
-from ..indicators.indicators import (
+# Adicionar o diretório raiz ao path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+analysis_system_root = os.path.dirname(current_dir)
+sys.path.insert(0, analysis_system_root)
+
+from assets.asset import Asset
+from indicators.indicators import (
     Rsi, StochRsi, BollingerBands, Macd, SharpeRatio, SortinoRatio
 )
 
