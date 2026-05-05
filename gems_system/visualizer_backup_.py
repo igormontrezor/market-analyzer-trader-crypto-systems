@@ -11,7 +11,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.express as px
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 import webbrowser
 import tempfile
 import numpy as np
@@ -160,7 +160,7 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
     }
 
     payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": now.isoformat(),
         "weekly": weekly_state,
         "monthly": {"usdt_d_bbp": float(curr_m_usdt)},
         "regime": {
@@ -176,7 +176,10 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
     return payload
 
 def _load_macro_timing() -> dict:
-    """Load macro timing from cache or build fresh if expired."""
+    """
+    Load macro timing with 1-hour cache.
+    Automatically refreshes if cache is expired.
+    """
     try:
         base_dir = os.path.dirname(__file__)
         macro_path = os.path.join(base_dir, 'data', 'macro', 'macro_timing.json')
@@ -194,13 +197,11 @@ def _load_macro_timing() -> dict:
         generated_at = data.get('generated_at')
         if generated_at:
             cache_time = datetime.fromisoformat(generated_at.replace('Z', '+00:00'))
-            now = datetime.now(timezone.utc)
+            now = datetime.now()
 
             # Remove timezone info for comparison if present
             if cache_time.tzinfo:
                 cache_time = cache_time.replace(tzinfo=None)
-            if now.tzinfo:
-                now = now.replace(tzinfo=None)
 
             age_seconds = (now - cache_time).total_seconds()
 
@@ -218,26 +219,7 @@ def _load_macro_timing() -> dict:
     except Exception as e:
         print(f"⚠️ Error loading macro timing cache: {e}")
         print("🔄 Building fresh data as fallback...")
-        try:
-            return _build_macro_timing()
-        except RuntimeError as tv_error:
-            print(f"⚠️ TradingView connection error: {tv_error}")
-            print("🔄 Attempting to use expired cache...")
-            try:
-                # Try to use any existing cache even if expired
-                base_dir = os.path.dirname(__file__)
-                macro_path = os.path.join(base_dir, 'data', 'macro', 'macro_timing.json')
-                if os.path.exists(macro_path):
-                    with open(macro_path, 'r', encoding='utf-8') as f:
-                        data = json.load(f)
-                    print("✅ Using expired cache as fallback")
-                    return data
-                else:
-                    print("❌ No cache available, cannot continue")
-                    raise
-            except Exception:
-                print("❌ No cache available and TradingView connection failed")
-                raise
+        return _build_macro_timing()
 
 def _macro_timing_panel_html() -> str:
     payload = _load_macro_timing()
@@ -903,588 +885,107 @@ def create_advanced_dashboard(dfs, snapshot_info):
         tabs_buttons  += f'<button class="tab {active}" onclick="showTab({i})">Período {i+1} - {info["date"]}</button>\n'
         tabs_contents += f'<div id="tab-{i}" class="tab-content {active}">{create_period_html(df, info, i)}</div>\n'
 
-    # Calculate KPI metrics
-    total_market_cap = sum(df['market_cap'].sum() for df in dfs)
-    total_volume = sum(df['total_volume'].sum() for df in dfs)
-    total_gems = sum(len(df) for df in dfs)
-    avg_score = sum(df['final_score'].mean() for df in dfs) / len(dfs)
-    positive_changes = sum((df['price_change_percentage_24h'] > 0).sum() for df in dfs)
-    total_changes = sum(len(df) for df in dfs)
-    positive_pct = (positive_changes / total_changes * 100) if total_changes > 0 else 0
-
     html_content = f"""
     <!DOCTYPE html>
     <html>
     <head>
-        <title>🚀 GEMS SYSTEM - DASHBOARD PROFESSIONAL</title>
+        <title>📊 GEMS SYSTEM - COMPARATIVO AVANÇADO</title>
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
         <style>
-            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-
-            body {{
-                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                min-height: 100vh;
-                transition: all 0.3s ease;
-            }}
-
-            body.dark-mode {{
-                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            }}
-
-            .dashboard-container {{
-                max-width: 1400px;
-                margin: 0 auto;
-                padding: 20px;
-            }}
-
-            .header {{
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                padding: 30px;
-                border-radius: 20px;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-                margin-bottom: 30px;
-                text-align: center;
-                position: relative;
-            }}
-
-            .dark-mode .header {{
-                background: rgba(30, 30, 46, 0.95);
-                color: white;
-            }}
-
-            .theme-toggle {{
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                background: linear-gradient(135deg, #667eea, #764ba2);
-                border: none;
-                color: white;
-                padding: 10px 15px;
-                border-radius: 25px;
-                cursor: pointer;
-                font-size: 16px;
-                transition: all 0.3s ease;
-            }}
-
-            .theme-toggle:hover {{
-                transform: scale(1.05);
-                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-            }}
-
-            h1 {{
-                font-size: 2.5em;
-                font-weight: 700;
-                background: linear-gradient(135deg, #667eea, #764ba2);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                margin-bottom: 10px;
-            }}
-
-            .dark-mode h1 {{
-                background: linear-gradient(135deg, #64b5f6, #42a5f5);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }}
-
-            .subtitle {{
-                color: #666;
-                font-size: 1.1em;
-                margin-bottom: 20px;
-            }}
-
-            .dark-mode .subtitle {{
-                color: #ccc;
-            }}
-
-            .kpi-grid {{
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 20px;
-                margin-bottom: 30px;
-            }}
-
-            .kpi-card {{
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                padding: 25px;
-                border-radius: 15px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-                text-align: center;
-                transition: all 0.3s ease;
-                border: 1px solid rgba(255, 255, 255, 0.2);
-            }}
-
-            .dark-mode .kpi-card {{
-                background: rgba(30, 30, 46, 0.95);
-                color: white;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-            }}
-
-            .kpi-card:hover {{
-                transform: translateY(-5px);
-                box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-            }}
-
-            .kpi-icon {{
-                font-size: 2em;
-                margin-bottom: 10px;
-                background: linear-gradient(135deg, #667eea, #764ba2);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }}
-
-            .dark-mode .kpi-icon {{
-                background: linear-gradient(135deg, #64b5f6, #42a5f5);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }}
-
-            .kpi-value {{
-                font-size: 2em;
-                font-weight: 700;
-                color: #2c3e50;
-                margin-bottom: 5px;
-            }}
-
-            .dark-mode .kpi-value {{
-                color: #fff;
-            }}
-
-            .kpi-label {{
-                color: #666;
-                font-size: 0.9em;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }}
-
-            .dark-mode .kpi-label {{
-                color: #ccc;
-            }}
-
-            .filters-section {{
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                padding: 20px;
-                border-radius: 15px;
-                margin-bottom: 30px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            }}
-
-            .dark-mode .filters-section {{
-                background: rgba(30, 30, 46, 0.95);
-                color: white;
-            }}
-
-            .filters-grid {{
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 15px;
-                align-items: end;
-            }}
-
-            .filter-group {{
-                display: flex;
-                flex-direction: column;
-            }}
-
-            .filter-group label {{
-                font-weight: 600;
-                margin-bottom: 5px;
-                color: #2c3e50;
-            }}
-
-            .dark-mode .filter-group label {{
-                color: #fff;
-            }}
-
-            .filter-group select, .filter-group input {{
-                padding: 10px;
-                border: 2px solid #e0e0e0;
-                border-radius: 8px;
-                font-size: 14px;
-                transition: all 0.3s ease;
-            }}
-
-            .dark-mode .filter-group select,
-            .dark-mode .filter-group input {{
-                background: rgba(255, 255, 255, 0.1);
-                border-color: rgba(255, 255, 255, 0.2);
-                color: white;
-            }}
-
-            .filter-group select:focus,
-            .filter-group input:focus {{
-                outline: none;
-                border-color: #667eea;
-                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            }}
-
-            .filter-btn {{
-                background: linear-gradient(135deg, #667eea, #764ba2);
-                color: white;
-                border: none;
-                padding: 12px 25px;
-                border-radius: 8px;
-                cursor: pointer;
-                font-weight: 600;
-                transition: all 0.3s ease;
-            }}
-
-            .filter-btn:hover {{
-                transform: translateY(-2px);
-                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-            }}
-
-            .content-grid {{
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }}
-
-            .main-content {{
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                padding: 30px;
-                border-radius: 20px;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            }}
-
-            .dark-mode .main-content {{
-                background: rgba(30, 30, 46, 0.95);
-                color: white;
-            }}
-
-            .tabs {{
-                display: flex;
-                border-bottom: 3px solid #667eea;
-                margin-bottom: 30px;
-                flex-wrap: wrap;
-                gap: 5px;
-            }}
-
-            .tab {{
-                padding: 15px 25px;
-                cursor: pointer;
-                border: none;
-                background: rgba(255, 255, 255, 0.5);
-                border-radius: 10px 10px 0 0;
-                font-weight: 600;
-                transition: all 0.3s ease;
-                color: #2c3e50;
-            }}
-
-            .dark-mode .tab {{
-                background: rgba(255, 255, 255, 0.1);
-                color: white;
-            }}
-
-            .tab.active {{
-                background: linear-gradient(135deg, #667eea, #764ba2);
-                color: white;
-                transform: translateY(-2px);
-            }}
-
-            .tab:hover {{
-                background: rgba(102, 126, 234, 0.1);
-            }}
-
-            .dark-mode .tab:hover {{
-                background: rgba(255, 255, 255, 0.2);
-            }}
-
-            .tab-content {{
-                display: none;
-                animation: fadeIn 0.5s ease;
-            }}
-
-            .tab-content.active {{
-                display: block;
-            }}
-
-            @keyframes fadeIn {{
-                from {{ opacity: 0; transform: translateY(10px); }}
-                to {{ opacity: 1; transform: translateY(0); }}
-            }}
-
-            .chart-container {{
-                background: white;
-                padding: 20px;
-                border-radius: 15px;
-                margin-bottom: 20px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            }}
-
-            .dark-mode .chart-container {{
-                background: rgba(30, 30, 46, 0.95);
-            }}
-
-            .insights-panel {{
-                background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-                padding: 20px;
-                border-radius: 15px;
-                margin-top: 30px;
-                border-left: 5px solid #667eea;
-            }}
-
-            .dark-mode .insights-panel {{
-                background: linear-gradient(135deg, rgba(30, 30, 46, 0.8), rgba(20, 20, 36, 0.8));
-            }}
-
-            .insights-title {{
-                font-size: 1.3em;
-                font-weight: 700;
-                color: #2c3e50;
-                margin-bottom: 15px;
-            }}
-
-            .dark-mode .insights-title {{
-                color: white;
-            }}
-
-            .insight-item {{
-                display: flex;
-                align-items: center;
-                margin-bottom: 10px;
-                padding: 10px;
-                background: white;
-                border-radius: 8px;
-            }}
-
-            .dark-mode .insight-item {{
-                background: rgba(255, 255, 255, 0.1);
-            }}
-
-            .insight-icon {{
-                margin-right: 10px;
-                color: #667eea;
-            }}
-
-            @media (max-width: 768px) {{
-                .dashboard-container {{ padding: 10px; }}
-                .kpi-grid {{ grid-template-columns: 1fr; }}
-                .filters-grid {{ grid-template-columns: 1fr; }}
-                .tabs {{ flex-direction: column; }}
-                .tab {{ border-radius: 8px; margin-bottom: 2px; }}
-            }}
+            body {{ font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }}
+            .container {{ background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
+            h1 {{ color: #2c3e50; text-align: center; }}
+            .tabs {{ display: flex; border-bottom: 2px solid #3498db; margin-bottom: 20px; flex-wrap: wrap; }}
+            .tab {{ padding: 12px 20px; cursor: pointer; border: none; background: #ecf0f1; margin-right: 5px; border-radius: 5px 5px 0 0; }}
+            .tab.active {{ background: #3498db; color: white; }}
+            .tab-content {{ display: none; }}
+            .tab-content.active {{ display: block; }}
+            .filters {{ background-color: #ecf0f1; padding: 15px; border-radius: 5px; margin-bottom: 20px; }}
+            .filter-item {{ margin: 10px 0; }}
+            .stats {{ background-color: #ecf0f1; padding: 15px; border-radius: 5px; margin: 20px 0; }}
+            .period-summary {{ background-color: #ecf0f1; padding: 15px; border-radius: 5px; margin: 20px 0; }}
+            .period-item {{ margin: 10px 0; padding: 10px; border-left: 4px solid #3498db; background-color: white; }}
         </style>
     </head>
     <body>
-        <div class="dashboard-container">
-            <div class="header">
-                <button class="theme-toggle" onclick="toggleTheme()">
-                    <i class="fas fa-moon" id="theme-icon"></i>
-                </button>
-                <h1>🚀 GEMS SYSTEM</h1>
-                <p class="subtitle">Dashboard Profissional de Análise de Criptoativos</p>
+        <div class="container">
+            <h1>📊 GEMS SYSTEM - COMPARATIVO AVANÇADO</h1>
+
+            <!-- ✅ Bloco global histórico (sempre presente) -->
+            {global_html}
+
+            <!-- Períodos selecionados -->
+            <div class="period-summary">
+                <h3>📅 Períodos Comparados (seleção atual)</h3>
+                {''.join([f'<div class="period-item"><strong>Período {info["index"]+1}:</strong> {info["date"]} ({info["count"]} gems)</div>' for info in snapshot_info])}
             </div>
 
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-icon">💰</div>
-                    <div class="kpi-value">${total_market_cap:,.0f}</div>
-                    <div class="kpi-label">Market Cap Total</div>
+            <!-- Filtros -->
+            <div class="filters">
+                <h3>🔍 Filtros Interativos</h3>
+                <div class="filter-item">
+                    <label>Filtrar por Symbol:</label>
+                    <input type="text" id="symbolFilter" placeholder="Ex: BTC" onkeyup="filterData()">
                 </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">📊</div>
-                    <div class="kpi-value">${total_volume:,.0f}</div>
-                    <div class="kpi-label">Volume Total 24h</div>
+                <div class="filter-item">
+                    <label>Score mínimo:</label>
+                    <input type="number" id="scoreFilter" step="0.1" min="0" max="1" value="0" onkeyup="filterData()">
                 </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">🔥</div>
-                    <div class="kpi-value">{total_gems}</div>
-                    <div class="kpi-label">Total de Gems</div>
+                <div class="filter-item">
+                    <label>Market Cap mínimo:</label>
+                    <input type="number" id="mcFilter" step="1000000" min="0" value="0" onkeyup="filterData()">
                 </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">⭐</div>
-                    <div class="kpi-value">{avg_score:.3f}</div>
-                    <div class="kpi-label">Score Médio</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">📈</div>
-                    <div class="kpi-value">{positive_pct:.1f}%</div>
-                    <div class="kpi-label">Variações Positivas</div>
-                </div>
-            </div>
-
-            <div class="filters-section">
-                <div class="filters-grid">
-                    <div class="filter-group">
-                        <label>Filtrar por Score</label>
-                        <select id="scoreFilter" onchange="applyFilters()">
-                            <option value="">Todos os Scores</option>
-                            <option value="high">Score ≥ 0.8</option>
-                            <option value="medium">Score ≥ 0.5</option>
-                            <option value="low">Score < 0.5</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Filtrar por Market Cap</label>
-                        <select id="marketCapFilter" onchange="applyFilters()">
-                            <option value="">Todos os Market Caps</option>
-                            <option value="small"><$20M</option>
-                            <option value="medium">$20M - $35M</option>
-                            <option value="large">>$35M</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Filtrar por Variação 24h</label>
-                        <select id="changeFilter" onchange="applyFilters()">
-                            <option value="">Todas as Variações</option>
-                            <option value="positive">Positivas (>0%)</option>
-                            <option value="negative">Negativas (<0%)</option>
-                            <option value="high">Alta (>10%)</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>&nbsp;</label>
-                        <button class="filter-btn" onclick="resetFilters()">
-                            <i class="fas fa-redo"></i> Resetar Filtros
-                        </button>
-                    </div>
+                <div class="filter-item">
+                    <label>Mostrar apenas:</label>
+                    <select id="showFilter" onchange="filterData()">
+                        <option value="all">Todas as cryptos</option>
+                        <option value="consistent">Presente em todos períodos</option>
+                        <option value="new">Novas no último período</option>
+                        <option value="gone">Saíram do último período</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="content-grid">
-                <div class="main-content">
-                    <div class="tabs">
-                        {tabs_buttons}
-                    </div>
-
-                    <div class="tab-contents">
-                        {tabs_contents}
-                    </div>
-
-                    <!-- ✅ Bloco global histórico (aparece sempre) -->
-                    <div class="chart-container">
-                        {global_html}
-                    </div>
-
-                    <div class="insights-panel">
-                        <div class="insights-title">🎯 Smart Insights</div>
-                        <div class="insight-item">
-                            <div class="insight-icon">🔥</div>
-                            <div><strong>Top Performers:</strong> {', '.join(df.nlargest(3, 'final_score')['symbol'].tolist())}</div>
-                        </div>
-                        <div class="insight-item">
-                            <div class="insight-icon">📈</div>
-                            <div><strong>Maior Variação 24h:</strong> {df.loc[df['price_change_percentage_24h'].idxmax(), 'symbol']} ({df['price_change_percentage_24h'].max():.1f}%)</div>
-                        </div>
-                        <div class="insight-item">
-                            <div class="insight-icon">💎</div>
-                            <div><strong>Gems com Score ≥ 0.8:</strong> {len(df[df['final_score'] >= 0.8])} de {len(df)} ({len(df[df['final_score'] >= 0.8])/len(df)*100:.1f}%)</div>
-                        </div>
-                        <div class="insight-item">
-                            <div class="insight-icon">🎪</div>
-                            <div><strong>Setores em Destaque:</strong> {', '.join(df['sector'].value_counts().head(3).index.tolist()) if 'sector' in df.columns else 'Dados setoriais não disponíveis'}</div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Abas dos períodos selecionados -->
+            <div class="tabs">
+                {tabs_buttons}
             </div>
+            {tabs_contents}
         </div>
 
         <script>
-            // Theme Toggle
-            function toggleTheme() {{
-                const body = document.body;
-                const icon = document.getElementById('theme-icon');
-
-                if (body.classList.contains('dark-mode')) {{
-                    body.classList.remove('dark-mode');
-                    icon.className = 'fas fa-moon';
-                    localStorage.setItem('theme', 'light');
-                }} else {{
-                    body.classList.add('dark-mode');
-                    icon.className = 'fas fa-sun';
-                    localStorage.setItem('theme', 'dark');
-                }}
-            }}
-
-            // Load saved theme
-            if (localStorage.getItem('theme') === 'dark') {{
-                document.body.classList.add('dark-mode');
-                document.getElementById('theme-icon').className = 'fas fa-sun';
-            }}
-
-            // Tab functionality
-            function showTab(index) {{
+            function showTab(tabIndex) {{
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                const target = document.getElementById('tab-' + tabIndex);
+                if (target) target.classList.add('active');
                 const tabs = document.querySelectorAll('.tab');
-                const contents = document.querySelectorAll('.tab-content');
-
-                tabs.forEach((tab, i) => {{
-                    tab.classList.remove('active');
-                    if (i === index) {{
-                        tab.classList.add('active');
-                    }}
-                }});
-
-                contents.forEach((content, i) => {{
-                    content.classList.remove('active');
-                    if (i === index) {{
-                        content.classList.add('active');
-                    }}
-                }});
+                if (tabs[tabIndex]) tabs[tabIndex].classList.add('active');
             }}
 
-            // Filter functionality
-            function applyFilters() {{
-                const scoreFilter = document.getElementById('scoreFilter').value;
-                const marketCapFilter = document.getElementById('marketCapFilter').value;
-                const changeFilter = document.getElementById('changeFilter').value;
+            function filterData() {{
+                const symbolFilter = document.getElementById('symbolFilter').value.toUpperCase();
+                const scoreFilter  = parseFloat(document.getElementById('scoreFilter').value) || 0;
+                const mcFilter     = parseFloat(document.getElementById('mcFilter').value) || 0;
 
-                // This would require implementing dynamic filtering logic
-                console.log('Applying filters:', {{ scoreFilter, marketCapFilter, changeFilter }});
-                alert('Funcionalidade de filtros em desenvolvimento. Dashboard atualizado com sucesso!');
-            }}
-
-            function resetFilters() {{
-                document.getElementById('scoreFilter').value = '';
-                document.getElementById('marketCapFilter').value = '';
-                document.getElementById('changeFilter').value = '';
-                console.log('Filters reset');
-            }}
-
-            // Initialize first tab
-            showTab(0);
-
-            // Add smooth scrolling
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {{
-                anchor.addEventListener('click', function (e) {{
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({{
-                        behavior: 'smooth'
-                    }});
-                }});
-            }});
-
-            // Export functionality
-            function exportData(format) {{
-                console.log('Exporting data in', format, 'format');
-                alert('Exportação em desenvolvimento. Funcionalidade disponível em breve!');
-            }}
-
-            // Keyboard shortcuts
-            document.addEventListener('keydown', function(e) {{
-                if (e.ctrlKey || e.metaKey) {{
-                    switch(e.key) {{
-                        case 'd':
-                            e.preventDefault();
-                            toggleTheme();
-                            break;
-                        case 'r':
-                            e.preventDefault();
-                            resetFilters();
-                            break;
+                for (let i = 0; i < {len(dfs)}; i++) {{
+                    const table = document.querySelector('#tab-' + i + ' table');
+                    if (!table) continue;
+                    const rows = table.getElementsByTagName('tr');
+                    for (let row of rows) {{
+                        if (row.rowIndex === 0) continue;
+                        const cells  = row.getElementsByTagName('td');
+                        const symbol = cells[0] ? cells[0].textContent.toUpperCase() : '';
+                        const score  = cells[5] ? parseFloat(cells[5].textContent) || 0 : 0;
+                        const mc     = cells[2] ? parseFloat(cells[2].textContent.replace(/[$,]/g, '')) || 0 : 0;
+                        let show = true;
+                        if (symbolFilter && !symbol.includes(symbolFilter)) show = false;
+                        if (score < scoreFilter) show = false;
+                        if (mc < mcFilter) show = false;
+                        row.style.display = show ? '' : 'none';
                     }}
                 }}
-            }});
-
-            // Auto-refresh simulation (every 5 minutes)
-            setInterval(() => {{
-                console.log('Auto-refresh check - implementar atualização automática');
-            }}, 300000);
+            }}
         </script>
     </body>
     </html>
@@ -2519,30 +2020,6 @@ def show_comparison_snapshots():
 def _load_and_compare(file_list):
     """Carrega os arquivos selecionados e chama create_advanced_dashboard."""
     print(f"📊 Carregando {len(file_list)} snapshots...")
-
-    # Check gems cache age
-    cache_path = os.path.join(os.path.dirname(__file__), 'data', 'gems_cache.json')
-    if os.path.exists(cache_path):
-        try:
-            with open(cache_path, 'r', encoding='utf-8') as f:
-                cache_data = json.load(f)
-            if 'cached_time' in cache_data:
-                cache_time = datetime.fromisoformat(cache_data['cached_time'].replace('Z', '+00:00'))
-                now = datetime.now(timezone.utc)
-                if cache_time.tzinfo:
-                    cache_time = cache_time.replace(tzinfo=None)
-                if now.tzinfo:
-                    now = now.replace(tzinfo=None)
-                age_seconds = (now - cache_time).total_seconds()
-                age_hours = age_seconds / 3600
-                print(f"💾 Cache de dados: {age_hours:.1f} horas ({age_seconds/60:.1f} min)")
-            else:
-                print("💾 Cache de dados: timestamp não encontrado")
-        except Exception as e:
-            print(f"💾 Cache de dados: erro ao ler ({e})")
-    else:
-        print("💾 Cache de dados: não encontrado")
-
     dfs           = []
     snapshot_info = []
 
@@ -2617,63 +2094,6 @@ def main():
     # 🔄 Initialize macro timing automatically with cache
     print("🔄 Initializing Macro Timing...")
     _load_macro_timing()  # This will auto-refresh if cache is expired
-    print()
-
-    # 🔍 Check gems cache age and auto-execute gems_finder if needed
-    cache_path = os.path.join(os.path.dirname(__file__), 'data', 'gems_cache.json')
-    auto_run_needed = False
-
-    if os.path.exists(cache_path):
-        try:
-            with open(cache_path, 'r', encoding='utf-8') as f:
-                cache_data = json.load(f)
-            if 'cached_time' in cache_data:
-                cache_time = datetime.fromisoformat(cache_data['cached_time'].replace('Z', '+00:00'))
-                now = datetime.now(timezone.utc)
-                if cache_time.tzinfo:
-                    cache_time = cache_time.replace(tzinfo=None)
-                if now.tzinfo:
-                    now = now.replace(tzinfo=None)
-                age_seconds = (now - cache_time).total_seconds()
-                age_hours = age_seconds / 3600
-
-                if age_hours > 12:
-                    print(f"⚠️ Cache expirado: {age_hours:.1f} horas (limite: 12 horas)")
-                    auto_run_needed = True
-                else:
-                    print(f"✅ Cache válido: {age_hours:.1f} horas")
-            else:
-                print("⚠️ Cache sem timestamp - executando busca...")
-                auto_run_needed = True
-        except Exception as e:
-            print(f"⚠️ Erro ao ler cache: {e} - executando busca...")
-            auto_run_needed = True
-    else:
-        print("⚠️ Cache não encontrado - executando busca...")
-        auto_run_needed = True
-
-    if auto_run_needed:
-        print("🔄 Executando gems_finder.py automaticamente...")
-        print("=" * 60)
-        try:
-            import subprocess
-            import sys
-            result = subprocess.run([sys.executable, 'gems_finder.py'],
-                                  cwd=os.path.dirname(__file__),
-                                  capture_output=True, text=True)
-            if result.returncode == 0:
-                print("✅ gems_finder.py executado com sucesso!")
-                # Show last few lines of output
-                output_lines = result.stdout.strip().split('\n')
-                for line in output_lines[-5:]:
-                    print(f"   {line}")
-            else:
-                print(f"❌ Erro ao executar gems_finder.py: {result.stderr}")
-        except Exception as e:
-            print(f"❌ Erro ao executar gems_finder.py: {e}")
-        print("=" * 60)
-        print()
-
     print()
 
     while True:

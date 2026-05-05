@@ -1,23 +1,23 @@
 {
-  "last_updated": "2026-05-04T10:12:54.403426",
+  "last_updated": "2026-05-04T23:19:45.973177",
   "total_confirmed": 1,
   "confirmed_gems": [
     {
       "symbol": "neiro",
       "name": "Neiro",
-      "confirmed_at": "2026-05-04T10:12:54.402000",
-      "ratio_now": 0.8049763214349402,
+      "confirmed_at": "2026-05-04T23:19:45.971113",
+      "ratio_now": 0.8091766384259864,
       "ratio_24h_ago": 0.5203329844997998,
-      "growth_percent": 54.70407324047895,
+      "growth_percent": 55.51130959031057,
       "strong_days": 3,
-      "acceleration_strength": 1.6471920227815722,
+      "acceleration_strength": 1.6557869695602199,
       "trend": "accelerating",
-      "market_cap": 38676119,
-      "volume": 31133360,
+      "market_cap": 40333070,
+      "volume": 32636578,
       "priority": "alta",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 71.68942671346846
+      "quality_score": 71.88086988802247
     }
   ]
 }

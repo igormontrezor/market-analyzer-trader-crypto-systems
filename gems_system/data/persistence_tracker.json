@@ -36,7 +36,7 @@
     "count_7d": 0,
     "count_14d": 0,
     "first_seen": "20260502",
-    "last_seen": "20260503",
+    "last_seen": "20260504",
     "max_persistence": 0
   },
   "not": {
@@ -84,7 +84,7 @@
     "count_7d": 0,
     "count_14d": 0,
     "first_seen": "20260502",
-    "last_seen": "20260503",
+    "last_seen": "20260504",
     "max_persistence": 0
   },
   "chillguy": {
@@ -180,7 +180,7 @@
     "count_7d": 0,
     "count_14d": 0,
     "first_seen": "20260503",
-    "last_seen": "20260503",
+    "last_seen": "20260504",
     "max_persistence": 0
   },
   "meme": {
@@ -280,6 +280,38 @@
     "max_persistence": 0
   },
   "well": {
+    "count_3d": 0,
+    "count_7d": 0,
+    "count_14d": 0,
+    "first_seen": "20260504",
+    "last_seen": "20260504",
+    "max_persistence": 0
+  },
+  "zerebro": {
+    "count_3d": 0,
+    "count_7d": 0,
+    "count_14d": 0,
+    "first_seen": "20260504",
+    "last_seen": "20260504",
+    "max_persistence": 0
+  },
+  "hive": {
+    "count_3d": 0,
+    "count_7d": 0,
+    "count_14d": 0,
+    "first_seen": "20260504",
+    "last_seen": "20260504",
+    "max_persistence": 0
+  },
+  "ong": {
+    "count_3d": 0,
+    "count_7d": 0,
+    "count_14d": 0,
+    "first_seen": "20260504",
+    "last_seen": "20260504",
+    "max_persistence": 0
+  },
+  "act": {
     "count_3d": 0,
     "count_7d": 0,
     "count_14d": 0,

@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-04T10:12:54.405570",
-  "total_candidates": 1,
+  "last_updated": "2026-05-04T23:19:45.974610",
+  "total_candidates": 2,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -14,6 +14,19 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 52.42784332661554
+    },
+    {
+      "symbol": "act",
+      "name": "Act I The AI Prophecy",
+      "detected_at": "2026-05-04T23:19:45.972020",
+      "ratio_now": 1.1941603468904785,
+      "market_cap": 15229706,
+      "volume": 18186711,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 48.04987360447623
     }
   ]
 }

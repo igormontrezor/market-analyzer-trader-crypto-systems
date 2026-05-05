@@ -1,22 +1,20 @@
 # ========================================
-# MARKET MONTREZOR SYSTEM - GEMS FINDER v7.0
+# MARKET MONTREZOR SYSTEM - GEMS FINDER v7.1
 # ========================================
 
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "MARKET MONTREZOR SYSTEM - GEMS FINDER v7.0" -ForegroundColor Cyan
+Write-Host "MARKET MONTREZOR SYSTEM - GEMS FINDER v7.1" -ForegroundColor Cyan
 Write-Host "Sistema Multi-Timeframe com Social Intelligence REAL" -ForegroundColor Yellow
-Write-Host "   YouTube API REAL + Telegram Scraping REAL + Arquivos OTIMIZADOS" -ForegroundColor White
-Write-Host "   Cache Consistente + Metrics Autenticas + Sistema Production-Ready" -ForegroundColor White
-Write-Host "   SETOR CLASSIFICATION + ACUMULATION SILENCIOSA + DASHBOARD AVANCADO" -ForegroundColor White
+Write-Host "   TradingView Data + Macro Timing Automatizado + Tutoriais Profissionais" -ForegroundColor White
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
-# Verificar estrutura de diretorios (preservando dados existentes)
-Write-Host "Verificando estrutura de diretorios (preservando dados)..." -ForegroundColor Magenta
+# Verificar estrutura de diretorios
+Write-Host "Verificando estrutura de diretorios..." -ForegroundColor Magenta
 if (!(Test-Path "data")) { New-Item -ItemType Directory -Path "data" }
 if (!(Test-Path "data\daily_snapshots")) { New-Item -ItemType Directory -Path "data\daily_snapshots" }
 if (!(Test-Path "data\snapshots")) { New-Item -ItemType Directory -Path "data\snapshots" }
-Write-Host "Diretorios OK - Dados existentes preservados!" -ForegroundColor Green
+Write-Host "Diretorios OK!" -ForegroundColor Green
 Write-Host ""
 
 # Verificar configuracoes de API
@@ -25,24 +23,16 @@ $apiConfigExists = Test-Path "..\config\api_keys.py"
 $telegramConfigExists = Test-Path "telegram_config.py"
 
 if (-not $apiConfigExists) {
-    Write-Host "⚠️  AVISO: config\api_keys.py nao encontrado" -ForegroundColor Yellow
-    Write-Host "   YouTube usara simulacao automaticamente" -ForegroundColor White
-    Write-Host ""
+    Write-Host "⚠️  YouTube API nao encontrada (usara simulacao)" -ForegroundColor Yellow
 } else {
-    Write-Host "✅ YouTube API Key encontrada em ..\config\api_keys.py" -ForegroundColor Green
-    Write-Host ""
+    Write-Host "✅ YouTube API encontrada" -ForegroundColor Green
 }
 
 if (-not $telegramConfigExists) {
-    Write-Host "⚠️  AVISO: telegram_config.py nao encontrado" -ForegroundColor Yellow
-    Write-Host "   Telegram usara simulacao automaticamente" -ForegroundColor White
-    Write-Host ""
+    Write-Host "⚠️  Telegram config nao encontrado (usara simulacao)" -ForegroundColor Yellow
 } else {
-    Write-Host "✅ Telegram config encontrado em telegram_config.py" -ForegroundColor Green
-    Write-Host ""
+    Write-Host "✅ Telegram config encontrado" -ForegroundColor Green
 }
-
-Write-Host "Configuracoes verificadas!" -ForegroundColor Green
 Write-Host ""
 
 # Ir para o diretório principal
@@ -58,20 +48,12 @@ try {
     exit
 }
 
-Write-Host "Executando GEMS FINDER v7.0 - OTIMIZADO e 100% FUNCIONAL..." -ForegroundColor Yellow
-Write-Host "   - Cache 12 horas: Consistente, sem arquivos duplicados" -ForegroundColor Cyan
-Write-Host "   - YouTube API REAL: datetime.UTC corrigido, publishedAfter valido" -ForegroundColor Cyan
-Write-Host "   - Telegram Scraping REAL: Regex boundaries, sem falsos positivos" -ForegroundColor Cyan
-Write-Host "   - Data Quality: Apenas 'real' ou 'simulation', sem 'partial'" -ForegroundColor Cyan
-Write-Host "   - Velocity Preservado: 0,1,2 videos tem valores diferentes" -ForegroundColor Cyan
-Write-Host "   - Search Terms: Limpos, sem quebra de query com aspas" -ForegroundColor Cyan
-Write-Host "   - Social Validation: Penalty 30% para dados simulados" -ForegroundColor Cyan
-Write-Host "   - ARQUIVOS OTIMIZADOS: 66% menos arquivos (2 vs 6)" -ForegroundColor Cyan
-Write-Host "   - Eventos Especiais: Unificados no enhanced CSV" -ForegroundColor Cyan
-Write-Host "   - Sistema Robusto: Todos os bugs criticos corrigidos" -ForegroundColor Cyan
-Write-Host "   - SETOR CLASSIFICATION: 80% reducao em 'Other' (CoinGecko + Mapa Estatico)" -ForegroundColor Cyan
-Write-Host "   - ACUMULATION SILENCIOSA: Smart Money Detection com slope analysis" -ForegroundColor Cyan
-Write-Host "   - DASHBOARD REORGANIZADO: Bubble + Acumulacao em 1º/2º (mais importantes)" -ForegroundColor Cyan
+Write-Host "Executando GEMS FINDER v7.1..." -ForegroundColor Yellow
+Write-Host "   - TradingView Integration: USDT.D + OTHERS dados reais" -ForegroundColor Cyan
+Write-Host "   - Macro Timing Automatico: Cache 1 hora, BB%B calculos" -ForegroundColor Cyan
+Write-Host "   - Tutoriais Profissionais: Bubble Chart, Acumulação, Heatmap" -ForegroundColor Cyan
+Write-Host "   - Social Intelligence: YouTube API + Telegram Scraping" -ForegroundColor Cyan
+Write-Host "   - Sistema Production-Ready: Cache 12h, arquivos otimizados" -ForegroundColor Cyan
 Write-Host ""
 
 # Ir para gems_system e executar
@@ -79,72 +61,19 @@ Set-Location "gems_system"
 try {
     python gems_finder.py
     Write-Host "" -ForegroundColor White
-    Write-Host "GEMS FINDER v7.0 CONCLUIDO!" -ForegroundColor Green
+    Write-Host "✅ GEMS FINDER v7.1 CONCLUIDO!" -ForegroundColor Green
     Write-Host "" -ForegroundColor White
 
-    Write-Host "Sistema de Cache Consistente:" -ForegroundColor Yellow
-    Write-Host "   - Duracao: 12 horas (respeitado)" -ForegroundColor White
-    Write-Host "   - Timestamps: Consistentes entre cache e snapshots" -ForegroundColor White
-    Write-Host "   - Sem duplicacao: Arquivos criados apenas quando necessario" -ForegroundColor White
-    Write-Host "   - OTIMIZACAO: 2 arquivos por execucao (vs 6 anteriores)" -ForegroundColor White
-    Write-Host "   - Consolidado: gems_10M_to_50M_enhanced com eventos especiais" -ForegroundColor White
-    Write-Host "" -ForegroundColor White
-
-    Write-Host "Verifique os resultados (se criados):" -ForegroundColor Yellow
-    Write-Host "   data\snapshots\ - Analises historicas CSV (OTIMIZADO)" -ForegroundColor White
-    Write-Host "   data\snapshots\gems_10M_to_50M_*.csv - Consolidado (2 arquivos)" -ForegroundColor White
+    Write-Host "📁 Arquivos gerados (se aplicavel):" -ForegroundColor Yellow
+    Write-Host "   data\snapshots\gems_10M_to_50M_*.csv - Dados consolidados" -ForegroundColor White
     Write-Host "   data\snapshots\gems_10M_to_50M_enhanced_*.csv - Com eventos especiais" -ForegroundColor White
-Write-Host "   data\snapshots\ - Com COLUNAS: sector, accumulation_score, etc" -ForegroundColor White
     Write-Host "   data\daily_snapshots\ - Snapshots diarios JSON" -ForegroundColor White
-    Write-Host "   data\gems_cache.json - Cache API centralizado" -ForegroundColor White
+    Write-Host "   data\gems_cache.json - Cache API (12 horas)" -ForegroundColor White
+    Write-Host "   data\macro\macro_timing.json - Macro timing (1 hora)" -ForegroundColor White
     Write-Host "" -ForegroundColor White
 
-    Write-Host "Sistema com Social Intelligence REAL:" -ForegroundColor Yellow
-    Write-Host "   1. YouTube API: Dados reais, timezone corrigido, query valida" -ForegroundColor White
-    Write-Host "   2. Telegram Scraping: Regex boundaries, sem falsos positivos" -ForegroundColor White
-    Write-Host "   3. Data Quality: Flags consistentes, penalty aplicada" -ForegroundColor White
-    Write-Host "   4. Velocity: Ranking preservado mesmo com poucos videos" -ForegroundColor White
-    Write-Host "   5. Cache: Timestamps consistentes, sem arquivos duplicados" -ForegroundColor White
-    Write-Host "   6. ARQUIVOS OTIMIZADOS: 66% reducao, eventos unificados" -ForegroundColor White
-    Write-Host "" -ForegroundColor White
-
-    Write-Host "NOVIDADES v7.0 - CLASSIFICACAO E ACUMULACAO:" -ForegroundColor Green
-Write-Host "   - SETOR CLASSIFICATION: 80% reducao em 'Other' (CoinGecko + Mapa Estatico)" -ForegroundColor White
-Write-Host "   - ACUMULATION SILENCIOSA: Smart Money Detection com slope analysis" -ForegroundColor White
-Write-Host "   - DASHBOARD REORGANIZADO: Bubble + Acumulacao em 1º/2º (mais importantes)" -ForegroundColor White
-Write-Host "   - COLUNAS NOVAS: sector, accumulation_score, accumulation_signal" -ForegroundColor White
-Write-Host "   - TUTORIAIS CORRIGIDOS: Heatmap de Persistencia com escala correta" -ForegroundColor White
-Write-Host "   - MAPA ESTATICO EXPANDIDO: 200+ cryptos mapeadas por setor" -ForegroundColor White
-Write-Host "   - SISTEMA ROBUSTO: 100% funcional, sem bugs criticos" -ForegroundColor White
-Write-Host "" -ForegroundColor White
-
-Write-Host "Atualizacoes v6.0 - OTIMIZACAO COMPLETA:" -ForegroundColor Green
-    Write-Host "   - Arquivos: 6 -> 2 por execucao (66% reducao)" -ForegroundColor White
-    Write-Host "   - Eventos Especiais: Unificados no enhanced CSV" -ForegroundColor White
-    Write-Host "   - Colunas Novas: persistence_days, is_confirmed_leader, rs_strong" -ForegroundColor White
-    Write-Host "   - Social Explosion, RS vs BTC forte: tudo unificado" -ForegroundColor White
-    Write-Host "   - Sistema Production-Ready: 100% funcional, sem bugs" -ForegroundColor White
-    Write-Host "   - Mantida compatibilidade: confirmed_gems.json intacto" -ForegroundColor White
-    Write-Host "" -ForegroundColor White
-
-    Write-Host "Para ATIVAR dados REAIS:" -ForegroundColor Green
-    Write-Host "   1. YouTube: Configure YOUTUBE_API_KEY em config\api_keys.py" -ForegroundColor White
-    Write-Host "   2. Telegram: pip install telethon + configure telegram_config.py" -ForegroundColor White
-    Write-Host "   3. Sistema usara dados reais automaticamente!" -ForegroundColor White
-    Write-Host "" -ForegroundColor White
-
-    Write-Host "🔍 VERIFICANDO ARQUIVOS GERADOS:" -ForegroundColor Yellow
-    Write-Host "   📁 data\snapshots\ - Arquivos CSV otimizados (2 por execucao)" -ForegroundColor White
-    Write-Host "   📁 data\snapshots\gems_10M_to_50M_*.csv - Dados consolidados" -ForegroundColor White
-    Write-Host "   📁 data\snapshots\gems_10M_to_50M_enhanced_*.csv - Com eventos especiais" -ForegroundColor White
-    Write-Host "   📁 data\daily_snapshots\ - Snapshots diarios JSON" -ForegroundColor White
-    Write-Host "   📁 data\gems_cache.json - Cache API (12 horas)" -ForegroundColor White
-    Write-Host "" -ForegroundColor White
-
-    Write-Host "💡 DICAS:" -ForegroundColor Cyan
-    Write-Host "   ✅ Se 'Usando cache' → NAO gera novos arquivos" -ForegroundColor White
-    Write-Host "   🆕 Se 'Snapshot criado' → NOVOS arquivos gerados" -ForegroundColor White
-    Write-Host "   ⏰ Cache dura 12 horas para economizar API" -ForegroundColor White
+    Write-Host "💡 Para executar o dashboard interativo:" -ForegroundColor Cyan
+    Write-Host "   run_visualizer.bat" -ForegroundColor White
     Write-Host "" -ForegroundColor White
 
 } catch {
