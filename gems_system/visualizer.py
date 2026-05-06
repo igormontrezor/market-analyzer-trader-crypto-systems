@@ -243,19 +243,72 @@ def _macro_timing_panel_html() -> str:
     if signal.get('tactical_rebound') and not regime['capitulation_lock']:
         a_label, a_border = "🔵 REPIQUE TÁTICO", "rgba(52, 152, 219, 0.8)"
 
-    # Exibição explícita dos valores semanais na caixinha de ação
+    # Prevenção para garantir que valores ausentes ou nulos não quebrem a exibição
+    m_val = m.get('usdt_d_bbp')
+    if m_val is None:
+        m_val = 0.0
+
+    # --- LÓGICA DO FUNDING RATE (MOCK/INTEGRAÇÃO) ---
+    # Captura ou simula o valor da taxa de financiamento (exemplo: BTC)
+    import requests
+    try:
+        r = requests.get("https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT", timeout=2)
+        if r.status_code == 200:
+            funding_rate = float(r.json().get('lastFundingRate', 0)) * 100 # Converte para percentual
+        else:
+            funding_rate = 0.02 # Valor padrão caso a api falhe
+    except:
+        funding_rate = 0.02
+
+    # Definição do estado da Taxa de Financiamento
+    if funding_rate > 0.08:
+        funding_label = "🔴 FUNDING ALTO (Venda)"
+        funding_color = "rgba(231, 76, 60, 0.7)"
+    elif funding_rate < 0:
+        funding_label = "🟢 FUNDING BAIXO (Compra)"
+        funding_color = "rgba(46, 204, 113, 0.7)"
+    else:
+        funding_label = "⚪ NEUTRO"
+        funding_color = "rgba(255, 255, 255, 0.2)"
+
+    # Definição do Super Alerta de Funding
+    super_alert_label = "—"
+    super_alert_color = "rgba(255, 255, 255, 0.2)"
+
+    # Condição Super Compra: Funding < 0 E Regime Mensal Compra E Sinal Semanal Compra
+    mensal_compra = regime['buy_mode']
+    semanal_compra = signal.get('weekly_buy_trigger', False)
+
+    if funding_rate < 0 and mensal_compra and semanal_compra:
+        super_alert_label = "⚡ SUPER ALERTA DE COMPRA"
+        super_alert_color = "rgba(0, 200, 83, 0.8)"
+
+    # Condição Super Venda: Funding > 0.08 E Regime Mensal Venda E Sinal Semanal Venda
+    mensal_venda = regime['sell_mode']
+    semanal_venda = signal.get('weekly_sell_trigger', False)
+
+    if funding_rate > 0.08 and mensal_venda and semanal_venda:
+        super_alert_label = "⚡ SUPER ALERTA DE VENDA"
+        super_alert_color = "rgba(213, 0, 0, 0.8)"
+
     return f"""
     <div style="margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; color: white;">
         <div style="padding: 12px; border: 2px solid {r_border}; border-radius: 10px; background: rgba(0,0,0,0.3);">
             <div style="font-size: 11px; opacity: 0.7;">STATUS MACRO</div>
             <div style="font-weight: 900; font-size: 13px;">{r_label}</div>
-            <div style="font-size: 11px; margin-top: 4px; opacity: 0.8;">USDT.D Mensal BB%B: {m['usdt_d_bbp']:.2f}</div>
+            <div style="font-size: 11px; margin-top: 4px; opacity: 0.8;">USDT.D Mensal BB%B: {m_val:.4f}</div>
+            <div style="font-size: 10px; margin-top: 5px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 4px;">
+                Funding Rate BTC: <b style="color: {'#e74c3c' if funding_rate > 0.08 else '#2ecc71'}">{funding_rate:.4f}%</b> | {funding_label}
+            </div>
         </div>
         <div style="padding: 12px; border: 1px solid {a_border}; border-radius: 10px; background: rgba(0,0,0,0.2);">
             <div style="font-size: 11px; opacity: 0.7;">AÇÃO SUGERIDA</div>
             <div style="font-weight: 800; font-size: 13px;">{a_label}</div>
             <div style="font-size: 11px; margin-top: 4px; opacity: 0.8;">
                 Semanal -> OTHERS: <b>{w['others_bbp']:.2f}</b> | USDT.D: <b>{w['usdt_d_bbp']:.2f}</b>
+            </div>
+            <div style="font-size: 10px; margin-top: 5px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 4px; color: {super_alert_color}">
+                {super_alert_label}
             </div>
         </div>
     </div>

@@ -29,8 +29,8 @@ if sys.stdout.encoding != 'utf-8':
 class GemsFinder:
 
     CACHE_FILE = "gems_cache.json"
-    CACHE_DURATION = timedelta(hours=12)  # Cache de 12 horas para social validation funcionar
-
+    CACHE_DURATION = timedelta(hours=12)  # Cache de 12 horas
+    
     def __init__(self):
         self.cache_dir = os.path.join(os.path.dirname(__file__), 'data')
         os.makedirs(self.cache_dir, exist_ok=True)

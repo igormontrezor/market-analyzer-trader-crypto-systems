@@ -14,9 +14,13 @@ GEMS SYSTEM is a sophisticated cryptocurrency analysis platform designed to iden
 - **Social Intelligence**: Real-time YouTube API and Telegram scraping for sentiment analysis
 - **Technical Scoring**: Advanced quantitative and social scoring algorithms
 - **Interactive Dashboard**: Plotly-based visualization with comprehensive metrics
+- **Streamlit Web Interface**: Professional web dashboard with real-time updates
+- **Automated Launcher**: One-click execution with environment setup
 - **Smart Filtering**: Zone-based classification (Early Accumulation, Strong, Breakout)
 - **Persistence Tracking**: Cumulative counters for consistent performers
 - **Leader Identification**: Automated detection of confirmed market leaders
+- **Macro Timing Integration**: TradingView-based market regime analysis
+- **Standardized Visualization**: Consistent UI across single and multi-snapshot analysis
 
 ### 🛠️ Tech Stack
 - **Python 3.12+** with pandas, plotly, requests
@@ -31,11 +35,15 @@ GEMS SYSTEM is a sophisticated cryptocurrency analysis platform designed to iden
 git clone https://github.com/igormontrezor/market-analyzer-crypto-gems.git
 cd market-analyzer-crypto-gems/gems_system
 
-# Run analysis
-python gems_finder.py
+# Option 1: Automated launcher (Recommended)
+start_app.bat
 
-# View results
+# Option 2: Manual commands
+python gems_finder.py
 python visualizer.py
+
+# Option 3: Streamlit web interface
+python -m streamlit run app.py
 ```
 
 ### 📊 Output Files
@@ -90,30 +98,47 @@ python visualizer.py
 
 ```
 gems_system/
-├── gems_finder.py          # Main analysis system
-├── visualizer.py           # Interactive dashboard
-├── persistence_tracker.py  # Persistence tracking system
-├── social_analyzer_yt_telegram.py  # Social intelligence
-├── data/                   # Historical snapshots
-│   ├── snapshots/          # CSV analysis files
-│   └── daily_snapshots/    # JSON daily data
-├── guide/                  # Documentation
-├── run.bat                 # Windows execution
+├── gems_finder.py                    # Main analysis system
+├── visualizer.py                     # Interactive dashboard
+├── app.py                           # Streamlit web interface
+├── start_app.bat                    # Automated launcher (Windows)
+├── start_app_advanced.py            # Advanced launcher with error handling
+├── persistence_tracker.py           # Persistence tracking system
+├── social_analyzer_yt_telegram.py   # Social intelligence
+├── evolution_functions.py           # Historical analysis functions
+├── data/                            # Historical snapshots
+│   ├── snapshots/                   # CSV analysis files
+│   ├── daily_snapshots/             # JSON daily data
+│   └── macro/                       # Macro timing data
+├── guide/                           # Documentation
+├── logo_mtrz.png                    # Montrezor logo
 └── README.md
 ```
 
 ## 🚀 Quick Usage
 
-### Terminal
+### Option 1: Automated Launcher (Recommended)
+```bash
+# Double-click or run from terminal
+start_app.bat
+```
+
+### Option 2: Streamlit Web Interface
+```bash
+cd gems_system
+python -m streamlit run app.py
+```
+
+### Option 3: Manual Terminal Commands
 ```bash
 cd gems_system
 python gems_finder.py      # Run analysis
 python visualizer.py       # View dashboard
 ```
 
-### Windows
+### Option 4: Advanced Launcher
 ```bash
-run.bat                    # Automated execution
+python start_app_advanced.py
 ```
 
 ### Jupyter Notebook
@@ -140,10 +165,16 @@ results.sort_values("final_score", ascending=False).head(10)
 - ✅ **Social Intelligence**: YouTube API + Telegram scraping
 - ✅ **Technical Scoring**: Quantitative + social scoring algorithms
 - ✅ **Interactive Dashboard**: Plotly-based visualization
+- ✅ **Streamlit Web Interface**: Professional web dashboard with real-time updates
+- ✅ **Automated Launcher**: One-click execution with environment setup
 - ✅ **Smart Filtering**: Zone-based classification
 - ✅ **Persistence Tracking**: Cumulative counters
 - ✅ **Leader Detection**: Automated market leader identification
 - ✅ **Historical Snapshots**: CSV + JSON data storage
+- ✅ **Macro Timing Integration**: TradingView-based market regime analysis
+- ✅ **Standardized Visualization**: Consistent UI across single and multi-snapshot analysis
+- ✅ **Evolution Analysis**: Complete historical tracking and comparison
+- ✅ **Professional Styling**: Modern gradient-based UI design
 
 ## 📊 Key Metrics
 

@@ -68,19 +68,19 @@ ENTRADA REFINADA NO DIARIO NO TOPO DO CANAL RSI COM O RSI DO SEMANAL TBM NO TOPO
 - [ ] **Tendência:** Semanal alinhada
 - [ ] **RSI:** No canal de resistência/suporte -> Peso maior para o timeframe MAIORES
 - [ ] **STOCH RSI:** No contra fundo/topo da tendência no timeframe MENOR (inverso da tendência)
-- [ ] **Fibonacci:** 0.5-0.618 tocado
+- [ ] **Fibonacci:** 0.5-0.618 tocado (Neuro Athena / Manual)
 - [ ] **Indicadores do market_analisis:** Confirmam (weekly + daily)
-- [ ] **Risk/Reward:** Mínimo 1:3 (usando fibo-extension 0.618 como take profit)
+- [ ] **Risk/Reward:** Mínimo 1:3 (usando fibo-extension 0.618 como take profit / Neuro Athena)
 
 ### **🔍 ENTRADA A (PRINCIPAL):**
 - [ ] **Supertrend:** Mesma direção no timeframe maior
 - [ ] **Tendência:** Semanal alinhada
 - [ ] **RSI:** No canal de resistência/suporte -> Peso maior para o timeframe MAIORES
 - [ ] **STOCH RSI:** No contra fundo/topo da tendência, no timeframe MENOR! (inverso da tendência)
-- [ ] **Risk/Reward:** Mínimo 1:2 (usando fibo-extension 0.328 como take profit)
+- [ ] **Risk/Reward:** Mínimo 1:2 (usando fibo-extension 0.328 como take profit / Neuro Athena)
 
 ### **⚡ EXECUÇÃO:**
-- [ ] **Stop Loss:** Extremo do Canal do RSI, MA 50/100/200, Extensao de Fibonnaci e Inversao do Supertrend. TUDO CONFORME ESTRUTURA DO MERCADO.
+- [ ] **Stop Loss:** Extremo do Canal do RSI, MA 50/100/200, Extensao de Fibonnaci (Neuro Athena / Manual) e Inversao do Supertrend. TUDO CONFORME ESTRUTURA DO MERCADO.
 - [ ] **Take Profits:** 0.382 / 0.236 / 0.0 (extensão)
 - [ ] **Posição:** Máx 2% risco
 
