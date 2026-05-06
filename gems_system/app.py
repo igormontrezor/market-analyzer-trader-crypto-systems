@@ -112,16 +112,40 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 3. FUNÇÕES DE APOIO E DADOS REAIS DA API DA BINANCE
 def get_btc_funding_rate_real():
-    """Busca a taxa em tempo real da Binance para refletir o valor real (ex: -0.0082%)"""
     try:
         url = "https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT"
         response = requests.get(url, timeout=5)
-        data = response.json()
-        return float(data.get('lastFundingRate', 0)) * 100
+        rate = float(response.json().get('lastFundingRate', 0)) * 100
+
+        # REGISTRO EM CSV (Histórico de 1 em 1 hora unificado)
+        csv_path = os.path.join("data", "macro", "funding_rate_history.csv")
+        os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+
+        now = datetime.now()
+        timestamp_hour = now.strftime("%Y-%m-%d %H:00:00") # Arredonda para a hora cheia
+
+        # Verifica se já registrou essa hora para não duplicar
+        already_logged = False
+        if os.path.exists(csv_path):
+            try:
+                with open(csv_path, 'r', encoding='utf-8') as f:
+                    lines = f.readlines()
+                    if lines and timestamp_hour in lines[-1]:
+                        already_logged = True
+            except:
+                pass
+
+        if not already_logged:
+            file_exists = os.path.exists(csv_path)
+            with open(csv_path, 'a', encoding='utf-8') as f:
+                if not file_exists:
+                    f.write("timestamp,funding_rate\n")
+                f.write(f"{timestamp_hour},{rate:.6f}\n")
+
+        return rate
     except:
-        return -0.0082
+        return 0.01
 
 def get_snapshots():
     path = os.path.join("data", "snapshots")
@@ -166,21 +190,20 @@ def get_macro_data():
                 funding_rate = get_btc_funding_rate_real()
                 res["funding_rate"] = funding_rate
 
-                # 1. Alerta Normal (Somente pelo valor do Funding)
-                if funding_rate > 0.08:
-                    res["funding_signal"] = "SELL"
-                elif funding_rate < 0:
-                    res["funding_signal"] = "BUY"
-                else:
-                    res["funding_signal"] = "NEUTRAL"
+                res["funding_signal"] = "NEUTRAL"
+                res["super_alert"] = "OFF"
 
-                # 2. Super Alertas (Confluência: Funding + Regime Mensal + Sinal Semanal)
-                if funding_rate < 0 and buy_mode and weekly_buy_trigger:
-                    res["super_alert"] = "SUPER_BUY"
-                elif funding_rate > 0.08 and sell_mode and weekly_sell_trigger:
-                    res["super_alert"] = "SUPER_SELL"
-                else:
-                    res["super_alert"] = "OFF"
+                # LÓGICA DE CONFLUÊNCIA EXATA (Regime -> Funding -> Semanal)
+                if buy_mode:
+                    if funding_rate < 0:
+                        res["funding_signal"] = "BUY"
+                        if weekly_buy_trigger:
+                            res["super_alert"] = "SUPER_BUY"
+                elif sell_mode:
+                    if funding_rate > 0.08:
+                        res["funding_signal"] = "SELL"
+                        if weekly_sell_trigger:
+                            res["super_alert"] = "SUPER_SELL"
 
                 gen_at = data.get("generated_at", "")
                 if gen_at:
@@ -256,14 +279,18 @@ with col_right:
     f_rate = m['funding_rate']
     f_color = "#3fb950" if f_rate < 0 else ("#f85149" if f_rate > 0.08 else "#8b949e")
 
-    # Exibição do Super Alerta sem quebras incorretas
+    # Exibição do Alerta com hierarquia visual e classes do CSS
     super_html = ""
     if m['super_alert'] == "SUPER_BUY":
-        super_html = '<div class="super-buy-alert">🔥 SUPER ALERTA: COMPRA</div>'
+        super_html = '<div class="super-buy-alert">⚡ SUPER ALERTA: COMPRA</div>'
     elif m['super_alert'] == "SUPER_SELL":
-        super_html = '<div class="super-sell-alert">⚠️ SUPER ALERTA: VENDA</div>'
+        super_html = '<div class="super-sell-alert">🚨 SUPER ALERTA: VENDA</div>'
+    elif m['funding_signal'] == "BUY":
+        super_html = '<div class="neutral-alert" style="background:#238636; border: 1px solid #3fb950; color: white;">🟢 SINAL DE COMPRA (Funding)</div>'
+    elif m['funding_signal'] == "SELL":
+        super_html = '<div class="neutral-alert" style="background:#da3633; border: 1px solid #f85149; color: white;">🔴 SINAL DE VENDA (Funding)</div>'
     else:
-        super_html = '<div class="neutral-alert">🟢 NEUTRO / ESTÁVEL</div>'
+        super_html = '<div class="neutral-alert">⚪ NEUTRO / ESTÁVEL</div>'
 
     st.markdown(f"""
         <div style="padding-top: 0px;">

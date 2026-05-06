@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-05T12:45:23.872055",
-  "total_candidates": 4,
+  "last_updated": "2026-05-06T08:44:22.085891",
+  "total_candidates": 6,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -53,6 +53,32 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 45.017747563276586
+    },
+    {
+      "symbol": "usdon",
+      "name": "Ondo U.S. Dollar Token",
+      "detected_at": "2026-05-06T08:44:22.080950",
+      "ratio_now": 1.4676800448753566,
+      "market_cap": 49420443,
+      "volume": 72533398,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 53.5202675641738
+    },
+    {
+      "symbol": "tst",
+      "name": "Test",
+      "detected_at": "2026-05-06T08:44:22.082780",
+      "ratio_now": 2.963339168762218,
+      "market_cap": 19077718,
+      "volume": 56533749,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
     }
   ]
 }
