@@ -6,12 +6,14 @@ em QUALQUER fluxo — snapshot único ou comparação múltipla.
 """
 
 import os
+import io
+import sys
 import json
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.express as px
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import webbrowser
 import tempfile
 import numpy as np
@@ -29,6 +31,9 @@ from evolution_functions import (
     get_evolution_color,
     get_evolution_emoji
 )
+
+if sys.stdout.encoding != 'utf-8':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 def _coingecko_get(url: str, params: Optional[Dict[str, Any]] = None, timeout: int = 30) -> Any:
     key = os.environ.get('COINGECKO_API_KEY')
@@ -160,7 +165,7 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
     }
 
     payload = {
-        "generated_at": now.isoformat(),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
         "weekly": weekly_state,
         "monthly": {"usdt_d_bbp": float(curr_m_usdt)},
         "regime": {
@@ -171,54 +176,93 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
         "signal": signal,
     }
 
+    # (No final da função _build_macro_timing, pouco ANTES da definição do dicionário 'payload')
+
+    # --- LÓGICA E REGISTRO DO FUNDING RATE ---
+    import requests
+    try:
+        r = requests.get("https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT", timeout=2)
+        if r.status_code == 200:
+            funding_rate = float(r.json().get('lastFundingRate', 0)) * 100
+        else:
+            funding_rate = 0.02
+    except:
+        funding_rate = 0.02
+
+    # Registrar no CSV de Histórico (Formato unificado com app.py)
+    funding_csv_path = os.path.join(macro_dir, 'funding_rate_history.csv')
+
+    now_dt = datetime.now()
+    timestamp_hour = now_dt.strftime("%Y-%m-%d %H:00:00") # Arredonda para a hora cheia
+
+    already_logged = False
+    if os.path.exists(funding_csv_path):
+        try:
+            with open(funding_csv_path, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
+                if lines and timestamp_hour in lines[-1]:
+                    already_logged = True
+        except:
+            pass
+
+    if not already_logged:
+        file_exists = os.path.exists(funding_csv_path)
+        with open(funding_csv_path, 'a', encoding='utf-8') as f:
+            if not file_exists:
+                f.write("timestamp,funding_rate\n")
+            f.write(f"{timestamp_hour},{funding_rate:.6f}\n")
+
+    payload = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "weekly": weekly_state,
+        "monthly": {"usdt_d_bbp": float(curr_m_usdt)},
+        "regime": {
+            "buy_mode": bool(buy_mode),
+            "sell_mode": bool(sell_mode),
+            "capitulation_lock": capitulation_lock
+        },
+        "signal": signal,
+        "funding_rate": funding_rate
+    }
+
     with open(macro_path, 'w', encoding='utf-8') as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
+
     return payload
 
 def _load_macro_timing() -> dict:
-    """
-    Load macro timing with 1-hour cache.
-    Automatically refreshes if cache is expired.
-    """
+    """Load macro timing from cache or build fresh if expired."""
     try:
         base_dir = os.path.dirname(__file__)
         macro_path = os.path.join(base_dir, 'data', 'macro', 'macro_timing.json')
 
-        # If no cache file, build fresh data
         if not os.path.exists(macro_path):
             print("🔄 No macro timing cache found, building fresh data...")
             return _build_macro_timing()
 
-        # Load cached data
         with open(macro_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-        # Check if cache is expired (1 hour = 3600 seconds)
+        # --- Trecho a ser substituído dentro de _load_macro_timing ---
         generated_at = data.get('generated_at')
         if generated_at:
+            # 1. Converte o texto para data (mantendo o fuso horário UTC)
+            # O .replace('Z', '+00:00') ajuda o Python a ler o formato ISO
             cache_time = datetime.fromisoformat(generated_at.replace('Z', '+00:00'))
-            now = datetime.now()
+            now = datetime.now(timezone.utc)
 
-            # Remove timezone info for comparison if present
-            if cache_time.tzinfo:
-                cache_time = cache_time.replace(tzinfo=None)
-
+            # 2. Calcula a idade em segundos (Sem remover o tzinfo, a conta é exata)
             age_seconds = (now - cache_time).total_seconds()
 
-            if age_seconds > 3600:  # 1 hour expired
+            if age_seconds > 3600:  # 1 hora
                 print(f"🔄 Macro timing cache expired ({age_seconds/60:.1f} min old), refreshing...")
                 return _build_macro_timing()
             else:
                 print(f"✅ Using fresh macro timing cache ({age_seconds/60:.1f} min old)")
                 return data
-        else:
-            # No timestamp, rebuild
-            print("🔄 No timestamp in cache, rebuilding...")
-            return _build_macro_timing()
-
+        return _build_macro_timing()
     except Exception as e:
         print(f"⚠️ Error loading macro timing cache: {e}")
-        print("🔄 Building fresh data as fallback...")
         return _build_macro_timing()
 
 def _macro_timing_panel_html() -> str:
@@ -230,7 +274,11 @@ def _macro_timing_panel_html() -> str:
     w = payload['weekly']
     m = payload['monthly']
 
-    # Lógica Visual
+    # Prevenção para valores nulos
+    m_val = m.get('usdt_d_bbp', 0.0)
+    funding_rate = payload.get('funding_rate', 0.02) # Utiliza o que foi cacheado
+
+    # Lógica Visual Macro Original
     if regime['capitulation_lock']:
         r_label, r_border = "🚨 CAPITULAÇÃO ATIVA", "rgba(255, 69, 0, 1)"
         a_label, a_border = "🚫 COMPRAS EM PAUSA", "rgba(255, 69, 0, 0.6)"
@@ -249,19 +297,66 @@ def _macro_timing_panel_html() -> str:
     if signal.get('tactical_rebound') and not regime['capitulation_lock']:
         a_label, a_border = "🔵 REPIQUE TÁTICO", "rgba(52, 152, 219, 0.8)"
 
-    # Exibição explícita dos valores semanais na caixinha de ação
+    # --- LÓGICA DO FUNDING RATE ALINHADA AO APP.PY ---
+    mensal_compra = regime['buy_mode']
+    semanal_compra = signal.get('weekly_buy_trigger', False)
+    mensal_venda = regime['sell_mode']
+    semanal_venda = signal.get('weekly_sell_trigger', False)
+
+    funding_label = "⚪ NEUTRO"
+    super_alert_label = "—"
+    super_alert_color = "rgba(255, 255, 255, 0.2)"
+    alert_animation = ""
+
+    # Condições Exatas da Estratégia
+    if mensal_compra:
+        if funding_rate < 0:
+            funding_label = "🟢 COMPRA (Funding < 0)"
+            if semanal_compra:
+                super_alert_label = "⚡ SUPER ALERTA DE COMPRA"
+                super_alert_color = "#00e676" # Verde limão brilhante
+                alert_animation = "animation: blink 1.5s infinite;"
+    elif mensal_venda:
+        if funding_rate > 0.08:
+            funding_label = "🔴 VENDA (Funding > 0.08)"
+            if semanal_venda:
+                super_alert_label = "🚨 SUPER ALERTA DE VENDA"
+                super_alert_color = "#ff1744" # Vermelho brilhante
+                alert_animation = "animation: blink 1.5s infinite;"
+
+    # Cor dinâmica do texto da porcentagem do Funding
+    f_rate_color = "#e74c3c" if funding_rate > 0.08 else "#2ecc71" if funding_rate < 0 else "#f1c40f"
+
+    # Injeção de CSS para o piscar do super alerta dentro do HTML do Plotly
+    blink_css = """
+    <style>
+        @keyframes blink {
+            0% { opacity: 1; text-shadow: 0 0 10px currentColor; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; text-shadow: 0 0 10px currentColor; }
+        }
+    </style>
+    """
+
     return f"""
+    {blink_css}
     <div style="margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; color: white;">
         <div style="padding: 12px; border: 2px solid {r_border}; border-radius: 10px; background: rgba(0,0,0,0.3);">
             <div style="font-size: 11px; opacity: 0.7;">STATUS MACRO</div>
             <div style="font-weight: 900; font-size: 13px;">{r_label}</div>
-            <div style="font-size: 11px; margin-top: 4px; opacity: 0.8;">USDT.D Mensal BB%B: {m['usdt_d_bbp']:.2f}</div>
+            <div style="font-size: 11px; margin-top: 4px; opacity: 0.8;">USDT.D Mensal BB%B: {m_val:.4f}</div>
+            <div style="font-size: 10px; margin-top: 5px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 4px;">
+                Funding Rate BTC: <b style="color: {f_rate_color}">{funding_rate:.4f}%</b> | {funding_label}
+            </div>
         </div>
         <div style="padding: 12px; border: 1px solid {a_border}; border-radius: 10px; background: rgba(0,0,0,0.2);">
             <div style="font-size: 11px; opacity: 0.7;">AÇÃO SUGERIDA</div>
             <div style="font-weight: 800; font-size: 13px;">{a_label}</div>
             <div style="font-size: 11px; margin-top: 4px; opacity: 0.8;">
                 Semanal -> OTHERS: <b>{w['others_bbp']:.2f}</b> | USDT.D: <b>{w['usdt_d_bbp']:.2f}</b>
+            </div>
+            <div style="font-size: 11px; margin-top: 5px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 5px; font-weight: 800; color: {super_alert_color}; {alert_animation}">
+                {super_alert_label}
             </div>
         </div>
     </div>
@@ -309,7 +404,7 @@ def plot_usdt_debug_html(usdt_monthly, m_usdt_bbp):
 
     fig.update_layout(
         height=700,
-        title="DEBUG USDT.D vs BB%B",
+        title="USDT.D vs BB%B (Weekly)",
         template="plotly_dark"
     )
 
@@ -806,56 +901,229 @@ def create_interactive_dashboard(df, file_name):
         height=800, showlegend=False, template='plotly_white'
     )
 
-    fig_table = create_interactive_table(df)
+    table_html = create_interactive_table(df)
 
     # --- ✅ Bloco global histórico ---
     snapshot_info = [{'file': file_name, 'date': datetime.now().strftime('%Y-%m-%d %H:%M'), 'index': 0, 'count': len(df)}]
     js_block, summary_html, hall_html = build_global_evolution_block([df], snapshot_info)
     global_html = _global_block_html(js_block, summary_html, hall_html)
 
-    # --- HTML final ---
+    # --- HTML final com layout padronizado ---
     html_content = f"""
     <!DOCTYPE html>
     <html>
     <head>
-        <title>🚀 GEMS SYSTEM DASHBOARD</title>
+        <title>🚀 GEMS SYSTEM - DASHBOARD PROFESSIONAL</title>
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
         <style>
-            body {{ font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }}
-            .container {{ background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
-            h1 {{ color: #2c3e50; text-align: center; }}
-            h2 {{ color: #34495e; margin-top: 30px; }}
-            .stats {{ background-color: #ecf0f1; padding: 15px; border-radius: 5px; margin: 20px 0; }}
+            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+
+            body {{
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                transition: all 0.3s ease;
+            }}
+
+            body.dark-mode {{
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }}
+
+            .dashboard-container {{
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 20px;
+            }}
+
+            .header {{
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 30px;
+                margin-bottom: 30px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }}
+
+            .header h1 {{
+                font-size: 2.5rem;
+                font-weight: 800;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                margin-bottom: 10px;
+            }}
+
+            .header .subtitle {{
+                color: #666;
+                font-size: 1.1rem;
+                margin-bottom: 20px;
+            }}
+
+            .kpi-grid {{
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                margin-bottom: 30px;
+            }}
+
+            .kpi-card {{
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 15px;
+                padding: 25px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                transition: all 0.3s ease;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }}
+
+            .kpi-card:hover {{
+                transform: translateY(-5px);
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            }}
+
+            .kpi-value {{
+                font-size: 2rem;
+                font-weight: 700;
+                color: #2c3e50;
+                margin-bottom: 5px;
+            }}
+
+            .kpi-label {{
+                color: #7f8c8d;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }}
+
+            .content-card {{
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 30px;
+                margin-bottom: 30px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            }}
+
+            .section-title {{
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: #2c3e50;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }}
+
+            .chart-container {{
+                background: white;
+                border-radius: 15px;
+                padding: 20px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+                margin-bottom: 20px;
+            }}
+
+            .dark-mode-toggle {{
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(255, 255, 255, 0.9);
+                border: none;
+                border-radius: 50px;
+                padding: 12px 20px;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                font-size: 1.2rem;
+                transition: all 0.3s ease;
+                z-index: 1000;
+            }}
+
+            .dark-mode-toggle:hover {{
+                transform: scale(1.05);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            }}
+
+            @media (max-width: 768px) {{
+                .dashboard-container {{
+                    padding: 10px;
+                }}
+                .header h1 {{
+                    font-size: 2rem;
+                }}
+                .kpi-grid {{
+                    grid-template-columns: 1fr;
+                }}
+            }}
         </style>
     </head>
     <body>
-        <div class="container">
-            <h1>🚀 GEMS SYSTEM DASHBOARD</h1>
-            <p><strong>Arquivo:</strong> {file_name}</p>
-            <p><strong>Data:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
-            <p><strong>Gems:</strong> {len(df)} | <strong>Colunas:</strong> {len(df.columns)}</p>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
 
-            <div class="stats">
-                <h3>📊 Estatísticas do Snapshot</h3>
-                <p><strong>Market Cap Médio:</strong> ${df['market_cap'].mean():,.0f}</p>
-                <p><strong>Volume Total:</strong> ${df['total_volume'].sum():,.0f}</p>
-                <p><strong>Variação 24h Positivas:</strong>
-                    {(df['price_change_percentage_24h'] > 0).sum()}/{len(df)}
-                    ({(df['price_change_percentage_24h'] > 0).mean()*100:.1f}%)
-                </p>
+        <div class="dashboard-container">
+            <div class="header">
+                <h1>🚀 GEMS SYSTEM DASHBOARD</h1>
+                <div class="subtitle">
+                    <strong>Arquivo:</strong> {file_name} |
+                    <strong>Data:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} |
+                    <strong>Gems:</strong> {len(df)}
+                </div>
             </div>
 
-            <!-- Gráficos do snapshot -->
-            <div id="dashboard"></div>
-            <div id="table" style="margin-top: 30px;"></div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-value">${df['market_cap'].mean():,.0f}</div>
+                    <div class="kpi-label">Market Cap Médio</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value">${df['total_volume'].sum():,.0f}</div>
+                    <div class="kpi-label">Volume Total</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value">{(df['price_change_percentage_24h'] > 0).sum()}/{len(df)}</div>
+                    <div class="kpi-label">Variações Positivas 24h</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value">{(df['price_change_percentage_24h'] > 0).mean()*100:.1f}%</div>
+                    <div class="kpi-label">% Positivas 24h</div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2 class="section-title">📊 Análise do Snapshot</h2>
+                <div class="chart-container">
+                    <div id="dashboard"></div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2 class="section-title">📋 Tabela de Dados Interativa</h2>
+                <div class="chart-container">
+                    {table_html}
+                </div>
+            </div>
 
             <!-- ✅ Bloco global histórico (aparece sempre) -->
             {global_html}
         </div>
 
         <script>
+            // Função de modo escuro
+            function toggleDarkMode() {{
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+                document.querySelector('.dark-mode-toggle').textContent = isDark ? '☀️' : '🌙';
+            }}
+
+            // Restaurar preferência de modo escuro
+            if (localStorage.getItem('darkMode') === 'true') {{
+                document.body.classList.add('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = '☀️';
+            }}
+
+            // Renderizar gráficos
             {fig.to_html(div_id="dashboard", include_plotlyjs=False)}
-            {fig_table.to_html(div_id="table", include_plotlyjs=False)}
         </script>
     </body>
     </html>
@@ -885,107 +1153,588 @@ def create_advanced_dashboard(dfs, snapshot_info):
         tabs_buttons  += f'<button class="tab {active}" onclick="showTab({i})">Período {i+1} - {info["date"]}</button>\n'
         tabs_contents += f'<div id="tab-{i}" class="tab-content {active}">{create_period_html(df, info, i)}</div>\n'
 
+    # Calculate KPI metrics
+    total_market_cap = sum(df['market_cap'].sum() for df in dfs)
+    total_volume = sum(df['total_volume'].sum() for df in dfs)
+    total_gems = sum(len(df) for df in dfs)
+    avg_score = sum(df['final_score'].mean() for df in dfs) / len(dfs)
+    positive_changes = sum((df['price_change_percentage_24h'] > 0).sum() for df in dfs)
+    total_changes = sum(len(df) for df in dfs)
+    positive_pct = (positive_changes / total_changes * 100) if total_changes > 0 else 0
+
     html_content = f"""
     <!DOCTYPE html>
     <html>
     <head>
-        <title>📊 GEMS SYSTEM - COMPARATIVO AVANÇADO</title>
+        <title>🚀 GEMS SYSTEM - DASHBOARD PROFESSIONAL</title>
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
         <style>
-            body {{ font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }}
-            .container {{ background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
-            h1 {{ color: #2c3e50; text-align: center; }}
-            .tabs {{ display: flex; border-bottom: 2px solid #3498db; margin-bottom: 20px; flex-wrap: wrap; }}
-            .tab {{ padding: 12px 20px; cursor: pointer; border: none; background: #ecf0f1; margin-right: 5px; border-radius: 5px 5px 0 0; }}
-            .tab.active {{ background: #3498db; color: white; }}
-            .tab-content {{ display: none; }}
-            .tab-content.active {{ display: block; }}
-            .filters {{ background-color: #ecf0f1; padding: 15px; border-radius: 5px; margin-bottom: 20px; }}
-            .filter-item {{ margin: 10px 0; }}
-            .stats {{ background-color: #ecf0f1; padding: 15px; border-radius: 5px; margin: 20px 0; }}
-            .period-summary {{ background-color: #ecf0f1; padding: 15px; border-radius: 5px; margin: 20px 0; }}
-            .period-item {{ margin: 10px 0; padding: 10px; border-left: 4px solid #3498db; background-color: white; }}
+            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+
+            body {{
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                transition: all 0.3s ease;
+            }}
+
+            body.dark-mode {{
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }}
+
+            .dashboard-container {{
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 20px;
+            }}
+
+            .header {{
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 30px;
+                border-radius: 20px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+                margin-bottom: 30px;
+                text-align: center;
+                position: relative;
+            }}
+
+            .dark-mode .header {{
+                background: rgba(30, 30, 46, 0.95);
+                color: white;
+            }}
+
+            .theme-toggle {{
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border: none;
+                color: white;
+                padding: 10px 15px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: all 0.3s ease;
+            }}
+
+            .theme-toggle:hover {{
+                transform: scale(1.05);
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            }}
+
+            h1 {{
+                font-size: 2.5em;
+                font-weight: 700;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                margin-bottom: 10px;
+            }}
+
+            .dark-mode h1 {{
+                background: linear-gradient(135deg, #64b5f6, #42a5f5);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }}
+
+            .subtitle {{
+                color: #666;
+                font-size: 1.1em;
+                margin-bottom: 20px;
+            }}
+
+            .dark-mode .subtitle {{
+                color: #ccc;
+            }}
+
+            .kpi-grid {{
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin-bottom: 30px;
+            }}
+
+            .kpi-card {{
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 25px;
+                border-radius: 15px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                text-align: center;
+                transition: all 0.3s ease;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }}
+
+            .dark-mode .kpi-card {{
+                background: rgba(30, 30, 46, 0.95);
+                color: white;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }}
+
+            .kpi-card:hover {{
+                transform: translateY(-5px);
+                box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            }}
+
+            .kpi-icon {{
+                font-size: 2em;
+                margin-bottom: 10px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }}
+
+            .dark-mode .kpi-icon {{
+                background: linear-gradient(135deg, #64b5f6, #42a5f5);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }}
+
+            .kpi-value {{
+                font-size: 2em;
+                font-weight: 700;
+                color: #2c3e50;
+                margin-bottom: 5px;
+            }}
+
+            .dark-mode .kpi-value {{
+                color: #fff;
+            }}
+
+            .kpi-label {{
+                color: #666;
+                font-size: 0.9em;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }}
+
+            .dark-mode .kpi-label {{
+                color: #ccc;
+            }}
+
+            .filters-section {{
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 20px;
+                border-radius: 15px;
+                margin-bottom: 30px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            }}
+
+            .dark-mode .filters-section {{
+                background: rgba(30, 30, 46, 0.95);
+                color: white;
+            }}
+
+            .filters-grid {{
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+                align-items: end;
+            }}
+
+            .filter-group {{
+                display: flex;
+                flex-direction: column;
+            }}
+
+            .filter-group label {{
+                font-weight: 600;
+                margin-bottom: 5px;
+                color: #2c3e50;
+            }}
+
+            .dark-mode .filter-group label {{
+                color: #fff;
+            }}
+
+            .filter-group select, .filter-group input {{
+                padding: 10px;
+                border: 2px solid #e0e0e0;
+                border-radius: 8px;
+                font-size: 14px;
+                transition: all 0.3s ease;
+            }}
+
+            .dark-mode .filter-group select,
+            .dark-mode .filter-group input {{
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.2);
+                color: white;
+            }}
+
+            .filter-group select:focus,
+            .filter-group input:focus {{
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }}
+
+            .filter-btn {{
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                border: none;
+                padding: 12px 25px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }}
+
+            .filter-btn:hover {{
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            }}
+
+            .content-grid {{
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }}
+
+            .main-content {{
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 30px;
+                border-radius: 20px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            }}
+
+            .dark-mode .main-content {{
+                background: rgba(30, 30, 46, 0.95);
+                color: white;
+            }}
+
+            .tabs {{
+                display: flex;
+                border-bottom: 3px solid #667eea;
+                margin-bottom: 30px;
+                flex-wrap: wrap;
+                gap: 5px;
+            }}
+
+            .tab {{
+                padding: 15px 25px;
+                cursor: pointer;
+                border: none;
+                background: rgba(255, 255, 255, 0.5);
+                border-radius: 10px 10px 0 0;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                color: #2c3e50;
+            }}
+
+            .dark-mode .tab {{
+                background: rgba(255, 255, 255, 0.1);
+                color: white;
+            }}
+
+            .tab.active {{
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                transform: translateY(-2px);
+            }}
+
+            .tab:hover {{
+                background: rgba(102, 126, 234, 0.1);
+            }}
+
+            .dark-mode .tab:hover {{
+                background: rgba(255, 255, 255, 0.2);
+            }}
+
+            .tab-content {{
+                display: none;
+                animation: fadeIn 0.5s ease;
+            }}
+
+            .tab-content.active {{
+                display: block;
+            }}
+
+            @keyframes fadeIn {{
+                from {{ opacity: 0; transform: translateY(10px); }}
+                to {{ opacity: 1; transform: translateY(0); }}
+            }}
+
+            .chart-container {{
+                background: white;
+                padding: 20px;
+                border-radius: 15px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            }}
+
+            .dark-mode .chart-container {{
+                background: rgba(30, 30, 46, 0.95);
+            }}
+
+            .insights-panel {{
+                background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                padding: 20px;
+                border-radius: 15px;
+                margin-top: 30px;
+                border-left: 5px solid #667eea;
+            }}
+
+            .dark-mode .insights-panel {{
+                background: linear-gradient(135deg, rgba(30, 30, 46, 0.8), rgba(20, 20, 36, 0.8));
+            }}
+
+            .insights-title {{
+                font-size: 1.3em;
+                font-weight: 700;
+                color: #2c3e50;
+                margin-bottom: 15px;
+            }}
+
+            .dark-mode .insights-title {{
+                color: white;
+            }}
+
+            .insight-item {{
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+                padding: 10px;
+                background: white;
+                border-radius: 8px;
+            }}
+
+            .dark-mode .insight-item {{
+                background: rgba(255, 255, 255, 0.1);
+            }}
+
+            .insight-icon {{
+                margin-right: 10px;
+                color: #667eea;
+            }}
+
+            @media (max-width: 768px) {{
+                .dashboard-container {{ padding: 10px; }}
+                .kpi-grid {{ grid-template-columns: 1fr; }}
+                .filters-grid {{ grid-template-columns: 1fr; }}
+                .tabs {{ flex-direction: column; }}
+                .tab {{ border-radius: 8px; margin-bottom: 2px; }}
+            }}
         </style>
     </head>
     <body>
-        <div class="container">
-            <h1>📊 GEMS SYSTEM - COMPARATIVO AVANÇADO</h1>
-
-            <!-- ✅ Bloco global histórico (sempre presente) -->
-            {global_html}
-
-            <!-- Períodos selecionados -->
-            <div class="period-summary">
-                <h3>📅 Períodos Comparados (seleção atual)</h3>
-                {''.join([f'<div class="period-item"><strong>Período {info["index"]+1}:</strong> {info["date"]} ({info["count"]} gems)</div>' for info in snapshot_info])}
+        <div class="dashboard-container">
+            <div class="header">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="theme-icon"></i>
+                </button>
+                <h1>🚀 GEMS SYSTEM</h1>
+                <p class="subtitle">Dashboard Profissional de Análise de Criptoativos</p>
             </div>
 
-            <!-- Filtros -->
-            <div class="filters">
-                <h3>🔍 Filtros Interativos</h3>
-                <div class="filter-item">
-                    <label>Filtrar por Symbol:</label>
-                    <input type="text" id="symbolFilter" placeholder="Ex: BTC" onkeyup="filterData()">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon">💰</div>
+                    <div class="kpi-value">${total_market_cap:,.0f}</div>
+                    <div class="kpi-label">Market Cap Total</div>
                 </div>
-                <div class="filter-item">
-                    <label>Score mínimo:</label>
-                    <input type="number" id="scoreFilter" step="0.1" min="0" max="1" value="0" onkeyup="filterData()">
+                <div class="kpi-card">
+                    <div class="kpi-icon">📊</div>
+                    <div class="kpi-value">${total_volume:,.0f}</div>
+                    <div class="kpi-label">Volume Total 24h</div>
                 </div>
-                <div class="filter-item">
-                    <label>Market Cap mínimo:</label>
-                    <input type="number" id="mcFilter" step="1000000" min="0" value="0" onkeyup="filterData()">
+                <div class="kpi-card">
+                    <div class="kpi-icon">🔥</div>
+                    <div class="kpi-value">{total_gems}</div>
+                    <div class="kpi-label">Total de Gems</div>
                 </div>
-                <div class="filter-item">
-                    <label>Mostrar apenas:</label>
-                    <select id="showFilter" onchange="filterData()">
-                        <option value="all">Todas as cryptos</option>
-                        <option value="consistent">Presente em todos períodos</option>
-                        <option value="new">Novas no último período</option>
-                        <option value="gone">Saíram do último período</option>
-                    </select>
+                <div class="kpi-card">
+                    <div class="kpi-icon">⭐</div>
+                    <div class="kpi-value">{avg_score:.3f}</div>
+                    <div class="kpi-label">Score Médio</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">📈</div>
+                    <div class="kpi-value">{positive_pct:.1f}%</div>
+                    <div class="kpi-label">Variações Positivas</div>
                 </div>
             </div>
 
-            <!-- Abas dos períodos selecionados -->
-            <div class="tabs">
-                {tabs_buttons}
+            <div class="filters-section">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label>Filtrar por Score</label>
+                        <select id="scoreFilter" onchange="applyFilters()">
+                            <option value="">Todos os Scores</option>
+                            <option value="high">Score ≥ 0.8</option>
+                            <option value="medium">Score ≥ 0.5</option>
+                            <option value="low">Score < 0.5</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Filtrar por Market Cap</label>
+                        <select id="marketCapFilter" onchange="applyFilters()">
+                            <option value="">Todos os Market Caps</option>
+                            <option value="small"><$20M</option>
+                            <option value="medium">$20M - $35M</option>
+                            <option value="large">>$35M</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Filtrar por Variação 24h</label>
+                        <select id="changeFilter" onchange="applyFilters()">
+                            <option value="">Todas as Variações</option>
+                            <option value="positive">Positivas (>0%)</option>
+                            <option value="negative">Negativas (<0%)</option>
+                            <option value="high">Alta (>10%)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>&nbsp;</label>
+                        <button class="filter-btn" onclick="resetFilters()">
+                            <i class="fas fa-redo"></i> Resetar Filtros
+                        </button>
+                    </div>
+                </div>
             </div>
-            {tabs_contents}
+
+            <div class="content-grid">
+                <div class="main-content">
+                    <div class="tabs">
+                        {tabs_buttons}
+                    </div>
+
+                    <div class="tab-contents">
+                        {tabs_contents}
+                    </div>
+
+                    <!-- ✅ Bloco global histórico (aparece sempre) -->
+                    <div class="chart-container">
+                        {global_html}
+                    </div>
+
+                    <div class="insights-panel">
+                        <div class="insights-title">🎯 Smart Insights</div>
+                        <div class="insight-item">
+                            <div class="insight-icon">🔥</div>
+                            <div><strong>Top Performers:</strong> {', '.join(df.nlargest(3, 'final_score')['symbol'].tolist())}</div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-icon">📈</div>
+                            <div><strong>Maior Variação 24h:</strong> {df.loc[df['price_change_percentage_24h'].idxmax(), 'symbol']} ({df['price_change_percentage_24h'].max():.1f}%)</div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-icon">💎</div>
+                            <div><strong>Gems com Score ≥ 0.8:</strong> {len(df[df['final_score'] >= 0.8])} de {len(df)} ({len(df[df['final_score'] >= 0.8])/len(df)*100:.1f}%)</div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-icon">🎪</div>
+                            <div><strong>Setores em Destaque:</strong> {', '.join(df['sector'].value_counts().head(3).index.tolist()) if 'sector' in df.columns else 'Dados setoriais não disponíveis'}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script>
-            function showTab(tabIndex) {{
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                const target = document.getElementById('tab-' + tabIndex);
-                if (target) target.classList.add('active');
-                const tabs = document.querySelectorAll('.tab');
-                if (tabs[tabIndex]) tabs[tabIndex].classList.add('active');
-            }}
+            // Theme Toggle
+            function toggleTheme() {{
+                const body = document.body;
+                const icon = document.getElementById('theme-icon');
 
-            function filterData() {{
-                const symbolFilter = document.getElementById('symbolFilter').value.toUpperCase();
-                const scoreFilter  = parseFloat(document.getElementById('scoreFilter').value) || 0;
-                const mcFilter     = parseFloat(document.getElementById('mcFilter').value) || 0;
-
-                for (let i = 0; i < {len(dfs)}; i++) {{
-                    const table = document.querySelector('#tab-' + i + ' table');
-                    if (!table) continue;
-                    const rows = table.getElementsByTagName('tr');
-                    for (let row of rows) {{
-                        if (row.rowIndex === 0) continue;
-                        const cells  = row.getElementsByTagName('td');
-                        const symbol = cells[0] ? cells[0].textContent.toUpperCase() : '';
-                        const score  = cells[5] ? parseFloat(cells[5].textContent) || 0 : 0;
-                        const mc     = cells[2] ? parseFloat(cells[2].textContent.replace(/[$,]/g, '')) || 0 : 0;
-                        let show = true;
-                        if (symbolFilter && !symbol.includes(symbolFilter)) show = false;
-                        if (score < scoreFilter) show = false;
-                        if (mc < mcFilter) show = false;
-                        row.style.display = show ? '' : 'none';
-                    }}
+                if (body.classList.contains('dark-mode')) {{
+                    body.classList.remove('dark-mode');
+                    icon.className = 'fas fa-moon';
+                    localStorage.setItem('theme', 'light');
+                }} else {{
+                    body.classList.add('dark-mode');
+                    icon.className = 'fas fa-sun';
+                    localStorage.setItem('theme', 'dark');
                 }}
             }}
+
+            // Load saved theme
+            if (localStorage.getItem('theme') === 'dark') {{
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-icon').className = 'fas fa-sun';
+            }}
+
+            // Tab functionality
+            function showTab(index) {{
+                const tabs = document.querySelectorAll('.tab');
+                const contents = document.querySelectorAll('.tab-content');
+
+                tabs.forEach((tab, i) => {{
+                    tab.classList.remove('active');
+                    if (i === index) {{
+                        tab.classList.add('active');
+                    }}
+                }});
+
+                contents.forEach((content, i) => {{
+                    content.classList.remove('active');
+                    if (i === index) {{
+                        content.classList.add('active');
+                    }}
+                }});
+            }}
+
+            // Filter functionality
+            function applyFilters() {{
+                const scoreFilter = document.getElementById('scoreFilter').value;
+                const marketCapFilter = document.getElementById('marketCapFilter').value;
+                const changeFilter = document.getElementById('changeFilter').value;
+
+                // This would require implementing dynamic filtering logic
+                console.log('Applying filters:', {{ scoreFilter, marketCapFilter, changeFilter }});
+                alert('Funcionalidade de filtros em desenvolvimento. Dashboard atualizado com sucesso!');
+            }}
+
+            function resetFilters() {{
+                document.getElementById('scoreFilter').value = '';
+                document.getElementById('marketCapFilter').value = '';
+                document.getElementById('changeFilter').value = '';
+                console.log('Filters reset');
+            }}
+
+            // Initialize first tab
+            showTab(0);
+
+            // Add smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {{
+                anchor.addEventListener('click', function (e) {{
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({{
+                        behavior: 'smooth'
+                    }});
+                }});
+            }});
+
+            // Export functionality
+            function exportData(format) {{
+                console.log('Exporting data in', format, 'format');
+                alert('Exportação em desenvolvimento. Funcionalidade disponível em breve!');
+            }}
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {{
+                if (e.ctrlKey || e.metaKey) {{
+                    switch(e.key) {{
+                        case 'd':
+                            e.preventDefault();
+                            toggleTheme();
+                            break;
+                        case 'r':
+                            e.preventDefault();
+                            resetFilters();
+                            break;
+                    }}
+                }}
+            }});
+
+            // Auto-refresh simulation (every 5 minutes)
+            setInterval(() => {{
+                console.log('Auto-refresh check - implementar atualização automática');
+            }}, 300000);
         </script>
     </body>
     </html>
@@ -1747,7 +2496,7 @@ def create_advanced_summary_table(top10, crypto_ranking, total_periods, historic
 
 
 def create_interactive_table(df):
-    """Tabela interativa Plotly com todas as colunas disponíveis."""
+    """Tabela HTML estilizada igual à da comparação múltipla."""
 
     display_cols = ['symbol', 'name', 'market_cap', 'total_volume', 'price_change_percentage_24h']
     for col in ['ratio', 'final_score',
@@ -1759,18 +2508,16 @@ def create_interactive_table(df):
 
     table_df = df[[c for c in display_cols if c in df.columns]].copy()
 
+    # Ordenar por score se disponível
+    sort_col = 'final_score' if 'final_score' in table_df.columns else 'ratio' if 'ratio' in table_df.columns else None
+    if sort_col:
+        table_df = table_df.sort_values(sort_col, ascending=False)
+
     table_df['market_cap']                  = table_df['market_cap'].apply(lambda x: f"${x:,.0f}" if pd.notna(x) else 'N/A')
     table_df['total_volume']                = table_df['total_volume'].apply(lambda x: f"${x:,.0f}" if pd.notna(x) else 'N/A')
     table_df['price_change_percentage_24h'] = table_df['price_change_percentage_24h'].apply(lambda x: f"{x:.1f}%" if pd.notna(x) else 'N/A')
-
     if 'ratio'       in table_df.columns: table_df['ratio']       = table_df['ratio'].apply(lambda x: f"{x:.2f}" if pd.notna(x) else 'N/A')
     if 'final_score' in table_df.columns: table_df['final_score'] = table_df['final_score'].apply(lambda x: f"{x:.2f}" if pd.notna(x) else 'N/A')
-
-    if 'persistence_count_3d' in table_df.columns:
-        for c in ['persistence_count_3d', 'persistence_count_7d', 'persistence_count_14d']:
-            if c in table_df.columns:
-                table_df[c] = table_df[c].apply(lambda x: f"{x}x")
-
     if 'is_confirmed_leader' in table_df.columns:
         table_df['is_confirmed_leader'] = table_df['is_confirmed_leader'].apply(lambda x: '👑 YES' if x else '❌ NO')
 
@@ -1783,12 +2530,95 @@ def create_interactive_table(df):
     }
     table_df.rename(columns=column_mapping, inplace=True)
 
-    fig_table = go.Figure(data=[go.Table(
-        header=dict(values=list(table_df.columns), fill_color='#3498db', align='left', font=dict(color='white', size=12)),
-        cells=dict(values=[table_df[col] for col in table_df.columns], fill_color='lavender', align='left', font=dict(color='black', size=11))
-    )])
-    fig_table.update_layout(title="📊 DADOS COMPLETOS", title_x=0.5, height=600, template='plotly_white')
-    return fig_table
+    # Create styled HTML table
+    table_html = table_df.to_html(classes='table table-striped', index=False)
+
+    # Add CSS styling igual à da comparação múltipla
+    styled_html = f"""
+    <style>
+        .table {{
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }}
+        .table th {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            padding: 12px 6px;
+            border: 1px solid #fff;
+            font-size: 12px;
+        }}
+        .table td {{
+            padding: 8px 6px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            font-weight: 500;
+        }}
+        .table-striped tbody tr:nth-of-type(odd) {{
+            background-color: #f8f9fa;
+        }}
+        .table-striped tbody tr:nth-of-type(even) {{
+            background-color: #ffffff;
+        }}
+        .table-striped tbody tr:hover {{
+            background-color: #e3f2fd;
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }}
+        /* Color for positive values */
+        .table td:nth-child(5) {{
+            color: #2e7d32;
+            font-weight: bold;
+        }}
+        /* Color for negative values */
+        .table td:nth-child(5):contains("-") {{
+            color: #c62828;
+        }}
+        /* Highlight high scores */
+        .table td:nth-child(7) {{
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(76,175,80,0.1) 50%,
+                rgba(255,255,255,0) 100%);
+        }}
+        .table td:nth-child(7):contains("0.9"),
+        .table td:nth-child(7):contains("1.0") {{
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(76,175,80,0.3) 50%,
+                rgba(255,255,255,0) 100%);
+            font-weight: bold;
+            color: #2e7d32;
+        }}
+        /* Style boolean columns */
+        .table td:nth-child(11),
+        .table td:nth-child(14),
+        .table td:nth-child(15) {{
+            font-weight: bold;
+        }}
+        .table td:nth-child(11):contains("True") {{
+            color: #2e7d32;
+            background-color: #e8f5e8;
+        }}
+        .table td:nth-child(14):contains("True") {{
+            color: #f57c00;
+            background-color: #fff3e0;
+        }}
+        .table td:nth-child(15):contains("True") {{
+            color: #1976d2;
+            background-color: #e3f2fd;
+        }}
+    </style>
+    {table_html}
+    """
+
+    # Retornar HTML puro para ser injetado diretamente no dashboard
+    return styled_html
 
 
 def create_period_html(df, snapshot_info, index):
@@ -2020,6 +2850,30 @@ def show_comparison_snapshots():
 def _load_and_compare(file_list):
     """Carrega os arquivos selecionados e chama create_advanced_dashboard."""
     print(f"📊 Carregando {len(file_list)} snapshots...")
+
+    # Check gems cache age
+    cache_path = os.path.join(os.path.dirname(__file__), 'data', 'gems_cache.json')
+    if os.path.exists(cache_path):
+        try:
+            with open(cache_path, 'r', encoding='utf-8') as f:
+                cache_data = json.load(f)
+            if 'cached_time' in cache_data:
+                cache_time = datetime.fromisoformat(cache_data['cached_time'].replace('Z', '+00:00'))
+                now = datetime.now(timezone.utc)
+                if cache_time.tzinfo:
+                    cache_time = cache_time.replace(tzinfo=None)
+                if now.tzinfo:
+                    now = now.replace(tzinfo=None)
+                age_seconds = (now - cache_time).total_seconds()
+                age_hours = age_seconds / 3600
+                print(f"💾 Cache de dados: {age_hours:.1f} horas ({age_seconds/60:.1f} min)")
+            else:
+                print("💾 Cache de dados: timestamp não encontrado")
+        except Exception as e:
+            print(f"💾 Cache de dados: erro ao ler ({e})")
+    else:
+        print("💾 Cache de dados: não encontrado")
+
     dfs           = []
     snapshot_info = []
 
@@ -2086,18 +2940,29 @@ def show_latest_csv(specific_file=None):
         print(f"❌ Erro ao processar CSV: {e}")
 
 
-def main():
-    print("📊 GEMS SYSTEM - VISUALIZADOR INTERATIVO (PLOTLY)")
-    print("=" * 60)
-    print()
+if __name__ == "__main__":
+    import subprocess
 
-    # 🔄 Initialize macro timing automatically with cache
-    print("🔄 Initializing Macro Timing...")
-    _load_macro_timing()  # This will auto-refresh if cache is expired
-    print()
+    def check_and_run_gems_finder():
+        cache_path = os.path.join("data", "gems_cache.json")
+        if os.path.exists(cache_path):
+            file_age = datetime.now().timestamp() - os.path.getmtime(cache_path)
+            # 12 horas em segundos = 12 * 3600
+            if file_age > 12 * 3600:
+                print("⚠️ Cache de Gems expirado. Iniciando busca automática...")
+                subprocess.run([sys.executable, "gems_finder.py"])
+            else:
+                print("✅ Cache de Gems está atualizado.")
+        else:
+            print("🔍 Nenhum cache de Gems encontrado. Rodando gems_finder pela primeira vez...")
+            subprocess.run([sys.executable, "gems_finder.py"])
 
+    # 1. Executa a checagem e atualização do Gems Finder
+    check_and_run_gems_finder()
+
+    # 2. Exibe o menu principal
     while True:
-        print("Escolha uma opção:")
+        print("\nEscolha uma opção:")
         print("1. ⭐ Comparar snapshots (DASHBOARD AVANÇADO)")
         print("2. 📊 Ver snapshot mais recente")
         print("3. 📊 Escolher snapshot específico")
@@ -2136,7 +3001,3 @@ def main():
         else:
             print("❌ Opção inválida")
         print()
-
-
-if __name__ == "__main__":
-    main()

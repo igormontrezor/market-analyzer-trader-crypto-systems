@@ -410,7 +410,7 @@ def plot_usdt_debug_html(usdt_monthly, m_usdt_bbp):
 
     # 🔥 salvar HTML e abrir
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".html")
-    fig.write_html(temp_file.name)
+    fig.write_html(temp_file.name, config={'displayModeBar': False})
 
     webbrowser.open(f"file://{temp_file.name}")
 

@@ -30,7 +30,7 @@ class GemsFinder:
 
     CACHE_FILE = "gems_cache.json"
     CACHE_DURATION = timedelta(hours=12)  # Cache de 12 horas
-
+    
     def __init__(self):
         self.cache_dir = os.path.join(os.path.dirname(__file__), 'data')
         os.makedirs(self.cache_dir, exist_ok=True)
@@ -1759,12 +1759,6 @@ class GemsFinder:
             df_all.to_csv(enhanced_file, index=False)
             print(f"  🏆 {range_name} enhanced: {len(final_gems)} gems com scores + eventos especiais")
             print(f"  📁 Arquivo: {enhanced_file}")
-
-            # 🗑️ Deletar arquivo bruto após criar enhanced
-            consolidated_file = os.path.join(snapshots_dir, f"gems_{range_name}_{date_str}.csv")
-            if os.path.exists(consolidated_file):
-                os.remove(consolidated_file)
-                print(f"  🗑️ Arquivo bruto deletado: {consolidated_file}")
 
             # 📊 Mostrar top 10 por final_score
             print(f"\n🏆 TOP 10 GEMS POR FINAL SCORE:")
