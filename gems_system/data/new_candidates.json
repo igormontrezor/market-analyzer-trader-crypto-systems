@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-06T08:44:22.085891",
-  "total_candidates": 6,
+  "last_updated": "2026-05-07T09:12:17.068319",
+  "total_candidates": 9,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -74,6 +74,45 @@
       "ratio_now": 2.963339168762218,
       "market_cap": 19077718,
       "volume": 56533749,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "usduc",
+      "name": "Unstable Coin",
+      "detected_at": "2026-05-06T21:07:54.749712",
+      "ratio_now": 1.7195946892928289,
+      "market_cap": 18622454,
+      "volume": 32023073,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 58.558560452523245
+    },
+    {
+      "symbol": "mstron",
+      "name": "MicroStrategy (Ondo Tokenized Stock)",
+      "detected_at": "2026-05-06T21:07:54.750097",
+      "ratio_now": 0.8381778782742161,
+      "market_cap": 15813938,
+      "volume": 13254893,
+      "priority": "alta",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 40.93022423215099
+    },
+    {
+      "symbol": "dogs",
+      "name": "Dogs",
+      "detected_at": "2026-05-07T09:12:17.060944",
+      "ratio_now": 7.330531930962944,
+      "market_cap": 42515254,
+      "volume": 311659427,
       "priority": "extrema",
       "status": "new_strong_candidate",
       "reason": "Nova entrada forte (> 0.8)",

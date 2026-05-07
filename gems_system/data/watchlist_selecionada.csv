@@ -1,0 +1,5 @@
+symbol,name,current_price,market_cap,total_volume,price_change_percentage_24h,price_change_percentage_7d_in_currency,price_change_percentage_30d_in_currency,market_cap_rank,last_updated,ratio,final_score,momentum,zone,sector,accumulation_score
+DOGS,cat in a dogs world,0.00062755,55990104,14570131,-1.68413,7.62571,13.30922,465,2026-05-07T20:23:40.022Z,7.330531930962944,1.14,low,breakout,Meme,0.0
+NEIRO,Neiro,9.8e-05,41244152,39790376,-0.14658,10.79213,76.81144,568,2026-05-07T20:24:04.010Z,0.8475766146205287,0.6,low,strong,Meme,0.675
+GIGGLE,Giggle Fund,35.97,36031355,19541306,-3.73674,13.71468,48.19121,628,2026-05-07T20:24:21.080Z,0.6872585851943358,0.3,low,strong,Other,0.0
+REZ,Renzo,0.00614029,52785392,30722133,15.16127,35.60561,76.18736,483,2026-05-07T20:24:27.478Z,0.3738113145172122,0.24,low,early_accumulation,DeFi,0.0

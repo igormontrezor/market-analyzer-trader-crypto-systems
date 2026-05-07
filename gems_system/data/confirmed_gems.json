@@ -1,7 +1,41 @@
 {
-  "last_updated": "2026-05-04T23:19:45.973177",
-  "total_confirmed": 1,
+  "last_updated": "2026-05-07T09:12:17.065696",
+  "total_confirmed": 3,
   "confirmed_gems": [
+    {
+      "symbol": "act",
+      "name": "Act I The AI Prophecy",
+      "confirmed_at": "2026-05-07T09:12:17.062193",
+      "ratio_now": 1.5187665702114448,
+      "ratio_24h_ago": 1.0347887216010319,
+      "growth_percent": 46.77069226862072,
+      "strong_days": 3,
+      "acceleration_strength": 2.12339658259391,
+      "trend": "accelerating",
+      "market_cap": 15048088,
+      "volume": 22854533,
+      "priority": "extrema",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 90.37533140422889
+    },
+    {
+      "symbol": "broccoli",
+      "name": "CZ's Dog",
+      "confirmed_at": "2026-05-07T09:12:17.062535",
+      "ratio_now": 0.7200609085523809,
+      "ratio_24h_ago": 0.5597179706418861,
+      "growth_percent": 28.647094844321884,
+      "strong_days": 3,
+      "acceleration_strength": 1.2878108480894979,
+      "trend": "accelerating",
+      "market_cap": 17348631,
+      "volume": 12492071,
+      "priority": "alta",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 65.49885377216634
+    },
     {
       "symbol": "neiro",
       "name": "Neiro",

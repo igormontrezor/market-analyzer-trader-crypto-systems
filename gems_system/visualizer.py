@@ -141,7 +141,7 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
     curr_w_usdt = w_usdt_bbp.iloc[-1]
     curr_w_others = w_others_bbp.iloc[-1]
 
-    plot_usdt_debug_html(usdt_weekly['close'], w_usdt_bbp)
+    #plot_usdt_debug_html(usdt_weekly['close'], w_usdt_bbp)
 
     # --- REGIME MENSAL ---
     buy_mode = (prev_m_usdt >= 1.0 and curr_m_usdt < 1.0) or (curr_m_usdt < 1.0 and curr_m_usdt > 0.2)
@@ -832,7 +832,7 @@ def _global_block_html(js_block, summary_html, hall_html):
         <div id="evolution-chart" style="margin-top: 30px;"></div>
         <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #9b59b6;">
             <h4 style="margin-top: 0; color: #2c3e50;">📈 <strong>Tutorial - Gráfico de Consistência</strong></h4>
-            <p style="margin-bottom: 10px;"><strong>O que mostra:</strong> Quantos dias cada gem manteve-se forte (ratio > 0.5).</p>
+            <p style="margin-bottom: 10px;"><strong>O que mostra:</strong> Crypto consistencia maior que 50% e se manteve-se forte (ratio > 0.5).</p>
             <p style="margin-bottom: 10px;"><strong>Como interpretar:</strong></p>
             <ul style="margin-left: 20px; margin-bottom: 10px;">
                 <li><strong>Barras altas:</strong> Gems persistentes (líderes de altseason)</li>
@@ -1828,7 +1828,7 @@ def create_all_comparison_charts(top10, snapshot_info, crypto_ranking, dfs, hist
 
     # Gráfico 2: Consistência
     consistent_data = sorted(
-        [item for item in crypto_ranking if item['consistency'] == 1.0],
+        [item for item in crypto_ranking if item['consistency'] > 0.5 and item['avg_score'] > 0.5],
         key=lambda x: x['avg_score'], reverse=True
     )
     bar_colors = ['#27ae60' if item['avg_score'] > 0.8 else '#95a5a6' for item in consistent_data]
@@ -1844,7 +1844,7 @@ def create_all_comparison_charts(top10, snapshot_info, crypto_ranking, dfs, hist
     )])
 
     fig2.update_layout(
-        title='💎 CRYPTOS 100% CONSISTENTES (Presentes em todos os períodos)',
+        title='💎 CRYPTOS 50% CONSISTENTES E SCORE MEDIO MAIOR QUE 0.5',
         xaxis_title='Cryptomoedas', yaxis_title='Score Médio',
         height=400, template='plotly_white'
     )
@@ -2436,6 +2436,7 @@ def create_advanced_summary_table(top10, crypto_ranking, total_periods, historic
 
     total_unique     = len(crypto_ranking)
     consistent_count = len([i for i in crypto_ranking if i['consistency'] == 1.0])
+    consistent_count_median = len([i for i in crypto_ranking if i['consistency'] > 0.5])
     new_count        = len([i for i in crypto_ranking if i['presence_type'] == 'new'])
     gone_count       = len([i for i in crypto_ranking if i['presence_type'] == 'gone'])
     avg_score_geral  = sum(i['avg_score'] for i in crypto_ranking) / total_unique if total_unique else 0
@@ -2460,7 +2461,7 @@ def create_advanced_summary_table(top10, crypto_ranking, total_periods, historic
             </div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:15px;">
                 <div style="text-align:center;background:white;padding:10px;border-radius:5px;">
-                    <strong>{consistent_count}</strong><br><small>100% Consistentes</small>
+                    <strong>{consistent_count_median}</strong><br><small>50% Consistentes</small>
                 </div>
                 <div style="text-align:center;background:white;padding:10px;border-radius:5px;">
                     <strong>{new_count}</strong><br><small>Novas</small>
@@ -2570,13 +2571,16 @@ def create_interactive_table(df):
             transform: scale(1.01);
             transition: all 0.2s ease;
         }}
-        /* Color for positive values */
+        /* Default color for 24h% column */
         .table td:nth-child(5) {{
-            color: #2e7d32;
             font-weight: bold;
         }}
-        /* Color for negative values */
-        .table td:nth-child(5):contains("-") {{
+        /* Positive values */
+        .table td.positive-change {{
+            color: #2e7d32;
+        }}
+        /* Negative values */
+        .table td.negative-change {{
             color: #c62828;
         }}
         /* Highlight high scores */
@@ -2614,6 +2618,26 @@ def create_interactive_table(df):
             background-color: #e3f2fd;
         }}
     </style>
+    <script>
+        // Apply colors to 24h% column based on values
+        setTimeout(function() {{
+            const tables = document.querySelectorAll('.table');
+            tables.forEach(function(table) {{
+                const rows = table.querySelectorAll('tbody tr');
+                rows.forEach(function(row) {{
+                    const cell = row.querySelector('td:nth-child(5)'); // 24h% column
+                    if (cell) {{
+                        const text = cell.textContent.trim();
+                        if (text.includes('-')) {{
+                            cell.classList.add('negative-change');
+                        }} else if (text !== 'N/A') {{
+                            cell.classList.add('positive-change');
+                        }}
+                    }}
+                }});
+            }});
+        }}, 100);
+    </script>
     {table_html}
     """
 
@@ -2700,13 +2724,16 @@ def create_period_html(df, snapshot_info, index):
             transform: scale(1.01);
             transition: all 0.2s ease;
         }}
-        /* Color for positive values */
+        /* Default color for 24h% column */
         .table td:nth-child(5) {{
-            color: #2e7d32;
             font-weight: bold;
         }}
-        /* Color for negative values */
-        .table td:nth-child(5):contains("-") {{
+        /* Positive values */
+        .table td.positive-change {{
+            color: #2e7d32;
+        }}
+        /* Negative values */
+        .table td.negative-change {{
             color: #c62828;
         }}
         /* Highlight high scores */
@@ -2744,6 +2771,26 @@ def create_period_html(df, snapshot_info, index):
             background-color: #e3f2fd;
         }}
     </style>
+    <script>
+        // Apply colors to 24h% column based on values
+        setTimeout(function() {{
+            const tables = document.querySelectorAll('.table');
+            tables.forEach(function(table) {{
+                const rows = table.querySelectorAll('tbody tr');
+                rows.forEach(function(row) {{
+                    const cell = row.querySelector('td:nth-child(5)'); // 24h% column
+                    if (cell) {{
+                        const text = cell.textContent.trim();
+                        if (text.includes('-')) {{
+                            cell.classList.add('negative-change');
+                        }} else if (text !== 'N/A') {{
+                            cell.classList.add('positive-change');
+                        }}
+                    }}
+                }});
+            }});
+        }}, 100);
+    </script>
     {table_html}
     """
 
