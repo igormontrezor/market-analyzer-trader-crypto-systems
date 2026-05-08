@@ -21,6 +21,10 @@ import visualizer
 # 1. CONFIGURAÇÃO DA PÁGINA (ESTILO PROFISSIONAL/DARK)
 st.set_page_config(page_title="MONTREZOR - Mesa de Operações", layout="wide", page_icon="💎")
 
+# Título principal no topo
+st.title("💎 Sistema de Macro e Gems - Igor Montrezor")
+st.markdown("<p style='color: #8b949e; margin-top: -15px; margin-bottom: 30px;'>Método interativo passo a passo para execução de alta performance.</p>", unsafe_allow_html=True)
+
 # Terminal session state e funções
 if 'terminal_output' not in st.session_state:
     st.session_state.terminal_output = []
@@ -122,6 +126,15 @@ st.markdown("""
         height: 100%;
     }
 
+    /* Espaço no topo para evitar barra do Streamlit */
+    .block-container {
+        padding-top: 2rem;
+        max-width: 95%;
+    }
+    [data-testid="stAppViewContainer"] {
+        background-color: #0b0e11;
+    }
+
     /* Blocos personalizados */
     .macro-card {
         background-color: #0d1117;
@@ -203,7 +216,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=1800)
 def get_btc_funding_rate_real():
     try:
         url = "https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT"
@@ -245,7 +258,7 @@ def get_snapshots():
     files = glob.glob(os.path.join(path, "*.csv"))
     return sorted(files, reverse=True)
 
-@st.cache_data(ttl=60)
+@st.cache_data(ttl=1800)
 def get_macro_data():
     path = os.path.join("data", "macro", "macro_timing.json")
 
@@ -306,7 +319,7 @@ def get_macro_data():
         except: pass
     return res
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=1800)
 def get_real_records(snapshots):
     if not snapshots: return "0 registros", "Nenhuma", "Nenhuma"
     all_symbols = []; symbol_scores = {}
@@ -363,8 +376,6 @@ with col_left:
 with col_logo:
     if os.path.exists("logo_mtrz.png"): st.image("logo_mtrz.png", width='stretch')
     elif os.path.exists("1000470148.png"): st.image("1000470148.png", width='stretch')
-    else: st.markdown("<h1 style='text-align: center; color:white; margin-top: 20px;'>MONTREZOR</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #8b949e; font-size: 14px; margin-top: -20px; letter-spacing: 2px;'>DATA ANALYST & FINANCIAL SYSTEMS CREATOR</p>", unsafe_allow_html=True)
 
 with col_right:
     m = get_macro_data()
@@ -937,6 +948,7 @@ def plot_institucional_chart():
                 text=hover_text,
                 hoverinfo='text',
                 textposition='outside',
+                width=7200000,  # 2 horas em milissegundos para barras mais compridas
                 showlegend=True
             ),
             row=3, col=1
@@ -1133,10 +1145,25 @@ with tab4:
                     os.makedirs(os.path.dirname(watchlist_file), exist_ok=True)
 
                     df_selected = pd.DataFrame(selected_rows)
-                    df_selected.to_csv(watchlist_file, index=False)
+
+                    # Verificar se já existe watchlist para adicionar em vez de sobreescrever
+                    if os.path.exists(watchlist_file):
+                        try:
+                            df_existing = pd.read_csv(watchlist_file)
+                            # Remover duplicatas pelos símbolos das novas seleções
+                            new_symbols = [row.get('symbol', '') for row in selected_rows]
+                            df_filtered = df_existing[~df_existing['symbol'].isin(new_symbols)]
+                            # Combinar watchlist existente com novas seleções
+                            df_final = pd.concat([df_filtered, df_selected], ignore_index=True)
+                        except:
+                            df_final = df_selected
+                    else:
+                        df_final = df_selected
+
+                    df_final.to_csv(watchlist_file, index=False)
 
                     symbols = [row.get('symbol', '') for row in selected_rows]
-                    st.success(f"✅ Salvas {len(selected_rows)} moedas no CSV: {', '.join(symbols)}")
+                    st.success(f"✅ Adicionadas {len(selected_rows)} moedas à watchlist: {', '.join(symbols)}")
                 else:
                     st.warning("⚠️ Selecione pelo menos uma moeda para salvar!")
 

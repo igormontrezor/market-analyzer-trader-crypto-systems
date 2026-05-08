@@ -1,0 +1,302 @@
+
+<style>
+  * { box-sizing: border-box; }
+  body { background: #0E0E0E; }
+  .sim { background: #0E0E0E; padding: 1.5rem 0; font-family: 'IBM Plex Mono', monospace; }
+  .controls { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .btn-step { background: #1A1A1A; border: 0.5px solid #333; color: #C0BBB3; font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: background 0.15s; }
+  .btn-step:hover { background: #252525; }
+  .btn-reset { background: transparent; border: 0.5px solid #2A1E0A; color: #C98A2A; font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 8px 14px; border-radius: 6px; cursor: pointer; }
+  .step-label { font-size: 11px; color: #555; letter-spacing: 2px; text-transform: uppercase; flex: 1; text-align: right; }
+  canvas#chartC { width: 100%; border-radius: 8px; background: #111; display: block; }
+  .info-box { margin-top: 1rem; background: #141414; border: 0.5px solid #222; border-radius: 8px; padding: 14px 16px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .info-item { }
+  .info-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #444; margin-bottom: 4px; }
+  .info-val { font-size: 14px; font-weight: 500; color: #D4CFC7; }
+  .info-val.green { color: #3D9E75; }
+  .info-val.red { color: #C04040; }
+  .info-val.amber { color: #C98A2A; }
+  .narrative { margin-top: 1rem; background: #141414; border-left: 2px solid #333; padding: 10px 14px; border-radius: 0 6px 6px 0; }
+  .nar-step { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 4px; }
+  .nar-text { font-size: 12px; color: #888; line-height: 1.7; font-style: italic; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 10px; }
+  .leg-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #666; }
+  .leg-dot { width: 10px; height: 3px; border-radius: 2px; }
+</style>
+
+<div class="sim">
+  <h2 class="sr-only">Simulador interativo da técnica de Breakeven de Tom Hougaard</h2>
+
+  <div class="legend">
+    <span class="leg-item"><span class="leg-dot" style="background:#3D9E75"></span>preço</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#C04040; border-top: 2px dashed #C04040; height:0"></span>stop loss</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#C98A2A"></span>breakeven</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#8B7FD4"></span>entrada P2</span>
+  </div>
+
+  <div style="position: relative; width: 100%; height: 300px;">
+    <canvas id="chartC" role="img" aria-label="Gráfico de preço mostrando entrada, breakeven e piramidagem segundo método Hougaard"></canvas>
+  </div>
+
+  <div class="info-box">
+    <div class="info-item">
+      <div class="info-label">P&L total</div>
+      <div class="info-val" id="pnl">—</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Stop ativo</div>
+      <div class="info-val" id="stopval">—</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Posições</div>
+      <div class="info-val" id="posval">—</div>
+    </div>
+  </div>
+
+  <div class="narrative">
+    <div class="nar-step" id="nar-step">aguardando</div>
+    <div class="nar-text" id="nar-text">Pressione "Próximo passo" para iniciar a simulação.</div>
+  </div>
+
+  <div class="controls" style="margin-top: 1rem; margin-bottom: 0;">
+    <button class="btn-step" id="btnNext"><i class="ti ti-player-play" aria-hidden="true"></i> Próximo passo</button>
+    <button class="btn-reset" id="btnReset"><i class="ti ti-refresh" aria-hidden="true"></i> Reiniciar</button>
+    <span class="step-label" id="stepcount">0 / 6</span>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const STEPS = [
+  {
+    label: "01 · entrada inicial",
+    text: '"Estou testando uma ideia." — Entrada em 100. Stop em 94. Risco definido: 6 pontos por contrato.',
+    priceEnd: 7,
+    stopLine: 94,
+    beLine: null,
+    p2Line: null,
+    pnl: null,
+    stop: "94.00",
+    pos: "1 contrato"
+  },
+  {
+    label: "02 · mercado anda a favor",
+    text: '"Talvez eu esteja certo." — Preço sobe para 107. Momentum confirmado. Ainda não agir.',
+    priceEnd: 14,
+    stopLine: 94,
+    beLine: null,
+    p2Line: null,
+    pnl: "+7.00",
+    pnlColor: "green",
+    stop: "94.00",
+    pos: "1 contrato"
+  },
+  {
+    label: "03 · mover stop para BE",
+    text: '"Agora posso pressionar." — Stop sobe para 100 (preço de entrada). Risco eliminado. Posição 1 está segura.',
+    priceEnd: 14,
+    stopLine: 100,
+    beLine: 100,
+    p2Line: null,
+    pnl: "+7.00",
+    pnlColor: "green",
+    stop: "100.00 (BE)",
+    pos: "1 contrato"
+  },
+  {
+    label: "04 · adicionar posição",
+    text: '"Vou aumentar no que funciona." — Abre P2 em 107. Stop combinado ajustado: se mercado voltar ao BE, P1 fecha zerado e P2 fecha com pequena perda controlada.',
+    priceEnd: 14,
+    stopLine: 100,
+    beLine: 100,
+    p2Line: 107,
+    pnl: "+7.00",
+    pnlColor: "green",
+    stop: "100.00",
+    pos: "2 contratos"
+  },
+  {
+    label: "05 · mercado continua — maximizar",
+    text: '"Maximizar assimetria." — Preço avança para 118. Stop sobe junto. P&L combinado: +25 pontos. Trailing stop protegendo ganhos.',
+    priceEnd: 25,
+    stopLine: 108,
+    beLine: 100,
+    p2Line: 107,
+    pnl: "+25.00",
+    pnlColor: "green",
+    stop: "108.00",
+    pos: "2 contratos"
+  },
+  {
+    label: "06 · saída no stop",
+    text: '"A tese falhou no timing." — Preço recua e aciona o stop em 108. Saída sem hesitar. Capital mental preservado para a próxima operação.',
+    priceEnd: 11,
+    stopLine: 108,
+    beLine: 100,
+    p2Line: 107,
+    pnl: "+19.00",
+    pnlColor: "green",
+    stop: "acionado 108",
+    pos: "fechado"
+  }
+];
+
+const priceBase = 100;
+const totalBars = 22;
+
+function buildPrice(stepIdx) {
+  const prices = [];
+  for (let i = 0; i < totalBars; i++) {
+    const t = i / (totalBars - 1);
+    let noise = (Math.sin(i * 2.3) * 0.8 + Math.cos(i * 1.1) * 0.5);
+    let trend = 0;
+    const s = STEPS[stepIdx];
+    trend = s.priceEnd * t;
+    prices.push(parseFloat((priceBase + trend + noise).toFixed(2)));
+  }
+  return prices;
+}
+
+function buildLine(val, len) {
+  if (val === null) return new Array(len).fill(null);
+  return new Array(len).fill(val);
+}
+
+const labels = Array.from({length: totalBars}, (_, i) => i === 0 ? 'T0' : i % 4 === 0 ? 'T'+i : '');
+
+let chart;
+let currentStep = -1;
+
+function initChart() {
+  const ctx = document.getElementById('chartC').getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Preço',
+          data: new Array(totalBars).fill(null),
+          borderColor: '#3D9E75',
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.4,
+          fill: false
+        },
+        {
+          label: 'Stop',
+          data: new Array(totalBars).fill(null),
+          borderColor: '#C04040',
+          borderWidth: 1.5,
+          borderDash: [5, 4],
+          pointRadius: 0,
+          tension: 0,
+          fill: false
+        },
+        {
+          label: 'Breakeven',
+          data: new Array(totalBars).fill(null),
+          borderColor: '#C98A2A',
+          borderWidth: 1,
+          borderDash: [3, 3],
+          pointRadius: 0,
+          tension: 0,
+          fill: false
+        },
+        {
+          label: 'Entrada P2',
+          data: new Array(totalBars).fill(null),
+          borderColor: '#8B7FD4',
+          borderWidth: 1,
+          borderDash: [2, 4],
+          pointRadius: 0,
+          tension: 0,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 600, easing: 'easeInOutQuart' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1A1A1A',
+          titleColor: '#888',
+          bodyColor: '#D4CFC7',
+          borderColor: '#333',
+          borderWidth: 0.5,
+          callbacks: {
+            label: ctx => ctx.dataset.label + ': ' + (ctx.raw !== null ? ctx.raw.toFixed(2) : '—')
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: '#1A1A1A' },
+          ticks: { color: '#444', font: { size: 10 } }
+        },
+        y: {
+          min: 90,
+          max: 125,
+          grid: { color: '#1A1A1A' },
+          ticks: {
+            color: '#444',
+            font: { size: 10 },
+            callback: v => v.toFixed(0)
+          }
+        }
+      }
+    }
+  });
+}
+
+function renderStep(idx) {
+  const s = STEPS[idx];
+  chart.data.datasets[0].data = buildPrice(idx);
+  chart.data.datasets[1].data = buildLine(s.stopLine, totalBars);
+  chart.data.datasets[2].data = buildLine(s.beLine, totalBars);
+  chart.data.datasets[3].data = buildLine(s.p2Line, totalBars);
+  chart.update();
+
+  document.getElementById('nar-step').textContent = s.label;
+  document.getElementById('nar-text').textContent = s.text;
+  document.getElementById('stepcount').textContent = (idx + 1) + ' / ' + STEPS.length;
+
+  const pnlEl = document.getElementById('pnl');
+  pnlEl.textContent = s.pnl || '—';
+  pnlEl.className = 'info-val ' + (s.pnlColor || '');
+
+  document.getElementById('stopval').textContent = s.stop;
+  document.getElementById('posval').textContent = s.pos;
+}
+
+document.getElementById('btnNext').addEventListener('click', () => {
+  if (currentStep < STEPS.length - 1) {
+    currentStep++;
+    renderStep(currentStep);
+  }
+  if (currentStep === STEPS.length - 1) {
+    document.getElementById('btnNext').disabled = true;
+    document.getElementById('btnNext').style.opacity = '0.4';
+  }
+});
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  currentStep = -1;
+  chart.data.datasets.forEach(d => d.data = new Array(totalBars).fill(null));
+  chart.update();
+  document.getElementById('nar-step').textContent = 'aguardando';
+  document.getElementById('nar-text').textContent = 'Pressione "Próximo passo" para iniciar a simulação.';
+  document.getElementById('stepcount').textContent = '0 / 6';
+  document.getElementById('pnl').textContent = '—';
+  document.getElementById('pnl').className = 'info-val';
+  document.getElementById('stopval').textContent = '—';
+  document.getElementById('posval').textContent = '—';
+  document.getElementById('btnNext').disabled = false;
+  document.getElementById('btnNext').style.opacity = '1';
+});
+
+initChart();
+</script>

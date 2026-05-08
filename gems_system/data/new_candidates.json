@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-07T09:12:17.068319",
-  "total_candidates": 9,
+  "last_updated": "2026-05-08T12:02:24.658071",
+  "total_candidates": 10,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -118,6 +118,19 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "og",
+      "name": "OG Fan Token",
+      "detected_at": "2026-05-08T12:02:24.656495",
+      "ratio_now": 0.9044831374227731,
+      "market_cap": 15062911,
+      "volume": 13624149,
+      "priority": "alta",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 42.256329415122124
     }
   ]
 }

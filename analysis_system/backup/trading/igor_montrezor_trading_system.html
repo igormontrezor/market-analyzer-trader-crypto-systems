@@ -1,0 +1,490 @@
+
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; }
+.container { font-family: var(--font-sans); padding: 0; }
+.nav { display: flex; gap: 0; border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 0; overflow-x: auto; }
+.nav-btn { padding: 10px 18px; font-size: 13px; border: none; background: transparent; cursor: pointer; color: var(--color-text-secondary); border-bottom: 2px solid transparent; white-space: nowrap; transition: all .2s; }
+.nav-btn.active { color: var(--color-text-primary); border-bottom-color: #3B8BD4; font-weight: 500; }
+.nav-btn:hover { color: var(--color-text-primary); }
+.panel { display: none; padding: 20px 0; }
+.panel.active { display: block; }
+
+.chart-wrap { position: relative; background: #0d1117; border-radius: 10px; overflow: hidden; border: 0.5px solid rgba(255,255,255,0.08); margin-bottom: 16px; }
+.chart-label { font-size: 11px; color: rgba(255,255,255,0.4); padding: 8px 12px 4px; font-weight: 500; letter-spacing: .5px; }
+
+canvas { display: block; width: 100%; }
+
+.legend { display: flex; gap: 14px; padding: 6px 12px 10px; flex-wrap: wrap; }
+.leg-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(255,255,255,0.5); }
+.leg-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+.step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+.step-card { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 14px; cursor: pointer; transition: all .2s; }
+.step-card:hover { border-color: var(--color-border-secondary); }
+.step-card.active { border-color: #3B8BD4; background: var(--color-background-info); }
+.step-num { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.step-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+.step-desc { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; line-height: 1.5; }
+
+.checklist { display: flex; flex-direction: column; gap: 8px; }
+.check-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); cursor: pointer; transition: all .2s; }
+.check-item.checked { background: var(--color-background-success); border-color: var(--color-border-success); }
+.check-box { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--color-border-secondary); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.check-item.checked .check-box { background: #1D9E75; border-color: #1D9E75; }
+.check-text { font-size: 13px; color: var(--color-text-primary); line-height: 1.4; }
+.check-sub { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+
+.grade-badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 500; margin-right: 6px; }
+.grade-aplus { background: #E1F5EE; color: #0F6E56; }
+.grade-a { background: #E6F1FB; color: #185FA5; }
+.grade-b { background: #FAEEDA; color: #854F0B; }
+
+.score-bar { height: 6px; background: var(--color-border-tertiary); border-radius: 3px; overflow: hidden; margin-top: 10px; }
+.score-fill { height: 100%; background: linear-gradient(90deg, #1D9E75, #3B8BD4); border-radius: 3px; transition: width .5s ease; }
+.score-label { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; }
+
+.rule-card { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 16px; margin-bottom: 10px; }
+.rule-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.rule-badge { font-size: 10px; padding: 2px 7px; border-radius: 8px; background: var(--color-background-danger); color: var(--color-text-danger); font-weight: 500; }
+.rule-body { font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; }
+
+.tf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+.tf-card { border-radius: var(--border-radius-md); padding: 12px; text-align: center; border: 0.5px solid; }
+.tf-label { font-size: 11px; font-weight: 500; margin-bottom: 4px; }
+.tf-val { font-size: 18px; font-weight: 500; }
+.tf-desc { font-size: 10px; margin-top: 3px; opacity: 0.7; }
+
+.signal-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.signal-tf { font-size: 12px; font-weight: 500; min-width: 36px; color: var(--color-text-secondary); }
+.signal-bar-wrap { flex: 1; height: 8px; background: var(--color-border-tertiary); border-radius: 4px; overflow: hidden; }
+.signal-bar { height: 100%; border-radius: 4px; transition: width 1s ease; }
+.signal-val { font-size: 12px; min-width: 40px; text-align: right; font-weight: 500; }
+
+.anim-btn { padding: 7px 16px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: transparent; color: var(--color-text-primary); font-size: 13px; cursor: pointer; transition: all .2s; }
+.anim-btn:hover { background: var(--color-background-secondary); }
+.anim-btn.primary { background: #185FA5; border-color: #185FA5; color: #fff; }
+</style>
+
+<div class="container">
+  <h2 class="sr-only">Sistema de trading Igor Montrezor — método interativo passo a passo</h2>
+
+  <div class="nav">
+    <button class="nav-btn active" onclick="showPanel('visao')">Visão geral</button>
+    <button class="nav-btn" onclick="showPanel('rsi')">Canal RSI</button>
+    <button class="nav-btn" onclick="showPanel('stoch')">Stoch RSI</button>
+    <button class="nav-btn" onclick="showPanel('entrada')">Entradas A+ / A / B</button>
+    <button class="nav-btn" onclick="showPanel('checklist')">Checklist</button>
+    <button class="nav-btn" onclick="showPanel('edge')">Edge do sistema</button>
+  </div>
+
+  <!-- VISÃO GERAL -->
+  <div class="panel active" id="p-visao">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;">O método opera no alinhamento de timeframes maiores com execução refinada nos menores. Clique em cada passo para explorar.</p>
+    <div class="step-grid" id="overview-steps">
+      <div class="step-card active" onclick="selectStep(0)">
+        <div class="step-num">Passo 1</div>
+        <div class="step-title">Identificar tendência</div>
+        <div class="step-desc">Supertrend + direção no timeframe maior. Nunca operar contra a tendência.</div>
+      </div>
+      <div class="step-card" onclick="selectStep(1)">
+        <div class="step-num">Passo 2</div>
+        <div class="step-title">Canal RSI no TF maior</div>
+        <div class="step-desc">RSI no suporte/resistência do canal. Peso maior para semanal e mensal.</div>
+      </div>
+      <div class="step-card" onclick="selectStep(2)">
+        <div class="step-num">Passo 3</div>
+        <div class="step-title">Stoch RSI no TF menor</div>
+        <div class="step-desc">Stochastic RSI no contra-fundo/topo — inverso da tendência nos TFs menores.</div>
+      </div>
+      <div class="step-card" onclick="selectStep(3)">
+        <div class="step-num">Passo 4</div>
+        <div class="step-title">Fibonacci + R:R mín 1:5</div>
+        <div class="step-desc">0.5–0.618 tocado. Take profit na extensão 0.618 (A+) ou 0.328 (A/B).</div>
+      </div>
+      <div class="step-card" onclick="selectStep(4)">
+        <div class="step-num">Passo 5</div>
+        <div class="step-title">Executar entrada</div>
+        <div class="step-desc">Inversão do Supertrend. Stop no extremo do canal RSI. Máx 3% risco.</div>
+      </div>
+      <div class="step-card" onclick="selectStep(5)">
+        <div class="step-num">Passo 6</div>
+        <div class="step-title">Gerenciar saída</div>
+        <div class="step-desc">Take profits via Fibonacci/Neuro Athena. Alerta RSI + Stoch em direções opostas.</div>
+      </div>
+    </div>
+
+    <div id="step-detail" style="margin-top:14px;padding:14px;background:var(--color-background-info);border:0.5px solid var(--color-border-info);border-radius:var(--border-radius-lg);font-size:13px;color:var(--color-text-info);line-height:1.6;">
+      Identifique a tendência principal usando o Supertrend no timeframe maior (semanal/mensal). A tendência é o maior peso do sistema — nunca opere contra ela.
+    </div>
+  </div>
+
+  <!-- RSI CANAL -->
+  <div class="panel" id="p-rsi">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px;">O canal do RSI é a base do sistema. O preço precisa estar no suporte ou resistência do canal para acionar uma entrada válida.</p>
+    <div class="chart-wrap">
+      <div class="chart-label">CANAL RSI — SEMANAL (simulado)</div>
+      <canvas id="rsiChart" height="180"></canvas>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#3B8BD4"></div> RSI</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#1D9E75;opacity:.5"></div> Canal superior (resistência)</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#E8593C;opacity:.5"></div> Canal inferior (suporte)</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#EF9F27"></div> Zona de entrada</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-title"><span class="rule-badge">REGRA PRINCIPAL</span> Peso maior para suporte/resistência do canal</div>
+      <div class="rule-body">
+        Quando o RSI toca o <strong>fundo do canal de tendência</strong> (no semanal/mensal), aguarde o Stochastic RSI confirmar nos timeframes menores. Se o RSI romper o canal → entrar na tendência.<br><br>
+        <strong>Nunca operar fora do canal RSI.</strong> Nunca operar contra a tendência.
+      </div>
+    </div>
+    <div class="tf-grid">
+      <div class="tf-card" style="background:#0d1117;border-color:rgba(255,255,255,0.1);color:#fff">
+        <div class="tf-label" style="color:rgba(255,255,255,.5)">MN</div>
+        <div class="tf-val" style="color:#1D9E75">+ 65</div>
+        <div class="tf-desc">forte — acima 50</div>
+      </div>
+      <div class="tf-card" style="background:#0d1117;border-color:rgba(255,255,255,0.1);color:#fff">
+        <div class="tf-label" style="color:rgba(255,255,255,.5)">W1</div>
+        <div class="tf-val" style="color:#EF9F27">≈ 38</div>
+        <div class="tf-desc">pullback no fundo</div>
+      </div>
+      <div class="tf-card" style="background:#0d1117;border-color:rgba(255,255,255,0.1);color:#fff">
+        <div class="tf-label" style="color:rgba(255,255,255,.5)">D1</div>
+        <div class="tf-val" style="color:#EF9F27">≈ 32</div>
+        <div class="tf-desc">fundo do canal</div>
+      </div>
+      <div class="tf-card" style="background:#0d1117;border-color:rgba(255,255,255,0.1);color:#fff">
+        <div class="tf-label" style="color:rgba(255,255,255,.5)">H4</div>
+        <div class="tf-val" style="color:#3B8BD4">↑ virando</div>
+        <div class="tf-desc">execução</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STOCH RSI -->
+  <div class="panel" id="p-stoch">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px;">O Stochastic RSI confirma a entrada nos timeframes menores, sempre na direção <em>inversa</em> à tendência (fundo/topo do Stoch no TF menor).</p>
+    <div class="chart-wrap">
+      <div class="chart-label">STOCHASTIC RSI — 4H (simulado)</div>
+      <canvas id="stochChart" height="160"></canvas>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#9F77DD"></div> Stoch %K</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#5DCAA5"></div> Stoch %D</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#E8593C;opacity:.6"></div> Overbought 80</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#3B8BD4;opacity:.6"></div> Oversold 20</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#EF9F27"></div> Sinal de entrada</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-title">Lógica de confirmação</div>
+      <div class="rule-body">
+        <strong>Compra:</strong> Tendência semanal de alta → esperar Stoch RSI no 4H/D1 no <em>fundo</em> (oversold) → entrada quando virar para cima.<br><br>
+        <strong>Venda:</strong> Tendência semanal de baixa → esperar Stoch RSI no 4H/D1 no <em>topo</em> (overbought) → entrada quando virar para baixo.<br><br>
+        O Stoch RSI está sempre <strong>na direção contrária à tendência</strong> no TF menor — isso é o pullback confirmado.
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:14px;">
+      <button class="anim-btn primary" onclick="animateStoch()">Simular sinal de entrada</button>
+      <span id="stoch-signal" style="font-size:12px;color:var(--color-text-secondary);"></span>
+    </div>
+  </div>
+
+  <!-- ENTRADAS -->
+  <div class="panel" id="p-entrada">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;">Existem três tipos de entrada, ordenadas por qualidade. Clique em cada uma para ver os critérios.</p>
+
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <button class="anim-btn" id="btn-aplus" onclick="showEntrada('aplus')" style="border-color:#1D9E75;color:#1D9E75">A+ (Melhor)</button>
+      <button class="anim-btn" id="btn-a" onclick="showEntrada('a')">A (Principal)</button>
+      <button class="anim-btn" id="btn-b" onclick="showEntrada('b')">B (Proteção)</button>
+    </div>
+
+    <div id="entrada-aplus">
+      <div class="checklist">
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">Supertrend na mesma direção do TF maior</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">Tendência semanal alinhada</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">RSI no canal de resistência/suporte — TFs maiores</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">Stoch RSI no contra fundo/topo no TF menor (inverso)</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">Fibonacci 0.5–0.618 tocado</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">Indicadores do market_analisis confirmam (W + D)</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">R:R mínimo 1:5 — TP na extensão Fibo 0.618</div></div></div>
+      </div>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--color-background-success);border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-success);">Todos os filtros alinhados. Take profit na extensão Fibonacci 0.618 (Neuro Athena). Maior probabilidade de sucesso.</div>
+    </div>
+
+    <div id="entrada-a" style="display:none">
+      <div class="checklist">
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">Supertrend na mesma direção do TF maior</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">Tendência semanal alinhada</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">RSI no canal de resistência/suporte — TFs maiores</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">Stoch RSI no contra fundo/topo no TF menor (inverso)</div></div></div>
+        <div class="check-item" style="opacity:.5"><div class="check-box"></div><div><div class="check-text">Fibonacci 0.5–0.618 tocado (não obrigatório)</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">R:R mínimo 1:5 — TP na extensão Fibo 0.328</div></div></div>
+      </div>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--color-background-info);border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-info);">Entrada principal do sistema. Take profit mais conservador na extensão 0.328. Sem necessidade de Fibonacci confirmado.</div>
+    </div>
+
+    <div id="entrada-b" style="display:none">
+      <div class="checklist">
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">Neuro Athena: linha Buy/Sell Entry INVERTIDA na tendência</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">Supertrend na mesma direção do TF maior</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">Tendência semanal alinhada</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">RSI no canal — TFs maiores</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">Stoch RSI no contra fundo/topo no TF menor</div></div></div>
+        <div class="check-item checked"><div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div><div class="check-text">R:R mínimo 1:5 — TP na extensão Fibo 0.328</div></div></div>
+      </div>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--color-background-warning);border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-warning);">Entrada de proteção. Usa a linha invertida do Neuro Athena como gatilho. Mesmos filtros da Entrada A com TF 0.328.</div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST INTERATIVO -->
+  <div class="panel" id="p-checklist">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px;">Marque cada critério antes de entrar. O score mostra a qualidade do setup em tempo real.</p>
+    <div id="live-checklist" class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-text">Supertrend alinhado com tendência maior</div><div class="check-sub">Verificar no semanal/mensal</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-text">Tendência semanal confirmada (W1)</div><div class="check-sub">MN + W1 na mesma direção</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-text">RSI no canal — suporte ou resistência (W1/MN)</div><div class="check-sub">Peso maior para timeframes maiores</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-text">Stoch RSI no fundo/topo no TF menor (inverso)</div><div class="check-sub">4H ou D1 confirmando</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-text">Fibonacci 0.5–0.618 tocado</div><div class="check-sub">Neuro Athena ou manual</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-text">R:R mínimo 1:5 calculado</div><div class="check-sub">Stop no extremo do canal RSI / MA 50/100/200</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-text">Risco máx 3% da conta definido</div><div class="check-sub">Tamanho da posição calculado</div></div></div>
+    </div>
+    <div style="margin-top:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <span style="font-size:12px;color:var(--color-text-secondary);">Score do setup</span>
+        <span id="score-text" style="font-size:13px;font-weight:500;color:var(--color-text-secondary);">0 / 7</span>
+      </div>
+      <div class="score-bar"><div class="score-fill" id="score-fill" style="width:0%"></div></div>
+      <div class="score-label" id="score-label">Preencha os critérios acima para avaliar o setup.</div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:8px;">
+      <button class="anim-btn" onclick="resetChecklist()">Resetar</button>
+    </div>
+  </div>
+
+  <!-- EDGE -->
+  <div class="panel" id="p-edge">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;">O sistema funciona pela hierarquia de timeframes: o maior manda, o menor executa.</p>
+
+    <div class="rule-card">
+      <div class="rule-title" style="color:#1D9E75">Compra</div>
+      <div class="rule-body">
+        <div class="signal-row">
+          <div class="signal-tf">MN</div>
+          <div class="signal-bar-wrap"><div class="signal-bar" style="width:75%;background:#1D9E75"></div></div>
+          <div class="signal-val" style="color:#1D9E75">Forte (>55)</div>
+        </div>
+        <div class="signal-row">
+          <div class="signal-tf">W1</div>
+          <div class="signal-bar-wrap"><div class="signal-bar" style="width:30%;background:#EF9F27"></div></div>
+          <div class="signal-val" style="color:#EF9F27">Pullback ↓</div>
+        </div>
+        <div class="signal-row">
+          <div class="signal-tf">D1</div>
+          <div class="signal-bar-wrap"><div class="signal-bar" style="width:25%;background:#E8593C"></div></div>
+          <div class="signal-val" style="color:#E8593C">Fundo canal</div>
+        </div>
+        <div class="signal-row" style="border-bottom:none">
+          <div class="signal-tf">H4</div>
+          <div class="signal-bar-wrap"><div class="signal-bar" style="width:45%;background:#3B8BD4"></div></div>
+          <div class="signal-val" style="color:#3B8BD4">↑ virando</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-title" style="color:#E8593C">Venda</div>
+      <div class="rule-body">
+        <div class="signal-row">
+          <div class="signal-tf">MN</div>
+          <div class="signal-bar-wrap"><div class="signal-bar" style="width:30%;background:#E8593C"></div></div>
+          <div class="signal-val" style="color:#E8593C">Fraco (<40)</div>
+        </div>
+        <div class="signal-row">
+          <div class="signal-tf">W1</div>
+          <div class="signal-bar-wrap"><div class="signal-bar" style="width:70%;background:#EF9F27"></div></div>
+          <div class="signal-val" style="color:#EF9F27">Pullback ↑</div>
+        </div>
+        <div class="signal-row">
+          <div class="signal-tf">D1</div>
+          <div class="signal-bar-wrap"><div class="signal-bar" style="width:78%;background:#EF9F27"></div></div>
+          <div class="signal-val" style="color:#EF9F27">Topo canal</div>
+        </div>
+        <div class="signal-row" style="border-bottom:none">
+          <div class="signal-tf">H4</div>
+          <div class="signal-bar-wrap"><div class="signal-bar" style="width:55%;background:#3B8BD4"></div></div>
+          <div class="signal-val" style="color:#3B8BD4">↓ virando</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-card" style="border-color:var(--color-border-danger)">
+      <div class="rule-title"><span class="rule-badge">NUNCA</span> Regras absolutas</div>
+      <div class="rule-body">
+        — Nunca operar contra a tendência<br>
+        — Nunca operar fora do canal RSI<br>
+        — Nunca arriscar mais de 3% da conta por operação<br>
+        — Nunca entrar sem R:R mínimo de 1:5
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('p-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'rsi' && !window.rsiDrawn) drawRSI();
+  if (id === 'stoch' && !window.stochDrawn) drawStoch();
+}
+
+const stepDetails = [
+  "Identifique a tendência principal usando o Supertrend no timeframe maior (semanal/mensal). A tendência é o maior peso do sistema — nunca opere contra ela.",
+  "Aguarde o RSI atingir o suporte ou resistência do canal de tendência no semanal/mensal. Peso maior para timeframes maiores. Não entre no meio do canal.",
+  "Com o RSI no canal do TF maior, aguarde o Stochastic RSI no fundo (para compras) ou no topo (para vendas) no timeframe menor (4H ou D1). É a confirmação do pullback.",
+  "Verifique se o Fibonacci 0.5–0.618 foi tocado. O take profit alvo é a extensão 0.618 (entrada A+) ou 0.328 (entrada A/B). R:R mínimo obrigatório de 1:5.",
+  "Com todos os filtros alinhados, execute a entrada na inversão do Supertrend. Stop loss no extremo do canal RSI, nas médias móveis 50/100/200 ou na extensão Fibonacci.",
+  "Use o Método Hougaard para saídas parciais. Alertas de saída: RSI seguindo a tendência em uma direção e Stochastic na direção oposta nos TFs maiores (W/MN)."
+];
+
+function selectStep(i) {
+  document.querySelectorAll('#overview-steps .step-card').forEach((c,j) => c.classList.toggle('active', i===j));
+  document.getElementById('step-detail').textContent = stepDetails[i];
+}
+
+function showEntrada(type) {
+  ['aplus','a','b'].forEach(t => {
+    document.getElementById('entrada-'+t).style.display = t===type ? 'block' : 'none';
+    document.getElementById('btn-'+t).classList.toggle('primary', t===type);
+  });
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  const box = el.querySelector('.check-box');
+  if (el.classList.contains('checked')) {
+    box.innerHTML = '<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L4 7L9 1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>';
+  } else {
+    box.innerHTML = '';
+  }
+  updateScore();
+}
+
+function updateScore() {
+  const items = document.querySelectorAll('#live-checklist .check-item');
+  const checked = Array.from(items).filter(i => i.classList.contains('checked')).length;
+  const total = items.length;
+  const pct = Math.round((checked / total) * 100);
+  document.getElementById('score-fill').style.width = pct + '%';
+  document.getElementById('score-text').textContent = checked + ' / ' + total;
+  const labels = ['Preencha os critérios acima para avaliar o setup.','Setup fraco — muitos critérios ausentes.','Setup abaixo do ideal — continue verificando.','Setup mediano — faltam critérios importantes.','Setup razoável — verifique os itens restantes.','Setup bom — quase pronto para entrar.','Setup muito bom — apenas 1 critério ausente.','Setup A+ — todos os critérios alinhados. Pode entrar!'];
+  document.getElementById('score-label').textContent = labels[checked] || '';
+}
+
+function resetChecklist() {
+  document.querySelectorAll('#live-checklist .check-item').forEach(i => {
+    i.classList.remove('checked');
+    i.querySelector('.check-box').innerHTML = '';
+  });
+  updateScore();
+}
+
+function drawRSI() {
+  window.rsiDrawn = true;
+  const labels = Array.from({length:52},(_,i)=>'W'+( i+1));
+  const rsi = [];
+  let v = 50;
+  const channelTop = [], channelBot = [];
+  for (let i=0;i<52;i++){
+    v += (Math.random()-0.46)*6;
+    v = Math.max(18, Math.min(82, v));
+    rsi.push(Math.round(v*10)/10);
+    channelTop.push(72);
+    channelBot.push(28);
+  }
+  const ctx = document.getElementById('rsiChart').getContext('2d');
+  new Chart(ctx, {
+    type:'line',
+    data:{
+      labels,
+      datasets:[
+        {label:'RSI',data:rsi,borderColor:'#3B8BD4',borderWidth:1.5,pointRadius:0,tension:.4,fill:false},
+        {label:'Resistência',data:channelTop,borderColor:'rgba(29,158,117,0.4)',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:'+1',backgroundColor:'rgba(29,158,117,0.04)'},
+        {label:'Suporte',data:channelBot,borderColor:'rgba(232,89,60,0.4)',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.raw}}},
+      scales:{
+        x:{display:false},
+        y:{min:0,max:100,grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'rgba(255,255,255,0.3)',font:{size:10},stepSize:20}}
+      },
+      animation:{duration:1200}
+    }
+  });
+}
+
+function drawStoch() {
+  window.stochDrawn = true;
+  const labels = Array.from({length:60},(_,i)=>'');
+  const k=[], d=[];
+  let kv=50, dv=50;
+  for(let i=0;i<60;i++){
+    kv += (Math.random()-0.5)*18;
+    kv = Math.max(2,Math.min(98,kv));
+    dv = dv*0.7 + kv*0.3;
+    k.push(Math.round(kv*10)/10);
+    d.push(Math.round(dv*10)/10);
+  }
+  const ctx = document.getElementById('stochChart').getContext('2d');
+  window.stochChart = new Chart(ctx,{
+    type:'line',
+    data:{
+      labels,
+      datasets:[
+        {label:'%K',data:k,borderColor:'#9F77DD',borderWidth:1.5,pointRadius:0,tension:.3,fill:false},
+        {label:'%D',data:d,borderColor:'#5DCAA5',borderWidth:1,pointRadius:0,tension:.3,fill:false},
+        {label:'Ob',data:Array(60).fill(80),borderColor:'rgba(232,89,60,0.5)',borderWidth:1,borderDash:[4,4],pointRadius:0},
+        {label:'Os',data:Array(60).fill(20),borderColor:'rgba(59,139,212,0.5)',borderWidth:1,borderDash:[4,4],pointRadius:0},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.raw}}},
+      scales:{
+        x:{display:false},
+        y:{min:0,max:100,grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'rgba(255,255,255,0.3)',font:{size:10},stepSize:20}}
+      },
+      animation:{duration:1200}
+    }
+  });
+}
+
+let signalActive = false;
+function animateStoch() {
+  if (signalActive) return;
+  signalActive = true;
+  document.getElementById('stoch-signal').textContent = 'Simulando...';
+  if (!window.stochDrawn) drawStoch();
+  setTimeout(()=>{
+    const sc = window.stochChart;
+    sc.data.datasets[0].data = sc.data.datasets[0].data.map((v,i)=>{
+      if (i>50) return Math.max(5, v - (i-50)*8);
+      return v;
+    });
+    sc.data.datasets[0].data[58]=8;
+    sc.data.datasets[0].data[59]=22;
+    sc.data.datasets[1].data[58]=12;
+    sc.data.datasets[1].data[59]=18;
+    sc.update();
+    document.getElementById('stoch-signal').textContent = '↑ Sinal de compra detectado — Stoch saindo do oversold';
+    setTimeout(()=>{ signalActive=false; document.getElementById('stoch-signal').textContent=''; }, 4000);
+  }, 400);
+}
+</script>

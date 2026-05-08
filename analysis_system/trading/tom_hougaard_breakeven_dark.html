@@ -1,0 +1,144 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+  .dark-wrap { background: #0E0E0E; border-radius: 12px; padding: 2rem; font-family: 'IBM Plex Mono', monospace; }
+  .titulo-doc { font-family: 'Libre Baskerville', serif; font-size: 22px; font-weight: 700; color: #F0EDE6; margin-bottom: 4px; letter-spacing: -0.5px; }
+  .subtitulo-doc { font-size: 10px; color: #555; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 2rem; }
+  .secao { margin-bottom: 2rem; }
+  .secao-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #555; margin-bottom: 1rem; padding-bottom: 6px; border-bottom: 0.5px solid #222; }
+  .passo { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; padding: 12px 0; border-bottom: 0.5px solid #1C1C1C; }
+  .passo:last-child { border-bottom: none; }
+  .num { font-size: 11px; font-weight: 500; color: #444; padding-top: 2px; }
+  .passo-etapa { font-size: 13px; font-weight: 500; color: #D4CFC7; margin-bottom: 3px; }
+  .passo-pensamento { font-size: 12px; color: #666; font-style: italic; margin-bottom: 5px; }
+  .passo-acao { font-size: 12px; color: #7A7570; line-height: 1.7; }
+  .tag { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 3px; margin-right: 6px; margin-top: 6px; letter-spacing: 0.5px; }
+  .tag-risco { background: #2A1E0A; color: #C98A2A; }
+  .tag-psico { background: #1A1730; color: #8B7FD4; }
+  .tag-acao { background: #0C1F18; color: #3D9E75; }
+  .tag-sair { background: #1F0C0C; color: #C04040; }
+  .pilar-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .pilar-card { background: #141414; border: 0.5px solid #222; border-radius: 8px; padding: 14px; }
+  .pilar-icon { font-size: 18px; margin-bottom: 8px; color: #444; }
+  .pilar-titulo { font-size: 11px; font-weight: 500; color: #C0BBB3; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+  .pilar-desc { font-size: 11px; color: #666; line-height: 1.6; }
+  .alerta { background: #141414; border-left: 2px solid #333; padding: 12px 16px; border-radius: 0 8px 8px 0; }
+  .alerta-texto { font-size: 12px; color: #888; line-height: 1.8; font-family: 'Libre Baskerville', serif; font-style: italic; }
+</style>
+
+<div class="dark-wrap">
+  <h2 class="sr-only">Técnica de Breakeven de Tom Hougaard — Tema Escuro</h2>
+  <div class="titulo-doc">Método Hougaard</div>
+  <div class="subtitulo-doc">Breakeven + Pirâmide · Checklist operacional</div>
+
+  <div class="secao">
+    <div class="secao-label">Os três pilares</div>
+    <div class="pilar-grid">
+      <div class="pilar-card">
+        <div class="pilar-icon"><i class="ti ti-shield" aria-hidden="true"></i></div>
+        <div class="pilar-titulo">Proteção</div>
+        <div class="pilar-desc">Mover para BE elimina risco financeiro da unidade inicial.</div>
+      </div>
+      <div class="pilar-card">
+        <div class="pilar-icon"><i class="ti ti-trending-up" aria-hidden="true"></i></div>
+        <div class="pilar-titulo">Pirâmide</div>
+        <div class="pilar-desc">Com a base protegida, adiciona contratos ao que já funciona.</div>
+      </div>
+      <div class="pilar-card">
+        <div class="pilar-icon"><i class="ti ti-scissors" aria-hidden="true"></i></div>
+        <div class="pilar-titulo">Corte rápido</div>
+        <div class="pilar-desc">Se o mercado volta ao BE, sai sem hesitar. Tese falhou no timing.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-label">Passo a passo</div>
+
+    <div class="passo">
+      <div class="num">01</div>
+      <div>
+        <div class="passo-etapa">Entrada inicial</div>
+        <div class="passo-pensamento">"Estou testando uma ideia."</div>
+        <div class="passo-acao">Tamanho de posição controlado. Risco definido antes de entrar. Esta é apenas a sonda — não o bet principal.</div>
+        <span class="tag tag-risco">risco fixo</span>
+      </div>
+    </div>
+
+    <div class="passo">
+      <div class="num">02</div>
+      <div>
+        <div class="passo-etapa">Mercado anda a favor</div>
+        <div class="passo-pensamento">"Talvez eu esteja certo."</div>
+        <div class="passo-acao">Observar confirmação de momentum. Aguardar distância suficiente baseada em volatilidade ou nível técnico próximo. Não agir ainda.</div>
+        <span class="tag tag-psico">paciência</span>
+      </div>
+    </div>
+
+    <div class="passo">
+      <div class="num">03</div>
+      <div>
+        <div class="passo-etapa">Mover stop para breakeven</div>
+        <div class="passo-pensamento">"Agora posso pressionar."</div>
+        <div class="passo-acao">Stop da posição 1 vai para o preço de entrada. A operação agora é de risco zero. Este é o gatilho que libera o próximo passo — não apenas proteção de ego.</div>
+        <span class="tag tag-acao">stop → entrada</span><span class="tag tag-psico">risco liberado</span>
+      </div>
+    </div>
+
+    <div class="passo">
+      <div class="num">04</div>
+      <div>
+        <div class="passo-etapa">Adicionar posição (piramidagem)</div>
+        <div class="passo-pensamento">"Vou aumentar no que funciona."</div>
+        <div class="passo-acao">Abre posição 2. O stop combinado é gerenciado de forma que, se o mercado reverter, o lucro da P1 no BE compensa a perda da P2. Nunca adicionar em operação perdendo.</div>
+        <span class="tag tag-acao">posição 2 aberta</span><span class="tag tag-risco">stop combinado</span>
+      </div>
+    </div>
+
+    <div class="passo">
+      <div class="num">05</div>
+      <div>
+        <div class="passo-etapa">Mercado continua — maximizar assimetria</div>
+        <div class="passo-pensamento">"Maximizar assimetria."</div>
+        <div class="passo-acao">Deixar os vencedores correr. Subir stops progressivamente conforme o mercado avança. Repetir o ciclo para posição 3 se as condições permitirem.</div>
+        <span class="tag tag-acao">trailing stop</span><span class="tag tag-psico">desconforto produtivo</span>
+      </div>
+    </div>
+
+    <div class="passo">
+      <div class="num">06</div>
+      <div>
+        <div class="passo-etapa">Reversão ao breakeven — sair</div>
+        <div class="passo-pensamento">"A tese falhou no timing."</div>
+        <div class="passo-acao">Sem hesitação, sem esperança. O retorno ao BE é sinal de que o setup não se desenvolveu como esperado. Fechar tudo. Preservar capital mental para a próxima.</div>
+        <span class="tag tag-sair">saída imediata</span><span class="tag tag-psico">zero ego</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-label">A frase</div>
+    <div class="alerta">
+      <div class="alerta-texto">"Pessoas normais buscam conforto. Traders de sucesso buscam desconforto. Mover para o breakeven é o primeiro passo para poder dobrar a aposta."</div>
+      <div style="font-size: 11px; color: #444; margin-top: 8px;">— Tom Hougaard</div>
+    </div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-label">Armadilhas documentadas</div>
+    <div class="passo">
+      <div class="num"><i class="ti ti-alert-triangle" style="font-size:14px;color:#C98A2A" aria-hidden="true"></i></div>
+      <div>
+        <div class="passo-etapa">Stop cedo demais</div>
+        <div class="passo-acao">Mover para BE antes da distância necessária expõe a operação ao ruído normal do mercado. Você sai antes do movimento real acontecer.</div>
+      </div>
+    </div>
+    <div class="passo">
+      <div class="num"><i class="ti ti-alert-triangle" style="font-size:14px;color:#C98A2A" aria-hidden="true"></i></div>
+      <div>
+        <div class="passo-etapa">BE como muleta emocional</div>
+        <div class="passo-acao">Usar o BE apenas para "não perder o que ganhou" é viés de aversão à perda disfarçado. Para Hougaard, o BE é ferramenta de expansão — não de conforto.</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -29,7 +29,7 @@ if sys.stdout.encoding != 'utf-8':
 class GemsFinder:
 
     CACHE_FILE = "gems_cache.json"
-    CACHE_DURATION = timedelta(hours=0)  # Forçar busca sempre (cache de 0 horas)
+    CACHE_DURATION = timedelta(hours=12)  # Cache de 12 horas
 
     def __init__(self):
         self.cache_dir = os.path.join(os.path.dirname(__file__), 'data')
@@ -1127,7 +1127,7 @@ class GemsFinder:
 
         # Faixas solicitadas
         ranges = [
-            {"name": "50m_range", "min_mc": 30_000_000, "max_mc": 50_000_000, "min_volume": 1_000_000, "max_results": 10},
+            {"name": "50m_range", "min_mc": 50_000_000, "max_mc": 100_000_000, "min_volume": 1_000_000, "max_results": 10},
             {"name": "10m_range", "min_mc": 10_000_000, "max_mc": 20_000_000, "min_volume": 500_000, "max_results": 10},
         ]
 

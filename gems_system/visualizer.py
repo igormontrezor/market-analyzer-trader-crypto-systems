@@ -254,7 +254,7 @@ def _load_macro_timing() -> dict:
             # 2. Calcula a idade em segundos (Sem remover o tzinfo, a conta é exata)
             age_seconds = (now - cache_time).total_seconds()
 
-            if age_seconds > 3600:  # 1 hora
+            if age_seconds > 1800:  # 30 minutos
                 print(f"🔄 Macro timing cache expired ({age_seconds/60:.1f} min old), refreshing...")
                 return _build_macro_timing()
             else:
