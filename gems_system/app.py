@@ -21,6 +21,59 @@ import visualizer
 # 1. CONFIGURAÇÃO DA PÁGINA (ESTILO PROFISSIONAL/DARK)
 st.set_page_config(page_title="MONTREZOR - Mesa de Operações", layout="wide", page_icon="💎")
 
+# --- ADIÇÃO: NAVEGAÇÃO AUTOMÁTICA ---
+with st.sidebar:
+    st.markdown("### 🧭 Central de Controle")
+    st.markdown("**💎 Mesa de Operações** (página atual)")
+    st.markdown("---")
+
+    st.markdown("### 📈 Trading System")
+
+    # Botão para abrir automaticamente
+    if st.button("🚀 Abrir Trading System", type="primary", use_container_width=True):
+        import subprocess
+        import sys
+        import webbrowser
+        import time
+        import os
+
+        try:
+            st.info("🔄 Iniciando Trading System...")
+
+            # Caminhos relativos genéricos
+            current_dir = os.getcwd()
+            trading_dir = os.path.abspath(os.path.join(current_dir, "..", "analysis_system", "trading"))
+            trading_file = os.path.join(trading_dir, "trading_system.py")
+
+            # Verificar se arquivo existe
+            if not os.path.exists(trading_file):
+                st.error(f"❌ Arquivo não encontrado: {trading_file}")
+                st.stop()
+
+            # Executar em background sem shell
+            process = subprocess.Popen(
+                [sys.executable, "-m", "streamlit", "run", trading_file, "--server.port", "8502"],
+                cwd=trading_dir,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+            )
+
+            # Esperar e abrir no navegador
+            time.sleep(3)
+            webbrowser.open("http://localhost:8502")
+
+            st.success("✅ Trading System aberto em http://localhost:8502")
+            st.info("🌐 Sistema iniciado em background!")
+
+        except Exception as e:
+            st.error(f"❌ Erro: {e}")
+            st.code(f"Python: {sys.executable}")
+            st.code(f"Arquivo: {trading_file}")
+
+    st.markdown("*Clique para abrir automaticamente*")
+    st.markdown("---")
+# --- FIM DA ADIÇÃO ---
+
 # Título principal no topo
 st.title("💎 Sistema de Macro e Gems - Igor Montrezor")
 st.markdown("<p style='color: #8b949e; margin-top: -15px; margin-bottom: 30px;'>Método interativo passo a passo para execução de alta performance.</p>", unsafe_allow_html=True)
@@ -345,11 +398,11 @@ def get_real_records(snapshots):
         valid_scores = {k: sum(v)/len(v) for k, v in symbol_scores.items() if len(v) >= 2}
         if valid_scores:
             best_avg = max(valid_scores.items(), key=lambda x: x[1])
-            melhor_posicao = f"{best_avg[0]} ({best_avg[1]:.1f} pts)"
+            melhor_posicao = f"{best_avg[0]} ({best_avg[1]:.1f})"
         else: melhor_posicao = f"{most_common[0]} (Recente)"
     else: mais_aparicoes = melhor_posicao = "N/A"
 
-    return f"{len(snapshots)} registros reais", mais_aparicoes, melhor_posicao
+    return f"{len(snapshots)} registros", mais_aparicoes, melhor_posicao
 
 # 4. PRÉ-CARREGAMENTO
 snapshots_list = get_snapshots()
