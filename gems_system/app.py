@@ -330,6 +330,7 @@ def get_macro_data():
 
                 buy_mode = regime.get("buy_mode", False)
                 sell_mode = regime.get("sell_mode", False)
+                res["capitulation_lock"] = regime.get("capitulation_lock", False) # ADIÇÃO
 
                 if buy_mode: res["status"] = "COMPRA"
                 elif sell_mode: res["status"] = "VENDA"
@@ -343,6 +344,7 @@ def get_macro_data():
                 weekly_sell_trigger = signal.get("weekly_sell_trigger", False)
 
                 res["buy_trigger"] = weekly_buy_trigger
+                res["sell_trigger"] = weekly_sell_trigger # ← LINHA ADICIONADA AQUI
                 res["rebound"] = signal.get("tactical_rebound", False)
 
                 funding_rate = get_btc_funding_rate_real()
@@ -807,13 +809,42 @@ with col2:
         </div>
     """, unsafe_allow_html=True)
 
+    # --- NOVA LÓGICA ALINHADA AO VISUALIZER ---
     acao_sugerida = "AGUARDANDO PONTO"
-    if macro_data.get('status') == "COMPRA" and macro_data.get('others_val', 0) < 0.2: acao_sugerida = "PONTO DE ACUMULAÇÃO"
+    acao_cor = "#c9d1d9" # Cor padrão (branco/cinza)
+
+    # 1. Trava de Capitulação (Prioridade Máxima)
+    if macro_data.get('capitulation_lock'):
+        acao_sugerida = "🚫 COMPRAS EM PAUSA"
+        acao_cor = "#ff4500" # Laranja escuro
+
+    # 2. Regime de Compra
+    elif macro_data.get('status') == "COMPRA":
+        if macro_data.get('buy_trigger'):
+            acao_sugerida = "✅ COMPRA ATIVA"
+            acao_cor = "#3fb950" # Verde
+        elif macro_data.get('others_val', 0) < 0.2:
+            acao_sugerida = "PONTO DE ACUMULAÇÃO"
+            acao_cor = "#58a6ff" # Azul claro
+
+    # 3. Regime de Venda (Lapidado)
+    elif macro_data.get('status') == "VENDA":
+        if macro_data.get('sell_trigger'):
+            acao_sugerida = "🟥 ALERTA DE SAÍDA"
+            acao_cor = "#f85149" # Vermelho
+        else:
+            acao_sugerida = "AGUARDANDO AÇÃO"
+            acao_cor = "#c9d1d9" # Cinza
+
+    # 4. Sobrescrita: Repique Tático (Se não houver capitulação)
+    if macro_data.get('rebound') and not macro_data.get('capitulation_lock'):
+        acao_sugerida = "🔵 REPIQUE TÁTICO"
+        acao_cor = "#3498db" # Azul vibrante
 
     st.markdown("### 🎯 Ação Sugerida")
     st.markdown(f"""
         <div style="background-color: #1c2128; padding: 15px; border-radius: 8px; border: 1px solid #30363d;">
-            <h4 style="margin:0; color: #c9d1d9;">— {acao_sugerida}</h4>
+            <h4 style="margin:0; color: {acao_cor};">— {acao_sugerida}</h4>
             <hr style="margin:10px 0; border: 0.1px solid #30363d;">
             <p style="margin:0; font-size: 13px; color: #8b949e;">
                 Semanal -> OTHERS: <span style="color:#58a6ff;">{macro_data.get('others_val', 0):.4f}</span> |

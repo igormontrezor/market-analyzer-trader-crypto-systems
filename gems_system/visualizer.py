@@ -141,11 +141,44 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
     curr_w_usdt = w_usdt_bbp.iloc[-1]
     curr_w_others = w_others_bbp.iloc[-1]
 
-    #plot_usdt_debug_html(usdt_weekly['close'], w_usdt_bbp)
+    # --- 1. LÓGICA E REGISTRO DO FUNDING RATE PRIMEIRO ---
+    import requests
+    try:
+        r = requests.get("https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT", timeout=2)
+        if r.status_code == 200:
+            funding_rate = float(r.json().get('lastFundingRate', 0)) * 100
+        else:
+            funding_rate = 0.02
+    except:
+        funding_rate = 0.02
 
-    # --- REGIME MENSAL ---
+    # Registrar no CSV de Histórico
+    funding_csv_path = os.path.join(macro_dir, 'funding_rate_history.csv')
+    now_dt = datetime.now()
+    timestamp_hour = now_dt.strftime("%Y-%m-%d %H:00:00")
+
+    already_logged = False
+    if os.path.exists(funding_csv_path):
+        try:
+            with open(funding_csv_path, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
+                if lines and timestamp_hour in lines[-1]:
+                    already_logged = True
+        except:
+            pass
+
+    if not already_logged:
+        file_exists = os.path.exists(funding_csv_path)
+        with open(funding_csv_path, 'a', encoding='utf-8') as f:
+            if not file_exists:
+                f.write("timestamp,funding_rate\n")
+            f.write(f"{timestamp_hour},{funding_rate:.6f}\n")
+
+    # --- 2. DEFINIÇÃO DE REGIMES ---
     buy_mode = (prev_m_usdt >= 1.0 and curr_m_usdt < 1.0) or (curr_m_usdt < 1.0 and curr_m_usdt > 0.2)
-    sell_mode = (prev_m_usdt <= 0.0 and curr_m_usdt > 0.0) or (curr_m_usdt > 0.0 and curr_m_usdt < 0.8 and not buy_mode)
+
+    # AJUSTE: Tocou < 0 já é Venda. E mantém venda enquanto estiver na zona de subida (< 0.8)
+    sell_mode = (curr_m_usdt <= 0.0) or (prev_m_usdt <= 0.0 and curr_m_usdt > 0.0) or (curr_m_usdt > 0.0 and curr_m_usdt < 0.8 and not buy_mode)
 
     capitulation_lock = bool(sell_mode and curr_m_usdt >= 0.8)
 
@@ -158,9 +191,11 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
         "usdt_touch_low": bool(curr_w_usdt <= 0),
     }
 
+    # --- 3. DEFINIÇÃO DE GATILHOS (SINAIS) ---
     signal = {
         "weekly_buy_trigger": bool(buy_mode and (weekly_state["others_touch_low"] or weekly_state["usdt_touch_high"])),
-        "tactical_rebound": bool(sell_mode and weekly_state["usdt_touch_high"] and not capitulation_lock),
+        # AJUSTE: Repique tático agora exige funding_rate < 0
+        "tactical_rebound": bool(sell_mode and weekly_state["usdt_touch_high"] and funding_rate < 0 and not capitulation_lock),
         "weekly_sell_trigger": bool(sell_mode and (weekly_state["usdt_touch_low"] or curr_w_others >= 1)),
     }
 
@@ -174,8 +209,8 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
             "capitulation_lock": capitulation_lock
         },
         "signal": signal,
+        "funding_rate": funding_rate
     }
-
     # (No final da função _build_macro_timing, pouco ANTES da definição do dicionário 'payload')
 
     # --- LÓGICA E REGISTRO DO FUNDING RATE ---
@@ -288,8 +323,12 @@ def _macro_timing_panel_html() -> str:
         a_border = "rgba(46, 204, 113, 0.5)" if signal['weekly_buy_trigger'] else "rgba(255, 255, 255, 0.2)"
     elif regime['sell_mode']:
         r_label, r_border = "🟥 REGIME: VENDA (Bull Market)", "rgba(231, 76, 60, 0.6)"
-        a_label = "🟥 ALERTA DE SAÍDA"
-        a_border = "rgba(231, 76, 60, 0.5)"
+        if signal.get('weekly_sell_trigger', False):
+            a_label = "🟥 ALERTA DE SAÍDA"
+            a_border = "rgba(231, 76, 60, 0.5)"
+        else:
+            a_label = "— AGUARDANDO AÇÃO"
+            a_border = "rgba(255, 255, 255, 0.2)"
     else:
         r_label, r_border = "⬜ NEUTRO", "rgba(255, 255, 255, 0.3)"
         a_label, a_border = "—", "rgba(255, 255, 255, 0.2)"

@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-08T12:02:24.658071",
-  "total_candidates": 10,
+  "last_updated": "2026-05-09T12:17:38.731921",
+  "total_candidates": 12,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -131,6 +131,32 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 42.256329415122124
+    },
+    {
+      "symbol": "not",
+      "name": "Notcoin",
+      "detected_at": "2026-05-09T12:17:38.730129",
+      "ratio_now": 1.5845925738422868,
+      "market_cap": 60901723,
+      "volume": 96504418,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 55.8585181435124
+    },
+    {
+      "symbol": "alice",
+      "name": "My Neighbor Alice",
+      "detected_at": "2026-05-09T12:17:38.730358",
+      "ratio_now": 1.5465860754538645,
+      "market_cap": 14985422,
+      "volume": 23176245,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 55.098388175743956
     }
   ]
 }
