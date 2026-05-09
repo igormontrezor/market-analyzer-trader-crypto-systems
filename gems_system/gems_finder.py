@@ -1128,7 +1128,7 @@ class GemsFinder:
         # Faixas solicitadas
         ranges = [
             {"name": "50m_range", "min_mc": 50_000_000, "max_mc": 100_000_000, "min_volume": 1_000_000, "max_results": 10},
-            {"name": "10m_range", "min_mc": 10_000_000, "max_mc": 20_000_000, "min_volume": 500_000, "max_results": 10},
+            {"name": "10_49m_range", "min_mc": 10_000_000, "max_mc": 49_000_000, "min_volume": 1_000_000, "max_results": 15},
         ]
 
         all_gems = {}

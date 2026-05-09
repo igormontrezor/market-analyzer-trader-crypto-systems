@@ -18,6 +18,38 @@ from tvDatafeed import TvDatafeed, Interval
 # Importa as bibliotecas do sistema
 import visualizer
 
+def get_exhaustion_status(row):
+    """
+    Identifica se a moeda está 'esticada' baseada em MC alto + Desaceleração
+    Usa as mesmas chaves que o GemsFinder já gera.
+    """
+    try:
+        # Recupera o Market Cap da linha atual
+        mc = float(row.get('market_cap', 0))
+
+        # O GemsFinder salva o timeframe_analysis como string JSON no CSV
+        analysis_raw = row.get('timeframe_analysis', '{}')
+        if isinstance(analysis_raw, str):
+            import json
+            analysis = json.loads(analysis_raw.replace("'", '"')) # Garante formato JSON
+        else:
+            analysis = analysis_raw
+
+        # Pega a tendência de aceleração (campo 'trend' do gems_finder.py)
+        trend = analysis.get('acceleration', {}).get('trend', 'stable')
+
+        # LÓGICA DE EXAUSTÃO: MC alto (> 35M) e tendência perdendo força
+        if mc > 35_000_000 and trend == 'decelerating':
+            return "⚠️ ESTICADA"
+        elif trend == 'accelerating':
+            return "🚀 ACELERANDO"
+        elif trend == 'decelerating':
+            return "📉 DESACELERANDO"
+
+        return "➡️ ESTÁVEL"
+    except:
+        return "—"
+
 # 1. CONFIGURAÇÃO DA PÁGINA (ESTILO PROFISSIONAL/DARK)
 st.set_page_config(page_title="MONTREZOR - Mesa de Operações", layout="wide", page_icon="💎")
 
@@ -311,7 +343,7 @@ def get_snapshots():
     files = glob.glob(os.path.join(path, "*.csv"))
     return sorted(files, reverse=True)
 
-@st.cache_data(ttl=1800)
+@st.cache_data
 def get_macro_data():
     path = os.path.join("data", "macro", "macro_timing.json")
 
@@ -485,7 +517,7 @@ with st.expander("🖥️ Terminal (Tempo Real)", expanded=True):
                 if not df_watchlist.empty:
                     add_terminal_output("📌 MINHA WATCHLIST ATUAL:", "info")
                     add_terminal_output("═" * 80, "info")
-                    add_terminal_output(f"{'SYMBOL':<8} | {'MC':<8} | {'RATIO':<7} | {'SCORE':<6} | {'ZONE':<10} | {'VOL':<8} | {'24H':<8} | {'7D':<8} | {'30D':<8}", "info")
+                    add_terminal_output(f"{'SYMBOL':<8} | {'MC':<8} | {'RATIO':<7} | {'SCORE':<6} | {'ZONE':<10} | {'STATUS':<12} | {'VOL':<8} | {'24H':<8} | {'7D':<8} | {'30D':<8}", "info")
                     add_terminal_output("-" * 80, "info")
 
                     for _, row in df_watchlist.iterrows():
@@ -494,6 +526,7 @@ with st.expander("🖥️ Terminal (Tempo Real)", expanded=True):
                         ratio = row.get('ratio', 0)
                         score = row.get('final_score', 0)
                         zone = row.get('zone', 'N/A')
+                        status = get_exhaustion_status(row)  # Adicionar status
                         volume = row.get('total_volume', 0)
                         change_24h = row.get('price_change_percentage_24h', 0)
                         change_7d = row.get('price_change_percentage_7d_in_currency', 0)
@@ -522,7 +555,7 @@ with st.expander("🖥️ Terminal (Tempo Real)", expanded=True):
                         change_7d_formatted = safe_format(change_7d, format_change, "N/A     ")
                         change_30d_formatted = safe_format(change_30d, format_change, "N/A     ")
 
-                        add_terminal_output(f"{symbol:<8} | {mc_formatted:<8} | {ratio_formatted:<7} | {score_formatted:<6} | {zone_formatted:<10} | {vol_formatted:<8} | {change_24h_formatted:<8} | {change_7d_formatted:<8} | {change_30d_formatted:<8}", "success")
+                        add_terminal_output(f"{symbol:<8} | {mc_formatted:<8} | {ratio_formatted:<7} | {score_formatted:<6} | {zone_formatted:<10} | {status:<12} | {vol_formatted:<8} | {change_24h_formatted:<8} | {change_7d_formatted:<8} | {change_30d_formatted:<8}", "success")
 
                     add_terminal_output("═" * 80, "info")
                     add_terminal_output(f"📊 Total: {len(df_watchlist)} moedas na watchlist", "success")
@@ -894,6 +927,9 @@ with col3:
                 [sys.executable, "-c", "import visualizer; visualizer._build_macro_timing()"],
                 "Atualizando dados macro timing..."
             )
+            get_macro_data.clear()          # invalida o cache imediatamente
+            add_terminal_output("🔄 Cache macro invalidado — dados frescos na próxima leitura.", "success")
+            st.rerun()
 
 # FUNÇÃO DO HEATMAP INSTITUCIONAL
 def plot_institucional_chart():
@@ -1175,6 +1211,7 @@ with tab4:
 
             # Zone, volume e market cap
             zone = row.get('zone', 'N/A')
+            status = get_exhaustion_status(row)  # Adicionar coluna Status
             volume = row.get('total_volume', 0)
             market_cap = row.get('market_cap', 0)
 
@@ -1204,6 +1241,7 @@ with tab4:
                     f"Ratio: {ratio:.2f}",
                     f"Score: {score:.1f}",
                     f"Zone: {zone}",
+                    f"Status: {status}",
                     f"Vol: {volume_formatted}",
                     f"24h: {color_24h} {change_24h_str}"
                 ]

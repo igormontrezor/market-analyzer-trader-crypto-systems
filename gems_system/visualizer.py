@@ -2535,6 +2535,39 @@ def create_advanced_summary_table(top10, crypto_ranking, total_periods, historic
     """
 
 
+def get_exhaustion_status(row):
+    """
+    Identifica se a moeda está 'esticada' baseada em MC alto + Desaceleração
+    Usa as mesmas chaves que o GemsFinder já gera.
+    """
+    try:
+        # Recupera o Market Cap da linha atual
+        mc = float(row.get('market_cap', 0))
+
+        # O GemsFinder salva o timeframe_analysis como string JSON no CSV
+        analysis_raw = row.get('timeframe_analysis', '{}')
+        if isinstance(analysis_raw, str):
+            import json
+            analysis = json.loads(analysis_raw.replace("'", '"')) # Garante formato JSON
+        else:
+            analysis = analysis_raw
+
+        # Pega a tendência de aceleração (campo 'trend' do gems_finder.py)
+        trend = analysis.get('acceleration', {}).get('trend', 'stable')
+
+        # LÓGICA DE EXAUSTÃO: MC alto (> 35M) e tendência perdendo força
+        if mc > 35_000_000 and trend == 'decelerating':
+            return "⚠️ ESTICADA (Exaustão)"
+        elif trend == 'accelerating':
+            return "🚀 ACELERANDO"
+        elif trend == 'decelerating':
+            return "📉 DESACELERANDO"
+
+        return "➡️ ESTÁVEL"
+    except:
+        return "—"
+
+
 def create_interactive_table(df):
     """Tabela HTML estilizada igual à da comparação múltipla."""
 
@@ -2547,6 +2580,9 @@ def create_interactive_table(df):
             display_cols.append(col)
 
     table_df = df[[c for c in display_cols if c in df.columns]].copy()
+
+    # Adicionar coluna de Status Fluxo (Exaustão)
+    table_df['Status Fluxo'] = df.apply(get_exhaustion_status, axis=1)
 
     # Ordenar por score se disponível
     sort_col = 'final_score' if 'final_score' in table_df.columns else 'ratio' if 'ratio' in table_df.columns else None
@@ -2566,7 +2602,8 @@ def create_interactive_table(df):
         'price_change_percentage_24h': '24h%', 'ratio': 'Ratio', 'final_score': 'Score',
         'persistence_count_3d': '3d', 'persistence_count_7d': '7d', 'persistence_count_14d': '14d',
         'timeframe_classification': 'Classification', 'is_confirmed_leader': 'Leader',
-        'zone': 'Zone', 'momentum': 'Momentum', 'is_gold': 'Gold', 'rs_strong': 'RS'
+        'zone': 'Zone', 'momentum': 'Momentum', 'is_gold': 'Gold', 'rs_strong': 'RS',
+        'Status Fluxo': 'Status'
     }
     table_df.rename(columns=column_mapping, inplace=True)
 
@@ -2714,7 +2751,8 @@ def create_period_html(df, snapshot_info, index):
         'price_change_percentage_24h': '24h%', 'ratio': 'Ratio', 'final_score': 'Score',
         'persistence_count_3d': '3d', 'persistence_count_7d': '7d', 'persistence_count_14d': '14d',
         'timeframe_classification': 'Classification', 'is_confirmed_leader': 'Leader',
-        'zone': 'Zone', 'momentum': 'Momentum', 'is_gold': 'Gold', 'rs_strong': 'RS'
+        'zone': 'Zone', 'momentum': 'Momentum', 'is_gold': 'Gold', 'rs_strong': 'RS',
+        'Status Fluxo': 'Status'
     }
     table_df.rename(columns=column_mapping, inplace=True)
 
