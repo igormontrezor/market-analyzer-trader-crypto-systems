@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-05-10T16:41:05.784284+00:00",
+  "weekly": {
+    "date": "2026-05-03",
+    "others_bbp": 0.7640464500565073,
+    "usdt_d_bbp": 0.4109147576229463,
+    "others_touch_low": false,
+    "usdt_touch_high": false,
+    "usdt_touch_low": false
+  },
+  "monthly": {
+    "usdt_d_bbp": 0.7928642014976991
+  },
+  "regime": {
+    "buy_mode": true,
+    "sell_mode": false,
+    "capitulation_lock": false
+  },
+  "signal": {
+    "weekly_buy_trigger": false,
+    "tactical_rebound": false,
+    "weekly_sell_trigger": false
+  },
+  "funding_rate": 0.006407
+}

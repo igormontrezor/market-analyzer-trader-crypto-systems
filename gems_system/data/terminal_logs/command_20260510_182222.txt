@@ -1,0 +1,106 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-05-10 18:22:22
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+✅ Usando cache (válido até: 00:04:37)
+✅ Usando cache existente: 59 gems
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+📋 Cache: 10 gems encontradas
+✅ 50m_range: 10 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+📋 Cache: 15 gems encontradas
+✅ 10_49m_range: 15 gems
+📋 Cache válido - Nenhum cache atualizado
+
+📊 ANÁLISE - 50M_RANGE:
+
+📊 ANÁLISE DAS 10 GEMS:
+================================================================================
+Market Cap - Médio: $74,262,625
+Market Cap - Min: $52,640,147, Max: $96,995,489
+Volume - Médio: $28,994,160
+Volume - Min: $13,232,602, Max: $55,762,855
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 7 gems
+  🟠 Strong (0.5-1.0): 3 gems
+  🔥 Breakout (>1.0): 0 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/10 (0.0%)
+  💪 Resiliência de Preço: 0/10 (0.0%)
+  👑 POTENCIAL OURO: 0/10 (0.0%)
+  🚨 WASH TRADING: 0/10 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 10 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. not      | MC: $  60,481,015 | Vol: $  47,526,880 | Ratio: 0.79 | S 📊📈    📊 | Notcoin
+ 2. api3     | MC: $  52,640,147 | Vol: $  34,925,049 | Ratio: 0.66 | S 📊📈    📊 | Api3
+ 3. w        | MC: $  91,716,272 | Vol: $  55,762,855 | Ratio: 0.61 | S 📊📈    📊 | Wormhole
+ 4. rez      | MC: $  60,765,830 | Vol: $  22,657,616 | Ratio: 0.37 | E 📊📈    📊 | Renzo
+ 5. troll    | MC: $  90,227,526 | Vol: $  30,734,224 | Ratio: 0.34 | E 📊📈    📊 | TROLL
+ 6. grx      | MC: $  86,657,217 | Vol: $  26,064,892 | Ratio: 0.30 | E 📊📈    📊 | GRX Chain
+ 7. brett    | MC: $  96,995,489 | Vol: $  26,593,386 | Ratio: 0.27 | E 📊📈    📊 | Brett
+ 8. sushi    | MC: $  68,236,989 | Vol: $  16,391,229 | Ratio: 0.24 | E 📊📈    📊 | Sushi
+ 9. popcat   | MC: $  70,246,179 | Vol: $  16,052,869 | Ratio: 0.23 | E 📊📈    📊 | Popcat
+10. moodeng  | MC: $  64,659,590 | Vol: $  13,232,602 | Ratio: 0.20 | E 📊📈    📊 | Moo Deng
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 15 GEMS:
+================================================================================
+Market Cap - Médio: $24,713,864
+Market Cap - Min: $15,121,956, Max: $43,896,233
+Volume - Médio: $21,314,280
+Volume - Min: $8,087,325, Max: $51,097,979
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 1 gems
+  🟠 Strong (0.5-1.0): 10 gems
+  🔥 Breakout (>1.0): 4 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/15 (0.0%)
+  💪 Resiliência de Preço: 0/15 (0.0%)
+  👑 POTENCIAL OURO: 0/15 (0.0%)
+  🚨 WASH TRADING: 0/15 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 15 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. psg      | MC: $  19,358,198 | Vol: $  51,097,979 | Ratio: 2.64 | B 📊📈    📊 | Paris Saint-Germain Fan Token
+ 2. og       | MC: $  16,925,400 | Vol: $  21,272,354 | Ratio: 1.26 | B 📊📈    📊 | OG Fan Token
+ 3. ponke    | MC: $  23,711,369 | Vol: $  27,142,159 | Ratio: 1.14 | B 📊📈    📊 | PONKE
+ 4. dogs     | MC: $  35,814,137 | Vol: $  40,901,301 | Ratio: 1.14 | B 📊📈    📊 | Dogs
+ 5. tst      | MC: $  20,696,104 | Vol: $  18,928,861 | Ratio: 0.91 | S 📊📈    📊 | Test
+ 6. rss3     | MC: $  18,343,555 | Vol: $  16,248,839 | Ratio: 0.89 | S 📊📈    📊 | RSS3
+ 7. cvc      | MC: $  26,971,341 | Vol: $  19,315,789 | Ratio: 0.72 | S 📊📈    📊 | Civic
+ 8. cpool    | MC: $  33,419,704 | Vol: $  23,590,764 | Ratio: 0.71 | S 📊📈    📊 | Clearpool
+ 9. bank     | MC: $  16,661,736 | Vol: $  11,752,710 | Ratio: 0.71 | S 📊📈    📊 | Lorenzo Protocol
+10. knc      | MC: $  27,115,408 | Vol: $  17,779,847 | Ratio: 0.66 | S 📊📈    📊 | Kyber Network Crystal
+
+📋 Usando dados existentes - Nenhum snapshot criado
+
+🎉 GEMS FINDER CONCLUÍDO!
+📊 Total de gems: 25
+📁 Arquivos salvos para análise histórica:
+   - snapshots/gems_*.csv (por faixa)
+   - snapshots/gems_consolidated_*.csv (completo)
+   - Cache válido por 12 horas (evita requisições excessivas)
+   - Snapshots criados apenas com dados novos

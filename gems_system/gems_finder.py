@@ -61,7 +61,7 @@ class GemsFinder:
 
         self.macro_dir = os.path.join(self.cache_dir, 'macro')
         os.makedirs(self.macro_dir, exist_ok=True)
-        self.macro_timing_path = os.path.join(self.macro_dir, 'macro_timing.json')
+        self.macro_timing_path = os.path.join(self.macro_dir, 'macro_timing_cg.json')
         self.macro_raw_cache_path = os.path.join(self.macro_dir, 'macro_raw_cache.json')
 
     def _coingecko_get(self, url: str, params: Optional[Dict[str, Any]] = None, timeout: int = 20) -> Any:

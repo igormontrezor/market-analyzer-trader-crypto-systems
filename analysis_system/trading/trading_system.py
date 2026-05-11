@@ -8,7 +8,7 @@ import numpy as np
 st.set_page_config(
     page_title="MONTREZOR - Trading System",
     layout="wide",
-    page_icon="💎"
+    page_icon="📊"
 )
 
 # ============================================================
@@ -179,9 +179,27 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ============================================================
-# 4. CABEÇALHO
+# 4. ESTILO CSS PADRÃO
 # ============================================================
-st.title("💎 Sistema de Trading — Igor Montrezor")
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
+[data-testid="stAppViewContainer"]  { background:#070B0F; }
+[data-testid="stSidebar"]           { background:#0D1117; border-right:1px solid #21262D; }
+[data-testid="stSidebar"] *         { font-family:'JetBrains Mono',monospace !important; font-size:12px; }
+h1,h2,h3                            { font-family:'JetBrains Mono',monospace !important; }
+.sec { font-size:10px; letter-spacing:2px; color:#484F58; text-transform:uppercase;
+       border-bottom:1px solid #21262D; padding-bottom:4px; margin:12px 0 8px; }
+.stButton>button { background:#161B22 !important; border:1px solid #30363D !important;
+  color:#C9D1D9 !important; border-radius:6px !important; }
+.stButton>button:hover { border-color:#58A6FF !important; color:#58A6FF !important; }
+</style>
+""", unsafe_allow_html=True)
+
+# ============================================================
+# 5. CABEÇALHO
+# ============================================================
+st.title("Montrezor Trading System")
 st.markdown(
     "<p style='color:#8b949e;margin-top:-15px;margin-bottom:30px;'>"
     "Método interativo passo a passo para execução de alta performance.</p>",
@@ -887,4 +905,5 @@ with tab_sim:
         <span style="color:#8B7FD4">· ·</span> entrada P2
       </span>
     </div>
+    <br><p style='text-align: center; color: #484f58; font-size: 12px;'>Montrezor Analysis System | Powered by Igor Montrezor</p>
     """, unsafe_allow_html=True)

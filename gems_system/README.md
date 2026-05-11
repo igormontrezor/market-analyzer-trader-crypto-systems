@@ -21,6 +21,11 @@ GEMS SYSTEM is a sophisticated cryptocurrency analysis platform designed to iden
 - **Leader Identification**: Automated detection of confirmed market leaders
 - **Macro Timing Integration**: TradingView-based market regime analysis
 - **Standardized Visualization**: Consistent UI across single and multi-snapshot analysis
+- **Exhaustion Status Column**: MC + acceleration analysis for reversal signals
+- **Enhanced Range System**: 10M-49M range (expanded from 10M-20M)
+- **Advanced Signal Hierarchy**: Capitulation lock, tactical rebound, super alerts
+- **Watchlist Status Integration**: Real-time status tracking in watchlist
+- **Funding Rate Analysis**: Real-time funding rate with CSV logging
 
 ### 🛠️ Tech Stack
 - **Python 3.12+** with pandas, plotly, requests
@@ -67,6 +72,11 @@ GEMS SYSTEM é uma plataforma sofisticada de análise de criptomoedas projetada 
 - **Filtragem Inteligente**: Classificação baseada em zonas (Early Accumulation, Strong, Breakout)
 - **Rastreamento de Persistência**: Contadores cumulativos para performers consistentes
 - **Identificação de Líderes**: Detecção automatizada de líderes confirmados de mercado
+- **Coluna de Status de Exaustão**: Análise de reversão baseada em MC + aceleração
+- **Sistema de Faixa Aprimorado**: Range 10M-49M (expandido de 10M-20M)
+- **Hierarquia de Sinais Avançada**: Capitulation lock, tactical rebound, super alerts
+- **Integração de Status na Watchlist**: Acompanhamento de exaustão em tempo real
+- **Análise de Funding Rate**: Análise de funding em tempo real com logging histórico
 
 ### 🛠️ Stack Tecnológico
 - **Python 3.12+** com pandas, plotly, requests
@@ -175,6 +185,11 @@ results.sort_values("final_score", ascending=False).head(10)
 - ✅ **Standardized Visualization**: Consistent UI across single and multi-snapshot analysis
 - ✅ **Evolution Analysis**: Complete historical tracking and comparison
 - ✅ **Professional Styling**: Modern gradient-based UI design
+- ✅ **Exhaustion Status Analysis**: MC + acceleration-based reversal detection
+- ✅ **Enhanced Range Tracking**: 10M-49M range for continuous growth monitoring
+- ✅ **Advanced Signal System**: Capitulation lock, tactical rebound, super alerts
+- ✅ **Watchlist Status Tracking**: Real-time exhaustion status in watchlist
+- ✅ **Funding Rate Integration**: Real-time funding analysis with historical logging
 
 ## 📊 Key Metrics
 
@@ -296,6 +311,11 @@ run.bat                    # Execução automatizada
 - ✅ **Rastreamento de Persistência**: Contadores cumulativos
 - ✅ **Detecção de Líderes**: Identificação automatizada de líderes
 - ✅ **Snapshots Históricos**: Armazenamento CSV + JSON
+- ✅ **Análise de Exaustão**: Detecção de reversão baseada em MC + aceleração
+- ✅ **Rastreamento de Faixa Aprimorado**: Range 10M-49M para acompanhamento contínuo
+- ✅ **Sistema de Sinais Avançado**: Capitulation lock, tactical rebound, super alerts
+- ✅ **Acompanhamento de Status na Watchlist**: Status de exaustão em tempo real
+- ✅ **Integração de Funding Rate**: Análise de funding com logging histórico
 
 ### 📊 Métricas Principais
 

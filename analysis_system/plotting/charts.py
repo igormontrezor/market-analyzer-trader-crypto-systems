@@ -17,6 +17,7 @@ class ChartPlotter:
         buy_signals: Optional[pd.Series] = None,
         sell_signals: Optional[pd.Series] = None,
         show_volume: bool = False,
+        show: bool = True,
     ):
         """Cria gráfico de candlestick com sinais de compra/venda"""
 
@@ -110,7 +111,10 @@ class ChartPlotter:
             height=600 if show_volume else 400
         )
 
-        fig.show()
+        if show:
+            fig.show()
+
+        return fig
 
     @staticmethod
     def plot_indicator_with_signals(
@@ -120,6 +124,8 @@ class ChartPlotter:
         buy_signals: Optional[pd.Series] = None,
         sell_signals: Optional[pd.Series] = None,
         indicator_name: str = "Indicator"
+        ,
+        show: bool = True,
     ):
         """Plota indicador com sinais"""
 
@@ -177,13 +183,18 @@ class ChartPlotter:
             height=600
         )
 
-        fig.show()
+        if show:
+            fig.show()
+
+        return fig
 
     @staticmethod
     def plot_multiple_indicators(
         data: Dict[str, pd.Series],
         title: str,
         subplot_titles: Optional[List[str]] = None
+        ,
+        show: bool = True,
     ):
         """Plota múltiplos indicadores em subplots"""
 
@@ -209,4 +220,7 @@ class ChartPlotter:
             height=200 * n_indicators
         )
 
-        fig.show()
+        if show:
+            fig.show()
+
+        return fig

@@ -119,13 +119,37 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
     macro_path = os.path.join(macro_dir, 'macro_timing.json')
     now = datetime.now()
 
-    try:
-        tv = TvDatafeed()
-        usdt_weekly = tv.get_hist(symbol='USDT.D', exchange='CRYPTOCAP', interval=Interval.in_weekly, n_bars=200)
-        usdt_monthly = tv.get_hist(symbol='USDT.D', exchange='CRYPTOCAP', interval=Interval.in_monthly, n_bars=100)
-        others_weekly = tv.get_hist(symbol='OTHERS', exchange='CRYPTOCAP', interval=Interval.in_weekly, n_bars=200)
-    except Exception as e:
-        raise RuntimeError(f"Erro TV: {e}")
+    # Tentar conexão com retry para conexões instáveis
+    max_retries = 3
+    retry_delay = 2  # segundos
+
+    for attempt in range(max_retries):
+        try:
+            print(f"🔄 Tentando conexão TradingView (tentativa {attempt + 1}/{max_retries})...")
+            tv = TvDatafeed()
+            usdt_weekly = tv.get_hist(symbol='USDT.D', exchange='CRYPTOCAP', interval=Interval.in_weekly, n_bars=200)
+            usdt_monthly = tv.get_hist(symbol='USDT.D', exchange='CRYPTOCAP', interval=Interval.in_monthly, n_bars=100)
+            others_weekly = tv.get_hist(symbol='OTHERS', exchange='CRYPTOCAP', interval=Interval.in_weekly, n_bars=200)
+
+            # Validar se os dados foram recebidos corretamente
+            if usdt_weekly is None or usdt_weekly.empty:
+                raise RuntimeError("Falha ao obter dados USDT.D weekly")
+            if usdt_monthly is None or usdt_monthly.empty:
+                raise RuntimeError("Falha ao obter dados USDT.D monthly")
+            if others_weekly is None or others_weekly.empty:
+                raise RuntimeError("Falha ao obter dados OTHERS weekly")
+
+            print("✅ Dados TradingView recebidos com sucesso")
+            break  # Sucesso, sair do loop
+
+        except Exception as e:
+            print(f"⚠️ Tentativa {attempt + 1} falhou: {e}")
+            if attempt < max_retries - 1:
+                print(f"⏱️ Aguardando {retry_delay} segundos antes da próxima tentativa...")
+                import time
+                time.sleep(retry_delay)
+            else:
+                raise RuntimeError(f"Erro TV após {max_retries} tentativas: {e}")
 
     def _bb_percent(series: pd.Series, period: int = 20, std_mult: float = 2.0) -> pd.Series:
         ma = series.rolling(period).mean()
@@ -198,54 +222,6 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
         "tactical_rebound": bool(sell_mode and weekly_state["usdt_touch_high"] and funding_rate < 0 and not capitulation_lock),
         "weekly_sell_trigger": bool(sell_mode and (weekly_state["usdt_touch_low"] or curr_w_others >= 1)),
     }
-
-    payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "weekly": weekly_state,
-        "monthly": {"usdt_d_bbp": float(curr_m_usdt)},
-        "regime": {
-            "buy_mode": bool(buy_mode),
-            "sell_mode": bool(sell_mode),
-            "capitulation_lock": capitulation_lock
-        },
-        "signal": signal,
-        "funding_rate": funding_rate
-    }
-    # (No final da função _build_macro_timing, pouco ANTES da definição do dicionário 'payload')
-
-    # --- LÓGICA E REGISTRO DO FUNDING RATE ---
-    import requests
-    try:
-        r = requests.get("https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT", timeout=2)
-        if r.status_code == 200:
-            funding_rate = float(r.json().get('lastFundingRate', 0)) * 100
-        else:
-            funding_rate = 0.02
-    except:
-        funding_rate = 0.02
-
-    # Registrar no CSV de Histórico (Formato unificado com app.py)
-    funding_csv_path = os.path.join(macro_dir, 'funding_rate_history.csv')
-
-    now_dt = datetime.now()
-    timestamp_hour = now_dt.strftime("%Y-%m-%d %H:00:00") # Arredonda para a hora cheia
-
-    already_logged = False
-    if os.path.exists(funding_csv_path):
-        try:
-            with open(funding_csv_path, 'r', encoding='utf-8') as f:
-                lines = f.readlines()
-                if lines and timestamp_hour in lines[-1]:
-                    already_logged = True
-        except:
-            pass
-
-    if not already_logged:
-        file_exists = os.path.exists(funding_csv_path)
-        with open(funding_csv_path, 'a', encoding='utf-8') as f:
-            if not file_exists:
-                f.write("timestamp,funding_rate\n")
-            f.write(f"{timestamp_hour},{funding_rate:.6f}\n")
 
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),

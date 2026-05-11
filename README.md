@@ -24,6 +24,10 @@ Advanced technical analysis system for stocks, commodities, and traditional fina
 - **Risk Management**: Position sizing and stop-loss calculations
 - **Backtesting Engine**: Historical strategy validation
 - **Market Scanner**: Multi-timeframe analysis across asset classes
+- **Macro Timing System**: USDT.D BB%B analysis with regime detection
+- **Exhaustion Status**: Advanced MC + acceleration analysis for reversal signals
+- **Enhanced Signal Hierarchy**: Capitulation lock, tactical rebound, super alerts
+- **Funding Rate Integration**: Real-time funding analysis with CSV logging
 
 #### 🛠️ Technology Stack
 - **Python 3.12+** with pandas, numpy, scipy
@@ -47,6 +51,10 @@ Specialized system for identifying low market cap cryptocurrency gems with high 
 - **Smart Filtering**: Zone-based classification (Early Accumulation, Strong, Breakout)
 - **Persistence Tracking**: Cumulative counters for consistent performers
 - **Leader Detection**: Automated market leader identification
+- **Enhanced Range System**: 10M-49M range for better growth tracking
+- **Exhaustion Analysis**: MC + acceleration-based reversal detection
+- **Streamlit Integration**: Professional web interface with real-time updates
+- **Watchlist Management**: Advanced tracking with status indicators
 
 #### 🛠️ Technology Stack
 - **Python 3.12+** with pandas, plotly, requests
@@ -130,6 +138,10 @@ Sistema avançado de análise técnica para ações, commodities e instrumentos 
 - **Gestão de Risco**: Dimensionamento de posição e cálculos de stop-loss
 - **Backtesting**: Validação histórica de estratégias
 - **Scanner de Mercado**: Análise multi-timeframe across asset classes
+- **Sistema de Macro Timing**: Análise USDT.D BB%B com detecção de regime
+- **Status de Exaustão**: Análise avançada MC + aceleração para sinais de reversão
+- **Hierarquia de Sinais Aprimorada**: Capitulation lock, tactical rebound, super alerts
+- **Integração de Funding Rate**: Análise de funding em tempo real com logging CSV
 
 #### 🛠️ Stack Tecnológico
 - **Python 3.12+** com pandas, numpy, scipy
@@ -142,19 +154,23 @@ Sistema avançado de análise técnica para ações, commodities e instrumentos 
 
 ## 💎 **CRYPTO GEMS SYSTEM**
 
-### 🚀 Descoberta de Criptomoedas
+### Descoberta de Criptomoedas
 Sistema especializado para identificar criptomoedas de baixa capitalização (gems) com alto potencial de crescimento usando inteligência social e rastreamento de persistência multi-timeframe.
 
-#### ✨ Recursos Principais
+#### Recursos Principais
 - **Análise Multi-Timeframe**: Rastreamento de persistência 3, 7, 14 dias
-- **Inteligência Social**: API YouTube + scraping de sentimento Telegram
-- **Scoring Técnico**: Algoritmos compostos quantitativos + sociais
-- **Dashboard Interativo**: Visualização Plotly com métricas completas
-- **Filtragem Inteligente**: Classificação por zonas (Early Accumulation, Strong, Breakout)
+- **Inteligência Social**: API YouTube + scraping Telegram em tempo real para análise de sentimento
+- **Scoring Técnico**: Algoritmos avançados de scoring quantitativo e social
+- **Dashboard Interativo**: Visualização baseada em Plotly com métricas completas
+- **Filtragem Inteligente**: Classificação baseada em zonas (Early Accumulation, Strong, Breakout)
 - **Rastreamento de Persistência**: Contadores cumulativos para performers consistentes
-- **Detecção de Líderes**: Identificação automatizada de líderes de mercado
+- **Detecção de Líderes**: Detecção automatizada de líderes confirmados de mercado
+- **Sistema de Faixa Aprimorado**: Range 10M-49M para melhor acompanhamento de crescimento
+- **Análise de Exaustão**: Detecção de reversão baseada em MC + aceleração
+- **Integração Streamlit**: Interface web profissional com atualizações em tempo real
+- **Gestão de Watchlist**: Acompanhamento avançado com indicadores de status
 
-#### 🛠️ Stack Tecnológico
+#### Stack Tecnológico
 - **Python 3.12+** com pandas, plotly, requests
 - **Fontes de Dados**: CoinMarketCap API, YouTube API, scraping Telegram
 - **Armazenamento**: Snapshots CSV + dados diários JSON

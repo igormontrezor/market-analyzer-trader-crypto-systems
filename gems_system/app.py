@@ -9,11 +9,17 @@ import requests
 from collections import Counter
 from datetime import datetime
 import time
+import sys
+import webbrowser
+import time
+from streamlit_autorefresh import st_autorefresh
+
 
 # Importações para o Heatmap
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from tvDatafeed import TvDatafeed, Interval
+from subprocess import Popen, DEVNULL
 
 # Importa as bibliotecas do sistema
 import visualizer
@@ -27,13 +33,28 @@ def get_exhaustion_status(row):
         # Recupera o Market Cap da linha atual
         mc = float(row.get('market_cap', 0))
 
-        # O GemsFinder salva o timeframe_analysis como string JSON no CSV
+        # O GemsFinder salva o timeframe_analysis como dicionário Python no CSV
         analysis_raw = row.get('timeframe_analysis', '{}')
+
+        # Tratar diferentes formatos possíveis
         if isinstance(analysis_raw, str):
-            import json
-            analysis = json.loads(analysis_raw.replace("'", '"')) # Garante formato JSON
-        else:
+            # Se for string, tentar fazer parse JSON
+            try:
+                analysis = json.loads(analysis_raw.replace("'", '"'))
+            except json.JSONDecodeError:
+                # Se falhar, pode ser dicionário Python como string
+                try:
+                    # Avaliar a string como dicionário Python
+                    analysis = eval(analysis_raw)
+                except:
+                    # Se tudo falhar, usar dicionário vazio
+                    analysis = {}
+        elif isinstance(analysis_raw, dict):
+            # Se já for dicionário, usar diretamente
             analysis = analysis_raw
+        else:
+            # Se for None ou outro tipo, usar dicionário vazio
+            analysis = {}
 
         # Pega a tendência de aceleração (campo 'trend' do gems_finder.py)
         trend = analysis.get('acceleration', {}).get('trend', 'stable')
@@ -63,12 +84,6 @@ with st.sidebar:
 
     # Botão para abrir automaticamente
     if st.button("🚀 Abrir Trading System", type="primary", use_container_width=True):
-        import subprocess
-        import sys
-        import webbrowser
-        import time
-        import os
-
         try:
             st.info("🔄 Iniciando Trading System...")
 
@@ -86,16 +101,15 @@ with st.sidebar:
             process = subprocess.Popen(
                 [sys.executable, "-m", "streamlit", "run", trading_file, "--server.port", "8502"],
                 cwd=trading_dir,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
+                stdout=subprocess.DEVNULL,  # 🟢 MODIFICADO AQUI
+                stderr=subprocess.DEVNULL   # 🟢 MODIFICADO AQUI
             )
 
-            # Esperar e abrir no navegador
+            # Esperar o Streamlit abrir automaticamente
             time.sleep(3)
-            webbrowser.open("http://localhost:8502")
 
-            st.success("✅ Trading System aberto em http://localhost:8502")
-            st.info("🌐 Sistema iniciado em background!")
+            st.success("✅ Trading System iniciado em http://localhost:8502")
+            st.info("🌐 Sistema aberto automaticamente pelo Streamlit!")
 
         except Exception as e:
             st.error(f"❌ Erro: {e}")
@@ -104,11 +118,50 @@ with st.sidebar:
 
     st.markdown("*Clique para abrir automaticamente*")
     st.markdown("---")
+
+    st.markdown("### 📊 Market Analysis")
+
+    # Botão para abrir automaticamente
+    if st.button("📈 Abrir Market Analysis", type="primary", use_container_width=True):
+        try:
+            st.info("🔄 Iniciando Market Analysis...")
+
+            # Caminhos relativos genéricos
+            current_dir = os.getcwd()
+            market_dir = os.path.abspath(os.path.join(current_dir, "..", "analysis_system", "web"))
+            market_file = os.path.join(market_dir, "market_analysis_app.py")
+
+            # Verificar se arquivo existe
+            if not os.path.exists(market_file):
+                st.error(f"❌ Arquivo não encontrado: {market_file}")
+                st.stop()
+
+            # Executar em background sem shell
+            process = subprocess.Popen(
+                [sys.executable, "-m", "streamlit", "run", market_file, "--server.port", "8503"],
+                cwd=market_dir,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
+
+            # Esperar o Streamlit abrir automaticamente
+            time.sleep(3)
+
+            st.success("✅ Market Analysis iniciado em http://localhost:8503")
+            st.info("🌐 Sistema aberto automaticamente pelo Streamlit!")
+
+        except Exception as e:
+            st.error(f"❌ Erro: {e}")
+            st.code(f"Python: {sys.executable}")
+            st.code(f"Arquivo: {market_file}")
+
+    st.markdown("*Clique para abrir automaticamente*")
+    st.markdown("---")
 # --- FIM DA ADIÇÃO ---
 
 # Título principal no topo
-st.title("💎 Sistema de Macro e Gems - Igor Montrezor")
-st.markdown("<p style='color: #8b949e; margin-top: -15px; margin-bottom: 30px;'>Método interativo passo a passo para execução de alta performance.</p>", unsafe_allow_html=True)
+st.title("Montrezor Financial Hub")
+st.markdown("<p style='color: #8b949e; margin-top: -15px; margin-bottom: 30px;'>Plataforma integrada de análise, operação e gestão de mercado</p>", unsafe_allow_html=True)
 
 # Terminal session state e funções
 if 'terminal_output' not in st.session_state:
@@ -139,32 +192,34 @@ def add_terminal_output(message, msg_type="info"):
     if len(st.session_state.terminal_output) > 200:
         st.session_state.terminal_output = st.session_state.terminal_output[-200:]
 
-def run_command_with_terminal(command, description=""):
-    """Executa comando e mostra output em tempo real no terminal"""
-    # Formatar comando para exibição mais limpa
-    if isinstance(command, list):
-        if len(command) == 3 and command[1] == '-c':
-            # É um comando Python com -c
-            cmd_display = f"python -c \"{command[2]}\""
-        else:
-            # Outra lista de comandos
-            cmd_display = " ".join(command)
-    else:
-        cmd_display = str(command)
+def run_command_with_terminal(command, description="Executando comando..."):
+    """Executa comando assíncrono e redireciona para arquivo de log"""
+    import subprocess
+    import sys
+    from datetime import datetime
 
-    add_terminal_output(f"$ {cmd_display}", "command")
-    if description:
-        add_terminal_output(f"# {description}", "info")
+    # Criar arquivo de log único
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_file = f"data/terminal_logs/command_{timestamp}.txt"
+    os.makedirs(os.path.dirname(log_file), exist_ok=True)
 
-    # Executar comando e mostrar resultado final
+    add_terminal_output(f"🚀 {description}", "info")
+    add_terminal_output(f"💻 Comando: {' '.join(command) if isinstance(command, list) else command}", "info")
+    add_terminal_output(f"📝 Log: {log_file}", "info")
+    add_terminal_output("─" * 80, "info")
+
     try:
-        import subprocess
-        import sys
+        # Redirecionar saída para arquivo de forma assíncrona
+        with open(log_file, 'w', encoding='utf-8') as f:
+            f.write(f"=== {description} ===\n")
+            f.write(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write(f"Comando: {' '.join(command) if isinstance(command, list) else command}\n")
+            f.write("=" * 80 + "\n\n")
 
-        # Usar Popen para output em tempo real
+        # Iniciar processo em background
         process = subprocess.Popen(
             command if isinstance(command, list) else command.split(),
-            stdout=subprocess.PIPE,
+            stdout=open(log_file, 'a', encoding='utf-8'),
             stderr=subprocess.STDOUT,
             text=True,
             bufsize=1,
@@ -173,34 +228,90 @@ def run_command_with_terminal(command, description=""):
             errors='replace'
         )
 
-        output_lines = []
-        while True:
-            output = process.stdout.readline()
-            if output == '' and process.poll() is not None:
-                break
-            if output:
-                line = output.strip()
-                output_lines.append(line)
-                # Colorir baseado no conteúdo
-                if "" in line or "success" in line.lower():
-                    add_terminal_output(line, "success")
-                elif "" in line or "error" in line.lower() or "failed" in line.lower():
-                    add_terminal_output(line, "error")
-                elif "" in line or "warning" in line.lower():
-                    add_terminal_output(line, "warning")
-                else:
-                    add_terminal_output(line, "info")
+        # Salvar PID para controle
+        with open(f"data/terminal_logs/active_processes.json", 'a', encoding='utf-8') as f:
+            import json
+            json.dump({
+                "pid": process.pid,
+                "command": ' '.join(command) if isinstance(command, list) else command,
+                "log_file": log_file,
+                "timestamp": datetime.now().isoformat(),
+                "description": description
+            }, f)
+            f.write('\n')
 
-        add_terminal_output("", "success")
+        add_terminal_output(f"🔄 Processo iniciado em background (PID: {process.pid})", "success")
+        add_terminal_output(f"⏱️ Use o refresh automático para acompanhar a execução", "info")
+
+        return process.pid
 
     except Exception as e:
-        add_terminal_output(f"Erro ao executar comando: {str(e)}", "error")
+        add_terminal_output(f"Erro ao iniciar processo: {str(e)}", "error")
+        return None
+
+def read_terminal_logs(log_file, max_lines=100):
+    """Lê as últimas linhas do arquivo de log"""
+    try:
+        if not os.path.exists(log_file):
+            return [("error", " Arquivo de log não encontrado...")]
+
+        with open(log_file, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+
+        # Se max_lines for None, ler o arquivo completo
+        if max_lines is None:
+            recent_lines = lines
+        else:
+            # Pegar últimas max_lines linhas
+            recent_lines = lines[-max_lines:] if len(lines) > max_lines else lines
+
+        # Processar cores
+        processed_lines = []
+        for line in recent_lines:
+            line = line.strip()
+            if not line:
+                continue
+
+            # Manter formatação de cores baseada no conteúdo
+            if "✅" in line or "success" in line.lower():
+                processed_lines.append(("success", line))
+            elif "❌" in line or "error" in line.lower() or "failed" in line.lower():
+                processed_lines.append(("error", line))
+            elif "⚠️" in line or "warning" in line.lower():
+                processed_lines.append(("warning", line))
+            else:
+                processed_lines.append(("info", line))
+
+        return processed_lines
+
+    except Exception as e:
+        return [("error", f"Erro ao ler log: {str(e)}")]
+
+def get_active_logs():
+    """Retorna lista de arquivos de log ativos"""
+    import glob
+    log_pattern = "data/terminal_logs/command_*.txt"
+    log_files = glob.glob(log_pattern)
+
+    # Ordenar por data de modificação (mais recentes primeiro)
+    log_files.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+
+    return log_files[:10]  # Últimos 10 logs
 
 # 2. CSS PARA DESIGN DE ALTA PERFORMANCE E HUD
 st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
+    [data-testid="stAppViewContainer"]  { background:#070B0F; }
+    [data-testid="stSidebar"]           { background:#0D1117; border-right:1px solid #21262D; }
+    [data-testid="stSidebar"] *         { font-family:'JetBrains Mono',monospace !important; font-size:12px; }
+    h1,h2,h3                            { font-family:'JetBrains Mono',monospace !important; }
+    .sec { font-size:10px; letter-spacing:2px; color:#484F58; text-transform:uppercase;
+           border-bottom:1px solid #21262D; padding-bottom:4px; margin:12px 0 8px; }
+    .stButton>button { background:#161B22 !important; border:1px solid #30363D !important;
+      color:#C9D1D9 !important; border-radius:6px !important; }
+    .stButton>button:hover { border-color:#58A6FF !important; color:#58A6FF !important; }
     .block-container { padding-top: 1rem; padding-bottom: 0rem; max-width: 98%; }
-    [data-testid="stAppViewContainer"] { background-color: #0b0e11; }
 
     /* Cards e Containers Principais */
     .stColumn > div {
@@ -213,7 +324,7 @@ st.markdown("""
 
     /* Espaço no topo para evitar barra do Streamlit */
     .block-container {
-        padding-top: 2rem;
+        padding-top: 4rem;
         max-width: 95%;
     }
     [data-testid="stAppViewContainer"] {
@@ -301,41 +412,6 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-@st.cache_data(ttl=1800)
-def get_btc_funding_rate_real():
-    try:
-        url = "https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT"
-        response = requests.get(url, timeout=5)
-        rate = float(response.json().get('lastFundingRate', 0)) * 100
-
-        # REGISTRO EM CSV (Histórico de 1 em 1 hora unificado)
-        csv_path = os.path.join("data", "macro", "funding_rate_history.csv")
-        os.makedirs(os.path.dirname(csv_path), exist_ok=True)
-
-        now = datetime.now()
-        timestamp_hour = now.strftime("%Y-%m-%d %H:00:00") # Arredonda para a hora cheia
-
-        # Verifica se já registrou essa hora para não duplicar
-        already_logged = False
-        if os.path.exists(csv_path):
-            try:
-                with open(csv_path, 'r', encoding='utf-8') as f:
-                    lines = f.readlines()
-                    if lines and timestamp_hour in lines[-1]:
-                        already_logged = True
-            except:
-                pass
-
-        if not already_logged:
-            file_exists = os.path.exists(csv_path)
-            with open(csv_path, 'a', encoding='utf-8') as f:
-                if not file_exists:
-                    f.write("timestamp,funding_rate\n")
-                f.write(f"{timestamp_hour},{rate:.6f}\n")
-
-        return rate
-    except:
-        return 0.01
 
 def get_snapshots():
     path = os.path.join("data", "snapshots")
@@ -343,7 +419,7 @@ def get_snapshots():
     files = glob.glob(os.path.join(path, "*.csv"))
     return sorted(files, reverse=True)
 
-@st.cache_data
+@st.cache_data(ttl=900)  # 15 minutos para limitar requisições mensais
 def get_macro_data():
     path = os.path.join("data", "macro", "macro_timing.json")
 
@@ -362,7 +438,7 @@ def get_macro_data():
 
                 buy_mode = regime.get("buy_mode", False)
                 sell_mode = regime.get("sell_mode", False)
-                res["capitulation_lock"] = regime.get("capitulation_lock", False) # ADIÇÃO
+                res["capitulation_lock"] = regime.get("capitulation_lock", False)
 
                 if buy_mode: res["status"] = "COMPRA"
                 elif sell_mode: res["status"] = "VENDA"
@@ -376,10 +452,11 @@ def get_macro_data():
                 weekly_sell_trigger = signal.get("weekly_sell_trigger", False)
 
                 res["buy_trigger"] = weekly_buy_trigger
-                res["sell_trigger"] = weekly_sell_trigger # ← LINHA ADICIONADA AQUI
+                res["sell_trigger"] = weekly_sell_trigger
                 res["rebound"] = signal.get("tactical_rebound", False)
 
-                funding_rate = get_btc_funding_rate_real()
+                # Puxa o dado mastigado que o visualizer.py já salvou no JSON
+                funding_rate = data.get("funding_rate", 0.01)
                 res["funding_rate"] = funding_rate
 
                 res["funding_signal"] = "NEUTRAL"
@@ -406,7 +483,7 @@ def get_macro_data():
         except: pass
     return res
 
-@st.cache_data(ttl=1800)
+@st.cache_data(ttl=900)  # 15 minutos para consistência e limite de requisições
 def get_real_records(snapshots):
     if not snapshots: return "0 registros", "Nenhuma", "Nenhuma"
     all_symbols = []; symbol_scores = {}
@@ -494,18 +571,138 @@ with col_right:
         </div>
     """, unsafe_allow_html=True)
 
-st.code("💎 Montrezor Central - Mesa de Operações", language=None)
+st.code("Montrezor Central - Mesa de Operações", language=None)
 
 # Terminal logo abaixo do título
-with st.expander("🖥️ Terminal (Tempo Real)", expanded=True):
-    # Construir texto do terminal
-    terminal_text = "🖥️ MONTREZOR TERMINAL\n" + "="*50 + "\n"
+with st.expander("🖥️ Terminal (Assíncrono - Auto Refresh)", expanded=True):
+    # Configurar refresh automático a cada 3 segundos
+    st_autorefresh(interval=3000, limit=None, key="terminal_refresh")
 
-    for entry in st.session_state.terminal_output:
-        terminal_text += f"[{entry['timestamp']}] {entry['message']}\n"
+    # Aba para selecionar visualização
+    tab1, tab2 = st.tabs(["📋 Logs Ativos", "🖥️ Terminal Principal"])
 
-    # Mostrar como código
-    st.code(terminal_text, language=None)
+    with tab1:
+        st.markdown("### 📝 Logs de Processos em Execução")
+
+        # Obter logs ativos
+        active_logs = get_active_logs()
+
+        if active_logs:
+            selected_log = st.selectbox(
+                "Selecione um log para visualizar:",
+                active_logs,
+                format_func=lambda x: os.path.basename(x).replace('command_', '').replace('.txt', '')
+            )
+
+            if selected_log:
+                # Opção para ver mais linhas do log
+                col_view1, col_view2 = st.columns([2, 1])
+
+                with col_view1:
+                    view_mode = st.radio(
+                        "🔍 Modo de Visualização:",
+                        ["Últimas 100 linhas", "Últimas 500 linhas", "Log Completo"],
+                        horizontal=True
+                    )
+
+                with col_view2:
+                    if st.button("🔄 Atualizar Log"):
+                        st.rerun()
+
+                # Definir número de linhas baseado no modo
+                max_lines = 100 if view_mode == "Últimas 100 linhas" else 500 if view_mode == "Últimas 500 linhas" else None
+
+                # Ler linhas do log selecionado
+                log_lines = read_terminal_logs(selected_log, max_lines=max_lines)
+
+                # Obter informações do arquivo
+                file_size = os.path.getsize(selected_log)
+                file_size_mb = file_size / (1024 * 1024)
+
+                # Contar linhas totais
+                with open(selected_log, 'r', encoding='utf-8') as f:
+                    total_lines = len(f.readlines())
+
+                # Construir texto do log
+                log_text = f"📄 {os.path.basename(selected_log)}\n"
+                log_text += f"📊 Tamanho: {file_size_mb:.2f} MB | 🔢 Linhas totais: {total_lines}\n"
+                log_text += f"👁️ Mostrando: {len(log_lines)} linhas ({'completo' if max_lines is None else f'últimas {max_lines}'})\n"
+                log_text += "="*60 + "\n"
+
+                for line_type, line_content in log_lines:
+                    if isinstance(line_content, list):
+                        for item in line_content:
+                            log_text += f"{item}\n"
+                    else:
+                        # Adicionar cores baseadas no tipo
+                        if line_type == "success":
+                            log_text += f"✅ {line_content}\n"
+                        elif line_type == "error":
+                            log_text += f"❌ {line_content}\n"
+                        elif line_type == "warning":
+                            log_text += f"⚠️ {line_content}\n"
+                        else:
+                            log_text += f"ℹ️ {line_content}\n"
+
+                st.code(log_text, language=None)
+
+                # Botão para limpar logs antigos
+                if st.button("🗑️ Limpar Logs Antigos", key="clean_logs"):
+                    import glob
+                    import shutil
+
+                    log_dir = "data/terminal_logs"
+                    old_logs = glob.glob(f"{log_dir}/command_*.txt")
+                    old_logs.sort(key=lambda x: os.path.getmtime(x))
+
+                    st.write(f"📊 Encontrados {len(old_logs)} logs no total:")
+
+                    # Mostrar logs que serão mantidos vs removidos
+                    if len(old_logs) > 5:
+                        to_keep = old_logs[-5:]  # 5 mais recentes
+                        to_remove = old_logs[:-5]  # mais antigos
+
+                        st.write(f"✅ **Manter (5 mais recentes):**")
+                        for log in to_keep:
+                            st.write(f"   - {os.path.basename(log)} ({os.path.getsize(log)} bytes)")
+
+                        st.write(f"🗑️ **Remover ({len(to_remove)} logs):**")
+                        for log in to_remove:
+                            st.write(f"   - {os.path.basename(log)} ({os.path.getsize(log)} bytes)")
+
+                        # Confirmar remoção
+                        if st.button("⚠️ Confirmar Remoção", key="confirm_remove"):
+                            removed_count = 0
+                            for old_log in to_remove:
+                                try:
+                                    if os.path.exists(old_log):
+                                        os.remove(old_log)
+                                        removed_count += 1
+                                        st.write(f"   ✅ Removido: {os.path.basename(old_log)}")
+                                    else:
+                                        st.write(f"   ⚠️ Arquivo não encontrado: {old_log}")
+                                except Exception as e:
+                                    st.write(f"   ❌ Erro ao remover {old_log}: {str(e)}")
+
+                            if removed_count > 0:
+                                st.success(f"✅ {removed_count} logs antigos removidos com sucesso!")
+                                time.sleep(2)
+                                st.rerun()
+                            else:
+                                st.warning("⚠️ Nenhum log foi removido.")
+                    else:
+                        st.info(f"📝 Total de logs ({len(old_logs)}) é menor ou igual ao limite (5). Nada para remover.")
+        else:
+            st.info("📝 Nenhum log ativo encontrado. Execute um comando para gerar logs.")
+
+    with tab2:
+        # Terminal principal (mensagens do sistema)
+        terminal_text = "🖥️ MONTREZOR TERMINAL\n" + "="*50 + "\n"
+
+        for entry in st.session_state.terminal_output:
+            terminal_text += f"[{entry['timestamp']}] {entry['message']}\n"
+
+        st.code(terminal_text, language=None)
 
     # Botões do terminal
     col_term1, col_term2, col_term3 = st.columns([1, 1, 1])
@@ -516,9 +713,9 @@ with st.expander("🖥️ Terminal (Tempo Real)", expanded=True):
                 df_watchlist = pd.read_csv("data/watchlist_selecionada.csv")
                 if not df_watchlist.empty:
                     add_terminal_output("📌 MINHA WATCHLIST ATUAL:", "info")
-                    add_terminal_output("═" * 80, "info")
-                    add_terminal_output(f"{'SYMBOL':<8} | {'MC':<8} | {'RATIO':<7} | {'SCORE':<6} | {'ZONE':<10} | {'STATUS':<12} | {'VOL':<8} | {'24H':<8} | {'7D':<8} | {'30D':<8}", "info")
-                    add_terminal_output("-" * 80, "info")
+                    add_terminal_output("═" * 100, "info")
+                    add_terminal_output(f"{'SYMBOL':<8} | {'MC':<8} | {'RATIO':<7} | {'SCORE':<6} | {'ZONE':<10} | {'STATUS':<12} | {'VOL':<8} | {'24H':<8} | {'7D':<8} | {'30D':<8} | {'DATA':<12}", "info")
+                    add_terminal_output("-" * 100, "info")
 
                     for _, row in df_watchlist.iterrows():
                         symbol = str(row.get('symbol', '')).upper()
@@ -555,9 +752,30 @@ with st.expander("🖥️ Terminal (Tempo Real)", expanded=True):
                         change_7d_formatted = safe_format(change_7d, format_change, "N/A     ")
                         change_30d_formatted = safe_format(change_30d, format_change, "N/A     ")
 
-                        add_terminal_output(f"{symbol:<8} | {mc_formatted:<8} | {ratio_formatted:<7} | {score_formatted:<6} | {zone_formatted:<10} | {status:<12} | {vol_formatted:<8} | {change_24h_formatted:<8} | {change_7d_formatted:<8} | {change_30d_formatted:<8}", "success")
+                        # Obter data de adição (se existir)
+                        data_adicionada = row.get('data_adicionada', 'N/A')
+                        if data_adicionada != 'N/A':
+                            # Formatar data para MM-DD-AA
+                            if isinstance(data_adicionada, str) and '-' in str(data_adicionada):
+                                # Se for formato YYYY-MM-DD HH:MM ou YYYY-MM-DD
+                                parts = str(data_adicionada).split('-')
+                                if len(parts) >= 3:
+                                    # Pegar ano (últimos 2 digits), mês e dia
+                                    year_short = parts[0][-2:]  # Últimos 2 dígitos do ano
+                                    day_part = parts[2].split(' ')[0]  # Pega só a parte do dia
+                                    data_formatted = f"{parts[1]}-{day_part[:2]}-{year_short}"  # MM-DD-AA
+                                elif len(parts) >= 2:
+                                    data_formatted = f"{parts[1]}-??-??"  # MM-??-??
+                                else:
+                                    data_formatted = str(data_adicionada)[:8]
+                            else:
+                                data_formatted = str(data_adicionada)[:8]
+                        else:
+                            data_formatted = 'N/A'
 
-                    add_terminal_output("═" * 80, "info")
+                        add_terminal_output(f"{symbol:<8} | {mc_formatted:<8} | {ratio_formatted:<7} | {score_formatted:<6} | {zone_formatted:<10} | {status:<12} | {vol_formatted:<8} | {change_24h_formatted:<8} | {change_7d_formatted:<8} | {change_30d_formatted:<8} | {data_formatted:<12}", "success")
+
+                    add_terminal_output("═" * 100, "info")
                     add_terminal_output(f"📊 Total: {len(df_watchlist)} moedas na watchlist", "success")
                 else:
                     add_terminal_output("⚠️ Watchlist vazia!", "warning")
@@ -702,7 +920,7 @@ with st.expander("🖥️ Terminal (Tempo Real)", expanded=True):
                                                 if data_found:
                                                     # Manter dados antigos que não temos na API
                                                     old_row = df_watchlist[df_watchlist['symbol'] == symbol].iloc[0]
-                                                    for col in ['ratio', 'final_score', 'momentum', 'zone', 'sector', 'accumulation_score']:
+                                                    for col in ['ratio', 'final_score', 'momentum', 'zone', 'sector', 'accumulation_score', 'data_adicionada']:
                                                         if col in old_row:
                                                             current_data[col] = old_row[col]
 
@@ -927,8 +1145,7 @@ with col3:
                 [sys.executable, "-c", "import visualizer; visualizer._build_macro_timing()"],
                 "Atualizando dados macro timing..."
             )
-            get_macro_data.clear()          # invalida o cache imediatamente
-            add_terminal_output("🔄 Cache macro invalidado — dados frescos na próxima leitura.", "success")
+            add_terminal_output("🔄 Dados macro atualizados — cache será renovado automaticamente.", "success")
             st.rerun()
 
 # FUNÇÃO DO HEATMAP INSTITUCIONAL
@@ -1266,7 +1483,12 @@ with tab4:
                     watchlist_file = os.path.join("data", "watchlist_selecionada.csv")
                     os.makedirs(os.path.dirname(watchlist_file), exist_ok=True)
 
+                    # Adicionar data de adição às novas seleções
+                    from datetime import datetime
+                    current_date = datetime.now().strftime('%Y-%m-%d %H:%M')
+
                     df_selected = pd.DataFrame(selected_rows)
+                    df_selected['data_adicionada'] = current_date
 
                     # Verificar se já existe watchlist para adicionar em vez de sobreescrever
                     if os.path.exists(watchlist_file):
@@ -1312,7 +1534,22 @@ with tab4:
                 for _, row in df_current.iterrows():
                     symbol = row.get('symbol', '')
                     name = row.get('name', '')
-                    if st.checkbox(f"❌ {symbol} - {name[:30]}", key=f"remove_{symbol}"):
+                    data_adicionada = row.get('data_adicionada', 'N/A')
+                    if data_adicionada != 'N/A' and isinstance(data_adicionada, str) and '-' in str(data_adicionada):
+                        # Formatar para MM-DD-AA
+                        parts = str(data_adicionada).split('-')
+                        if len(parts) >= 3:
+                            # Pegar ano (últimos 2 digits), mês e dia
+                            year_short = parts[0][-2:]  # Últimos 2 dígitos do ano
+                            day_part = parts[2].split(' ')[0]  # Pega só a parte do dia
+                            data_display = f" (adicionado: {parts[1]}-{day_part[:2]}-{year_short})"
+                        elif len(parts) >= 2:
+                            data_display = f" (adicionado: {parts[1]}-??-??)"
+                        else:
+                            data_display = f" (adicionado: {str(data_adicionada)[:8]})"
+                    else:
+                        data_display = ""
+                    if st.checkbox(f"❌ {symbol} - {name[:30]}{data_display}", key=f"remove_{symbol}"):
                         symbols_to_remove.append(symbol)
 
                 # Opção 2: Excluir por nome digitado
@@ -1368,4 +1605,4 @@ with tab4:
         st.warning("⚠️ Execute o Gems Finder para carregar os dados mais recentes!")
 
 # RODAPÉ
-st.markdown("<br><p style='text-align: center; color: #484f58; font-size: 12px;'>Montrezor Analysis System | Powered by Data 💎</p>", unsafe_allow_html=True)
+st.markdown("<br><p style='text-align: center; color: #484f58; font-size: 12px;'>Montrezor Analysis System | Powered by Igor Montrezor</p>", unsafe_allow_html=True)

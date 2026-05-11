@@ -1,0 +1,16 @@
+=== Atualizando dados macro timing... ===
+Timestamp: 2026-05-10 14:20:15
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe -c import visualizer; visualizer._build_macro_timing()
+================================================================================
+
+you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import visualizer; visualizer._build_macro_timing()
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\market_montrezor_system\gems_system\visualizer.py", line 137, in _build_macro_timing
+    w_others_bbp = _bb_percent(others_weekly['close'], bb_period, bb_std).dropna()
+                               ~~~~~~~~~~~~~^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
