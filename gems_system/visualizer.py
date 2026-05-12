@@ -32,6 +32,9 @@ from evolution_functions import (
     get_evolution_emoji
 )
 
+# Idade máxima de macro_timing.json antes de rebuild em _load_macro_timing() (alinhado ao cache do app)
+MACRO_TIMING_MAX_AGE_SEC = 300
+
 if sys.stdout.encoding != 'utf-8':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
@@ -216,10 +219,12 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
     }
 
     # --- 3. DEFINIÇÃO DE GATILHOS (SINAIS) ---
+    # Repique: só geometria semanal em regime venda | Super repique: mesmo + funding BTC < 0
+    _repique_base = bool(sell_mode and weekly_state["usdt_touch_high"] and not capitulation_lock)
     signal = {
         "weekly_buy_trigger": bool(buy_mode and (weekly_state["others_touch_low"] or weekly_state["usdt_touch_high"])),
-        # AJUSTE: Repique tático agora exige funding_rate < 0
-        "tactical_rebound": bool(sell_mode and weekly_state["usdt_touch_high"] and funding_rate < 0 and not capitulation_lock),
+        "tactical_rebound": _repique_base,
+        "tactical_rebound_super": bool(_repique_base and funding_rate < 0),
         "weekly_sell_trigger": bool(sell_mode and (weekly_state["usdt_touch_low"] or curr_w_others >= 1)),
     }
 
@@ -265,7 +270,7 @@ def _load_macro_timing() -> dict:
             # 2. Calcula a idade em segundos (Sem remover o tzinfo, a conta é exata)
             age_seconds = (now - cache_time).total_seconds()
 
-            if age_seconds > 1800:  # 30 minutos
+            if age_seconds > MACRO_TIMING_MAX_AGE_SEC:
                 print(f"🔄 Macro timing cache expired ({age_seconds/60:.1f} min old), refreshing...")
                 return _build_macro_timing()
             else:
@@ -309,8 +314,10 @@ def _macro_timing_panel_html() -> str:
         r_label, r_border = "⬜ NEUTRO", "rgba(255, 255, 255, 0.3)"
         a_label, a_border = "—", "rgba(255, 255, 255, 0.2)"
 
-    if signal.get('tactical_rebound') and not regime['capitulation_lock']:
-        a_label, a_border = "🔵 REPIQUE TÁTICO", "rgba(52, 152, 219, 0.8)"
+    if signal.get("tactical_rebound_super") and not regime["capitulation_lock"]:
+        a_label, a_border = "⚡ SUPER REPIQUE (funding < 0)", "rgba(155, 89, 182, 0.85)"
+    elif signal.get("tactical_rebound") and not regime["capitulation_lock"]:
+        a_label, a_border = "🔵 REPIQUE TÁTICO (só semanal)", "rgba(52, 152, 219, 0.8)"
 
     # --- LÓGICA DO FUNDING RATE ALINHADA AO APP.PY ---
     mensal_compra = regime['buy_mode']

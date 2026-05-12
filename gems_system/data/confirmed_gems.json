@@ -1,23 +1,23 @@
 {
-  "last_updated": "2026-05-07T23:41:31.827828",
-  "total_confirmed": 4,
+  "last_updated": "2026-05-12T08:37:14.215856",
+  "total_confirmed": 5,
   "confirmed_gems": [
     {
       "symbol": "act",
       "name": "Act I The AI Prophecy",
-      "confirmed_at": "2026-05-07T23:41:31.825379",
-      "ratio_now": 1.850757567990393,
-      "ratio_24h_ago": 1.0347887216010319,
-      "growth_percent": 78.85366639161748,
+      "confirmed_at": "2026-05-11T08:44:57.094544",
+      "ratio_now": 0.6575644709837898,
+      "ratio_24h_ago": 0.5348068067384933,
+      "growth_percent": 22.953646568922935,
       "strong_days": 3,
-      "acceleration_strength": 2.587555172835738,
+      "acceleration_strength": 1.840207143635976,
       "trend": "accelerating",
-      "market_cap": 15215532,
-      "volume": 28160261,
-      "priority": "extrema",
+      "market_cap": 15026411,
+      "volume": 9880834,
+      "priority": "alta",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 97.01515135980786
+      "quality_score": 71.15387871512549
     },
     {
       "symbol": "mubarak",
@@ -52,6 +52,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 72.1954519941354
+    },
+    {
+      "symbol": "dogs",
+      "name": "Dogs",
+      "confirmed_at": "2026-05-12T08:37:14.186763",
+      "ratio_now": 1.7815220363489395,
+      "ratio_24h_ago": 1.1483896848273056,
+      "growth_percent": 55.13218726070708,
+      "strong_days": 3,
+      "acceleration_strength": 1.5427489685153637,
+      "trend": "accelerating",
+      "market_cap": 33926877,
+      "volume": 60441479,
+      "priority": "extrema",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 89.91480283342084
     },
     {
       "symbol": "neiro",

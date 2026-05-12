@@ -1,0 +1,8 @@
+=== Atualizando dados macro timing... ===
+Timestamp: 2026-05-12 15:32:11
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe -c import visualizer; visualizer._build_macro_timing()
+================================================================================
+
+you are using nologin method, data you access may be limited
+🔄 Tentando conexão TradingView (tentativa 1/3)...
+✅ Dados TradingView recebidos com sucesso

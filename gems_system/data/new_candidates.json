@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-10T12:05:16.511890",
-  "total_candidates": 15,
+  "last_updated": "2026-05-12T08:37:14.220573",
+  "total_candidates": 19,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -196,6 +196,58 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 42.685299802726384
+    },
+    {
+      "symbol": "osmo",
+      "name": "Osmosis",
+      "detected_at": "2026-05-11T08:44:57.093272",
+      "ratio_now": 2.806846075576484,
+      "market_cap": 81917968,
+      "volume": 229931127,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "mbl",
+      "name": "MovieBloc",
+      "detected_at": "2026-05-11T08:44:57.094232",
+      "ratio_now": 0.8439457303662417,
+      "market_cap": 19502914,
+      "volume": 16459401,
+      "priority": "alta",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 41.0455812739915
+    },
+    {
+      "symbol": "sd",
+      "name": "Stader",
+      "detected_at": "2026-05-12T08:37:14.186420",
+      "ratio_now": 2.6274840022322055,
+      "market_cap": 16365877,
+      "volume": 43001080,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "cpool",
+      "name": "Clearpool",
+      "detected_at": "2026-05-12T08:37:14.187384",
+      "ratio_now": 0.8557667915663327,
+      "market_cap": 34934174,
+      "volume": 29895506,
+      "priority": "alta",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 41.28200249799332
     }
   ]
 }

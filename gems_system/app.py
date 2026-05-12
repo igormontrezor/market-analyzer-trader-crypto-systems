@@ -24,6 +24,68 @@ from subprocess import Popen, DEVNULL
 # Importa as bibliotecas do sistema
 import visualizer
 
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+try:
+    from montrezor_alerts_integration import send_gems_alert, log_signal
+except ImportError:
+    def send_gems_alert(*args, **kwargs):
+        return False
+
+    def log_signal(*args, **kwargs):
+        return None
+
+
+def _macro_gems_signal_type(m):
+    """Tipo de alerta Gems derivado do macro (mesma hierarquia do HUD)."""
+    if m.get("super_alert") == "SUPER_BUY":
+        return "SUPER_BUY"
+    if m.get("super_alert") == "SUPER_SELL":
+        return "SUPER_SELL"
+    if m.get("rebound_super") and not m.get("capitulation_lock") and m.get("status") == "VENDA":
+        return "SUPER_REPIQUE"
+    if m.get("rebound") and not m.get("capitulation_lock") and m.get("status") == "VENDA":
+        return "REPIQUE"
+    if m.get("funding_signal") == "BUY":
+        return "BUY"
+    if m.get("funding_signal") == "SELL":
+        return "SELL"
+    return None
+
+
+def maybe_telegram_macro_gems(m):
+    """
+    Telegram + log unificado quando o sinal macro muda.
+    Evita repetir envio a cada rerun do Streamlit (só em transição de estado).
+    """
+    sig = _macro_gems_signal_type(m)
+    if sig is None:
+        st.session_state["gems_macro_telegram_last"] = None
+        return
+    if sig == st.session_state.get("gems_macro_telegram_last"):
+        return
+    fr = float(m.get("funding_rate") or 0)
+    try:
+        send_gems_alert("BTC", sig, market_cap=0, funding_rate=fr)
+        log_signal(
+            "GEMS",
+            "BTC",
+            {
+                "type": sig,
+                "funding_rate": fr,
+                "macro_status": m.get("status"),
+                "super_alert": m.get("super_alert"),
+                "funding_signal": m.get("funding_signal"),
+                "rebound": m.get("rebound"),
+                "rebound_super": m.get("rebound_super"),
+            },
+        )
+    except Exception:
+        pass
+    st.session_state["gems_macro_telegram_last"] = sig
+
+
 def get_exhaustion_status(row):
     """
     Identifica se a moeda está 'esticada' baseada em MC alto + Desaceleração
@@ -166,6 +228,8 @@ st.markdown("<p style='color: #8b949e; margin-top: -15px; margin-bottom: 30px;'>
 # Terminal session state e funções
 if 'terminal_output' not in st.session_state:
     st.session_state.terminal_output = []
+if 'gems_macro_telegram_last' not in st.session_state:
+    st.session_state.gems_macro_telegram_last = None
 
 def add_terminal_output(message, msg_type="info"):
     """Adiciona mensagem ao terminal com timestamp e cor"""
@@ -419,13 +483,20 @@ def get_snapshots():
     files = glob.glob(os.path.join(path, "*.csv"))
     return sorted(files, reverse=True)
 
-@st.cache_data(ttl=900)  # 15 minutos para limitar requisições mensais
+@st.cache_data(ttl=visualizer.MACRO_TIMING_MAX_AGE_SEC)
 def get_macro_data():
     path = os.path.join("data", "macro", "macro_timing.json")
 
+    # Regenera JSON se generated_at estiver velho (mesmo critério que _load_macro_timing)
+    try:
+        visualizer._load_macro_timing()
+    except Exception:
+        pass
+
     res = {
         "status": "INDEFINIDO", "bb_value": 0.0, "others_val": 0.0, "usdtd_val": 0.0,
-        "last_update": "N/A", "buy_trigger": False, "rebound": False,
+        "last_update": "N/A", "buy_trigger": False, "sell_trigger": False,
+        "rebound": False, "rebound_super": False,
         "funding_rate": 0.01, "funding_signal": "NEUTRAL", "super_alert": "OFF"
     }
 
@@ -454,6 +525,7 @@ def get_macro_data():
                 res["buy_trigger"] = weekly_buy_trigger
                 res["sell_trigger"] = weekly_sell_trigger
                 res["rebound"] = signal.get("tactical_rebound", False)
+                res["rebound_super"] = signal.get("tactical_rebound_super", False)
 
                 # Puxa o dado mastigado que o visualizer.py já salvou no JSON
                 funding_rate = data.get("funding_rate", 0.01)
@@ -462,17 +534,18 @@ def get_macro_data():
                 res["funding_signal"] = "NEUTRAL"
                 res["super_alert"] = "OFF"
 
-                # LÓGICA DE CONFLUÊNCIA EXATA (Regime -> Funding -> Semanal)
+                # SUPER: regime + gatilho semanal + funding (confluência completa)
+                # BUY/SELL (HUD / Telegram base): regime + weekly_* apenas (funding não exige)
                 if buy_mode:
-                    if funding_rate < 0:
+                    if weekly_buy_trigger and funding_rate < 0:
+                        res["super_alert"] = "SUPER_BUY"
+                    elif weekly_buy_trigger:
                         res["funding_signal"] = "BUY"
-                        if weekly_buy_trigger:
-                            res["super_alert"] = "SUPER_BUY"
                 elif sell_mode:
-                    if funding_rate > 0.08:
+                    if weekly_sell_trigger and funding_rate > 0.08:
+                        res["super_alert"] = "SUPER_SELL"
+                    elif weekly_sell_trigger:
                         res["funding_signal"] = "SELL"
-                        if weekly_sell_trigger:
-                            res["super_alert"] = "SUPER_SELL"
 
                 gen_at = data.get("generated_at", "")
                 if gen_at:
@@ -543,6 +616,7 @@ with col_logo:
 
 with col_right:
     m = get_macro_data()
+    maybe_telegram_macro_gems(m)
     f_rate = m['funding_rate']
     f_color = "#3fb950" if f_rate < 0 else ("#f85149" if f_rate > 0.08 else "#8b949e")
 
@@ -552,10 +626,20 @@ with col_right:
         super_html = '<div class="super-buy-alert">⚡ SUPER ALERTA: COMPRA</div>'
     elif m['super_alert'] == "SUPER_SELL":
         super_html = '<div class="super-sell-alert">🚨 SUPER ALERTA: VENDA</div>'
+    elif m.get("rebound_super") and not m.get("capitulation_lock") and m.get("status") == "VENDA":
+        super_html = (
+            '<div class="neutral-alert" style="background:#6e40c9; border: 2px solid #a371f7; color: white;">'
+            "⚡ SUPER REPIQUE (semanal + funding < 0)</div>"
+        )
+    elif m.get("rebound") and not m.get("capitulation_lock") and m.get("status") == "VENDA":
+        super_html = (
+            '<div class="neutral-alert" style="background:#1f6feb; border: 1px solid #58a6ff; color: white;">'
+            "🔵 REPIQUE TÁTICO (regime venda + USDT.D sem. no topo)</div>"
+        )
     elif m['funding_signal'] == "BUY":
-        super_html = '<div class="neutral-alert" style="background:#238636; border: 1px solid #3fb950; color: white;">🟢 SINAL DE COMPRA (Funding)</div>'
+        super_html = '<div class="neutral-alert" style="background:#238636; border: 1px solid #3fb950; color: white;">🟢 SINAL DE COMPRA (Semanal)</div>'
     elif m['funding_signal'] == "SELL":
-        super_html = '<div class="neutral-alert" style="background:#da3633; border: 1px solid #f85149; color: white;">🔴 SINAL DE VENDA (Funding)</div>'
+        super_html = '<div class="neutral-alert" style="background:#da3633; border: 1px solid #f85149; color: white;">🔴 SINAL DE VENDA (Semanal)</div>'
     else:
         super_html = '<div class="neutral-alert">⚪ NEUTRO / ESTÁVEL</div>'
 
@@ -575,8 +659,8 @@ st.code("Montrezor Central - Mesa de Operações", language=None)
 
 # Terminal logo abaixo do título
 with st.expander("🖥️ Terminal (Assíncrono - Auto Refresh)", expanded=True):
-    # Configurar refresh automático a cada 3 segundos
-    st_autorefresh(interval=3000, limit=None, key="terminal_refresh")
+    # Configurar refresh automático a cada 10 segundos
+    st_autorefresh(interval=10000, limit=None, key="terminal_refresh")
 
     # Aba para selecionar visualização
     tab1, tab2 = st.tabs(["📋 Logs Ativos", "🖥️ Terminal Principal"])
@@ -783,242 +867,273 @@ with st.expander("🖥️ Terminal (Assíncrono - Auto Refresh)", expanded=True)
                 pass  # Não mostrar mensagem se arquivo não existe
 
     with col_term2:
-        # Verificar se há busca em andamento
-        if st.session_state.get('updating_watchlist', False):
-            st.info("🔄 Atualizando dados... aguarde!")
-            st.progress(st.session_state.get('update_progress', 0))
-        else:
-            if st.button("🔄 ATUALIZAR DADOS DA WATCHLIST"):
-                if os.path.exists("data/watchlist_selecionada.csv"):
-                    df_watchlist = pd.read_csv("data/watchlist_selecionada.csv")
-                    if not df_watchlist.empty:
-                        # Marcar que está atualizando
-                        st.session_state.updating_watchlist = True
-                        st.session_state.update_progress = 0
+        # Verificar se há processo de atualização em andamento
+        update_status_file = "data/watchlist_update_status.json"
+        if os.path.exists(update_status_file):
+            try:
+                import json
+                with open(update_status_file, 'r') as f:
+                    status = json.load(f)
 
-                        add_terminal_output("🔄 ATUALIZANDO DADOS DA WATCHLIST...", "info")
-                        add_terminal_output("═" * 50, "info")
+                if status.get('running', False):
+                    st.info(f"🔄 Atualizando dados... {status.get('current_symbol', '')} ({status.get('progress', 0):.1%})")
+                    st.progress(status.get('progress', 0))
 
-                    # Importar biblioteca para buscar dados em tempo real
-                    try:
-                        import requests
-                        from datetime import datetime
-
-                        symbols = df_watchlist['symbol'].tolist()
-                        add_terminal_output(f"📡 Buscando dados para {len(symbols)} moedas...", "info")
-
-                        # Busca real de dados da CoinGecko API
-                        updated_data = []
-                        add_terminal_output("🔄 Conectando à CoinGecko API...", "info")
-
-                        for i, symbol in enumerate(symbols, 1):
-                            try:
-                                # Atualizar progresso
-                                progress = (i - 1) / len(symbols)
-                                st.session_state.update_progress = progress
-
-                                add_terminal_output(f"📡 [{i}/{len(symbols)}] Buscando {symbol.upper()}...", "info")
-
-                                # Delay maior para evitar rate limit da API
-                                if i > 1:
-                                    time.sleep(5.0)  # Aumentar para 5 segundos
-
-                                # Busca inteligente com endpoint /search
-                                try:
-                                    # 1. Buscar ID correto usando search
-                                    search_url = f"https://api.coingecko.com/api/v3/search?query={symbol.lower()}"
-                                    search_response = requests.get(search_url, timeout=10, headers={
-                                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                                    })
-
-                                    coin_id = None
-                                    if search_response.status_code == 200:
-                                        search_data = search_response.json()
-                                        if search_data.get('coins') and len(search_data['coins']) > 0:
-                                            coin_id = search_data['coins'][0]['id']  # Pegar o mais relevante
-                                            add_terminal_output(f"   🔍 ID encontrado: {coin_id}", "info")
-
-                                    if coin_id:
-                                        # 2. Buscar dados com ID correto
-                                        endpoints = [
-                                            f"https://api.coingecko.com/api/v3/coins/{coin_id}",
-                                            f"https://api.coingecko.com/api/v3/simple/price?ids={coin_id}&vs_currencies=usd&include_24hr_change=true&include_7d_change=true&include_30d_change=true&include_market_cap=true&include_24hr_vol=true"
-                                        ]
-                                    else:
-                                        # Fallback: tentar direto com symbol
-                                        endpoints = [
-                                            f"https://api.coingecko.com/api/v3/coins/{symbol.lower()}",
-                                            f"https://api.coingecko.com/api/v3/simple/price?ids={symbol.lower()}&vs_currencies=usd&include_24hr_change=true&include_7d_change=true&include_30d_change=true&include_market_cap=true&include_24hr_vol=true"
-                                        ]
-                                except:
-                                    # Fallback em caso de erro no search
-                                    endpoints = [
-                                        f"https://api.coingecko.com/api/v3/coins/{symbol.lower()}",
-                                        f"https://api.coingecko.com/api/v3/simple/price?ids={symbol.lower()}&vs_currencies=usd&include_24hr_change=true&include_7d_change=true&include_30d_change=true&include_market_cap=true&include_24hr_vol=true"
-                                    ]
-
-                                data_found = False
-                                retry_count = 0
-                                max_retries = 50  # Máximo de tentativas por moeda
-
-                                while not data_found and retry_count < max_retries:
-                                    retry_count += 1
-                                    add_terminal_output(f"   🔍 Tentativa {retry_count}/{max_retries} para {symbol.upper()}...", "info")
-
-                                    for j, endpoint_url in enumerate(endpoints, 1):
-                                        try:
-                                            # Delay crescente a cada tentativa
-                                            if retry_count > 1:
-                                                delay = min(10, 2 + retry_count)  # 3s, 4s, 5s... até 10s
-                                                time.sleep(delay)
-
-                                            response = requests.get(endpoint_url, timeout=15, headers={
-                                                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                                            })
-
-                                            if response.status_code == 200:
-                                                data = response.json()
-                                                add_terminal_output(f"   ✅ Tentativa {retry_count} funcionou!", "success")
-
-                                                if 'simple' in endpoint_url:
-                                                    # Endpoint simples
-                                                    check_id = coin_id if coin_id else symbol.lower()
-                                                    if check_id in data:
-                                                        coin_data = data[check_id]
-                                                        current_data = {
-                                                            'symbol': symbol.upper(),
-                                                            'name': coin_data.get('name', symbol.upper()),
-                                                            'current_price': coin_data.get('usd', 0),
-                                                            'market_cap': coin_data.get('usd_market_cap', 0),
-                                                            'total_volume': coin_data.get('usd_24h_vol', 0),
-                                                            'price_change_percentage_24h': coin_data.get('usd_24h_change', 0),
-                                                            'price_change_percentage_7d_in_currency': coin_data.get('usd_7d_change', 0),
-                                                            'price_change_percentage_30d_in_currency': coin_data.get('usd_30d_change', 0),
-                                                            'market_cap_rank': 0,
-                                                            'last_updated': datetime.now().isoformat()
-                                                        }
-                                                        data_found = True
-                                                        add_terminal_output(f"   📊 Dados: MC=${coin_data.get('usd_market_cap', 0):,.0f}, Vol=${coin_data.get('usd_24h_vol', 0):,.0f}", "info")
-                                                else:
-                                                    # Endpoint completo
-                                                    market_data = data.get('market_data', {})
-                                                    current_data = {
-                                                        'symbol': symbol.upper(),
-                                                        'name': data.get('name', ''),
-                                                        'current_price': market_data.get('current_price', {}).get('usd', 0),
-                                                        'market_cap': market_data.get('market_cap', {}).get('usd', 0),
-                                                        'total_volume': market_data.get('total_volume', {}).get('usd', 0),
-                                                        'price_change_percentage_24h': market_data.get('price_change_percentage_24h', 0),
-                                                        'price_change_percentage_7d_in_currency': market_data.get('price_change_percentage_7d', 0),
-                                                        'price_change_percentage_30d_in_currency': market_data.get('price_change_percentage_30d', 0),
-                                                        'market_cap_rank': market_data.get('market_cap_rank', 0),
-                                                        'last_updated': data.get('last_updated', '')
-                                                    }
-                                                    data_found = True
-                                                    add_terminal_output(f"   📊 Dados: MC=${market_data.get('market_cap', {}).get('usd', 0):,.0f}, Vol=${market_data.get('total_volume', {}).get('usd', 0):,.0f}", "info")
-
-                                                if data_found:
-                                                    # Manter dados antigos que não temos na API
-                                                    old_row = df_watchlist[df_watchlist['symbol'] == symbol].iloc[0]
-                                                    for col in ['ratio', 'final_score', 'momentum', 'zone', 'sector', 'accumulation_score', 'data_adicionada']:
-                                                        if col in old_row:
-                                                            current_data[col] = old_row[col]
-
-                                                    updated_data.append(current_data)
-                                                    add_terminal_output(f"✅ {symbol.upper()} - Dados atualizados em tempo real (tentativa {retry_count})", "success")
-                                                    break
-                                            elif response.status_code == 429:
-                                                add_terminal_output(f"   ⚠️ Rate limit, tentativa {retry_count}...", "warning")
-                                                continue  # Próxima tentativa com delay crescente
-                                            else:
-                                                add_terminal_output(f"   ❌ HTTP {response.status_code}, tentativa {retry_count}", "warning")
-
-                                        except Exception as e:
-                                            add_terminal_output(f"   ❌ Erro tentativa {retry_count}: {str(e)[:30]}", "warning")
-                                            continue
-
-                                    if data_found:
-                                        break
-
-                                if not data_found:
-                                    # Se todos os endpoints falharem, usar dados do CSV
-                                    row = df_watchlist[df_watchlist['symbol'] == symbol].iloc[0]
-                                    updated_data.append(row)
-                                    add_terminal_output(f"⚠️ {symbol.upper()} - Usando dados cache (API indisponível)", "warning")
-
-                            except Exception as e:
-                                # Se der erro, usar dados do CSV
-                                try:
-                                    row = df_watchlist[df_watchlist['symbol'] == symbol].iloc[0]
-                                    updated_data.append(row)
-                                    add_terminal_output(f"⚠️ {symbol.upper()} - Usando dados cache (Erro: {str(e)[:50]})", "warning")
-                                except:
-                                    add_terminal_output(f"❌ {symbol.upper()} - Erro ao processar", "error")
-
-                        # Atualizar CSV com novos dados
-                        if updated_data:
-                            df_updated = pd.DataFrame(updated_data)
-                            df_updated.to_csv("data/watchlist_selecionada.csv", index=False)
-                            add_terminal_output("💾 Watchlist atualizada com dados frescos!", "success")
-
-                        # Mostrar dados atualizados
-                        add_terminal_output("═" * 80, "info")
-                        add_terminal_output(f"{'SYMBOL':<8} | {'MC':<8} | {'RATIO':<7} | {'SCORE':<6} | {'ZONE':<10} | {'VOL':<8} | {'24H':<8} | {'7D':<8} | {'30D':<8}", "info")
-                        add_terminal_output("-" * 80, "info")
-
-                        for _, row in df_updated.iterrows():
-                            symbol = str(row.get('symbol', '')).upper()
-                            mc = row.get('market_cap', 0)
-                            ratio = row.get('ratio', 0)
-                            score = row.get('final_score', 0)
-                            zone = row.get('zone', 'N/A')
-                            volume = row.get('total_volume', 0)
-                            change_24h = row.get('price_change_percentage_24h', 0)
-                            change_7d = row.get('price_change_percentage_7d_in_currency', 0)
-                            change_30d = row.get('price_change_percentage_30d_in_currency', 0)
-
-
-                            # Formatar valores
-                            mc_formatted = f"{mc/1000000:.1f}M" if mc > 1000000 else f"{mc/1000:.1f}K"
-                            ratio_formatted = f"{ratio:.2f}"
-                            score_formatted = f"{score:.1f}"
-                            zone_formatted = str(zone)[:8]
-                            vol_formatted = f"{volume/1000000:.1f}M" if volume > 1000000 else f"{volume/1000:.1f}K"
-
-
-                            def format_change(value):
-                                if value is None or value == 0:
-                                    return "⚪0.0%"
-                                color = "🟢" if value > 0 else "🔴"
-                                return f"{color}{value:+.1f}%"
-
-                            def safe_format(value, formatter, default="N/A"):
-                                if value is None or value == 0:
-                                    return default
-                                return formatter(value)
-
-                            change_24h_formatted = safe_format(change_24h, format_change, "⚪0.0%")
-                            change_7d_formatted = safe_format(change_7d, format_change, "N/A     ")
-                            change_30d_formatted = safe_format(change_30d, format_change, "N/A     ")
-
-
-                            add_terminal_output(f"{symbol:<8} | {mc_formatted:<8} | {ratio_formatted:<7} | {score_formatted:<6} | {zone_formatted:<10} | {vol_formatted:<8} | {change_24h_formatted:<8} | {change_7d_formatted:<8} | {change_30d_formatted:<8}", "success")
-
-                        add_terminal_output("═" * 80, "info")
-                        add_terminal_output(f"📊 {len(df_updated)} moedas atualizadas!", "success")
-
-                    except Exception as e:
-                        add_terminal_output(f"❌ Erro ao atualizar: {str(e)}", "error")
-                    finally:
-                        # Resetar estado de atualização
-                        st.session_state.updating_watchlist = False
-                        st.session_state.update_progress = 1.0
+                    # Mostrar últimas linhas do log
+                    if os.path.exists("data/watchlist_update.log"):
+                        with open("data/watchlist_update.log", 'r', encoding='utf-8') as f:
+                            lines = f.readlines()
+                            if lines:
+                                st.code("".join(lines[-5:]), language=None)
+                else:
+                    # Processo terminou, limpar status
+                    if status.get('completed', False):
+                        add_terminal_output("✅ Atualização em segundo plano concluída!", "success")
+                        os.remove(update_status_file)
                         st.rerun()
+            except:
+                pass
+
+        if st.button("🔄 ATUALIZAR DADOS DA WATCHLIST"):
+            # Executar atualização em segundo plano
+            if os.path.exists("data/watchlist_selecionada.csv"):
+                df_watchlist = pd.read_csv("data/watchlist_selecionada.csv")
+                if not df_watchlist.empty:
+                    # Criar script de atualização
+                    update_script = """
+import sys
+import os
+import pandas as pd
+import requests
+import time
+import json
+from datetime import datetime
+
+# Adicionar diretório atual ao path
+sys.path.insert(0, os.getcwd())
+
+def update_status(running, progress=0, current_symbol="", completed=False):
+    status = {
+        'running': running,
+        'progress': progress,
+        'current_symbol': current_symbol,
+        'completed': completed,
+        'last_update': datetime.now().isoformat()
+    }
+    with open("data/watchlist_update_status.json", 'w') as f:
+        json.dump(status, f)
+
+def add_terminal_output(message, msg_type="info"):
+    timestamp = datetime.now().strftime("%H:%M:%S")
+    with open("data/watchlist_update.log", "a", encoding="utf-8") as f:
+        f.write(f"[{timestamp}] {message}\\n")
+
+def update_watchlist():
+    try:
+        update_status(True, 0, "Iniciando...")
+        add_terminal_output("🔄 ATUALIZANDO DADOS DA WATCHLIST...", "info")
+        add_terminal_output("═" * 50, "info")
+
+        df_watchlist = pd.read_csv("data/watchlist_selecionada.csv")
+        symbols = df_watchlist['symbol'].tolist()
+        add_terminal_output(f"📡 Buscando dados para {len(symbols)} moedas...", "info")
+
+        updated_data = []
+        add_terminal_output("🔄 Conectando à CoinGecko API...", "info")
+
+        for i, symbol in enumerate(symbols, 1):
+            try:
+                progress = (i - 1) / len(symbols)
+                update_status(True, progress, symbol.upper())
+
+                add_terminal_output(f"📡 [{i}/{len(symbols)}] Buscando {symbol.upper()}...", "info")
+
+                if i > 1:
+                    time.sleep(5.0)
+
+                # Busca inteligente
+                try:
+                    search_url = f"https://api.coingecko.com/api/v3/search?query={symbol.lower()}"
+                    search_response = requests.get(search_url, timeout=10, headers={
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                    })
+
+                    coin_id = None
+                    if search_response.status_code == 200:
+                        search_data = search_response.json()
+                        if search_data.get('coins') and len(search_data['coins']) > 0:
+                            coin_id = search_data['coins'][0]['id']
+                            add_terminal_output(f"   🔍 ID encontrado: {coin_id}", "info")
+
+                    if coin_id:
+                        endpoints = [
+                            f"https://api.coingecko.com/api/v3/coins/{coin_id}",
+                            f"https://api.coingecko.com/api/v3/simple/price?ids={coin_id}&vs_currencies=usd&include_24hr_change=true&include_7d_change=true&include_30d_change=true&include_market_cap=true&include_24hr_vol=true"
+                        ]
+                    else:
+                        endpoints = [
+                            f"https://api.coingecko.com/api/v3/coins/{symbol.lower()}",
+                            f"https://api.coingecko.com/api/v3/simple/price?ids={symbol.lower()}&vs_currencies=usd&include_24hr_change=true&include_7d_change=true&include_30d_change=true&include_market_cap=true&include_24hr_vol=true"
+                        ]
+                except:
+                    endpoints = [
+                        f"https://api.coingecko.com/api/v3/coins/{symbol.lower()}",
+                        f"https://api.coingecko.com/api/v3/simple/price?ids={symbol.lower()}&vs_currencies=usd&include_24hr_change=true&include_7d_change=true&include_30d_change=true&include_market_cap=true&include_24hr_vol=true"
+                    ]
+
+                data_found = False
+                retry_count = 0
+                max_retries = 50
+
+                while not data_found and retry_count < max_retries:
+                    retry_count += 1
+                    add_terminal_output(f"   🔍 Tentativa {retry_count}/{max_retries} para {symbol.upper()}...", "info")
+
+                    for j, endpoint_url in enumerate(endpoints, 1):
+                        try:
+                            if retry_count > 1:
+                                delay = min(10, 2 + retry_count)
+                                time.sleep(delay)
+
+                            response = requests.get(endpoint_url, timeout=15, headers={
+                                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                            })
+
+                            if response.status_code == 200:
+                                data = response.json()
+                                add_terminal_output(f"   ✅ Tentativa {retry_count} funcionou!", "success")
+
+                                if 'simple' in endpoint_url:
+                                    check_id = coin_id if coin_id else symbol.lower()
+                                    if check_id in data:
+                                        coin_data = data[check_id]
+                                        current_data = {
+                                            'symbol': symbol.upper(),
+                                            'name': coin_data.get('name', symbol.upper()),
+                                            'current_price': coin_data.get('usd', 0),
+                                            'market_cap': coin_data.get('usd_market_cap', 0),
+                                            'total_volume': coin_data.get('usd_24h_vol', 0),
+                                            'price_change_percentage_24h': coin_data.get('usd_24h_change', 0),
+                                            'price_change_percentage_7d_in_currency': coin_data.get('usd_7d_change', 0),
+                                            'price_change_percentage_30d_in_currency': coin_data.get('usd_30d_change', 0),
+                                            'market_cap_rank': 0,
+                                            'last_updated': datetime.now().isoformat()
+                                        }
+                                        data_found = True
+                                        add_terminal_output(f"   📊 Dados: MC=${coin_data.get('usd_market_cap', 0):,.0f}, Vol=${coin_data.get('usd_24h_vol', 0):,.0f}", "info")
+                                else:
+                                    market_data = data.get('market_data', {})
+                                    current_data = {
+                                        'symbol': symbol.upper(),
+                                        'name': data.get('name', ''),
+                                        'current_price': market_data.get('current_price', {}).get('usd', 0),
+                                        'market_cap': market_data.get('market_cap', {}).get('usd', 0),
+                                        'total_volume': market_data.get('total_volume', {}).get('usd', 0),
+                                        'price_change_percentage_24h': market_data.get('price_change_percentage_24h', 0),
+                                        'price_change_percentage_7d_in_currency': market_data.get('price_change_percentage_7d', 0),
+                                        'price_change_percentage_30d_in_currency': market_data.get('price_change_percentage_30d', 0),
+                                        'market_cap_rank': market_data.get('market_cap_rank', 0),
+                                        'last_updated': data.get('last_updated', '')
+                                    }
+                                    data_found = True
+                                    add_terminal_output(f"   📊 Dados: MC=${market_data.get('market_cap', {}).get('usd', 0):,.0f}, Vol=${market_data.get('total_volume', {}).get('usd', 0):,.0f}", "info")
+
+                                if data_found:
+                                    old_row = df_watchlist[df_watchlist['symbol'] == symbol].iloc[0]
+                                    for col in ['ratio', 'final_score', 'momentum', 'zone', 'sector', 'accumulation_score', 'data_adicionada']:
+                                        if col in old_row:
+                                            current_data[col] = old_row[col]
+
+                                    updated_data.append(current_data)
+                                    add_terminal_output(f"✅ {symbol.upper()} - Dados atualizados em tempo real (tentativa {retry_count})", "success")
+                                    break
+                            elif response.status_code == 429:
+                                add_terminal_output(f"   ⚠️ Rate limit, tentativa {retry_count}...", "warning")
+                                continue
+                            else:
+                                add_terminal_output(f"   ❌ HTTP {response.status_code}, tentativa {retry_count}", "warning")
+
+                        except Exception as e:
+                            add_terminal_output(f"   ❌ Erro tentativa {retry_count}: {str(e)[:30]}", "warning")
+                            continue
+
+                    if data_found:
+                        break
+
+                if not data_found:
+                    row = df_watchlist[df_watchlist['symbol'] == symbol].iloc[0]
+                    updated_data.append(row)
+                    add_terminal_output(f"⚠️ {symbol.upper()} - Usando dados cache (API indisponível)", "warning")
+
+            except Exception as e:
+                try:
+                    row = df_watchlist[df_watchlist['symbol'] == symbol].iloc[0]
+                    updated_data.append(row)
+                    add_terminal_output(f"⚠️ {symbol.upper()} - Usando dados cache (Erro: {str(e)[:50]})", "warning")
+                except:
+                    add_terminal_output(f"❌ {symbol.upper()} - Erro ao processar", "error")
+
+        # Atualizar CSV
+        if updated_data:
+            df_updated = pd.DataFrame(updated_data)
+            df_updated.to_csv("data/watchlist_selecionada.csv", index=False)
+            add_terminal_output("💾 Watchlist atualizada com dados frescos!", "success")
+
+        add_terminal_output("═" * 80, "info")
+        add_terminal_output(f"📊 {len(updated_data)} moedas atualizadas!", "success")
+        add_terminal_output("✅ Processo concluído com sucesso!", "success")
+
+        # Marcar como concluído
+        update_status(False, 1.0, "Concluído", True)
+
+    except Exception as e:
+        add_terminal_output(f"❌ Erro ao atualizar: {str(e)}", "error")
+        update_status(False, 0, f"Erro: {str(e)}", False)
+
+if __name__ == "__main__":
+    update_watchlist()
+"""
+
+                    # Salvar script temporário
+                    with open("temp_watchlist_update.py", "w", encoding="utf-8") as f:
+                        f.write(update_script)
+
+                    # Limpar log anterior
+                    if os.path.exists("data/watchlist_update.log"):
+                        os.remove("data/watchlist_update.log")
+
+                    # Executar em segundo plano
+                    import subprocess
+                    process = subprocess.Popen(
+                        [sys.executable, "temp_watchlist_update.py"],
+                        cwd=os.getcwd(),
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL
+                    )
+
+                    add_terminal_output(f"🚀 Atualização iniciada em segundo plano (PID: {process.pid})", "info")
+                    add_terminal_output("📋 Acompanhe o progresso na interface ou no arquivo 'data/watchlist_update.log'", "info")
+                    add_terminal_output("⏱️ O processo continuará rodando mesmo que você navegue por outras páginas", "info")
+                    add_terminal_output("🔄 Auto-refresh configurado para 10 segundos", "info")
+
+                    # Limpar script temporário após 1 segundo
+                    import threading
+                    def cleanup():
+                        time.sleep(1)
+                        try:
+                            os.remove("temp_watchlist_update.py")
+                        except:
+                            pass
+
+                    threading.Thread(target=cleanup, daemon=True).start()
+
+                    # Forçar rerun para mostrar status imediatamente
+                    st.rerun()
+
                 else:
                     add_terminal_output("⚠️ Watchlist vazia!", "warning")
-                    st.session_state.updating_watchlist = False
             else:
-                pass  # Não mostrar mensagem se arquivo não existe
+                add_terminal_output("⚠️ Arquivo watchlist_selecionada.csv não encontrado!", "warning")
 
     with col_term3:
         if st.button("🗑️ Limpar Terminal", key="clear_terminal"):
@@ -1087,10 +1202,13 @@ with col2:
             acao_sugerida = "AGUARDANDO AÇÃO"
             acao_cor = "#c9d1d9" # Cinza
 
-    # 4. Sobrescrita: Repique Tático (Se não houver capitulação)
-    if macro_data.get('rebound') and not macro_data.get('capitulation_lock'):
-        acao_sugerida = "🔵 REPIQUE TÁTICO"
-        acao_cor = "#3498db" # Azul vibrante
+    # 4. Sobrescrita: Super repique / repique (se não houver capitulação)
+    if macro_data.get("rebound_super") and not macro_data.get("capitulation_lock"):
+        acao_sugerida = "⚡ SUPER REPIQUE (funding < 0)"
+        acao_cor = "#a371f7"
+    elif macro_data.get("rebound") and not macro_data.get("capitulation_lock"):
+        acao_sugerida = "🔵 REPIQUE TÁTICO (só semanal)"
+        acao_cor = "#3498db"
 
     st.markdown("### 🎯 Ação Sugerida")
     st.markdown(f"""
@@ -1145,6 +1263,7 @@ with col3:
                 [sys.executable, "-c", "import visualizer; visualizer._build_macro_timing()"],
                 "Atualizando dados macro timing..."
             )
+            get_macro_data.clear()
             add_terminal_output("🔄 Dados macro atualizados — cache será renovado automaticamente.", "success")
             st.rerun()
 
