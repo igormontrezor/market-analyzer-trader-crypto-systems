@@ -659,8 +659,8 @@ st.code("Montrezor Central - Mesa de Operações", language=None)
 
 # Terminal logo abaixo do título
 with st.expander("🖥️ Terminal (Assíncrono - Auto Refresh)", expanded=True):
-    # Configurar refresh automático a cada 10 segundos
-    st_autorefresh(interval=10000, limit=None, key="terminal_refresh")
+    # Configurar refresh automático a cada 1 minuto
+    st_autorefresh(interval=60000, limit=None, key="terminal_refresh")
 
     # Aba para selecionar visualização
     tab1, tab2 = st.tabs(["📋 Logs Ativos", "🖥️ Terminal Principal"])
@@ -1114,7 +1114,7 @@ if __name__ == "__main__":
                     add_terminal_output(f"🚀 Atualização iniciada em segundo plano (PID: {process.pid})", "info")
                     add_terminal_output("📋 Acompanhe o progresso na interface ou no arquivo 'data/watchlist_update.log'", "info")
                     add_terminal_output("⏱️ O processo continuará rodando mesmo que você navegue por outras páginas", "info")
-                    add_terminal_output("🔄 Auto-refresh configurado para 10 segundos", "info")
+                    add_terminal_output("🔄 Auto-refresh configurado para 1 minuto", "info")
 
                     # Limpar script temporário após 1 segundo
                     import threading

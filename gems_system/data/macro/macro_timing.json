@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-05-12T21:59:52.041937+00:00",
+  "generated_at": "2026-05-12T23:28:52.365828+00:00",
   "weekly": {
     "date": "2026-05-10",
-    "others_bbp": 0.7092048913749043,
-    "usdt_d_bbp": 0.42341149924893584,
+    "others_bbp": 0.7129758175708446,
+    "usdt_d_bbp": 0.4219486968397469,
     "others_touch_low": false,
     "usdt_touch_high": false,
     "usdt_touch_low": false
   },
   "monthly": {
-    "usdt_d_bbp": 0.8074422374712772
+    "usdt_d_bbp": 0.806698164594375
   },
   "regime": {
     "buy_mode": true,
@@ -22,5 +22,5 @@
     "tactical_rebound_super": false,
     "weekly_sell_trigger": false
   },
-  "funding_rate": 0.007127
+  "funding_rate": 0.006198
 }
