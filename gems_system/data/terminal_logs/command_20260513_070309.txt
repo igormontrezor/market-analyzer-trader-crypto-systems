@@ -1,0 +1,106 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-05-13 07:03:09
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+✅ Usando cache (válido até: 18:14:50)
+✅ Usando cache existente: 72 gems
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+📋 Cache: 10 gems encontradas
+✅ 50m_range: 10 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+📋 Cache: 15 gems encontradas
+✅ 10_49m_range: 15 gems
+📋 Cache válido - Nenhum cache atualizado
+
+📊 ANÁLISE - 50M_RANGE:
+
+📊 ANÁLISE DAS 10 GEMS:
+================================================================================
+Market Cap - Médio: $74,979,007
+Market Cap - Min: $53,887,410, Max: $99,073,346
+Volume - Médio: $25,494,645
+Volume - Min: $12,994,391, Max: $45,248,326
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 9 gems
+  🟠 Strong (0.5-1.0): 1 gems
+  🔥 Breakout (>1.0): 0 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/10 (0.0%)
+  💪 Resiliência de Preço: 0/10 (0.0%)
+  👑 POTENCIAL OURO: 0/10 (0.0%)
+  🚨 WASH TRADING: 0/10 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 10 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. useless  | MC: $  70,675,864 | Vol: $  45,248,326 | Ratio: 0.64 | S 📊📈    📊 | Useless Coin
+ 2. not      | MC: $  55,065,180 | Vol: $  23,323,511 | Ratio: 0.42 | E 📊📈    📊 | Notcoin
+ 3. ordi     | MC: $  99,073,346 | Vol: $  38,490,494 | Ratio: 0.39 | E 📊📈    📊 | ORDI
+ 4. bio      | MC: $  97,295,081 | Vol: $  37,067,709 | Ratio: 0.38 | E 📊📈    📊 | Bio Protocol
+ 5. grx      | MC: $  91,702,261 | Vol: $  25,067,954 | Ratio: 0.27 | E 📊📈    📊 | GRX Chain
+ 6. w        | MC: $  92,192,475 | Vol: $  24,682,063 | Ratio: 0.27 | E 📊📈    📊 | Wormhole
+ 7. muon     | MC: $  73,586,748 | Vol: $  19,162,588 | Ratio: 0.26 | E 📊📈    📊 | Micron Technology (Ondo Tokenized Stock)
+ 8. api3     | MC: $  55,193,872 | Vol: $  13,743,953 | Ratio: 0.25 | E 📊📈    📊 | Api3
+ 9. pnut     | MC: $  61,117,834 | Vol: $  15,165,458 | Ratio: 0.25 | E 📊📈    📊 | Peanut the Squirrel
+10. xusd     | MC: $  53,887,410 | Vol: $  12,994,391 | Ratio: 0.24 | E 📊📈    📊 | StraitsX XUSD
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 15 GEMS:
+================================================================================
+Market Cap - Médio: $23,646,352
+Market Cap - Min: $15,435,560, Max: $46,476,940
+Volume - Médio: $17,276,837
+Volume - Min: $8,290,698, Max: $38,127,200
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 1 gems
+  🟠 Strong (0.5-1.0): 12 gems
+  🔥 Breakout (>1.0): 2 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/15 (0.0%)
+  💪 Resiliência de Preço: 0/15 (0.0%)
+  👑 POTENCIAL OURO: 0/15 (0.0%)
+  🚨 WASH TRADING: 0/15 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 15 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. acn      | MC: $  21,268,476 | Vol: $  38,127,200 | Ratio: 1.79 | B 📊📈    📊 | AITECH Cloud Network
+ 2. psg      | MC: $  16,198,777 | Vol: $  18,018,298 | Ratio: 1.11 | B 📊📈    📊 | Paris Saint-Germain Fan Token
+ 3. dogs     | MC: $  31,745,856 | Vol: $  30,015,077 | Ratio: 0.95 | S 📊📈    📊 | Dogs
+ 4. mubarak  | MC: $  16,879,963 | Vol: $  13,933,886 | Ratio: 0.83 | S 📊📈    📊 | Mubarak
+ 5. act      | MC: $  15,449,219 | Vol: $  11,720,092 | Ratio: 0.76 | S 📊📈    📊 | Act I The AI Prophecy
+ 6. rare     | MC: $  15,435,560 | Vol: $  11,571,373 | Ratio: 0.75 | S 📊📈    📊 | SuperRare
+ 7. usdcv    | MC: $  20,150,524 | Vol: $  15,005,268 | Ratio: 0.74 | S 📊📈    📊 | USD CoinVertible
+ 8. sndkon   | MC: $  16,470,526 | Vol: $  11,128,988 | Ratio: 0.68 | S 📊📈    📊 | SanDisk (Ondo Tokenized)
+ 9. tst      | MC: $  19,434,574 | Vol: $  12,612,930 | Ratio: 0.65 | S 📊📈    📊 | Test
+10. osmo     | MC: $  46,476,940 | Vol: $  27,006,566 | Ratio: 0.58 | S 📊📈    📊 | Osmosis
+
+📋 Usando dados existentes - Nenhum snapshot criado
+
+🎉 GEMS FINDER CONCLUÍDO!
+📊 Total de gems: 25
+📁 Arquivos salvos para análise histórica:
+   - snapshots/gems_*.csv (por faixa)
+   - snapshots/gems_consolidated_*.csv (completo)
+   - Cache válido por 12 horas (evita requisições excessivas)
+   - Snapshots criados apenas com dados novos

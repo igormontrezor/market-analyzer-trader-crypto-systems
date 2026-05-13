@@ -2,7 +2,10 @@
 
 ## 📋 Funcionalidades Essenciais
 
-### 🔥 **1. Confirmação de Múltiplas Entradas na Tendência**
+### 📊 **BUGS(URGENTE)**
+- [ ] Verificar bug no chart do evolução temporal (esta com as mesmas cryptos desde o começo).
+
+### 🔥 **1. Confirmação e Sinal de Múltiplas Entradas na Tendência**
 - [ ] Verificar se preço ultrapassou `BuyEntry` (tendência BUY) ou `SellEntry` (tendência SELL)
 - [ ] Permitir múltiplas entradas na mesma tendência após confirmação
 - [ ] Validação técnica do movimento
@@ -25,17 +28,14 @@
 ## 🔄 **Arquitetura Produção 24/7**
 
 ### ⚡ **Daemon de Alertas Independente**
-- [ ] Script Python rodando 24/7 independente da interface
-- [ ] Verificação a cada 30 segundos
-- [ ] Serviço Windows/Linux (não depende do Streamlit)
-- [ ] SQLite compartilhado entre daemon e interface
-- [ ] Telegram como canal principal de alertas
+- [x] Script Python rodando 24/7 independente da interface
+- [x] Verificação a cada 30 segundos
+- [x] Serviço Windows/Linux (não depende do Streamlit)
+- [x] Telegram como canal principal de alertas
 
 ### 🏗️ **Estrutura:**
 ```
 Streamlit (Interface) ←→ Daemon 24/7 ←→ Telegram (Alertas)
-        ↓                    ↓
-    SQLite/JSON ←→ Dados Compartilhados
 ```
 
 ---
@@ -57,7 +57,6 @@ Streamlit (Interface) ←→ Daemon 24/7 ←→ Telegram (Alertas)
 ## 💡 **Tecnologias Necessárias**
 
 - **Daemon:** Python + schedule/threading
-- **Dados:** SQLite para operações ativas
 - **Alertas:** Telegram API
 - **Interface:** Streamlit (apenas visual)
 - **Serviço:** win32service (Windows) / systemd (Linux)

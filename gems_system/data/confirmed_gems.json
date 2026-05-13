@@ -1,23 +1,23 @@
 {
-  "last_updated": "2026-05-12T08:37:14.215856",
+  "last_updated": "2026-05-13T06:14:51.691153",
   "total_confirmed": 5,
   "confirmed_gems": [
     {
       "symbol": "act",
       "name": "Act I The AI Prophecy",
-      "confirmed_at": "2026-05-11T08:44:57.094544",
-      "ratio_now": 0.6575644709837898,
-      "ratio_24h_ago": 0.5348068067384933,
-      "growth_percent": 22.953646568922935,
+      "confirmed_at": "2026-05-13T06:14:51.688488",
+      "ratio_now": 0.7586203548541839,
+      "ratio_24h_ago": 0.5243332974450198,
+      "growth_percent": 44.68284935379883,
       "strong_days": 3,
-      "acceleration_strength": 1.840207143635976,
+      "acceleration_strength": 1.81446232309391,
       "trend": "accelerating",
-      "market_cap": 15026411,
-      "volume": 9880834,
+      "market_cap": 15449219,
+      "volume": 11720092,
       "priority": "alta",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 71.15387871512549
+      "quality_score": 72.85318613575755
     },
     {
       "symbol": "mubarak",

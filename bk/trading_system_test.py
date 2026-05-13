@@ -6,9 +6,6 @@ import pandas as pd
 import time
 import json
 import os
-import html
-import requests
-from io import StringIO
 
 # ============================================================
 # MT5 DATA PROVIDER  (fonte única — sem yfinance)
@@ -111,227 +108,6 @@ def get_data_source_label() -> str:
 # ============================================================
 st.set_page_config(page_title="MONTREZOR - Trading System", layout="wide", page_icon="📊")
 
-# ============================================================
-# ALERTA COM SOM E PISCADA DE TÍTULO
-# ============================================================
-def play_alert_sound(symbol: str, direction: str, signal_type: str):
-    """Toca som e pisca o título da aba com o nome do ativo."""
-    js_code = f"""
-    <script>
-    (function() {{
-        // Som de alerta
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        osc.connect(gain);
-        gain.connect(audioContext.destination);
-        osc.frequency.value = {1000 if direction == 'COMPRA' else 800};
-        osc.type = 'sine';
-        gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-        osc.start(audioContext.currentTime);
-        osc.stop(audioContext.currentTime + 0.5);
-
-        // Piscar título
-        const original = document.title;
-        let blink = true;
-        const interval = setInterval(() => {{
-            document.title = blink ? '🚨 SINAL: {symbol}' : original;
-            blink = !blink;
-        }}, 500);
-        setTimeout(() => {{
-            clearInterval(interval);
-            document.title = original;
-        }}, 5000);
-    }})();
-    </script>
-    """
-    st.components.v1.html(js_code, height=0)
-
-# ============================================================
-# TELEGRAM ALERT
-# ============================================================
-TELEGRAM_CONFIG_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_telegram.json")
-
-
-def _normalize_telegram_token(token: str) -> str:
-    if token is None:
-        return ""
-    t = str(token).strip().replace("\r", "").replace("\n", "")
-    if len(t) >= 2 and t[0] == t[-1] and t[0] in "\"'":
-        t = t[1:-1].strip()
-    return t
-
-
-def _normalize_telegram_chat_id(chat_id: str) -> str:
-    if chat_id is None:
-        return ""
-    c = str(chat_id).strip().replace("\r", "").replace("\n", "")
-    if len(c) >= 2 and c[0] == c[-1] and c[0] in "\"'":
-        c = c[1:-1].strip()
-    return c
-
-
-def _telegram_api_error(resp: requests.Response) -> str:
-    try:
-        data = resp.json()
-        if isinstance(data, dict) and not data.get("ok"):
-            return str(data.get("description") or data)
-    except Exception:
-        pass
-    return resp.text[:300] if resp.text else f"HTTP {resp.status_code}"
-
-
-def _telegram_response_ok(resp: requests.Response) -> bool:
-    if resp.status_code != 200:
-        return False
-    try:
-        return bool(resp.json().get("ok"))
-    except Exception:
-        return True
-
-
-def load_telegram_config():
-    """Carrega token e chat ID do Telegram."""
-    if os.path.exists(TELEGRAM_CONFIG_FILE):
-        try:
-            with open(TELEGRAM_CONFIG_FILE, 'r', encoding='utf-8') as f:
-                cfg = json.load(f)
-                return _normalize_telegram_token(cfg.get("token", "")), _normalize_telegram_chat_id(
-                    str(cfg.get("chat_id", ""))
-                )
-        except Exception:
-            pass
-    return "", ""
-
-
-def save_telegram_config(token: str, chat_id: str):
-    """Salva token e chat ID do Telegram."""
-    try:
-        token_n = _normalize_telegram_token(token)
-        chat_n = _normalize_telegram_chat_id(chat_id)
-        cfg = {"token": token_n, "chat_id": chat_n}
-        with open(TELEGRAM_CONFIG_FILE, 'w', encoding='utf-8') as f:
-            json.dump(cfg, f, ensure_ascii=False)
-        return True
-    except Exception:
-        return False
-
-
-def send_telegram_alert(
-    symbol: str, direction: str, signal_type: str, price: float, token: str, chat_id: str, touch_tfs: list = None
-) -> tuple:
-    """Envia alerta de sinal via Telegram. Retorna (sucesso, mensagem_erro)."""
-    token = _normalize_telegram_token(token)
-    chat_id = _normalize_telegram_chat_id(chat_id)
-    if not token or not chat_id:
-        return False, "TOKEN ou Chat ID em branco."
-
-    try:
-        direction_icon = "📈" if direction == "COMPRA" else "📉"
-        type_icon = "⭐" if signal_type == "SUPER" else "•"
-        esc = html.escape
-        ts = esc(pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"))
-
-        # Formatar TFs onde houve toque
-        tf_text = ""
-        if touch_tfs:
-            tf_str = " | ".join(touch_tfs)
-            tf_text = f"<b>Toques</b>: {esc(tf_str)}\n"
-
-        message = (
-            f"{direction_icon} <b>SINAL {esc(signal_type)}</b> {type_icon}\n"
-            "━━━━━━━━━━━━━━━━━━\n"
-            f"<b>Par</b>: {esc(symbol)}\n"
-            f"<b>Direção</b>: {esc(direction)}\n"
-            f"<b>Preço</b>: {price:.5f}\n"
-            f"{tf_text}"
-            f"<b>Hora</b>: {ts}\n\n"
-            "Montrezor Trading System"
-        )
-
-        url = f"https://api.telegram.org/bot{token}/sendMessage"
-        payload = {"chat_id": chat_id, "text": message, "parse_mode": "HTML"}
-        resp = requests.post(url, json=payload, timeout=15)
-
-        if _telegram_response_ok(resp):
-            return True, ""
-
-        err = _telegram_api_error(resp)
-        # Fallback: texto simples (evita falhas de parse_mode / caracteres especiais)
-        tf_text_plain = f"Toques: {' | '.join(touch_tfs)}\n" if touch_tfs else ""
-        plain = (
-            f"{direction_icon} SINAL {signal_type} {type_icon}\n"
-            "-------------------\n"
-            f"Par: {symbol}\nDireção: {direction}\nPreço: {price:.5f}\n"
-            f"{tf_text_plain}"
-            f"Hora: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}\n\nMontrezor Trading System"
-        )
-        resp2 = requests.post(
-            url, json={"chat_id": chat_id, "text": plain}, timeout=15
-        )
-        if _telegram_response_ok(resp2):
-            return True, ""
-        err2 = _telegram_api_error(resp2)
-        return False, f"{err} | fallback: {err2}"
-    except requests.RequestException as e:
-        return False, f"Rede/timeout: {e}"
-    except Exception as e:
-        return False, str(e)
-
-def send_telegram_gems_alert(symbol: str, signal_type: str, token: str, chat_id: str) -> bool:
-    """Envia alerta de gems (app.py) via Telegram."""
-    token = _normalize_telegram_token(token)
-    chat_id = _normalize_telegram_chat_id(chat_id)
-    if not token or not chat_id:
-        return False
-
-    try:
-        icon_map = {
-            "SUPER_BUY": "⚡🟢",
-            "SUPER_SELL": "🚨🔴",
-            "SUPER_REPIQUE": "⚡🔵",
-            "REPIQUE": "🔵",
-            "BUY": "🟢",
-            "SELL": "🔴",
-            "NEUTRO": "⚪",
-        }
-        icon = icon_map.get(signal_type, "•")
-
-        esc = html.escape
-        ts = esc(pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"))
-        message = (
-            f"{icon} <b>GEMS ALERT</b> — {esc(signal_type)}\n"
-            "━━━━━━━━━━━━━━━━━━\n"
-            f"<b>Ativo</b>: {esc(symbol)}\n"
-            f"<b>Status</b>: {esc(signal_type)}\n"
-            f"<b>Hora</b>: {ts}\n\n"
-            "Gems Finder System"
-        )
-
-        url = f"https://api.telegram.org/bot{token}/sendMessage"
-        payload = {"chat_id": chat_id, "text": message, "parse_mode": "HTML"}
-        resp = requests.post(url, json=payload, timeout=15)
-        if _telegram_response_ok(resp):
-            return True
-        plain = (
-            f"{icon} GEMS ALERT — {signal_type}\n-------------------\n"
-            f"Ativo: {symbol}\nStatus: {signal_type}\n"
-            f"Hora: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}\n\nGems Finder System"
-        )
-        resp2 = requests.post(url, json={"chat_id": chat_id, "text": plain}, timeout=15)
-        return _telegram_response_ok(resp2)
-    except Exception:
-        return False
-
-def export_signals_to_csv(signals_log: list) -> str:
-    """Converte log de sinais para CSV string."""
-    if not signals_log:
-        return ""
-
-    df = pd.DataFrame(signals_log)
-    return df.to_csv(index=False)
-
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
@@ -371,46 +147,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ============================================================
-# 2. SESSION STATES + PERSISTÊNCIA
+# 2. SESSION STATES
 # ============================================================
-PERSIST_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_data.json")
-
-def load_persisted_data():
-    """Carrega ativos e níveis Athena do JSON no disco."""
-    if os.path.exists(PERSIST_FILE):
-        try:
-            with open(PERSIST_FILE, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except:
-            pass
-    return {"symbols": ["CHFJPY#", "EURUSD#", "BTCUSD#"], "athena": {}, "signals_log": []}
-
-def save_persisted_data(symbols, athena, signals_log):
-    """Salva ativos e níveis Athena em JSON no disco."""
-    try:
-        data = {"symbols": symbols, "athena": athena, "signals_log": signals_log}
-        with open(PERSIST_FILE, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-    except:
-        pass
-
-_persisted = load_persisted_data()
-
 if 'step_active'      not in st.session_state: st.session_state.step_active      = 0
 if 'hougaard_step'    not in st.session_state: st.session_state.hougaard_step    = -1
-if 'tracked_symbols'  not in st.session_state: st.session_state.tracked_symbols  = _persisted.get("symbols", ["CHFJPY#", "EURUSD#", "BTCUSD#"])
-if 'neuro_athena'     not in st.session_state: st.session_state.neuro_athena     = _persisted.get("athena", {})
-if 'signals_log'      not in st.session_state: st.session_state.signals_log      = _persisted.get("signals_log", [])
+if 'tracked_symbols'  not in st.session_state: st.session_state.tracked_symbols  = ["CHFJPY#", "EURUSD#", "BTCUSD#"]
+if 'neuro_athena'     not in st.session_state: st.session_state.neuro_athena     = {}
 if 'auto_update'      not in st.session_state: st.session_state.auto_update      = False
 if 'last_update'      not in st.session_state: st.session_state.last_update      = 0
 if 'cached_data'      not in st.session_state: st.session_state.cached_data      = {}
 if 'na_tf_select'     not in st.session_state: st.session_state.na_tf_select     = {}
-
-# Carregar config Telegram
-_tg_token, _tg_chat_id = load_telegram_config()
-if 'telegram_enabled' not in st.session_state: st.session_state.telegram_enabled = bool(_tg_token and _tg_chat_id)
-if 'tg_token'         not in st.session_state: st.session_state.tg_token         = _tg_token
-if 'tg_chat_id'       not in st.session_state: st.session_state.tg_chat_id       = _tg_chat_id
 
 # ============================================================
 # 3. INDICADORES
@@ -614,7 +360,7 @@ def fetch_multi_tf_data(symbol):
 # ============================================================
 # 5. LÓGICA DE SINAIS
 # ============================================================
-def _near(a, b, pct=0.0075):
+def _near(a, b, pct=0.015):
     """Retorna True se a e b estiverem dentro de pct (1.5%) um do outro."""
     try:
         a, b = float(a), float(b)
@@ -637,7 +383,7 @@ def _rsi_touch_top(row):
     except:
         return False
 
-def _rsi_near_bottom(row, near_pct=0.05):
+def _rsi_near_bottom(row, near_pct=0.3):
     """Perto do fundo do CANAL RSI.
 
     Interpretação: near_pct é percentual da escala do RSI (0..100).
@@ -651,7 +397,7 @@ def _rsi_near_bottom(row, near_pct=0.05):
     except:
         return False
 
-def _rsi_near_top(row, near_pct=0.05):
+def _rsi_near_top(row, near_pct=0.3):
     """Perto do topo do CANAL RSI.
 
     Interpretação: near_pct é percentual da escala do RSI (0..100).
@@ -729,8 +475,8 @@ def check_signals(data, symbol, athena_levels):
     # =========================================================
     # SEPARACAO DE CANDLES POR USO
     # ---------------------------------------------------------
-    # TENDENCIA / EMAs        → candle ATUAL (em formacao OK)
-    # RSI CANAL 4H/1D         → candle ATUAL (oscila muito intraday)
+    # TENDENCIA / EMAs        → candle atual (em formacao OK)
+    # RSI CANAL 4H/1D         → candle FECHADO (oscila muito intraday)
     # RSI CANAL SEMANAL/MENSAL → candle ATUAL (em formacao OK)
     #
     # Por que semanal/mensal usam o candle em formacao para RSI:
@@ -779,7 +525,7 @@ def check_signals(data, symbol, athena_levels):
     # ── RSI canal — gatilho no DIARIO e/ou 4H (independentes) ──────────────
     # O diario e avaliado SEMPRE (TF de gatilho principal do metodo).
     # O 4H e avaliado como alternativa quando disponivel.
-    # Ambos usam candle ABERTO (sem candle em formacao).
+    # Ambos usam candle FECHADO (sem candle em formacao).
     #
     # Near:
     #   Diario/4H      → toque real obrigatorio (hit)
@@ -791,27 +537,27 @@ def check_signals(data, symbol, athena_levels):
 
     # Near universal: 3 pts RSI em todos os TFs (= "3% de 0-100" do método)
     # Semanal/mensal: mesmo 3pts — canal mais largo, toque visual é suficiente
-    NEAR_TF  = 0.015   # 3 pontos RSI — diario e 4H
-    NEAR_W1_MN = 0.015 # 3 pontos RSI — semanal e mensal
+    NEAR_TF  = 0.03   # 3 pontos RSI — diario e 4H
+    NEAR_W1_MN = 0.03   # 3 pontos RSI — semanal e mensal
 
-    # Gatilho diario (agora avaliando o candle ATUAL em tempo real)
-    d1_data    = data.get('1d')
-    d1_current = _get_confirmed_row(d1_data, allow_current=True) if d1_data is not None else None
-    hit_d1     = (touch_fn(d1_current) or near_fn(d1_current, near_pct=NEAR_TF)) if d1_current is not None else False
+    # Gatilho diario (sempre avaliado, candle FECHADO)
+    d1_data   = data.get('1d')
+    d1_closed = _get_confirmed_row(d1_data, allow_current=False) if d1_data is not None else None
+    hit_d1    = (touch_fn(d1_closed) or near_fn(d1_closed, near_pct=NEAR_TF)) if d1_closed is not None else False
 
-    # Gatilho 4H (agora avaliando o candle ATUAL em tempo real)
+    # Gatilho 4H (alternativa quando disponivel, candle FECHADO)
     hit_4h = False
     tfm_4h = None
     if '4h' in data:
-        tfm_4h = _get_confirmed_row(data['4h'], allow_current=True)
+        tfm_4h = _get_confirmed_row(data['4h'], allow_current=False)
         hit_4h = (touch_fn(tfm_4h) or near_fn(tfm_4h, near_pct=NEAR_TF)) if tfm_4h is not None else False
 
     # Candle de referencia para preco/ST: 4H se tocou, senao diario
     if hit_4h and tfm_4h is not None:
         tfm = tfm_4h
         tf_menor_key = '4h'
-    elif d1_current is not None:
-        tfm = d1_current
+    elif d1_closed is not None:
+        tfm = d1_closed
         tf_menor_key = '1d'
     else:
         return None
@@ -847,12 +593,13 @@ def check_signals(data, symbol, athena_levels):
     na_buy_entry  = na.get('buy_entry',  0.0)
     na_sell_entry = na.get('sell_entry', 0.0)
 
-    # Toque EXATO no Supertrend (sem proximidade)
+    # Toque OU PROXIMO do Supertrend (candle FECHADO — sem Low/High provisorio)
+    # "Proximo" = Close dentro de 1.5% do ST_Line (mesmo threshold das EMAs)
     try:
         st_line  = float(tfm['ST_Line'])
         c_low    = float(tfm['Low'])
         c_high   = float(tfm['High'])
-        touch_st = (c_low <= st_line <= c_high)  # Toque exato: Low <= ST_Line <= High
+        touch_st = (c_low <= st_line <= c_high) or _near(c_price, st_line, pct=0.015)
     except:
         touch_st = False
 
@@ -874,21 +621,6 @@ def check_signals(data, symbol, athena_levels):
     except Exception:
         signal_ts = None
 
-    # Quais TFs tiveram toque/near no canal RSI
-    touch_tfs = []
-    if hit_d1:
-        touch_tfs.append('1D')
-    if hit_4h:
-        touch_tfs.append('4H')
-    if hit_w1:
-        touch_tfs.append('1W')
-    elif near_w1:
-        touch_tfs.append('1W~')  # ~ = near, não toque exato
-    if hit_mn:
-        touch_tfs.append('1M')
-    elif near_mn:
-        touch_tfs.append('1M~')
-
     return {
         "symbol":    symbol,
         "direction": direction,
@@ -897,7 +629,6 @@ def check_signals(data, symbol, athena_levels):
         "tf_menor":  tf_menor_key,
         "trend_mn":  trend_mn,
         "signal_ts": signal_ts,
-        "touch_tfs": touch_tfs,  # TFs onde houve toque/near no canal RSI
         # debug: quais condicoes passaram
         "_debug": {
             "hit_tfm": hit_tfm, "hit_w1": hit_w1, "hit_mn": hit_mn,
@@ -1171,11 +902,12 @@ def build_chart(all_data, symbol, chart_tf, athena_levels, show_tfs):
 # 7. CABEÇALHO
 # ============================================================
 st.markdown("""
-<div style='display:flex;align-items:center;gap:16px;margin-bottom:8px;margin-top:8px'>
-  <span style='font-size:42px;font-weight:bold;color:#FFFFFF;
-               font-family:JetBrains Mono,monospace;letter-spacing:1px'>
-    Montrezor Trading System
+<div style='display:flex;align-items:center;gap:16px;margin-bottom:8px'>
+  <span style='font-size:28px;font-weight:bold;color:#c9d1d9;
+               font-family:JetBrains Mono,monospace;letter-spacing:2px'>
+    ⬛ MONTREZOR
   </span>
+  <span style='color:#8b949e;font-size:14px;margin-top:6px'>Trading System v2</span>
 </div>
 """, unsafe_allow_html=True)
 
@@ -1187,8 +919,7 @@ tabs = st.tabs([
     "👁️ Visão Geral",
     "✅ Checklist",
     "📋 Método Hougaard",
-    "🔬 Simulador",
-    "⚙️ Configurações"
+    "🔬 Simulador"
 ])
 
 # ════════════════════════════════════════════════════════════
@@ -1201,79 +932,66 @@ with tabs[0]:
 
     # ─────────────── SIDEBAR ───────────────────────────────
     with col_side:
+        st.markdown("#### 🔍 Ativos")
 
-        # ── Badge fonte de dados ──
+        new_sym = st.text_input("Adicionar par:", placeholder="MT5: CHFJPY#, EURUSD# | yf: CHFJPY#, BTCUSD#")
+        if st.button("➕ Adicionar", use_container_width=True):
+            syms = [s.strip().upper() for s in new_sym.split(",") if s.strip()]
+            for s in syms:
+                if s and s not in st.session_state.tracked_symbols:
+                    st.session_state.tracked_symbols.append(s)
+                    st.session_state.neuro_athena.setdefault(s, {})
+            st.rerun()
+
+        # Lista de pares — clicável para selecionar
+        if st.session_state.tracked_symbols:
+            sym_to_remove = None
+            for sym in st.session_state.tracked_symbols:
+                c1, c2 = st.columns([4, 1])
+                with c1:
+                    st.markdown(f"<span style='color:#c9d1d9;font-size:13px'>📌 {sym}</span>",
+                                unsafe_allow_html=True)
+                with c2:
+                    if st.button("✕", key=f"rm_{sym}", help=f"Remover {sym}"):
+                        sym_to_remove = sym
+            if sym_to_remove:
+                st.session_state.tracked_symbols.remove(sym_to_remove)
+                st.rerun()
+
+        st.markdown("---")
+        # Badge de fonte de dados
         _src_label = get_data_source_label()
         _src_color = "#1D9E75" if "MT5" in _src_label else "#E0A905"
         st.markdown(
-            f"<div style='background:rgba(0,0,0,0.25);border:1px solid {_src_color}33;"
-            f"border-radius:8px;padding:7px 12px;font-size:11px;color:{_src_color};"
-            f"text-align:center;margin-bottom:12px;letter-spacing:.5px'>📡 {_src_label}</div>",
+            f"<div style='background:rgba(0,0,0,0.3);border:1px solid {_src_color};"
+            f"border-radius:6px;padding:6px 10px;font-size:11px;color:{_src_color};"
+            f"text-align:center;margin-bottom:8px'>📡 {_src_label}</div>",
             unsafe_allow_html=True)
 
-        # ── Controles de atualização ──
-        st.session_state.auto_update = st.toggle("⏱ Auto-refresh (1 min)", value=st.session_state.auto_update)
+        st.session_state.auto_update = st.toggle("⏱ Auto (1 min)", value=st.session_state.auto_update)
         if st.button("🔄 Atualizar Agora", use_container_width=True):
             st.cache_data.clear()
             st.session_state.last_update = 0
             st.rerun()
 
-        st.markdown("<hr style='border-color:#21262d;margin:14px 0'>", unsafe_allow_html=True)
-
-        # ── Adicionar ativos ──
-        st.markdown(
-            "<div style='font-size:12px;font-weight:700;color:#8b949e;"
-            "letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px'>"
-            "➕ Adicionar Ativo</div>",
-            unsafe_allow_html=True)
-        new_sym = st.text_input(
-            "Ticker", placeholder="Ex: EURUSD#, BTCUSD#",
-            label_visibility="collapsed", key="new_sym_input")
-        if st.button("Adicionar", use_container_width=True, type="primary"):
-            syms = [s.strip().upper() for s in new_sym.split(",") if s.strip()]
-            added = 0
-            for s in syms:
-                if s and s not in st.session_state.tracked_symbols:
-                    st.session_state.tracked_symbols.append(s)
-                    st.session_state.neuro_athena.setdefault(s, {})
-                    added += 1
-            if added:
-                st.rerun()
-
-        st.markdown("<hr style='border-color:#21262d;margin:14px 0'>", unsafe_allow_html=True)
-
         # ── TFs visíveis ──
-        st.markdown(
-            "<div style='font-size:12px;font-weight:700;color:#8b949e;"
-            "letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px'>"
-            "📊 Timeframes</div>",
-            unsafe_allow_html=True)
-        c1, c2 = st.columns(2)
-        with c1:
-            show_1mo = st.checkbox("MN",      value=True, help="Mensal")
-            show_1d  = st.checkbox("D1",      value=True, help="Diário")
-        with c2:
-            show_1wk = st.checkbox("W1",      value=True, help="Semanal")
-            show_4h  = st.checkbox("H4",      value=True, help="4 Horas")
+        st.markdown("---")
+        st.markdown("#### 📊 Timeframes")
+        show_1mo = st.checkbox("Mensal",   value=True)
+        show_1wk = st.checkbox("Semanal",  value=True)
+        show_1d  = st.checkbox("Diário",   value=True)
+        show_4h  = st.checkbox("4 Horas",  value=True)
         show_tfs = [tf for tf, ok in [('1mo',show_1mo),('1wk',show_1wk),
                                        ('1d',show_1d),('4h',show_4h)] if ok]
 
-        st.markdown("<hr style='border-color:#21262d;margin:14px 0'>", unsafe_allow_html=True)
+        st.markdown("---")
 
         # ── Neuro Athena ──
-        st.markdown(
-            "<div style='font-size:12px;font-weight:700;color:#8b949e;"
-            "letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px'>"
-            "🧠 Neuro Athena</div>",
-            unsafe_allow_html=True)
+        st.markdown("#### 🧠 Neuro Athena")
+        sym_select = st.selectbox("Par:", st.session_state.tracked_symbols,
+                                  key="athena_sym_sel")
 
-        sym_select = st.selectbox(
-            "Par Athena", sorted(st.session_state.tracked_symbols),
-            key="athena_sym_sel", label_visibility="collapsed")
-
-        if st.button("💾 Salvar Configuração", use_container_width=True, key="save_config_btn"):
-            st.success("✅ Configuração salva!")
-
+        # Seleção de timeframe para os níveis Athena
         tf_options = ["Qualquer (geral)", "Mensal (1mo)", "Semanal (1wk)", "Diário (1d)", "4H (4h)"]
         tf_sel = st.selectbox("Timeframe dos níveis:", tf_options, key="athena_tf_sel_box")
 
@@ -1282,8 +1000,8 @@ with tabs[0]:
 
         na = st.session_state.neuro_athena[sym_select]
 
-        st.markdown("<div style='color:#484f58;font-size:10px;margin-bottom:8px'>"
-                    "Deixe 0 para ocultar o nível no gráfico</div>", unsafe_allow_html=True)
+        st.markdown("<div style='color:#8b949e;font-size:11px;margin-bottom:6px'>"
+                    "Deixe 0 para ocultar o nível</div>", unsafe_allow_html=True)
 
         def na_input(label, key, color):
             val = float(na.get(key, 0.0))
@@ -1303,37 +1021,8 @@ with tabs[0]:
         na_input("TP 2 ↓", "tp2_dn", "#c0392b")
         na_input("TP 3 ↓", "tp3_dn", "#922b21")
 
-        st.markdown("---")
-        st.markdown("#### 📊 Dados & Exportação")
-
-        # Botão de exportar CSV
-        csv_data = export_signals_to_csv(st.session_state.signals_log)
-        if csv_data:
-            st.download_button(
-                label="📥 Exportar Histórico (CSV)",
-                data=csv_data,
-                file_name=f"montrezor_sinais_{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.csv",
-                mime="text/csv",
-                use_container_width=True
-            )
-        else:
-            st.text("📭 Nenhum sinal para exportar")
-
-        st.markdown("---")
-        st.markdown("#### 📱 Telegram Alerts")
-
-        if st.session_state.telegram_enabled:
-            st.markdown("🟢 **Status**: Ativo")
-            if st.button("⚙️ Configurar Telegram", use_container_width=True):
-                st.session_state.show_tg_config = True
-                st.rerun()
-        else:
-            st.markdown("🔴 **Status**: Inativo")
-            if st.button("✅ Configurar Telegram", use_container_width=True):
-                st.session_state.show_tg_config = True
-                st.rerun()
-
-        # Nota: Salvo automaticamente ao finalizar a análise
+        if st.button("💾 Salvar Athena", use_container_width=True):
+            st.success("✅ Salvo!")
 
     # ─────────────── ÁREA PRINCIPAL ────────────────────────
     with col_main:
@@ -1341,7 +1030,6 @@ with tabs[0]:
         # ── Baixar todos os dados ──
         all_sym_data = {}
         signals_found = []
-        new_signals = []  # Sinais novos nesta execução
 
         progress_ph = st.empty()
         with progress_ph.container():
@@ -1356,31 +1044,6 @@ with tabs[0]:
                 sig = check_signals(sym_data, sym, st.session_state.neuro_athena)
                 if sig:
                     signals_found.append(sig)
-                    new_signals.append(sig)  # Registrar sinal novo
-                    # Disparar alerta
-                    play_alert_sound(sig['symbol'], sig['direction'], sig['type'])
-                    # Enviar alerta Telegram se habilitado
-                    if st.session_state.telegram_enabled:
-                        send_telegram_alert(
-                            sig['symbol'], sig['direction'], sig['type'], sig['price'],
-                            st.session_state.tg_token, st.session_state.tg_chat_id,
-                            touch_tfs=sig.get('touch_tfs', [])
-                        )
-
-        # ── Adicionar novos sinais ao histórico ──
-        for sig in new_signals:
-            log_entry = {
-                "timestamp": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "symbol": sig["symbol"],
-                "direction": sig["direction"],
-                "type": sig["type"],
-                "price": float(sig["price"]),
-                "touch_tfs": sig.get("touch_tfs", []),
-            }
-            st.session_state.signals_log.insert(0, log_entry)  # Inserir no topo
-            # Manter apenas últimos 100 sinais
-            if len(st.session_state.signals_log) > 100:
-                st.session_state.signals_log = st.session_state.signals_log[:100]
 
         progress_ph.empty()
 
@@ -1416,54 +1079,10 @@ with tabs[0]:
                       <div style="color:#8b949e;font-size:13px">
                         Preço: <b style="color:#c9d1d9">{s['price']:.5f}</b><br>
                         TF ref: {s['tf_menor'].upper()}<br>
-                        TFs toque: <b style="color:#c9d1d9">{' | '.join(s.get('touch_tfs', []))}</b><br>
                         Candle: <b style="color:#c9d1d9">{str(s.get('signal_ts', ''))[:16] if s.get('signal_ts') is not None else '—'}</b>
                       </div>
                     </div>
                     """, unsafe_allow_html=True)
-
-        st.markdown("---")
-
-        # ── GRID DE ATIVOS ──
-        with st.expander(
-            f"📋 ATIVOS MONITORADOS ({len(st.session_state.tracked_symbols)}) — clique para gerenciar",
-            expanded=False
-        ):
-            _grid_cols = st.columns(3)
-            _sym_to_remove = None
-            for _idx, _sym in enumerate(sorted(st.session_state.tracked_symbols)):
-                _sig_obj = next(
-                    (s for s in signals_found if s["symbol"] == _sym), None
-                ) if signals_found else None
-
-                if _sig_obj:
-                    _clr   = "#3fb950" if _sig_obj["direction"] == "COMPRA" else "#f85149"
-                    _icon  = "▲" if _sig_obj["direction"] == "COMPRA" else "▼"
-                    _badge = (f"<span style='color:{_clr};font-size:10px;font-weight:700;"
-                              f"margin-left:6px'>{_icon} {_sig_obj['type']}</span>")
-                    _border = _clr
-                else:
-                    _badge  = ""
-                    _border = "#30363d"
-
-                with _grid_cols[_idx % 3]:
-                    _ca, _cb = st.columns([5, 1], vertical_alignment="center")
-                    with _ca:
-                        st.markdown(
-                            f"<div style='background:#161b22;border:1px solid {_border};"
-                            f"border-radius:6px;padding:5px 10px;display:flex;"
-                            f"justify-content:space-between;align-items:center;height:34px;'>"
-                            f"<span style='color:#e6edf3;font-size:12px;"
-                            f"font-family:JetBrains Mono,monospace;font-weight:600'>{_sym}</span>"
-                            f"{_badge}</div>",
-                            unsafe_allow_html=True)
-                    with _cb:
-                        if st.button("×", key=f"del_{_sym}", help=f"Remover {_sym}"):
-                            _sym_to_remove = _sym
-
-            if _sym_to_remove:
-                st.session_state.tracked_symbols.remove(_sym_to_remove)
-                st.rerun()
 
         st.markdown("---")
 
@@ -1489,34 +1108,6 @@ with tabs[0]:
                 st.warning(f"Dados insuficientes para {chart_sym} no timeframe {chart_tf}.")
         else:
             st.warning(f"Dados não disponíveis para {chart_sym}. Verifique o ticker.")
-
-        # ── Histórico de Sinais ──
-        st.markdown("---")
-        st.markdown("### 📜 Histórico de Sinais")
-        if st.session_state.signals_log:
-            # Mostrar os últimos 10 sinais
-            log_display = st.session_state.signals_log[:10]
-            for idx, log in enumerate(log_display):
-                ts = log.get("timestamp", "—")
-                sym = log.get("symbol", "—")
-                direction = log.get("direction", "—")
-                sig_type = log.get("type", "—")
-                price = log.get("price", 0)
-                touch_tfs = log.get("touch_tfs", [])
-
-                direction_icon = "▲" if direction == "COMPRA" else "▼"
-                type_badge = "⭐SUPER" if sig_type == "SUPER" else "•COMUM"
-                tf_info = f" 📊 {' '.join(touch_tfs)}" if touch_tfs else ""
-
-                st.markdown(f"""
-                <div style='background:#161b22;border-left:3px solid {"#1D9E75" if direction=="COMPRA" else "#E04C4C"};padding:8px 12px;margin-bottom:6px;border-radius:4px;font-size:12px'>
-                  <span style='color:#8b949e'>{ts}</span> —
-                  <span style='color:#c9d1d9;font-weight:bold'>{direction_icon} {sym}</span>
-                  <span style='color:#5DCAA5'>{type_badge}</span>{tf_info} @ {price:.5f}
-                </div>
-                """, unsafe_allow_html=True)
-        else:
-            st.info("📭 Nenhum sinal registrado ainda.")
 
         # ── Timestamp ──
         st.markdown(
@@ -1546,16 +1137,16 @@ with tabs[1]:
     <div class='rule-card'>
       <div class='rule-title'>🎯 Tendência</div>
       <div class='rule-body'>
-        <b>COMPRA</b>: Supertrend Mensal = alta + EMAs Semanal 50>100>200<br>
-        <b>VENDA</b>: Supertrend Mensal = baixa + EMAs Semanal 50<100<200<br>
+        <b>COMPRA</b>: Supertrend Mensal = alta + EMAs Semanal 50>100>200 abaixo do preço<br>
+        <b>VENDA</b>: Supertrend Mensal = baixa + EMAs Semanal 50<100<200 acima do preço<br>
         <span style='color:#5DCAA5'>⚡ Peso maior para tendência mensal</span>
       </div>
     </div>
     <div class='rule-card'>
       <div class='rule-title'>🔔 Sinal Comum <span class='rule-badge'>COMUM</span></div>
       <div class='rule-body'>
-        Tendência Mensal confirmada + Confluencia Semanal <br>
-        Toque (D ou 4H) no canal RSI + (toque ou 0.5 pontos no Semanal OR 0.5 ponto no Mensal) + <br>
+        Tendência Mensal confirmada + <br>
+        Toque (D ou 4H) no canal RSI + (toque ou 3 pontos no Semanal OR 1 ponto no Mensal) + <br>
         Proximidade/toque de EMA (qualquer, em D/S/M)
       </div>
     </div>
@@ -1582,7 +1173,7 @@ with tabs[2]:
         ("Volume acima da média (opcional)",                  False),
         ("Nível Neuro Athena confirmado (Super)",             False),
         ("Supertrend do TF menor confirmando (Super)",        False),
-        ("Risco/Retorno > 10pts ou take profit neuro athena",  True),
+        ("Risco/Retorno > 2:1",                              True),
     ]
     for label, required in items:
         badge = "<span class='rule-badge'>Obrigatório</span>" if required else \
@@ -1598,319 +1189,31 @@ with tabs[2]:
 # TAB 3 — MÉTODO HOUGAARD
 # ════════════════════════════════════════════════════════════
 with tabs[3]:
-    st.markdown("### 📋 Método Hougaard — Simulador Breakeven")
-    st.markdown(
-        "<div style='color:#8b949e;font-size:13px;margin-bottom:16px'>"
-        "Simulação interativa da técnica de Breakeven e Piramidagem de Tom Hougaard. "
-        "Pressione <b>Próximo passo</b> para avançar.</div>",
-        unsafe_allow_html=True)
-    st.components.v1.html(
-        """
-<style>
-  * { box-sizing: border-box; }
-  body { background: #0E0E0E; }
-  .sim { background: #0E0E0E; padding: 1.5rem 0; font-family: 'IBM Plex Mono', monospace; }
-  .controls { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap; }
-  .btn-step { background: #1A1A1A; border: 0.5px solid #333; color: #C0BBB3; font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: background 0.15s; }
-  .btn-step:hover { background: #252525; }
-  .btn-reset { background: transparent; border: 0.5px solid #2A1E0A; color: #C98A2A; font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 8px 14px; border-radius: 6px; cursor: pointer; }
-  .step-label { font-size: 11px; color: #555; letter-spacing: 2px; text-transform: uppercase; flex: 1; text-align: right; }
-  canvas#chartC { width: 100%; border-radius: 8px; background: #111; display: block; }
-  .info-box { margin-top: 1rem; background: #141414; border: 0.5px solid #222; border-radius: 8px; padding: 14px 16px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-  .info-item { }
-  .info-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #444; margin-bottom: 4px; }
-  .info-val { font-size: 14px; font-weight: 500; color: #D4CFC7; }
-  .info-val.green { color: #3D9E75; }
-  .info-val.red { color: #C04040; }
-  .info-val.amber { color: #C98A2A; }
-  .narrative { margin-top: 1rem; background: #141414; border-left: 2px solid #333; padding: 10px 14px; border-radius: 0 6px 6px 0; }
-  .nar-step { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 4px; }
-  .nar-text { font-size: 12px; color: #888; line-height: 1.7; font-style: italic; }
-  .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 10px; }
-  .leg-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #666; }
-  .leg-dot { width: 10px; height: 3px; border-radius: 2px; }
-</style>
-
-<div class="sim">
-  <h2 class="sr-only">Simulador interativo da técnica de Breakeven de Tom Hougaard</h2>
-
-  <div class="legend">
-    <span class="leg-item"><span class="leg-dot" style="background:#3D9E75"></span>preço</span>
-    <span class="leg-item"><span class="leg-dot" style="background:#C04040; border-top: 2px dashed #C04040; height:0"></span>stop loss</span>
-    <span class="leg-item"><span class="leg-dot" style="background:#C98A2A"></span>breakeven</span>
-    <span class="leg-item"><span class="leg-dot" style="background:#8B7FD4"></span>entrada P2</span>
-  </div>
-
-  <div style="position: relative; width: 100%; height: 300px;">
-    <canvas id="chartC" role="img" aria-label="Gráfico de preço mostrando entrada, breakeven e piramidagem segundo método Hougaard"></canvas>
-  </div>
-
-  <div class="info-box">
-    <div class="info-item">
-      <div class="info-label">P&L total</div>
-      <div class="info-val" id="pnl">—</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">Stop ativo</div>
-      <div class="info-val" id="stopval">—</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">Posições</div>
-      <div class="info-val" id="posval">—</div>
-    </div>
-  </div>
-
-  <div class="narrative">
-    <div class="nar-step" id="nar-step">aguardando</div>
-    <div class="nar-text" id="nar-text">Pressione "Próximo passo" para iniciar a simulação.</div>
-  </div>
-
-  <div class="controls" style="margin-top: 1rem; margin-bottom: 0;">
-    <button class="btn-step" id="btnNext"><i class="ti ti-player-play" aria-hidden="true"></i> Próximo passo</button>
-    <button class="btn-reset" id="btnReset"><i class="ti ti-refresh" aria-hidden="true"></i> Reiniciar</button>
-    <span class="step-label" id="stepcount">0 / 6</span>
-  </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script>
-const STEPS = [
-  {
-    label: "01 · entrada inicial",
-    text: '"Estou testando uma ideia." — Entrada em 100. Stop em 94. Risco definido: 6 pontos por contrato.',
-    priceEnd: 7,
-    stopLine: 94,
-    beLine: null,
-    p2Line: null,
-    pnl: null,
-    stop: "94.00",
-    pos: "1 contrato"
-  },
-  {
-    label: "02 · mercado anda a favor",
-    text: '"Talvez eu esteja certo." — Preço sobe para 107. Momentum confirmado. Ainda não agir.',
-    priceEnd: 14,
-    stopLine: 94,
-    beLine: null,
-    p2Line: null,
-    pnl: "+7.00",
-    pnlColor: "green",
-    stop: "94.00",
-    pos: "1 contrato"
-  },
-  {
-    label: "03 · mover stop para BE",
-    text: '"Agora posso pressionar." — Stop sobe para 100 (preço de entrada). Risco eliminado. Posição 1 está segura.',
-    priceEnd: 14,
-    stopLine: 100,
-    beLine: 100,
-    p2Line: null,
-    pnl: "+7.00",
-    pnlColor: "green",
-    stop: "100.00 (BE)",
-    pos: "1 contrato"
-  },
-  {
-    label: "04 · adicionar posição",
-    text: '"Vou aumentar no que funciona." — Abre P2 em 107. Stop combinado ajustado: se mercado voltar ao BE, P1 fecha zerado e P2 fecha com pequena perda controlada.',
-    priceEnd: 14,
-    stopLine: 100,
-    beLine: 100,
-    p2Line: 107,
-    pnl: "+7.00",
-    pnlColor: "green",
-    stop: "100.00",
-    pos: "2 contratos"
-  },
-  {
-    label: "05 · mercado continua — maximizar",
-    text: '"Maximizar assimetria." — Preço avança para 118. Stop sobe junto. P&L combinado: +25 pontos. Trailing stop protegendo ganhos.',
-    priceEnd: 25,
-    stopLine: 108,
-    beLine: 100,
-    p2Line: 107,
-    pnl: "+25.00",
-    pnlColor: "green",
-    stop: "108.00",
-    pos: "2 contratos"
-  },
-  {
-    label: "06 · saída no stop",
-    text: '"A tese falhou no timing." — Preço recua e aciona o stop em 108. Saída sem hesitar. Capital mental preservado para a próxima operação.',
-    priceEnd: 11,
-    stopLine: 108,
-    beLine: 100,
-    p2Line: 107,
-    pnl: "+19.00",
-    pnlColor: "green",
-    stop: "acionado 108",
-    pos: "fechado"
-  }
-];
-
-const priceBase = 100;
-const totalBars = 22;
-
-function buildPrice(stepIdx) {
-  const prices = [];
-  for (let i = 0; i < totalBars; i++) {
-    const t = i / (totalBars - 1);
-    let noise = (Math.sin(i * 2.3) * 0.8 + Math.cos(i * 1.1) * 0.5);
-    let trend = 0;
-    const s = STEPS[stepIdx];
-    trend = s.priceEnd * t;
-    prices.push(parseFloat((priceBase + trend + noise).toFixed(2)));
-  }
-  return prices;
-}
-
-function buildLine(val, len) {
-  if (val === null) return new Array(len).fill(null);
-  return new Array(len).fill(val);
-}
-
-const labels = Array.from({length: totalBars}, (_, i) => i === 0 ? 'T0' : i % 4 === 0 ? 'T'+i : '');
-
-let chart;
-let currentStep = -1;
-
-function initChart() {
-  const ctx = document.getElementById('chartC').getContext('2d');
-  chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: 'Preço',
-          data: new Array(totalBars).fill(null),
-          borderColor: '#3D9E75',
-          borderWidth: 2,
-          pointRadius: 0,
-          tension: 0.4,
-          fill: false
-        },
-        {
-          label: 'Stop',
-          data: new Array(totalBars).fill(null),
-          borderColor: '#C04040',
-          borderWidth: 1.5,
-          borderDash: [5, 4],
-          pointRadius: 0,
-          tension: 0,
-          fill: false
-        },
-        {
-          label: 'Breakeven',
-          data: new Array(totalBars).fill(null),
-          borderColor: '#C98A2A',
-          borderWidth: 1,
-          borderDash: [3, 3],
-          pointRadius: 0,
-          tension: 0,
-          fill: false
-        },
-        {
-          label: 'Entrada P2',
-          data: new Array(totalBars).fill(null),
-          borderColor: '#8B7FD4',
-          borderWidth: 1,
-          borderDash: [2, 4],
-          pointRadius: 0,
-          tension: 0,
-          fill: false
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: { duration: 600, easing: 'easeInOutQuart' },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#1A1A1A',
-          titleColor: '#888',
-          bodyColor: '#D4CFC7',
-          borderColor: '#333',
-          borderWidth: 0.5,
-          callbacks: {
-            label: ctx => ctx.dataset.label + ': ' + (ctx.raw !== null ? ctx.raw.toFixed(2) : '—')
-          }
-        }
-      },
-      scales: {
-        x: {
-          grid: { color: '#1A1A1A' },
-          ticks: { color: '#444', font: { size: 10 } }
-        },
-        y: {
-          min: 90,
-          max: 125,
-          grid: { color: '#1A1A1A' },
-          ticks: {
-            color: '#444',
-            font: { size: 10 },
-            callback: v => v.toFixed(0)
-          }
-        }
-      }
-    }
-  });
-}
-
-function renderStep(idx) {
-  const s = STEPS[idx];
-  chart.data.datasets[0].data = buildPrice(idx);
-  chart.data.datasets[1].data = buildLine(s.stopLine, totalBars);
-  chart.data.datasets[2].data = buildLine(s.beLine, totalBars);
-  chart.data.datasets[3].data = buildLine(s.p2Line, totalBars);
-  chart.update();
-
-  document.getElementById('nar-step').textContent = s.label;
-  document.getElementById('nar-text').textContent = s.text;
-  document.getElementById('stepcount').textContent = (idx + 1) + ' / ' + STEPS.length;
-
-  const pnlEl = document.getElementById('pnl');
-  pnlEl.textContent = s.pnl || '—';
-  pnlEl.className = 'info-val ' + (s.pnlColor || '');
-
-  document.getElementById('stopval').textContent = s.stop;
-  document.getElementById('posval').textContent = s.pos;
-}
-
-document.getElementById('btnNext').addEventListener('click', () => {
-  if (currentStep < STEPS.length - 1) {
-    currentStep++;
-    renderStep(currentStep);
-  }
-  if (currentStep === STEPS.length - 1) {
-    document.getElementById('btnNext').disabled = true;
-    document.getElementById('btnNext').style.opacity = '0.4';
-  }
-});
-
-document.getElementById('btnReset').addEventListener('click', () => {
-  currentStep = -1;
-  chart.data.datasets.forEach(d => d.data = new Array(totalBars).fill(null));
-  chart.update();
-  document.getElementById('nar-step').textContent = 'aguardando';
-  document.getElementById('nar-text').textContent = 'Pressione "Próximo passo" para iniciar a simulação.';
-  document.getElementById('stepcount').textContent = '0 / 6';
-  document.getElementById('pnl').textContent = '—';
-  document.getElementById('pnl').className = 'info-val';
-  document.getElementById('stopval').textContent = '—';
-  document.getElementById('posval').textContent = '—';
-  document.getElementById('btnNext').disabled = false;
-  document.getElementById('btnNext').style.opacity = '1';
-});
-
-initChart();
-</script>
-""",
-        height=620,
-        scrolling=False
-    )
+    st.markdown("### 📋 Método Hougaard")
+    steps = [
+        ("Identificar Tendência Macro", "Supertrend Mensal + EMAs Semanal → definir direcional"),
+        ("Aguardar Pullback",           "Preço recuando para zona de EMA ou suporte/resistência chave"),
+        ("Verificar RSI Canal",         "RSI tocando fundo/topo do canal no contra-fluxo da tendência"),
+        ("Confirmar Stoch RSI",         "Stoch RSI saindo de zona de over em W1/D/4H"),
+        ("Checar Athena",               "Preço próximo de Buy/Sell Entry do Neuro Athena"),
+        ("Executar Entrada",            "Ordem a mercado ou limit no nível — SL abaixo do ST"),
+        ("Gerenciar Trade",             "Parcial nos TP1/TP2, mover SL para BE, deixar correr ao TP3"),
+    ]
+    for i, (title, desc) in enumerate(steps):
+        active = st.session_state.hougaard_step == i
+        col_n, col_t = st.columns([1, 10])
+        with col_n:
+            if st.button(f"{i+1}", key=f"hstep_{i}"):
+                st.session_state.hougaard_step = i if not active else -1
+                st.rerun()
+        with col_t:
+            bg = "#1a2332" if active else "#161b22"
+            st.markdown(f"""
+            <div style='background:{bg};border:1px solid {"#3B8BD4" if active else "#30363d"};
+                 border-radius:6px;padding:10px;margin-bottom:6px'>
+              <b style='color:#c9d1d9'>{title}</b>
+              {"<br><span style='color:#8b949e;font-size:13px'>" + desc + "</span>" if active else ""}
+            </div>""", unsafe_allow_html=True)
 
 # ════════════════════════════════════════════════════════════
 # TAB 4 — SIMULADOR
@@ -1959,161 +1262,6 @@ with tabs[4]:
           <div style='font-size:32px;font-weight:bold;color:{color}'>{score}/100</div>
           <div style='font-size:18px;color:{color};margin-top:8px'>{label}</div>
         </div>""", unsafe_allow_html=True)
-
-# ════════════════════════════════════════════════════════════
-# TAB 5 — CONFIGURAÇÕES
-# ════════════════════════════════════════════════════════════
-with tabs[5]:
-    st.markdown("""
-    <div class='info-box'>
-    <b>⚙️ Centro de Configurações</b><br>
-    Configure seus alertas via Telegram para receber sinais no celular em tempo real.
-    </div>
-    """, unsafe_allow_html=True)
-
-    # ── TAB 5A: TELEGRAM ──
-    st.markdown("### 📱 Telegram Alerts")
-
-    st.markdown("""
-    <div class='info-box'>
-    🚀 <b>Como Funciona</b><br>
-    O Trading System enviará notificações via Telegram sempre que detectar um sinal,
-    permitindo que você acompanhe os mercados mesmo longe do computador.
-    </div>
-    """, unsafe_allow_html=True)
-
-    # ── Instruções ──
-    with st.expander("📖 Guia de Configuração (clique para expandir)"):
-        st.markdown("""
-        ## 🔧 Passo a Passo: Ativar Alertas no Telegram
-
-        ### 1️⃣ Criar um Bot no Telegram
-        - Abra o Telegram e procure por **@BotFather**
-        - Digite `/start`
-        - Digite `/newbot`
-        - Escolha um nome para o bot (ex: "Montrezor Trader")
-        - Escolha um username único (ex: "montrezor_trader_bot")
-        - **Copie o TOKEN** que será gerado (ex: `123456789:ABCdefGHIjklmnOpqrstUVWxyz...`)
-
-        ### 2️⃣ Obter seu Chat ID
-        - No Telegram, procure por **@userinfobot**
-        - Envie qualquer mensagem
-        - Ele retornará seu **User ID** (ex: `987654321`)
-        - Este é seu Chat ID!
-
-        ### 3️⃣ Configurar no Montrezor
-        - Cole o **TOKEN** no campo abaixo
-        - Cole o **Chat ID** no campo abaixo
-        - Clique em **Salvar Configuração**
-        - Pronto! Começará a receber alertas
-
-        ### ✅ Testar Conexão
-        - Após salvar, o sistema tentará enviar um teste
-        - Se receber a mensagem no Telegram = tudo funcionando!
-
-        ---
-
-        **⚠️ Segurança**:
-        - Nunca compartilhe seu TOKEN com ninguém
-        - O TOKEN é como uma senha de acesso ao seu bot
-        - Ele é armazenado na sua pasta de usuário (não na pasta do projeto), com nome oculto:
-        - **Windows**: `C:\\Users\\SEU_USUARIO\\.montrezor_telegram.json` — ative “Itens ocultos” no Explorador para ver o ficheiro.
-        """)
-
-    st.markdown("---")
-    st.caption(f"Ficheiro de configuração: `{TELEGRAM_CONFIG_FILE}`")
-
-    # ── Formulário de Configuração ──
-    col1, col2 = st.columns(2)
-
-    with col1:
-        tg_token_input = st.text_input(
-            "🔑 Bot TOKEN",
-            value=st.session_state.tg_token,
-            type="password",
-            placeholder="123456789:ABCdeF...",
-            help="Obtido com @BotFather"
-        )
-
-    with col2:
-        tg_chat_id_input = st.text_input(
-            "👤 Chat ID",
-            value=st.session_state.tg_chat_id,
-            placeholder="987654321",
-            help="Obtido com @userinfobot"
-        )
-
-    col_save, col_test = st.columns(2)
-
-    with col_save:
-        if st.button("💾 Salvar Configuração", use_container_width=True):
-            if tg_token_input and tg_chat_id_input:
-                if save_telegram_config(tg_token_input, tg_chat_id_input):
-                    st.session_state.tg_token = _normalize_telegram_token(tg_token_input)
-                    st.session_state.tg_chat_id = _normalize_telegram_chat_id(tg_chat_id_input)
-                    st.session_state.telegram_enabled = True
-                    st.success(f"✅ Configuração salva com sucesso em:\n`{TELEGRAM_CONFIG_FILE}`")
-                    st.rerun()
-                else:
-                    st.error("❌ Erro ao salvar. Tente novamente.")
-            else:
-                st.warning("⚠️ Preencha TOKEN e Chat ID")
-
-    with col_test:
-        if st.button("📤 Enviar Teste", use_container_width=True):
-            if tg_token_input and tg_chat_id_input:
-                ok, err_detail = send_telegram_alert(
-                    "TEST-BTC", "COMPRA", "TESTE", 45000.123,
-                    tg_token_input, tg_chat_id_input,
-                    touch_tfs=['1D', '1W']
-                )
-                if ok:
-                    st.success("✅ Mensagem enviada! Verifique seu Telegram")
-                else:
-                    st.error(
-                        "❌ Telegram recusou o envio. Detalhe (copie se precisar de ajuda):\n\n"
-                        f"`{err_detail}`\n\n"
-                        "Confirme: token do **@BotFather**; Chat ID com **@userinfobot**. "
-                        "Abra o Telegram, procure o **seu bot** e envie **/start** uma vez (sem isso o bot não pode falar consigo). "
-                        "Em grupos, use o ID numérico do grupo (muitas vezes começa por `-100`)."
-                    )
-            else:
-                st.warning("⚠️ Preencha TOKEN e Chat ID antes de testar")
-
-    if st.session_state.telegram_enabled:
-        st.markdown("""
-        <div style='background:rgba(29,158,117,0.15);border:1px solid #1D9E75;
-                    border-radius:8px;padding:12px;margin-top:12px'>
-          <span style='color:#1D9E75'>🟢 <b>Status</b>: Alertas ATIVADOS</span><br>
-          <span style='color:#8b949e;font-size:12px'>Você receberá notificações no Telegram para cada sinal detectado</span>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown("""
-        <div style='background:rgba(224,76,76,0.12);border:1px solid #E04C4C;
-                    border-radius:8px;padding:12px;margin-top:12px'>
-          <span style='color:#E04C4C'>🔴 <b>Status</b>: Alertas DESATIVADOS</span><br>
-          <span style='color:#8b949e;font-size:12px'>Configure o TOKEN e Chat ID para ativar alertas</span>
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown("---")
-    st.markdown("### 💡 Dicas")
-    st.markdown("""
-    - **Notificações Atrasadas**: Se você não está vendo os alertas no celular, ative as notificações do Telegram nas configurações do seu telefone
-    - **Múltiplos Bots**: Você pode criar vários bots e usar em diferentes chats/grupos
-    - **Histórico**: Os sinais ficam salvos em CSV para análise posterior
-    - **Segurança**: Configure um PIN no seu PC para proteger o arquivo de config
-    """)
-
-# ════════════════════════════════════════════════════════════
-# SALVAR DADOS ANTES DE SAIR
-# ════════════════════════════════════════════════════════════
-save_persisted_data(
-    st.session_state.tracked_symbols,
-    st.session_state.neuro_athena,
-    st.session_state.signals_log
-)
 
 # ════════════════════════════════════════════════════════════
 # AUTO-REFRESH
