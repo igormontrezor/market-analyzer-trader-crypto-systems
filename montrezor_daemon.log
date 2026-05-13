@@ -1,0 +1,162 @@
+2026-05-12 20:05:15  INFO     ================================================================
+2026-05-12 20:05:15  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-12 20:05:15  INFO       Modo: ALL
+2026-05-12 20:05:15  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-12 20:05:15  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-12 20:05:15  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-12 20:05:15  INFO     ================================================================
+2026-05-12 20:05:16  INFO     MT5 conectado: XM Global MT5
+2026-05-12 20:05:22  WARNING  [GEMS] visualizer.py nao encontrado em C:\market_montrezor_system
+2026-05-12 20:05:22  WARNING  [GEMS] macro_timing.json nao encontrado.
+2026-05-12 20:10:17  WARNING  [GEMS] visualizer.py nao encontrado em C:\market_montrezor_system
+2026-05-12 20:10:17  WARNING  [GEMS] macro_timing.json nao encontrado.
+2026-05-12 20:12:16  INFO     ================================================================
+2026-05-12 20:12:16  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-12 20:12:16  INFO       Modo: GEMS
+2026-05-12 20:12:16  INFO       Trading : INATIVO  (a cada 60s | cooldown 240min)
+2026-05-12 20:12:16  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-12 20:12:16  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-12 20:12:16  INFO     ================================================================
+2026-05-12 20:12:25  INFO     [GEMS] macro_timing.json atualizado
+2026-05-12 20:13:36  INFO     Daemon interrompido (Ctrl+C).
+2026-05-12 20:13:36  INFO     Daemon encerrado.
+2026-05-12 20:14:36  INFO     ================================================================
+2026-05-12 20:14:36  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-12 20:14:36  INFO       Modo: ALL
+2026-05-12 20:14:36  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-12 20:14:36  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-12 20:14:36  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-12 20:14:36  INFO     ================================================================
+2026-05-12 20:14:36  INFO     MT5 conectado: XM Global MT5
+2026-05-12 20:14:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-12 20:17:42  INFO     ================================================================
+2026-05-12 20:17:42  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-12 20:17:42  INFO       Modo: ALL
+2026-05-12 20:17:42  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-12 20:17:42  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-12 20:17:42  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-12 20:17:42  INFO     ================================================================
+2026-05-12 20:17:42  INFO     MT5 conectado: XM Global MT5
+2026-05-12 20:18:03  INFO     [GEMS] macro_timing.json atualizado
+2026-05-12 20:18:17  INFO     Daemon interrompido (Ctrl+C).
+2026-05-12 20:18:17  INFO     Daemon encerrado.
+2026-05-12 20:19:47  INFO     [GEMS] macro_timing.json atualizado
+2026-05-12 20:20:15  INFO     ✅ Tarefa 'MontrezorDaemon' criada. Log: C:\market_montrezor_system\montrezor_daemon.log
+2026-05-12 20:20:15  INFO        Para remover: schtasks /Delete /TN MontrezorDaemon /F
+2026-05-12 20:23:36  INFO     ================================================================
+2026-05-12 20:23:36  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-12 20:23:36  INFO       Modo: ALL
+2026-05-12 20:23:36  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-12 20:23:36  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-12 20:23:36  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-12 20:23:36  INFO     ================================================================
+2026-05-12 20:23:36  INFO     MT5 conectado: XM Global MT5
+2026-05-12 20:23:52  INFO     [GEMS] macro_timing.json atualizado
+2026-05-12 20:28:52  INFO     [GEMS] macro_timing.json atualizado
+2026-05-12 20:33:49  INFO     [GEMS] macro_timing.json atualizado
+2026-05-12 20:38:48  INFO     [GEMS] macro_timing.json atualizado
+2026-05-12 20:43:48  INFO     [GEMS] macro_timing.json atualizado
+2026-05-12 20:49:02  INFO     [GEMS] macro_timing.json atualizado
+2026-05-12 20:54:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 06:14:28  INFO     ================================================================
+2026-05-13 06:14:28  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-13 06:14:28  INFO       Modo: ALL
+2026-05-13 06:14:28  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-13 06:14:28  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-13 06:14:28  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-13 06:14:28  INFO     ================================================================
+2026-05-13 06:14:28  INFO     MT5 conectado: XM Global MT5
+2026-05-13 06:14:39  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 06:19:40  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 06:24:39  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 06:29:48  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 06:34:57  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 06:40:00  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 06:45:10  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-13 06:50:11  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-13 06:54:59  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 07:00:03  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 07:05:06  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 07:24:41  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-13 07:40:43  WARNING  [GEMS] rebuild timeout (>120s)
+2026-05-13 07:42:48  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-13 07:47:39  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 07:52:50  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-13 08:01:47  WARNING  [GEMS] rebuild timeout (>120s)
+2026-05-13 08:03:09  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-13 08:08:03  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-13 08:12:54  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 08:19:58  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 08:24:56  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 08:30:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 08:35:19  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-13 08:54:08  INFO     ================================================================
+2026-05-13 08:54:08  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-13 08:54:08  INFO       Modo: ALL
+2026-05-13 08:54:08  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-13 08:54:08  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-13 08:54:08  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-13 08:54:08  INFO     ================================================================
+2026-05-13 08:55:14  ERROR    MT5 nao conectou. Abra o terminal MT5 e logue no broker.
+2026-05-13 08:55:36  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-13 09:03:47  INFO     ================================================================
+2026-05-13 09:03:47  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-13 09:03:47  INFO       Modo: ALL
+2026-05-13 09:03:47  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-13 09:03:47  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-13 09:03:47  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-13 09:03:47  INFO     ================================================================
+2026-05-13 09:03:47  INFO     MT5 conectado: XM Global MT5
+2026-05-13 09:03:55  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 09:08:55  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 09:15:53  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 13:32:00  INFO     ================================================================
+2026-05-13 13:32:00  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-13 13:32:00  INFO       Modo: ALL
+2026-05-13 13:32:00  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-13 13:32:00  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-13 13:32:00  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-13 13:32:00  INFO     ================================================================
+2026-05-13 13:32:00  INFO     MT5 conectado: MetaTrader 5 EXNESS
+2026-05-13 13:32:41  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-13 13:37:12  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 13:42:16  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 13:47:29  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-13 13:52:33  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-13 13:57:34  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-13 14:02:24  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 14:07:43  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 14:12:36  INFO     [GEMS] macro_timing.json atualizado
+2026-05-13 14:17:38  INFO     [GEMS] macro_timing.json atualizado

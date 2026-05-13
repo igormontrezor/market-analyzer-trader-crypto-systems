@@ -1488,7 +1488,7 @@ def plot_institucional_chart():
 
 # TABELAS ADICIONAIS
 st.markdown("---")
-tab1, tab2, tab3, tab4 = st.tabs(["📁 Database de Arquivos", "📖 Guia do Sistema", "🏛️ Heatmap Institucional", "📌 Watchlist"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["📁 Database de Arquivos", "📖 Guia do Sistema", "🏛️ Heatmap Institucional", "📌 Watchlist", "📡 Sinais"])
 with tab1:
     st.write("Lista completa de snapshots disponíveis:")
     for snap in snapshots_list: st.text(f"• {os.path.basename(snap)}")
@@ -1722,6 +1722,250 @@ with tab4:
             st.warning("⚠️ Watchlist não encontrada! Adicione moedas primeiro.")
     else:
         st.warning("⚠️ Execute o Gems Finder para carregar os dados mais recentes!")
+
+with tab5:
+    st.markdown("### 📡 Guia de Sinais — Todos os Sistemas")
+    st.markdown(
+        "<p style='color:#8b949e;margin-top:-10px;margin-bottom:24px;font-size:13px;'>"
+        "Referência completa da lógica de cada sinal emitido pelos três sistemas. "
+        "Todas as condições são cumulativas na mesma hierarquia usada no código."
+        "</p>",
+        unsafe_allow_html=True
+    )
+
+    # ── 1. GEMS / MACRO (app.py) ──────────────────────────────────────
+    st.markdown("#### 1 · Gems Finder — Sinais Macro (app.py)")
+    st.markdown(
+        "<p style='color:#8b949e;font-size:12px;margin-top:-8px;margin-bottom:12px;'>"
+        "Fonte: USDT.D (Bollinger Band % mensal/semanal) + Others semanal + Funding Rate BTC. "
+        "Avaliados em ordem de prioridade — o primeiro que bate é o sinal emitido."
+        "</p>",
+        unsafe_allow_html=True
+    )
+    st.markdown("""
+<style>
+.sig-table { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:20px; }
+.sig-table th { font-size:11px; font-weight:600; color:#8b949e; text-transform:uppercase;
+                letter-spacing:.5px; padding:7px 12px; border-bottom:1px solid #30363d;
+                text-align:left; background:#0d1117; }
+.sig-table td { padding:8px 12px; border-bottom:1px solid #21262d; vertical-align:top; color:#c9d1d9; }
+.sig-table tr:last-child td { border-bottom:none; }
+.sig-table tr:hover td { background:#161b22; }
+.badge { font-weight:600; padding:3px 9px; border-radius:4px; font-size:11px;
+         white-space:nowrap; display:inline-block; }
+.s-super-buy  { background:#0f2d1a; color:#3fb950; border:1px solid #238636; }
+.s-super-sell { background:#2d0f0f; color:#f85149; border:1px solid #da3633; }
+.s-buy        { background:#0a2a12; color:#56d364; border:1px solid #2ea043; }
+.s-sell       { background:#2a0a0a; color:#ff7b72; border:1px solid #b62324; }
+.s-repsuper   { background:#1a0a2d; color:#a371f7; border:1px solid #6e40c9; }
+.s-repique    { background:#0a1a2d; color:#58a6ff; border:1px solid #1f6feb; }
+.s-comum      { background:#1c2128; color:#8b949e; border:1px solid #30363d; }
+.s-super      { background:#2d2200; color:#e3b341; border:1px solid #9e6a03; }
+.pri { font-size:11px; color:#6e7681; font-weight:600; }
+.cond-code { font-family:monospace; font-size:11px; background:#161b22;
+             padding:2px 5px; border-radius:3px; color:#79c0ff; }
+.fonte-txt { font-size:11px; color:#8b949e; }
+</style>
+
+<table class="sig-table">
+  <thead>
+    <tr>
+      <th style="width:5%">#</th>
+      <th style="width:14%">Sinal</th>
+      <th style="width:36%">Condição (todas obrigatórias)</th>
+      <th style="width:25%">Fonte dos dados</th>
+      <th style="width:20%">O que significa</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="pri">1º</td>
+      <td><span class="badge s-super-buy">⚡ SUPER_BUY</span></td>
+      <td>
+        <span class="cond-code">buy_mode = True</span><br>
+        <span class="cond-code">weekly_buy_trigger = True</span><br>
+        <span class="cond-code">funding_rate &lt; 0</span>
+      </td>
+      <td class="fonte-txt">USDT.D BB%B mensal (baixo) + Others ou USDT.D semanal (toque) + Funding BTC negativo</td>
+      <td class="fonte-txt">Confluência máxima de compra: regime macro favorável + gatilho semanal + mercado short demais (funding negativo = contrarian buy)</td>
+    </tr>
+    <tr>
+      <td class="pri">2º</td>
+      <td><span class="badge s-super-sell">🚨 SUPER_SELL</span></td>
+      <td>
+        <span class="cond-code">sell_mode = True</span><br>
+        <span class="cond-code">weekly_sell_trigger = True</span><br>
+        <span class="cond-code">funding_rate &gt; 0.08%</span>
+      </td>
+      <td class="fonte-txt">USDT.D BB%B mensal (alto) + Others ou USDT.D semanal (toque) + Funding BTC excessivo</td>
+      <td class="fonte-txt">Confluência máxima de venda: regime macro defensivo + gatilho semanal + mercado long demais (funding alto = sobrecompra alavancada)</td>
+    </tr>
+    <tr>
+      <td class="pri">3º</td>
+      <td><span class="badge s-buy">🟢 BUY</span></td>
+      <td>
+        <span class="cond-code">buy_mode = True</span><br>
+        <span class="cond-code">weekly_buy_trigger = True</span><br>
+        <span style="font-size:11px;color:#6e7681;">(funding não exigido)</span>
+      </td>
+      <td class="fonte-txt">USDT.D BB%B mensal (baixo) + Others ou USDT.D semanal (toque)</td>
+      <td class="fonte-txt">Regime favorável + gatilho semanal confirmado. Funding não confirmou ainda — sinal forte mas sem a terceira confluência</td>
+    </tr>
+    <tr>
+      <td class="pri">4º</td>
+      <td><span class="badge s-sell">🔴 SELL</span></td>
+      <td>
+        <span class="cond-code">sell_mode = True</span><br>
+        <span class="cond-code">weekly_sell_trigger = True</span><br>
+        <span style="font-size:11px;color:#6e7681;">(funding não exigido)</span>
+      </td>
+      <td class="fonte-txt">USDT.D BB%B mensal (alto) + Others ou USDT.D semanal (toque)</td>
+      <td class="fonte-txt">Regime defensivo + gatilho semanal. Funding ainda não está excessivo — sinal de atenção</td>
+    </tr>
+    <tr>
+      <td class="pri">5º</td>
+      <td><span class="badge s-repsuper">⚡ SUPER_REPIQUE</span></td>
+      <td>
+        <span class="cond-code">rebound_super = True</span><br>
+        <span class="cond-code">capitulation_lock = False</span><br>
+        <span class="cond-code">status = "VENDA"</span><br>
+        <span class="cond-code">funding_rate &lt; 0</span>
+      </td>
+      <td class="fonte-txt">Derivado do regime — USDT.D semanal no topo + funding negativo dentro de regime de venda</td>
+      <td class="fonte-txt">Repique técnico com força extra: mercado em regime de venda mas com funding negativo indicando posicionamento contrarian. Movimento de recuperação tático com maior potencial</td>
+    </tr>
+    <tr>
+      <td class="pri">6º</td>
+      <td><span class="badge s-repique">🔵 REPIQUE</span></td>
+      <td>
+        <span class="cond-code">rebound = True</span><br>
+        <span class="cond-code">capitulation_lock = False</span><br>
+        <span class="cond-code">status = "VENDA"</span>
+      </td>
+      <td class="fonte-txt">Derivado do regime — USDT.D semanal tocando banda superior dentro de regime de venda</td>
+      <td class="fonte-txt">Repique tático: o mercado está em regime de venda mas o USDT.D semanal chegou ao topo da banda, sinalizando possível alívio temporário do stress</td>
+    </tr>
+  </tbody>
+</table>
+""", unsafe_allow_html=True)
+
+    # ── Notas sobre capitulation_lock ─────────────────────────────────
+    st.markdown(
+        "<div style='background:#161b22;border:1px solid #30363d;border-radius:6px;"
+        "padding:10px 14px;font-size:12px;color:#8b949e;margin-bottom:20px;'>"
+        "⚙️ <b style='color:#c9d1d9;'>capitulation_lock</b> — Bloqueia sinais de repique quando o mercado está "
+        "em capitulação (queda acelerada sem recuperação confirmada). "
+        "Evita entradas em repiques falsos durante movimentos de colapso."
+        "</div>",
+        unsafe_allow_html=True
+    )
+
+    # ── 2. TRADING SYSTEM (Forex / CFDs) ─────────────────────────────
+    st.markdown("#### 2 · Trading System — Sinais Multi-TF (trading_system.py)")
+    st.markdown(
+        "<p style='color:#8b949e;font-size:12px;margin-top:-8px;margin-bottom:12px;'>"
+        "Fonte: MetaTrader5 (OHLC idêntico ao terminal). "
+        "Todos os timeframes avaliados simultaneamente — gatilho no menor TF, confirmação no maior."
+        "</p>",
+        unsafe_allow_html=True
+    )
+    st.markdown("""
+<table class="sig-table">
+  <thead>
+    <tr>
+      <th style="width:14%">Sinal</th>
+      <th style="width:40%">Condição (todas obrigatórias, em ordem)</th>
+      <th style="width:23%">Fonte</th>
+      <th style="width:23%">O que significa</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="badge s-comum">• COMUM</span></td>
+      <td>
+        <b style="color:#c9d1d9;font-size:11px;">1. Tendência Mensal</b><br>
+        <span class="cond-code">ST_Trend mensal ≠ 0</span> (Supertrend ativo)<br><br>
+        <b style="color:#c9d1d9;font-size:11px;">2. Tendência Semanal</b><br>
+        <span class="cond-code">EMA50 &gt; EMA100 &gt; EMA200</span> (compra) ou inverso (venda) — não deve contradizer o mensal<br><br>
+        <b style="color:#c9d1d9;font-size:11px;">3. Gatilho menor TF (4H ou D1)</b><br>
+        <span class="cond-code">RSI toca ou near canal inferior</span> (compra) / superior (venda)<br><br>
+        <b style="color:#c9d1d9;font-size:11px;">4. Confirmação Semanal ou Mensal</b><br>
+        <span class="cond-code">RSI semanal OU mensal</span> tocando ou near o canal<br><br>
+        <b style="color:#c9d1d9;font-size:11px;">5. EMA próxima</b><br>
+        <span class="cond-code">Preço perto de EMA50/100/200</span> em qualquer TF (D1, W1 ou MN)
+      </td>
+      <td class="fonte-txt">MT5: Mensal, Semanal, Diário e 4H<br><br>Canal RSI: regressão linear (50 períodos, ×2 desvios)<br><br>RSI: Wilder 14 períodos (idêntico ao iRSI do MT5)</td>
+      <td class="fonte-txt">Confluência multi-timeframe: tendência maior alinhada + pullback no RSI no TF menor + confirmação num TF superior. Ponto de entrada na direção do fluxo principal</td>
+    </tr>
+    <tr>
+      <td><span class="badge s-super">⭐ SUPER</span></td>
+      <td>
+        <b style="color:#c9d1d9;font-size:11px;">Todas as condições do COMUM, mais:</b><br><br>
+        <b style="color:#c9d1d9;font-size:11px;">ST toque real</b><br>
+        <span class="cond-code">Low ≤ ST_Line ≤ High</span> (candle tocou a linha do Supertrend)<br><br>
+        <b style="color:#c9d1d9;font-size:11px;">OU nível Athena oposto</b><br>
+        <span class="cond-code">Preço near nível Athena</span> do lado contrário à direção (compra perto do sell_entry, venda perto do buy_entry)
+      </td>
+      <td class="fonte-txt">Supertrend: ATR 10 × 3.0<br><br>Nível Athena: definido manualmente na sidebar do Trading System</td>
+      <td class="fonte-txt">Sinal COMUM com confluência extra: preço tocou o Supertrend (suporte/resistência dinâmico) ou chegou ao nível Athena oposto. Maior precisão de entrada</td>
+    </tr>
+  </tbody>
+</table>
+""", unsafe_allow_html=True)
+
+    # ── Canal RSI explicado ───────────────────────────────────────────
+    st.markdown(
+        "<div style='background:#161b22;border:1px solid #30363d;border-radius:6px;"
+        "padding:10px 14px;font-size:12px;color:#8b949e;margin-bottom:20px;'>"
+        "📐 <b style='color:#c9d1d9;'>Canal RSI (Regressão Linear)</b> — "
+        "O canal não é fixo (30/70). É calculado dinamicamente sobre os últimos 50 candles do RSI "
+        "usando regressão linear + desvio padrão ×2. O toque na borda inferior em tendência de alta "
+        "indica pullback no fluxo — compra contra-tendência de curto prazo na direção do fluxo maior. "
+        "Lógica idêntica ao indicador <i>Rsi_slope_divergence_mtf.mq5</i>."
+        "</div>",
+        unsafe_allow_html=True
+    )
+
+    # ── 3. Fluxo de dados ─────────────────────────────────────────────
+    st.markdown("#### 3 · Fluxo de dados entre os sistemas")
+    st.markdown("""
+<table class="sig-table">
+  <thead>
+    <tr>
+      <th style="width:20%">Sistema</th>
+      <th style="width:25%">Gera</th>
+      <th style="width:25%">Consome</th>
+      <th style="width:30%">Como chega ao Telegram</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b style="color:#c9d1d9;">visualizer.py</b></td>
+      <td class="fonte-txt"><span class="cond-code">macro_timing.json</span><br>Rebuilt a cada 5 min (ou on-demand)</td>
+      <td class="fonte-txt">TvDatafeed (USDT.D, Others) + CoinGecko (funding BTC)</td>
+      <td class="fonte-txt">Não envia Telegram diretamente — fornece dados</td>
+    </tr>
+    <tr>
+      <td><b style="color:#c9d1d9;">app.py (Gems)</b></td>
+      <td class="fonte-txt">Sinais SUPER_BUY, SUPER_SELL, BUY, SELL, SUPER_REPIQUE, REPIQUE</td>
+      <td class="fonte-txt"><span class="cond-code">macro_timing.json</span> gerado pelo visualizer</td>
+      <td class="fonte-txt">Via <span class="cond-code">montrezor_alerts_integration</span> → <span class="cond-code">send_gems_alert()</span>. Cooldown por transição de estado (não reenvia enquanto o sinal for o mesmo)</td>
+    </tr>
+    <tr>
+      <td><b style="color:#c9d1d9;">trading_system.py</b></td>
+      <td class="fonte-txt">Sinais COMUM e SUPER por par forex/CFD</td>
+      <td class="fonte-txt">MT5 direto (OHLC idêntico ao gráfico)</td>
+      <td class="fonte-txt">Via <span class="cond-code">send_telegram_alert()</span> a cada ciclo com sinal ativo</td>
+    </tr>
+    <tr>
+      <td><b style="color:#c9d1d9;">montrezor_daemon.py</b></td>
+      <td class="fonte-txt">Todos os sinais acima, 24/7</td>
+      <td class="fonte-txt">MT5 + <span class="cond-code">macro_timing.json</span> + <span class="cond-code">.montrezor_data.json</span></td>
+      <td class="fonte-txt">Telegram direto com cooldown. Independente do browser — roda em background mesmo com o Streamlit fechado</td>
+    </tr>
+  </tbody>
+</table>
+""", unsafe_allow_html=True)
 
 # RODAPÉ
 st.markdown("<br><p style='text-align: center; color: #484f58; font-size: 12px;'>Montrezor Analysis System | Powered by Igor Montrezor</p>", unsafe_allow_html=True)
