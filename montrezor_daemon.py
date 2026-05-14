@@ -353,7 +353,7 @@ def _rebuild_macro(logger):
             [sys.executable, "-c",
              f"import sys; sys.path.insert(0,r'{gems_path}'); "
              "import visualizer; visualizer._build_macro_timing()"],
-            capture_output=True, text=True, timeout=120
+            capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=120
         )
         if result.returncode == 0:
             logger.info("[GEMS] macro_timing.json atualizado")
@@ -531,14 +531,14 @@ def run_daemon(logger, mode="all"):
 def install_service(logger, mode):
     import subprocess
     task = "MontrezorDaemon"; py = sys.executable; sc = os.path.abspath(__file__)
-    r = subprocess.run(["schtasks","/Query","/TN",task],capture_output=True,text=True)
+    r = subprocess.run(["schtasks","/Query","/TN",task],capture_output=True,text=True,encoding="utf-8",errors="replace")
     if r.returncode == 0:
         if input(f"Tarefa '{task}' existe. Recriar? (s/n): ").strip().lower() != "s": return
         subprocess.run(["schtasks","/Delete","/TN",task,"/F"],check=True)
     cmd = (f'schtasks /Create /TN "{task}" '
            f'/TR "\\"{py}\\" \\"{sc}\\" --silent --only {mode}" '
            f"/SC ONLOGON /DELAY 0001:00 /RL HIGHEST /F")
-    r2 = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    r2 = subprocess.run(cmd, shell=True, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if r2.returncode == 0:
         logger.info(f"✅ Tarefa '{task}' criada. Log: {LOG_FILE}")
         logger.info("   Para remover: schtasks /Delete /TN MontrezorDaemon /F")
@@ -548,7 +548,7 @@ def install_service(logger, mode):
 def remove_service(logger):
     import subprocess
     r = subprocess.run(["schtasks","/Delete","/TN","MontrezorDaemon","/F"],
-                       capture_output=True,text=True)
+                       capture_output=True,text=True,encoding="utf-8",errors="replace")
     logger.info("✅ Removida." if r.returncode==0 else f"❌ {r.stderr}")
 
 # ════════════════════════════════════════════════════════════════════════

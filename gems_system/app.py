@@ -660,7 +660,7 @@ st.code("Montrezor Central - Mesa de Operações", language=None)
 # Terminal logo abaixo do título
 with st.expander("🖥️ Terminal (Assíncrono - Auto Refresh)", expanded=True):
     # Configurar refresh automático a cada 1 minuto
-    st_autorefresh(interval=60000, limit=None, key="terminal_refresh")
+    st_autorefresh(interval=10000, limit=None, key="terminal_refresh")
 
     # Aba para selecionar visualização
     tab1, tab2 = st.tabs(["📋 Logs Ativos", "🖥️ Terminal Principal"])
@@ -1566,7 +1566,7 @@ with tab4:
             col_check, col_info = st.columns([1, 5])
 
             with col_check:
-                selected = st.checkbox(f"**{symbol}**", key=f"select_{symbol}")
+                selected = st.checkbox(f"**{symbol}**", key=f"select_{symbol}_{i}")
                 if selected:
                     selected_rows.append(row)
 
@@ -1650,7 +1650,7 @@ with tab4:
                 # Opção 1: Excluir por seleção
                 st.markdown("**🔧 Excluir por seleção:**")
                 symbols_to_remove = []
-                for _, row in df_current.iterrows():
+                for idx, row in df_current.iterrows():
                     symbol = row.get('symbol', '')
                     name = row.get('name', '')
                     data_adicionada = row.get('data_adicionada', 'N/A')
@@ -1668,7 +1668,7 @@ with tab4:
                             data_display = f" (adicionado: {str(data_adicionada)[:8]})"
                     else:
                         data_display = ""
-                    if st.checkbox(f"❌ {symbol} - {name[:30]}{data_display}", key=f"remove_{symbol}"):
+                    if st.checkbox(f"❌ {symbol} - {name[:30]}{data_display}", key=f"remove_{symbol}_{idx}"):
                         symbols_to_remove.append(symbol)
 
                 # Opção 2: Excluir por nome digitado

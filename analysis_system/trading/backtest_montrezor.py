@@ -428,16 +428,23 @@ print()
 
 signals  = []
 prev_sig = None
+signal_lock = set()  # trava por candle de TFs menores (1d/4h)
 
 for dia in dias:
     sig = check_signal_at(dia, data_mo, data_wk, data_d, None)
     if sig is None:
         prev_sig = None
         continue
+    tf_key = sig.get('tf_key', '1d')
+    candle_key = f"{tf_key}|{sig['candle_1d']}"
+    if tf_key in {'1d', '4h'} and candle_key in signal_lock:
+        continue
     chave = (sig['candle_1d'], sig['direction'], sig['type'])
     if chave == prev_sig:
         continue
     prev_sig = chave
+    if tf_key in {'1d', '4h'}:
+        signal_lock.add(candle_key)
     sig['date'] = dia.strftime('%Y-%m-%d')
     signals.append(sig)
 

@@ -1,7 +1,24 @@
 {
-  "last_updated": "2026-05-13T06:14:51.691153",
-  "total_confirmed": 5,
+  "last_updated": "2026-05-14T07:27:42.013799",
+  "total_confirmed": 6,
   "confirmed_gems": [
+    {
+      "symbol": "psg",
+      "name": "Paris Saint-Germain Fan Token",
+      "confirmed_at": "2026-05-14T07:27:42.010941",
+      "ratio_now": 1.3497286012850576,
+      "ratio_24h_ago": 1.1123245909243642,
+      "growth_percent": 21.343051506521647,
+      "strong_days": 3,
+      "acceleration_strength": 1.14063867675401,
+      "trend": "accelerating",
+      "market_cap": 15441488,
+      "volume": 20841818,
+      "priority": "maxima",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 76.25255548512628
+    },
     {
       "symbol": "act",
       "name": "Act I The AI Prophecy",

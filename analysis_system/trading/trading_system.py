@@ -401,6 +401,7 @@ if 'hougaard_step'    not in st.session_state: st.session_state.hougaard_step   
 if 'tracked_symbols'  not in st.session_state: st.session_state.tracked_symbols  = _persisted.get("symbols", ["CHFJPY#", "EURUSD#", "BTCUSD#"])
 if 'neuro_athena'     not in st.session_state: st.session_state.neuro_athena     = _persisted.get("athena", {})
 if 'signals_log'      not in st.session_state: st.session_state.signals_log      = _persisted.get("signals_log", [])
+if 'signals_lock'     not in st.session_state: st.session_state.signals_lock     = set()
 if 'auto_update'      not in st.session_state: st.session_state.auto_update      = False
 if 'last_update'      not in st.session_state: st.session_state.last_update      = 0
 if 'cached_data'      not in st.session_state: st.session_state.cached_data      = {}
@@ -677,7 +678,8 @@ def _count_rsi_points(df, direction, lookback, near_pct=0.10):
     except:
         return 0
 
-def _ema_near(row, pct=0.015):
+def _ema_near(row, pct=0.018):
+
     try:
         c = float(row['Close'])
         return any(_near(c, float(row[e]), pct) for e in ['EMA_50','EMA_100','EMA_200'])
@@ -791,8 +793,8 @@ def check_signals(data, symbol, athena_levels):
 
     # Near universal: 3 pts RSI em todos os TFs (= "3% de 0-100" do método)
     # Semanal/mensal: mesmo 3pts — canal mais largo, toque visual é suficiente
-    NEAR_TF  = 0.015   # 3 pontos RSI — diario e 4H
-    NEAR_W1_MN = 0.015 # 3 pontos RSI — semanal e mensal
+    NEAR_TF  = 0.020   # 3 pontos RSI — diario e 4H
+    NEAR_W1_MN = 0.030 # 3 pontos RSI — semanal e mensal
 
     # Gatilho diario (agora avaliando o candle ATUAL em tempo real)
     d1_data    = data.get('1d')
@@ -1356,16 +1358,25 @@ with tabs[0]:
                 sig = check_signals(sym_data, sym, st.session_state.neuro_athena)
                 if sig:
                     signals_found.append(sig)
-                    new_signals.append(sig)  # Registrar sinal novo
-                    # Disparar alerta
-                    play_alert_sound(sig['symbol'], sig['direction'], sig['type'])
-                    # Enviar alerta Telegram se habilitado
-                    if st.session_state.telegram_enabled:
-                        send_telegram_alert(
-                            sig['symbol'], sig['direction'], sig['type'], sig['price'],
-                            st.session_state.tg_token, st.session_state.tg_chat_id,
-                            touch_tfs=sig.get('touch_tfs', [])
-                        )
+                    tf_menor = sig.get('tf_menor', '')
+                    signal_ts = sig.get('signal_ts')
+                    lock_key = None
+                    if tf_menor in {'1d', '4h'} and signal_ts is not None:
+                        lock_key = f"{sym}|{tf_menor}|{signal_ts}"
+
+                    if lock_key is None or lock_key not in st.session_state.signals_lock:
+                        new_signals.append(sig)  # Registrar sinal novo
+                        if lock_key is not None:
+                            st.session_state.signals_lock.add(lock_key)
+                        # Disparar alerta
+                        play_alert_sound(sig['symbol'], sig['direction'], sig['type'])
+                        # Enviar alerta Telegram se habilitado
+                        if st.session_state.telegram_enabled:
+                            send_telegram_alert(
+                                sig['symbol'], sig['direction'], sig['type'], sig['price'],
+                                st.session_state.tg_token, st.session_state.tg_chat_id,
+                                touch_tfs=sig.get('touch_tfs', [])
+                            )
 
         # ── Adicionar novos sinais ao histórico ──
         for sig in new_signals:

@@ -1,4 +1,5 @@
 @echo off
+cd /d %~dp0
 title Montrezor System - Iniciando Dashboard...
 color 0A
 
@@ -9,10 +10,10 @@ echo.
 
 :: Ativar ambiente virtual
 echo [1/4] Ativando ambiente virtual...
-call ..\.venv\Scripts\Activate.bat
+call C:\market_montrezor_system\.venv\Scripts\activate.bat
 if %errorlevel% neq 0 (
     echo ERRO: Nao foi possivel ativar o ambiente virtual!
-    echo Verifique se o arquivo .venv\Scripts\Activate.bat existe.
+    echo Verifique se o arquivo .venv\Scripts\activate.bat existe.
     pause
     exit /b 1
 )

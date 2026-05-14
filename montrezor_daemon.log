@@ -160,3 +160,116 @@ WARNING:tvDatafeed.main:you are using nologin method,
 2026-05-13 14:07:43  INFO     [GEMS] macro_timing.json atualizado
 2026-05-13 14:12:36  INFO     [GEMS] macro_timing.json atualizado
 2026-05-13 14:17:38  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 07:28:22  INFO     ================================================================
+2026-05-14 07:28:22  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-14 07:28:22  INFO       Modo: ALL
+2026-05-14 07:28:22  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-14 07:28:22  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-14 07:28:22  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-14 07:28:22  INFO     ================================================================
+2026-05-14 07:28:22  INFO     MT5 conectado: XM Global MT5
+2026-05-14 07:28:56  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 07:33:44  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 07:38:39  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 07:43:52  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 07:49:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 07:54:16  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 07:59:29  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 08:04:51  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-14 08:07:24  INFO     ================================================================
+2026-05-14 08:07:24  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-14 08:07:24  INFO       Modo: ALL
+2026-05-14 08:07:24  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-14 08:07:24  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-14 08:07:24  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-14 08:07:24  INFO     ================================================================
+2026-05-14 08:07:24  INFO     MT5 conectado: XM Global MT5
+2026-05-14 08:07:57  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 08:12:30  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 08:17:12  INFO     ================================================================
+2026-05-14 08:17:12  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-14 08:17:12  INFO       Modo: ALL
+2026-05-14 08:17:12  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-14 08:17:12  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-14 08:17:12  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-14 08:17:12  INFO     ================================================================
+2026-05-14 08:17:12  INFO     MT5 conectado: XM Global MT5
+2026-05-14 08:17:44  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 08:22:21  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 08:27:39  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-14 08:32:37  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 08:37:52  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-14 08:43:04  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-14 08:48:40  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-14 08:53:34  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 08:58:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 09:04:44  INFO     ================================================================
+2026-05-14 09:04:44  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-14 09:04:44  INFO       Modo: ALL
+2026-05-14 09:04:44  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-14 09:04:44  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-14 09:04:44  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-14 09:04:44  INFO     ================================================================
+2026-05-14 09:04:44  INFO     MT5 conectado: XM Global MT5
+2026-05-14 09:05:43  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-14 09:10:05  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-14 09:14:11  INFO     ================================================================
+2026-05-14 09:14:11  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-14 09:14:11  INFO       Modo: ALL
+2026-05-14 09:14:11  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-14 09:14:11  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-14 09:14:11  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-14 09:14:11  INFO     ================================================================
+2026-05-14 09:14:11  INFO     MT5 conectado: XM Global MT5
+2026-05-14 09:15:55  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-14 09:20:04  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-14 09:25:19  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-14 09:30:40  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-14 09:35:38  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 09:41:29  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-14 09:49:19  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 09:52:26  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-14 09:57:53  INFO     [GEMS] macro_timing.json atualizado
+2026-05-14 10:03:14  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-14 10:08:35  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
