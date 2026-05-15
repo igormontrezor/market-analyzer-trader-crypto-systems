@@ -34,11 +34,18 @@ def load_telegram_config() -> tuple:
     return "", ""
 
 
-def send_trading_alert(symbol: str, direction: str, signal_type: str, price: float) -> bool:
-    """Envia alerta de Trading System via Telegram."""
+def send_trading_alert(symbol: str, direction: str, signal_type: str, price: float,
+                       stoch_div: bool = False, mn_ema_div: bool = False) -> bool:
+    """Envia alerta de Trading System via Telegram com as novas travas."""
     token, chat_id = load_telegram_config()
     if not token or not chat_id:
         return False
+
+    warns = ""
+    if stoch_div:
+        warns += "\n⚠️ <b>StochRSI</b>: No topo ou contra o movimento!"
+    if mn_ema_div:
+        warns += "\n🚨 <b>EMA Mensal</b>: Tendência principal divergente!"
 
     try:
         direction_icon = "📈" if direction == "COMPRA" else "📉"
@@ -47,12 +54,15 @@ def send_trading_alert(symbol: str, direction: str, signal_type: str, price: flo
         ts = esc(pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"))
         sym_l = symbol.lower().replace(" ", "")
         dir_l = direction.lower().replace(" ", "")
+        extra_alerts = ""
+        f"{warns}\n"
         message = (
             f"{direction_icon} <b>TRADING SINAL {esc(signal_type)}</b> {type_icon}\n"
             "━━━━━━━━━━━━━━━━━━\n"
             f"<b>Par</b>: {esc(symbol)}\n"
             f"<b>Direção</b>: {esc(direction)}\n"
             f"<b>Preço</b>: {price:.5f}\n"
+            f"{extra_alerts}\n" # Adiciona os alertas aqui
             f"<b>Hora</b>: {ts}\n"
             "<b>Sistema</b>: 🎯 Montrezor Trading\n\n"
             f"#trading #{sym_l} #{dir_l}"

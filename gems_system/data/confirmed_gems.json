@@ -1,24 +1,7 @@
 {
-  "last_updated": "2026-05-14T07:27:42.013799",
-  "total_confirmed": 6,
+  "last_updated": "2026-05-15T07:58:55.648691",
+  "total_confirmed": 7,
   "confirmed_gems": [
-    {
-      "symbol": "psg",
-      "name": "Paris Saint-Germain Fan Token",
-      "confirmed_at": "2026-05-14T07:27:42.010941",
-      "ratio_now": 1.3497286012850576,
-      "ratio_24h_ago": 1.1123245909243642,
-      "growth_percent": 21.343051506521647,
-      "strong_days": 3,
-      "acceleration_strength": 1.14063867675401,
-      "trend": "accelerating",
-      "market_cap": 15441488,
-      "volume": 20841818,
-      "priority": "maxima",
-      "status": "confirmed",
-      "type": "lider_altseason",
-      "quality_score": 76.25255548512628
-    },
     {
       "symbol": "act",
       "name": "Act I The AI Prophecy",
@@ -54,6 +37,23 @@
       "quality_score": 74.33110173361624
     },
     {
+      "symbol": "psg",
+      "name": "Paris Saint-Germain Fan Token",
+      "confirmed_at": "2026-05-15T07:58:55.644491",
+      "ratio_now": 1.005475011900041,
+      "ratio_24h_ago": 0.6739569492478389,
+      "growth_percent": 49.189798105381755,
+      "strong_days": 3,
+      "acceleration_strength": 2.4622860752880555,
+      "trend": "accelerating",
+      "market_cap": 16615489,
+      "volume": 16706459,
+      "priority": "maxima",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 80.10950023800082
+    },
+    {
       "symbol": "broccoli",
       "name": "CZ's Dog",
       "confirmed_at": "2026-05-07T23:41:31.825695",
@@ -73,19 +73,19 @@
     {
       "symbol": "dogs",
       "name": "Dogs",
-      "confirmed_at": "2026-05-12T08:37:14.186763",
-      "ratio_now": 1.7815220363489395,
-      "ratio_24h_ago": 1.1483896848273056,
-      "growth_percent": 55.13218726070708,
+      "confirmed_at": "2026-05-14T19:49:51.447023",
+      "ratio_now": 1.7639050551430182,
+      "ratio_24h_ago": 0.945480159678164,
+      "growth_percent": 86.56182650553359,
       "strong_days": 3,
-      "acceleration_strength": 1.5427489685153637,
+      "acceleration_strength": 3.515293278858972,
       "trend": "accelerating",
-      "market_cap": 33926877,
-      "volume": 60441479,
+      "market_cap": 31822977,
+      "volume": 56132710,
       "priority": "extrema",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 89.91480283342084
+      "quality_score": 95.27810110286036
     },
     {
       "symbol": "neiro",
@@ -103,6 +103,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 78.96512269800351
+    },
+    {
+      "symbol": "osmo",
+      "name": "Osmosis",
+      "confirmed_at": "2026-05-14T19:49:51.446387",
+      "ratio_now": 1.3489881786608606,
+      "ratio_24h_ago": 0.5810745285726642,
+      "growth_percent": 132.15407186656054,
+      "strong_days": 3,
+      "acceleration_strength": 7.340882897970904,
+      "trend": "accelerating",
+      "market_cap": 54669187,
+      "volume": 73748087,
+      "priority": "maxima",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 86.97976357321721
     }
   ]
 }

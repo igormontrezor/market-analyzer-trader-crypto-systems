@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-14T07:27:42.015391",
-  "total_candidates": 20,
+  "last_updated": "2026-05-14T19:49:51.453869",
+  "total_candidates": 21,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -261,6 +261,19 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 40.68897841074249
+    },
+    {
+      "symbol": "dodo",
+      "name": "DODO",
+      "detected_at": "2026-05-14T19:49:51.447129",
+      "ratio_now": 1.5777953584920632,
+      "market_cap": 20063652,
+      "volume": 31656337,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 55.72257383650793
     }
   ]
 }

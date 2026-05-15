@@ -219,7 +219,11 @@ def save_telegram_config(token: str, chat_id: str):
 
 
 def send_telegram_alert(
-    symbol: str, direction: str, signal_type: str, price: float, token: str, chat_id: str, touch_tfs: list = None
+    symbol: str, direction: str, signal_type: str, price: float, token: str, chat_id: str,
+    touch_tfs: list = None, stoch_div: bool = False, mn_ema_div: bool = False,
+    div_grade: str = None, vol_ratio: float = None, vol_high: bool = False,
+    atr_low: bool = False, atr_ratio: float = None, elevated: bool = False,
+    elevation_reason: str = None
 ) -> tuple:
     """Envia alerta de sinal via Telegram. Retorna (sucesso, mensagem_erro)."""
     token = _normalize_telegram_token(token)
@@ -233,11 +237,39 @@ def send_telegram_alert(
         esc = html.escape
         ts = esc(pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-        # Formatar TFs onde houve toque
+        # TFs com toque
         tf_text = ""
         if touch_tfs:
-            tf_str = " | ".join(touch_tfs)
-            tf_text = f"<b>Toques</b>: {esc(tf_str)}\n"
+            tf_text = f"<b>Toques RSI</b>: {esc(' | '.join(touch_tfs))}\n"
+
+        # Elevação COMUM → SUPER (por divergência/volume)
+        elev_text = ""
+        if elevated and elevation_reason:
+            elev_text = f"<b>Elevação</b>: COMUM → SUPER ({esc(elevation_reason)})\n"
+
+        # Divergência RSI por grau
+        div_text = ""
+        if div_grade:
+            icons = {"W1": "⚡ W1", "D1": "D1", "4H": "4H"}
+            div_text = f"<b>Div RSI</b>: {esc(icons.get(div_grade, div_grade))}\n"
+
+        # Volume 4H
+        vol_text = ""
+        if vol_ratio is not None:
+            vol_icon = "🔥" if vol_high else "·"
+            vol_text = f"<b>Volume 4H</b>: {vol_icon} {vol_ratio:.1f}x média\n"
+
+        # ATR baixo
+        atr_text = ""
+        if atr_low and atr_ratio is not None:
+            atr_text = f"⚠️ <b>ATR baixo</b> ({atr_ratio:.2f}x) — mercado em range\n"
+
+        # Alertas do método (StochRSI e EMA Mensal)
+        warns_text = ""
+        if stoch_div:
+            warns_text += "⚠️ <b>StochRSI</b>: Contra o movimento!\n"
+        if mn_ema_div:
+            warns_text += "🚨 <b>EMA Mensal</b>: Tendência divergente!\n"
 
         message = (
             f"{direction_icon} <b>SINAL {esc(signal_type)}</b> {type_icon}\n"
@@ -246,6 +278,11 @@ def send_telegram_alert(
             f"<b>Direção</b>: {esc(direction)}\n"
             f"<b>Preço</b>: {price:.5f}\n"
             f"{tf_text}"
+            f"{elev_text}"
+            f"{div_text}"
+            f"{vol_text}"
+            f"{atr_text}"
+            f"{warns_text}"
             f"<b>Hora</b>: {ts}\n\n"
             "Montrezor Trading System"
         )
@@ -793,7 +830,7 @@ def check_signals(data, symbol, athena_levels):
 
     # Near universal: 3 pts RSI em todos os TFs (= "3% de 0-100" do método)
     # Semanal/mensal: mesmo 3pts — canal mais largo, toque visual é suficiente
-    NEAR_TF  = 0.020   # 3 pontos RSI — diario e 4H
+    NEAR_TF  = 0.015   # 3 pontos RSI — diario e 4H
     NEAR_W1_MN = 0.030 # 3 pontos RSI — semanal e mensal
 
     # Gatilho diario (agora avaliando o candle ATUAL em tempo real)
@@ -877,19 +914,44 @@ def check_signals(data, symbol, athena_levels):
         signal_ts = None
 
     # Quais TFs tiveram toque/near no canal RSI
+    # Quais TFs tiveram toque/near no canal RSI
     touch_tfs = []
-    if hit_d1:
-        touch_tfs.append('1D')
-    if hit_4h:
-        touch_tfs.append('4H')
-    if hit_w1:
-        touch_tfs.append('1W')
-    elif near_w1:
-        touch_tfs.append('1W~')  # ~ = near, não toque exato
-    if hit_mn:
-        touch_tfs.append('1M')
-    elif near_mn:
-        touch_tfs.append('1M~')
+    if hit_d1: touch_tfs.append('1D')
+    if hit_4h: touch_tfs.append('4H')
+    if hit_w1: touch_tfs.append('1W')
+    elif near_w1: touch_tfs.append('1W~')
+    if hit_mn: touch_tfs.append('1M')
+    elif near_mn: touch_tfs.append('1M~')
+
+    # =========================================================
+    # NOVAS TRAVAS E ALERTAS
+    # =========================================================
+    # 1. Alerta de EMA Mensal Divergente
+    try:
+        mn_ema50 = float(mn_trend['EMA_50'])
+        mn_ema100 = float(mn_trend['EMA_100'])
+        mn_ema_div = (mn_ema50 < mn_ema100) if direction == "COMPRA" else (mn_ema50 > mn_ema100)
+    except:
+        mn_ema_div = False
+
+    # 2. Alerta de Divergência Stoch RSI (no candle de gatilho)
+    try:
+        stk = float(tfm['StochRSI_K'])
+        std = float(tfm['StochRSI_D'])
+        if direction == "COMPRA":
+            # Compra, mas Stoch está no topo (>=80) ou ainda apontando pra baixo (K < D)
+            stoch_div = (stk >= 80) or (stk < std)
+        else:
+            # Venda, mas Stoch está no fundo (<=20) ou ainda apontando pra cima (K > D)
+            stoch_div = (stk <= 20) or (stk > std)
+    except:
+        stoch_div = False
+
+    # Se desejar TRAVAR (bloquear) o sinal em vez de apenas alertar,
+    # basta descomentar as duas linhas abaixo:
+    # if stoch_div or mn_ema_div:
+    #     return None
+    # =========================================================
 
     return {
         "symbol":    symbol,
@@ -900,6 +962,8 @@ def check_signals(data, symbol, athena_levels):
         "trend_mn":  trend_mn,
         "signal_ts": signal_ts,
         "touch_tfs": touch_tfs,  # TFs onde houve toque/near no canal RSI
+        "stoch_div": stoch_div,    # Adicionado para a UI
+        "mn_ema_div": mn_ema_div,  # Adicionado para a UI
         # debug: quais condicoes passaram
         "_debug": {
             "hit_tfm": hit_tfm, "hit_w1": hit_w1, "hit_mn": hit_mn,
@@ -911,6 +975,183 @@ def check_signals(data, symbol, athena_levels):
             "mn_rsi_val": round(float(mn_rsi.get('RSI', 0)), 2),
         },
     }
+
+# ============================================================
+# 5b. ENRIQUECIMENTO DE SINAL
+# Chamado APÓS check_signals() — nunca altera a lógica base.
+# Pode elevar COMUM→SUPER mas nunca rebaixa nem bloqueia.
+# ============================================================
+
+ENRICH_VOLUME_BARS   = 14    # candles 4H para média de volume
+ENRICH_VOLUME_MULT   = 1.5   # ratio acima da média = "volume alto"
+ENRICH_DIV_BARS_4H    = 40     # lookback divergência 4H (candles 4H, ~1 semana)
+ENRICH_DIV_BARS_D1    = 20     # lookback divergência D1 (~1 mês)
+ENRICH_DIV_BARS_W1    = 10     # lookback divergência W1 (~2,5 meses)
+ENRICH_DIV_MIN_DIST   = 5      # distância mínima entre pivôs (candles)
+ENRICH_ATR_BARS      = 20    # período ATR para comparação
+ENRICH_ATR_LOW_RATIO = 0.5   # ATR atual < 50% da média = range morto
+
+def _find_pivot_low(series, left=3, right=3):
+    pivots = []
+    vals = series.values
+    n = len(vals)
+    for i in range(left, n - right):
+        if np.isnan(vals[i]): continue
+        if all(vals[i] <= vals[i-j] for j in range(1, left+1)) and            all(vals[i] <= vals[i+j] for j in range(1, right+1)):
+            pivots.append(i)
+    return pivots
+
+def _find_pivot_high(series, left=3, right=3):
+    pivots = []
+    vals = series.values
+    n = len(vals)
+    for i in range(left, n - right):
+        if np.isnan(vals[i]): continue
+        if all(vals[i] >= vals[i-j] for j in range(1, left+1)) and            all(vals[i] >= vals[i+j] for j in range(1, right+1)):
+            pivots.append(i)
+    return pivots
+
+def _check_divergence(df, direction, lookback):
+    """
+    Divergência RSI vs Preço por PIVÔS — método técnico correto.
+
+    BULLISH (COMPRA): preço faz fundo mais baixo, RSI faz fundo mais alto.
+    BEARISH (VENDA):  preço faz topo mais alto,  RSI faz topo mais baixo.
+
+    Exige 2 pivôs separados por ENRICH_DIV_MIN_DIST candles na janela lookback.
+    """
+    try:
+        if df is None or len(df) < lookback + 6: return False
+        window = df.tail(lookback).copy()
+        if 'RSI' not in window.columns or window['RSI'].isna().sum() > lookback * 0.3:
+            return False
+        rsi_s = window['RSI'].reset_index(drop=True)
+        if direction == "COMPRA":
+            price_s  = window['Low'].reset_index(drop=True)
+            p_pivots = _find_pivot_low(price_s)
+            r_pivots = _find_pivot_low(rsi_s)
+            if len(p_pivots) < 2 or len(r_pivots) < 2: return False
+            p1_idx, p2_idx = p_pivots[-2], p_pivots[-1]
+            if (p2_idx - p1_idx) < ENRICH_DIV_MIN_DIST: return False
+            p1_val = price_s.iloc[p1_idx]; p2_val = price_s.iloc[p2_idx]
+            r1_c = [i for i in r_pivots if abs(i - p1_idx) <= 4]
+            r2_c = [i for i in r_pivots if abs(i - p2_idx) <= 4]
+            if not r1_c or not r2_c: return False
+            r1_val = rsi_s.iloc[min(r1_c, key=lambda i: abs(i - p1_idx))]
+            r2_val = rsi_s.iloc[min(r2_c, key=lambda i: abs(i - p2_idx))]
+            return (p2_val < p1_val) and (r2_val > r1_val)
+        else:
+            price_s  = window['High'].reset_index(drop=True)
+            p_pivots = _find_pivot_high(price_s)
+            r_pivots = _find_pivot_high(rsi_s)
+            if len(p_pivots) < 2 or len(r_pivots) < 2: return False
+            p1_idx, p2_idx = p_pivots[-2], p_pivots[-1]
+            if (p2_idx - p1_idx) < ENRICH_DIV_MIN_DIST: return False
+            p1_val = price_s.iloc[p1_idx]; p2_val = price_s.iloc[p2_idx]
+            r1_c = [i for i in r_pivots if abs(i - p1_idx) <= 4]
+            r2_c = [i for i in r_pivots if abs(i - p2_idx) <= 4]
+            if not r1_c or not r2_c: return False
+            r1_val = rsi_s.iloc[min(r1_c, key=lambda i: abs(i - p1_idx))]
+            r2_val = rsi_s.iloc[min(r2_c, key=lambda i: abs(i - p2_idx))]
+            return (p2_val > p1_val) and (r2_val < r1_val)
+    except:
+        return False
+
+def _check_volume_4h(df_4h, lookback=ENRICH_VOLUME_BARS, mult=ENRICH_VOLUME_MULT):
+    """Volume do último candle 4H fechado vs média dos `lookback` anteriores."""
+    try:
+        if df_4h is None or len(df_4h) < lookback + 2:
+            return 1.0, False
+        if 'Volume' not in df_4h.columns:
+            return 1.0, False
+        vol_current = float(df_4h['Volume'].iloc[-2])   # penúltimo = fechado
+        vol_mean    = float(df_4h['Volume'].iloc[-(lookback+2):-2].mean())
+        if vol_mean <= 0:
+            return 1.0, False
+        ratio = vol_current / vol_mean
+        return round(ratio, 2), ratio >= mult
+    except:
+        return 1.0, False
+
+def _check_atr_range(df_4h, period=ENRICH_ATR_BARS, low_ratio=ENRICH_ATR_LOW_RATIO):
+    """ATR atual vs média dos últimos `period` ATRs. is_low=True = range morto."""
+    try:
+        if df_4h is None or len(df_4h) < period + 5:
+            return 1.0, False
+        atr_series = calc_atr(df_4h, period=14)
+        if atr_series is None or atr_series.isna().all():
+            return 1.0, False
+        atr_current = float(atr_series.iloc[-1])
+        atr_mean    = float(atr_series.iloc[-period-1:-1].mean())
+        if atr_mean <= 0:
+            return 1.0, False
+        ratio = atr_current / atr_mean
+        return round(ratio, 2), ratio < low_ratio
+    except:
+        return 1.0, False
+
+def enrich_signal(sig, data):
+    """
+    Recebe o sinal aprovado por check_signals() e adiciona campos extras:
+      - div_grade, div_4h, div_d1, div_w1  — divergência RSI por TF
+      - vol_ratio, vol_high                — volume 4H relativo
+      - atr_ratio, atr_low                 — ATR relativo (range morto?)
+      - elevated, elevation_reason         — se COMUM foi elevado a SUPER
+
+    Regras de elevação (nunca rebaixa, nunca bloqueia):
+      COMUM → SUPER se div_w1 confirmada
+      COMUM → SUPER se vol_high E (div_d1 OU div_w1)
+
+    Nunca lança exceção — em caso de erro retorna o sinal original intacto.
+    """
+    try:
+        direction = sig["direction"]
+        sig_type  = sig["type"]
+
+        df_4h = data.get("4h")
+        df_d1 = data.get("1d")
+        df_w1 = data.get("1wk")
+
+        div_4h = _check_divergence(df_4h, direction, ENRICH_DIV_BARS_4H)
+        div_d1 = _check_divergence(df_d1, direction, ENRICH_DIV_BARS_D1)
+        div_w1 = _check_divergence(df_w1, direction, ENRICH_DIV_BARS_W1)
+
+        if div_w1:        div_grade = "W1"
+        elif div_d1:      div_grade = "D1"
+        elif div_4h:      div_grade = "4H"
+        else:             div_grade = None
+
+        vol_ratio, vol_high = _check_volume_4h(df_4h)
+        atr_ratio, atr_low  = _check_atr_range(df_4h)
+
+        elevated = False
+        elevation_reason = None
+        if sig_type == "COMUM":
+            if div_w1:
+                elevated = True
+                elevation_reason = "DIV_W1"
+            elif vol_high and (div_d1 or div_w1):
+                elevated = True
+                elevation_reason = "VOL_HIGH+DIV_D1" if div_d1 else "VOL_HIGH+DIV_W1"
+
+        if elevated:
+            sig_type = "SUPER"
+
+        sig["type"]             = sig_type
+        sig["type_base"]        = "COMUM" if elevated else sig_type
+        sig["elevated"]         = elevated
+        sig["elevation_reason"] = elevation_reason
+        sig["div_grade"]        = div_grade
+        sig["div_4h"]           = div_4h
+        sig["div_d1"]           = div_d1
+        sig["div_w1"]           = div_w1
+        sig["vol_ratio"]        = vol_ratio
+        sig["vol_high"]         = vol_high
+        sig["atr_ratio"]        = atr_ratio
+        sig["atr_low"]          = atr_low
+        return sig
+    except Exception:
+        return sig
 
 # ============================================================
 # 6. FUNÇÃO DE GRÁFICO PRINCIPAL
@@ -1357,6 +1598,8 @@ with tabs[0]:
             if sym_data:
                 sig = check_signals(sym_data, sym, st.session_state.neuro_athena)
                 if sig:
+                    # Enriquecer sinal: divergência RSI, volume, ATR (nunca bloqueia)
+                    sig = enrich_signal(sig, sym_data)
                     signals_found.append(sig)
                     tf_menor = sig.get('tf_menor', '')
                     signal_ts = sig.get('signal_ts')
@@ -1365,17 +1608,24 @@ with tabs[0]:
                         lock_key = f"{sym}|{tf_menor}|{signal_ts}"
 
                     if lock_key is None or lock_key not in st.session_state.signals_lock:
-                        new_signals.append(sig)  # Registrar sinal novo
+                        new_signals.append(sig)
                         if lock_key is not None:
                             st.session_state.signals_lock.add(lock_key)
-                        # Disparar alerta
                         play_alert_sound(sig['symbol'], sig['direction'], sig['type'])
-                        # Enviar alerta Telegram se habilitado
                         if st.session_state.telegram_enabled:
                             send_telegram_alert(
                                 sig['symbol'], sig['direction'], sig['type'], sig['price'],
                                 st.session_state.tg_token, st.session_state.tg_chat_id,
-                                touch_tfs=sig.get('touch_tfs', [])
+                                touch_tfs=sig.get('touch_tfs', []),
+                                stoch_div=sig.get('stoch_div', False),
+                                mn_ema_div=sig.get('mn_ema_div', False),
+                                div_grade=sig.get('div_grade'),
+                                vol_ratio=sig.get('vol_ratio'),
+                                vol_high=sig.get('vol_high', False),
+                                atr_low=sig.get('atr_low', False),
+                                atr_ratio=sig.get('atr_ratio'),
+                                elevated=sig.get('elevated', False),
+                                elevation_reason=sig.get('elevation_reason'),
                             )
 
         # ── Adicionar novos sinais ao histórico ──
@@ -1418,6 +1668,11 @@ with tabs[0]:
                     css = "signal-card-buy" if s["direction"] == "COMPRA" else "signal-card-sell"
                     clr = "#1D9E75" if s["direction"] == "COMPRA" else "#E04C4C"
                     typ_cls = "bg-super" if s["type"] == "SUPER" else "bg-comum"
+
+                    # Badges de aviso adicionados aqui:
+                    stoch_warn = "<br><span style='background:#E0A905;color:#000;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;'>⚠️ STOCH CONTRA/TOPO</span>" if s.get('stoch_div') else ""
+                    mn_ema_warn = "<br><span style='background:#E04C4C;color:#FFF;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;'>🚨 EMA MENSAL DIV</span>" if s.get('mn_ema_div') else ""
+
                     st.markdown(f"""
                     <div class="{css}">
                       <div class="signal-type {typ_cls}">SINAL {s['type']}</div>
@@ -1429,6 +1684,8 @@ with tabs[0]:
                         TF ref: {s['tf_menor'].upper()}<br>
                         TFs toque: <b style="color:#c9d1d9">{' | '.join(s.get('touch_tfs', []))}</b><br>
                         Candle: <b style="color:#c9d1d9">{str(s.get('signal_ts', ''))[:16] if s.get('signal_ts') is not None else '—'}</b>
+                        {stoch_warn}
+                        {mn_ema_warn}
                       </div>
                     </div>
                     """, unsafe_allow_html=True)

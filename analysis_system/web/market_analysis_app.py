@@ -1073,9 +1073,47 @@ def build_fx_macro(A, sym):
 # SIDEBAR
 # ══════════════════════════════════════════════════════════════════════════════
 FOREX_PAIRS = [
-    "EURCHF=X","EURUSD=X","GBPUSD=X","USDJPY=X","AUDUSD=X",
-    "NZDUSD=X","USDCAD=X","USDCHF=X","EURGBP=X","EURJPY=X",
-    "GBPJPY=X","AUDJPY=X","CADJPY=X","^N225","^HSI","^AXJO",
+    "BTCUSD=X",
+    "AUDCAD=X",
+    "AUDCHF=X",
+    "AUDJPY=X",
+    "CADCHF=X",
+    "CADJPY=X",
+    "CHFJPY=X",
+    "DE30=X",
+    "DXY=X",
+    "EURAUD=X",
+    "EURCAD=X",
+    "EURGBP=X",
+    "EURCHF=X",
+    "EURUSD=X",
+    "EURJPY=X",
+    "EURNZD=X",
+    "GBPAUD=X",
+    "GBPCAD=X",
+    "GBPCHF=X",
+    "GBPUSD=X",
+    "GBPJPY=X",
+    "HK50=X",
+    "HKDJPY=X",
+    "JP225=X",
+    "NZDCAD=X",
+    "NZDCHF=X",
+    "NZDJPY=X",
+    "NZDUSD=X",
+    "SEKJPY=X",
+    "TRYDKK=X",
+    "TRYJPY=X",
+    "US30=X",
+    "US500=X",
+    "USDCAD=X",
+    "USDCHF=X",
+    "USDJPY=X",
+    "USOIL=X",
+    "XAGGBP=X",
+    "XAGUSD=X",
+    "XAUUSD=X",
+
 ]
 ALL_CHARTS = [
     "Risk-Return Weekly (BTC+SPY Macro)",
@@ -1108,7 +1146,7 @@ with st.sidebar:
     st.markdown('<div class="sec">GRÁFICOS A EXIBIR</div>', unsafe_allow_html=True)
     sel = st.multiselect(
         "", ALL_CHARTS,
-        default=["Risk-Return Weekly (BTC+SPY Macro)", "BTC Weekly", "Forex Weekly"],
+        default=["Risk-Return Weekly (BTC+SPY Macro)", "BTC Daily", "BTC Weekly", "BTC Monthly", "SPY Weekly", "SPY Monthly", "Forex Weekly"],
         label_visibility="collapsed",
     )
 

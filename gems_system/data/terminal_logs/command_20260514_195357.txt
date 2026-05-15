@@ -1,0 +1,106 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-05-14 19:53:57
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+✅ Usando cache (válido até: 07:49:48)
+✅ Usando cache existente: 59 gems
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+📋 Cache: 10 gems encontradas
+✅ 50m_range: 10 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+📋 Cache: 15 gems encontradas
+✅ 10_49m_range: 15 gems
+📋 Cache válido - Nenhum cache atualizado
+
+📊 ANÁLISE - 50M_RANGE:
+
+📊 ANÁLISE DAS 10 GEMS:
+================================================================================
+Market Cap - Médio: $69,360,132
+Market Cap - Min: $54,669,187, Max: $98,678,983
+Volume - Médio: $36,540,259
+Volume - Min: $12,574,435, Max: $77,382,621
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 5 gems
+  🟠 Strong (0.5-1.0): 3 gems
+  🔥 Breakout (>1.0): 2 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/10 (0.0%)
+  💪 Resiliência de Preço: 0/10 (0.0%)
+  👑 POTENCIAL OURO: 0/10 (0.0%)
+  🚨 WASH TRADING: 0/10 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 10 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. usdon    | MC: $  55,042,692 | Vol: $  77,382,621 | Ratio: 1.41 | B 📊📈    📊 | Ondo U.S. Dollar Token
+ 2. osmo     | MC: $  54,669,187 | Vol: $  73,748,087 | Ratio: 1.35 | B 📊📈    📊 | Osmosis
+ 3. not      | MC: $  55,836,482 | Vol: $  38,958,103 | Ratio: 0.70 | S 📊📈    📊 | Notcoin
+ 4. pnut     | MC: $  64,438,353 | Vol: $  39,700,554 | Ratio: 0.62 | S 📊📈    📊 | Peanut the Squirrel
+ 5. bio      | MC: $  97,832,497 | Vol: $  49,747,463 | Ratio: 0.51 | S 📊📈    📊 | Bio Protocol
+ 6. xyo      | MC: $  56,467,766 | Vol: $  14,719,151 | Ratio: 0.26 | E 📊📈    📊 | XYO Network
+ 7. useless  | MC: $  69,094,072 | Vol: $  17,631,479 | Ratio: 0.26 | E 📊📈    📊 | Useless Coin
+ 8. w        | MC: $  84,151,127 | Vol: $  19,176,454 | Ratio: 0.23 | E 📊📈    📊 | Wormhole
+ 9. ordi     | MC: $  98,678,983 | Vol: $  21,764,245 | Ratio: 0.22 | E 📊📈    📊 | ORDI
+10. ivvon    | MC: $  57,390,163 | Vol: $  12,574,435 | Ratio: 0.22 | E 📊📈    📊 | iShares Core S&P 500 ETF (Ondo Tokenized ETF)
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 15 GEMS:
+================================================================================
+Market Cap - Médio: $24,088,814
+Market Cap - Min: $14,906,409, Max: $42,030,651
+Volume - Médio: $16,925,833
+Volume - Min: $6,144,382, Max: $56,132,710
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 8 gems
+  🟠 Strong (0.5-1.0): 4 gems
+  🔥 Breakout (>1.0): 3 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/15 (0.0%)
+  💪 Resiliência de Preço: 0/15 (0.0%)
+  👑 POTENCIAL OURO: 0/15 (0.0%)
+  🚨 WASH TRADING: 1/15 (6.7%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 15 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. dogs     | MC: $  31,822,977 | Vol: $  56,132,710 | Ratio: 1.76 | B 📊📈  🚨📊 | Dogs
+ 2. dodo     | MC: $  20,063,652 | Vol: $  31,656,337 | Ratio: 1.58 | B 📊📈    📊 | DODO
+ 3. hp       | MC: $  24,228,888 | Vol: $  29,201,854 | Ratio: 1.21 | B 📊📈    📊 | Hippo Protocol
+ 4. psg      | MC: $  15,292,137 | Vol: $  10,306,242 | Ratio: 0.67 | S 📊📈    📊 | Paris Saint-Germain Fan Token
+ 5. 哈基米      | MC: $  17,144,334 | Vol: $  10,541,488 | Ratio: 0.61 | S 📊📈    📊 | 哈基米 (Hajimi)
+ 6. aixbt    | MC: $  32,832,725 | Vol: $  18,421,242 | Ratio: 0.56 | S 📊📈    📊 | aixbt
+ 7. degen    | MC: $  39,950,922 | Vol: $  22,369,466 | Ratio: 0.56 | S 📊📈    📊 | Degen
+ 8. broccoli | MC: $  15,569,744 | Vol: $   7,442,709 | Ratio: 0.48 | E 📊📈    📊 | CZ's Dog
+ 9. cgpt     | MC: $  34,103,148 | Vol: $  16,205,646 | Ratio: 0.48 | E 📊📈    📊 | ChainGPT
+10. tst      | MC: $  18,788,862 | Vol: $   8,711,328 | Ratio: 0.46 | E 📊📈    📊 | Test
+
+📋 Usando dados existentes - Nenhum snapshot criado
+
+🎉 GEMS FINDER CONCLUÍDO!
+📊 Total de gems: 25
+📁 Arquivos salvos para análise histórica:
+   - snapshots/gems_*.csv (por faixa)
+   - snapshots/gems_consolidated_*.csv (completo)
+   - Cache válido por 12 horas (evita requisições excessivas)
+   - Snapshots criados apenas com dados novos

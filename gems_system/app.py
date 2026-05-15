@@ -660,7 +660,7 @@ st.code("Montrezor Central - Mesa de Operações", language=None)
 # Terminal logo abaixo do título
 with st.expander("🖥️ Terminal (Assíncrono - Auto Refresh)", expanded=True):
     # Configurar refresh automático a cada 1 minuto
-    st_autorefresh(interval=10000, limit=None, key="terminal_refresh")
+    st_autorefresh(interval=120000, limit=None, key="terminal_refresh")
 
     # Aba para selecionar visualização
     tab1, tab2 = st.tabs(["📋 Logs Ativos", "🖥️ Terminal Principal"])

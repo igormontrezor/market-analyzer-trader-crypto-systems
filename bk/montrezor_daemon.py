@@ -258,12 +258,12 @@ def _rsi_hit_top(r):
     try: return float(r["RSI"])>=float(r["RSI_Upper"])
     except: return False
 
-def _rsi_near_bot(r,p=0.03):
-    try: return float(r["RSI"])<=(float(r["RSI_Lower"])+p*100)
+def _rsi_near_bot(r, near_pct=0.03):
+    try: return float(r["RSI"])<=(float(r["RSI_Lower"])+near_pct*100)
     except: return False
 
-def _rsi_near_top(r,p=0.03):
-    try: return float(r["RSI"])>=(float(r["RSI_Upper"])-p*100)
+def _rsi_near_top(r, near_pct=0.03):
+    try: return float(r["RSI"])>=(float(r["RSI_Upper"])-near_pct*100)
     except: return False
 
 def _ema_near(r,pct=0.015):
