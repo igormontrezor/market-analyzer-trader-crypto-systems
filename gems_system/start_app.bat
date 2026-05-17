@@ -41,7 +41,7 @@ set PORT=8501
 netstat -an | findstr ":%PORT%" >nul
 if %errorlevel% == 0 (
     echo Porta %PORT% em uso, tentando proxima...
-    set /a PORT+=1
+    set /a PORT+=3
     goto check_port
 )
 

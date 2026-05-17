@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-15T07:58:55.648691",
-  "total_confirmed": 7,
+  "last_updated": "2026-05-16T08:11:55.870946",
+  "total_confirmed": 8,
   "confirmed_gems": [
     {
       "symbol": "act",
@@ -39,19 +39,19 @@
     {
       "symbol": "psg",
       "name": "Paris Saint-Germain Fan Token",
-      "confirmed_at": "2026-05-15T07:58:55.644491",
-      "ratio_now": 1.005475011900041,
-      "ratio_24h_ago": 0.6739569492478389,
-      "growth_percent": 49.189798105381755,
+      "confirmed_at": "2026-05-16T08:11:55.853604",
+      "ratio_now": 1.6834021122514007,
+      "ratio_24h_ago": 1.005475011900041,
+      "growth_percent": 67.42356521325021,
       "strong_days": 3,
-      "acceleration_strength": 2.4622860752880555,
+      "acceleration_strength": 1.1222185922859742,
       "trend": "accelerating",
-      "market_cap": 16615489,
-      "volume": 16706459,
-      "priority": "maxima",
+      "market_cap": 16641485,
+      "volume": 28014311,
+      "priority": "extrema",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 80.10950023800082
+      "quality_score": 82.69577464860268
     },
     {
       "symbol": "broccoli",
@@ -69,6 +69,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 72.1954519941354
+    },
+    {
+      "symbol": "cgpt",
+      "name": "ChainGPT",
+      "confirmed_at": "2026-05-16T08:11:55.853940",
+      "ratio_now": 1.192917710502936,
+      "ratio_24h_ago": 0.6549462741236667,
+      "growth_percent": 82.13978117504182,
+      "strong_days": 2,
+      "acceleration_strength": 1.3215117005096029,
+      "trend": "accelerating",
+      "market_cap": 29461038,
+      "volume": 35144594,
+      "priority": "maxima",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 63.710583799762084
     },
     {
       "symbol": "dogs",

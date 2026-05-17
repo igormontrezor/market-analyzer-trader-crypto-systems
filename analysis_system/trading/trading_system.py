@@ -25,6 +25,12 @@ from io import StringIO
 #   mesmo RSI, mesmos toques.
 # ============================================================
 try:
+    from backtest_tab import render_backtest_tab
+    _BT_AVAILABLE = True
+except ImportError:
+    _BT_AVAILABLE = False
+
+try:
     import MetaTrader5 as mt5
     _MT5_AVAILABLE = True
 except ImportError:
@@ -237,6 +243,8 @@ def send_telegram_alert(
         esc = html.escape
         ts = esc(pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"))
 
+        verif_macro = f"🔍 <b>Verif. Macro</b>: {'Verifique divergencias no Market Analysis (D1 e W1)!'}\n"
+
         # TFs com toque
         tf_text = ""
         if touch_tfs:
@@ -283,6 +291,7 @@ def send_telegram_alert(
             f"{vol_text}"
             f"{atr_text}"
             f"{warns_text}"
+            f"{verif_macro}"
             f"<b>Hora</b>: {ts}\n\n"
             "Montrezor Trading System"
         )
@@ -1182,7 +1191,7 @@ COLORS = {
 TF_COLOR_MAP = {'1mo': COLORS['rsi_mn'], '1wk': COLORS['rsi_w1'],
                 '1d': COLORS['rsi_d'], '4h': COLORS['rsi_4h']}
 
-def build_chart(all_data, symbol, chart_tf, athena_levels, show_tfs):
+def build_chart(all_data, symbol, chart_tf, athena_levels):
     """Constrói o gráfico multi-painel com todos os indicadores."""
     if chart_tf not in all_data:
         return None
@@ -1198,8 +1207,8 @@ def build_chart(all_data, symbol, chart_tf, athena_levels, show_tfs):
         row_heights=[0.58, 0.22, 0.20],
         subplot_titles=[
             f"Preço — {symbol} ({chart_tf.upper()})",
-            "RSI + Canal (Multi-TF)",
-            "Stochastic RSI (Multi-TF)"
+            f"RSI + Canal ({chart_tf.upper()})",
+            f"Stochastic RSI ({chart_tf.upper()})"
         ]
     )
 
@@ -1253,7 +1262,7 @@ def build_chart(all_data, symbol, chart_tf, athena_levels, show_tfs):
 
     # ─── ROW 2: RSI MULTI-TF ────────────────────────────────
     tf_labels = {'1mo': 'Mensal', '1wk': 'Semanal', '1d': 'Diário', '4h': '4H'}
-    tfs_rsi = [tf for tf in ['1mo', '1wk', '1d', '4h'] if tf in show_tfs and tf in all_data]
+    tfs_rsi = [chart_tf] if chart_tf in all_data else []   # só o TF deste gráfico
 
     def _last_lr_channel_params(rsi_series, lr_period, width_mult):
         """Params do canal LR no ÚLTIMO candle (igual lógica do Mladen)."""
@@ -1364,7 +1373,7 @@ def build_chart(all_data, symbol, chart_tf, athena_levels, show_tfs):
         '1d':  (COLORS['stoch_k_d'],  COLORS['stoch_d_d']),
         '4h':  (COLORS['stoch_k_4h'], COLORS['stoch_d_4h']),
     }
-    tfs_stoch = [tf for tf in ['1wk', '1d', '4h'] if tf in show_tfs and tf in all_data]
+    tfs_stoch = [chart_tf] if chart_tf in all_data else []   # só o TF deste gráfico
 
     for tf in tfs_stoch:
         dft = all_data[tf]
@@ -1431,6 +1440,7 @@ tabs = st.tabs([
     "✅ Checklist",
     "📋 Método Hougaard",
     "🔬 Simulador",
+    "📊 Backtest",
     "⚙️ Configurações"
 ])
 
@@ -1455,7 +1465,7 @@ with tabs[0]:
             unsafe_allow_html=True)
 
         # ── Controles de atualização ──
-        st.session_state.auto_update = st.toggle("⏱ Auto-refresh (1 min)", value=st.session_state.auto_update)
+        st.session_state.auto_update = st.toggle("⏱ Auto-refresh (1 min)", value=st.session_state.auto_update, key="auto_update_toggle")
         if st.button("🔄 Atualizar Agora", use_container_width=True):
             st.cache_data.clear()
             st.session_state.last_update = 0
@@ -1482,24 +1492,6 @@ with tabs[0]:
                     added += 1
             if added:
                 st.rerun()
-
-        st.markdown("<hr style='border-color:#21262d;margin:14px 0'>", unsafe_allow_html=True)
-
-        # ── TFs visíveis ──
-        st.markdown(
-            "<div style='font-size:12px;font-weight:700;color:#8b949e;"
-            "letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px'>"
-            "📊 Timeframes</div>",
-            unsafe_allow_html=True)
-        c1, c2 = st.columns(2)
-        with c1:
-            show_1mo = st.checkbox("MN",      value=True, help="Mensal")
-            show_1d  = st.checkbox("D1",      value=True, help="Diário")
-        with c2:
-            show_1wk = st.checkbox("W1",      value=True, help="Semanal")
-            show_4h  = st.checkbox("H4",      value=True, help="4 Horas")
-        show_tfs = [tf for tf, ok in [('1mo',show_1mo),('1wk',show_1wk),
-                                       ('1d',show_1d),('4h',show_4h)] if ok]
 
         st.markdown("<hr style='border-color:#21262d;margin:14px 0'>", unsafe_allow_html=True)
 
@@ -1735,28 +1727,69 @@ with tabs[0]:
 
         st.markdown("---")
 
-        # ── GRÁFICO ──
-        st.markdown("### 📈 Gráfico Integrado")
+        # ── GRÁFICOS MULTI-TIMEFRAME ────────────────────────────────────
+        st.markdown("### 📈 Gráficos")
 
-        g_col1, g_col2 = st.columns([2, 1])
-        with g_col1:
-            chart_sym = st.selectbox("Par:", st.session_state.tracked_symbols, key="chart_sym_sel")
-        with g_col2:
-            chart_tf = st.selectbox("Timeframe:", ["4h","1d","1wk","1mo"], key="chart_tf_sel")
+        chart_sym = st.selectbox(
+            "Par:", st.session_state.tracked_symbols, key="chart_sym_sel"
+        )
 
-        if chart_sym in all_sym_data and all_sym_data[chart_sym]:
-            fig = build_chart(all_sym_data[chart_sym], chart_sym,
-                              chart_tf, st.session_state.neuro_athena, show_tfs)
-            if fig:
-                st.plotly_chart(fig, use_container_width=True, config={
-                    'scrollZoom': True,
-                    'displayModeBar': True,
-                    'modeBarButtonsToRemove': ['autoScale2d'],
-                })
-            else:
-                st.warning(f"Dados insuficientes para {chart_sym} no timeframe {chart_tf}.")
+        st.markdown(
+            "<div style='font-size:11px;color:#8b949e;margin-bottom:4px'>"
+            "Selecione um ou mais timeframes para comparar:</div>",
+            unsafe_allow_html=True
+        )
+        tf_labels_ui = {"4h": "H4", "1d": "D1", "1wk": "W1", "1mo": "MN"}
+        tf_cols = st.columns(4)
+        selected_tfs = []
+        defaults = {"4h": True, "1d": True, "1wk": False, "1mo": False}
+        for col, (tf_key, tf_lbl) in zip(tf_cols, tf_labels_ui.items()):
+            if col.checkbox(tf_lbl, value=defaults[tf_key], key=f"mtf_{tf_key}"):
+                selected_tfs.append(tf_key)
+
+        if not selected_tfs:
+            st.info("Selecione pelo menos um timeframe acima.")
+        elif chart_sym not in all_sym_data or not all_sym_data[chart_sym]:
+            st.warning(f"Dados não disponíveis para {chart_sym}.")
         else:
-            st.warning(f"Dados não disponíveis para {chart_sym}. Verifique o ticker.")
+            sym_data = all_sym_data[chart_sym]
+            sig_for_sym = next(
+                (s for s in signals_found if s["symbol"] == chart_sym), None
+            )
+            for tf_key in selected_tfs:
+                tf_lbl = tf_labels_ui[tf_key]
+                sig_badge = ""
+                if sig_for_sym and sig_for_sym.get("tf_menor") == tf_key:
+                    direction = sig_for_sym["direction"]
+                    sig_type  = sig_for_sym["type"]
+                    clr       = "#3fb950" if direction == "COMPRA" else "#f85149"
+                    icon      = "▲" if direction == "COMPRA" else "▼"
+                    star      = "⭐ " if sig_type == "SUPER" else ""
+                    sig_badge = (
+                        f" <span style='background:#161b22;border:1px solid {clr};"
+                        f"color:{clr};font-size:11px;padding:2px 8px;border-radius:4px;"
+                        f"font-weight:700'>{icon} {star}{direction} · {sig_type}</span>"
+                    )
+                st.markdown(
+                    f"<div style='display:flex;align-items:center;gap:8px;"
+                    f"margin:12px 0 4px'>"
+                    f"<span style='background:#21262d;color:#c9d1d9;font-size:12px;"
+                    f"font-weight:700;padding:3px 10px;border-radius:5px'>{tf_lbl}</span>"
+                    f"{sig_badge}</div>",
+                    unsafe_allow_html=True
+                )
+                fig = build_chart(
+                    sym_data, chart_sym, tf_key,
+                    st.session_state.neuro_athena
+                )
+                if fig:
+                    st.plotly_chart(fig, use_container_width=True, config={
+                        'scrollZoom': True,
+                        'displayModeBar': True,
+                        'modeBarButtonsToRemove': ['autoScale2d'],
+                    })
+                else:
+                    st.warning(f"Dados insuficientes para {chart_sym} — {tf_lbl}.")
 
         # ── Histórico de Sinais ──
         st.markdown("---")
@@ -2232,6 +2265,16 @@ with tabs[4]:
 # TAB 5 — CONFIGURAÇÕES
 # ════════════════════════════════════════════════════════════
 with tabs[5]:
+    st.markdown("### 📊 Backtest")
+    if _BT_AVAILABLE:
+        render_backtest_tab(
+            st.session_state.tracked_symbols,
+            st.session_state.neuro_athena
+        )
+    else:
+        st.warning("backtest_tab.py não encontrado. Coloque o arquivo na mesma pasta do trading_system.py")
+
+with tabs[6]:
     st.markdown("""
     <div class='info-box'>
     <b>⚙️ Centro de Configurações</b><br>
@@ -2384,9 +2427,25 @@ save_persisted_data(
 )
 
 # ════════════════════════════════════════════════════════════
-# AUTO-REFRESH
+# AUTO-REFRESH — baseado em tempo decorrido, sem sleep
+# time.sleep() travava a página inteira a cada rerun.
+# Agora: registra o timestamp do último refresh e só recarrega
+# quando 60s tiverem passado E o toggle estiver ativo.
 # ════════════════════════════════════════════════════════════
 if st.session_state.auto_update:
-    time.sleep(60)
-    st.cache_data.clear()
-    st.rerun()
+    now = time.time()
+    last = st.session_state.get("last_update", 0)
+    elapsed = now - last
+    if elapsed >= 60:
+        st.session_state.last_update = now
+        st.cache_data.clear()
+        st.rerun()
+    else:
+        # Agendar rerun para quando os 60s completarem
+        remaining_ms = int((60 - elapsed) * 1000)
+        st.markdown(
+            f"<div style='color:#484f58;font-size:11px;text-align:right'>"
+            f"⏱ próximo refresh em {int(60 - elapsed)}s</div>",
+            unsafe_allow_html=True)
+        time.sleep(max(1, 60 - int(elapsed)))
+        st.rerun()

@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-14T19:49:51.453869",
-  "total_candidates": 21,
+  "last_updated": "2026-05-16T08:11:55.874820",
+  "total_candidates": 22,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -274,6 +274,19 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 55.72257383650793
+    },
+    {
+      "symbol": "orca",
+      "name": "Orca",
+      "detected_at": "2026-05-16T08:11:55.851846",
+      "ratio_now": 1.0062087880968842,
+      "market_cap": 90824488,
+      "volume": 91388398,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 44.29084242860435
     }
   ]
 }

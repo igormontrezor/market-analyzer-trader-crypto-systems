@@ -49,6 +49,8 @@ import requests
 # ════════════════════════════════════════════════════════════════════════
 TRADING_SCAN_SEC   = 60    # trading_system: checar a cada 60s
 GEMS_SCAN_SEC      = 300   # gems/macro: checar a cada 5 min
+MA_SCAN_SEC        = 300   # market_analysis: checar a cada 5 min
+MA_COOLDOWN_MIN    = 120   # 2h cooldown market analysis
 MACRO_REBUILD_SEC  = 300   # visualizer: rebuild macro_timing.json a cada 5 min
 
 TRADING_COOLDOWN_MIN = 240  # 4h cooldown forex
@@ -110,6 +112,8 @@ def send_trading_tg(symbol, direction, sig_type, price, token, chat_id,
     # TFs tocados
     tf_text = f"<b>Toques RSI</b>: {e(' | '.join(touch_tfs))}\n" if touch_tfs else ""
 
+    verif_macro = f"🔍 <b>Verif. Macro</b>: {'Verifique divergencias no Market Analysis (D1 e W1)!'}\n"
+
     # Elevação
     elev_text = ""
     if enrich and enrich.get("elevated"):
@@ -145,7 +149,7 @@ def send_trading_tg(symbol, direction, sig_type, price, token, chat_id,
     # --- NOVOS ALERTAS AQUI ---
     stoch_text = ""
     if enrich and enrich.get("stoch_div"):
-        stoch_text = "⚠️ <b>StochRSI</b>: Contra o movimento (aguarde cruzar)\n"
+        stoch_text = "⚠️ <b>StochRSI</b>: Contra o movimento!\n"
 
     ema_mn_text = ""
     if enrich and enrich.get("mn_ema_div"):
@@ -164,6 +168,7 @@ def send_trading_tg(symbol, direction, sig_type, price, token, chat_id,
         f"{vol_text}"
         f"{atr_text}"
         f"{stoch_text}"       # Inserir aqui
+        f"{verif_macro}"      # Inserir aqui
         f"{ema_mn_text}"      # Inserir aqui
         f"<b>Hora</b>: {e(ts)}\n\n"
         "Montrezor Trading [daemon]"
@@ -178,9 +183,10 @@ def send_trading_tg(symbol, direction, sig_type, price, token, chat_id,
     elev_plain = f"Elevacao: COMUM->SUPER ({enrich.get('elevation_reason','')})\n" if enrich and enrich.get('elevated') else ""
     stoch_plain = "StochRSI: DIVERGENTE\n" if enrich and enrich.get('stoch_div') else ""
     ema_mn_plain = "EMA Mensal: DIVERGENTE\n" if enrich and enrich.get('mn_ema_div') else ""
+    verif_macro_plain = "🔍 Verif. Macro: Verifique divergencias no Market Analysis (D1 e W1)!\n"""
     plain = (
         f"SINAL {sig_type}\nPar: {symbol}\nDirecao: {direction}\nPreco: {price:.5f}\n"
-        f"{tf_plain}{elev_plain}{div_plain}{vol_plain}{atr_plain}{stoch_plain}{ema_mn_plain}Hora: {ts}\nMontrezor [daemon]"
+        f"{tf_plain}{elev_plain}{div_plain}{vol_plain}{atr_plain}{stoch_plain}{ema_mn_plain}{verif_macro_plain}Hora: {ts}\nMontrezor [daemon]"
     )
     return _post(token, chat_id, plain, "")
 
@@ -919,6 +925,10 @@ def run_daemon(logger, mode="all"):
     last_rebuild   = 0.0
     prev_t_active  = set()
     prev_gems_sig  = None
+    prev_ma_sigs   = {}
+    last_ma_scan   = 0.0
+    ma_state       = AlertState(MA_COOLDOWN_MIN)
+    do_ma          = mode in ("all",)
 
     while True:
         now = time.time()
@@ -1027,7 +1037,103 @@ def run_daemon(logger, mode="all"):
                         logger.debug(f"  ⏳ Cooldown: BTC {sig_type}")
                     prev_gems_sig = sig_type
 
+        # ── MARKET ANALYSIS: avaliar sinais ──────────────────────
+        if do_ma and (now - last_ma_scan) >= MA_SCAN_SEC:
+            last_ma_scan = now
+            active_ma = _scan_market_analysis(logger, cfg, ma_state, prev_ma_sigs)
+            for chart, direction in active_ma.items():
+                sig_key = (chart, direction)
+                if ma_state.ok(chart, direction):
+                    icon = "📈" if direction == "BUY" else "📉"
+                    msg  = (icon + " MARKET ANALYSIS\n"
+                            + chart + " — " + direction + "\n"
+                            + pd.Timestamp.now().strftime("%Y-%m-%d %H:%M")
+                            + "\nMontrezor [daemon]")
+                    url = "https://api.telegram.org/bot" + cfg["tg_token"] + "/sendMessage"
+                    try:
+                        r = requests.post(url, json={"chat_id":cfg["tg_chat_id"],"text":msg}, timeout=10)
+                        if r.status_code == 200:
+                            logger.info(f"  ✅ [MA] Telegram -> {chart} {direction}")
+                            ma_state.mark(chart, direction)
+                        else:
+                            logger.error(f"  ❌ [MA] Telegram falhou -> {chart} {direction}")
+                    except Exception as e:
+                        logger.error(f"  ❌ [MA] {e}")
+                else:
+                    logger.debug(f"  ⏳ [MA] Cooldown: {chart} {direction}")
+            # Encerrar sinais que sumiram
+            for chart, direction in list(prev_ma_sigs.items()):
+                if chart not in active_ma:
+                    ma_state.clear(chart, direction)
+                    logger.info(f"[MA] ↩ Encerrado: {chart} {direction}")
+            prev_ma_sigs = active_ma
+
         time.sleep(5)
+
+
+# ════════════════════════════════════════════════════════════════════════
+# SISTEMA 3 — MARKET ANALYSIS (market_analysis_app.py)
+# ════════════════════════════════════════════════════════════════════════
+def _scan_market_analysis(logger, cfg, ma_state, prev_ma_sigs):
+    """
+    Importa as funções do market_analysis_app, baixa dados e detecta
+    sinais ativos. Envia Telegram via send_gems_tg reutilizando o formato.
+    Retorna dict {chart: direction} dos sinais ativos.
+    """
+    try:
+        import importlib.util, sys
+        # Busca o arquivo em locais prováveis — ajusta automaticamente
+        _candidates = [
+            os.path.join(PROJECT_DIR, "analysis_system", "market_analysis_app.py"),
+            os.path.join(PROJECT_DIR, "analysis_system", "trading", "market_analysis_app.py"),
+            os.path.join(PROJECT_DIR, "market_analysis_app.py"),
+        ]
+        ma_path = next((p for p in _candidates if os.path.exists(p)), None)
+        if ma_path is None:
+            logger.debug("[MA] market_analysis_app.py nao encontrado em nenhum caminho esperado")
+            return {}
+        logger.debug(f"[MA] usando: {ma_path}")
+
+
+        # Import dinâmico sem executar o bloco Streamlit de UI
+        spec = importlib.util.spec_from_file_location("ma_app", ma_path)
+        ma   = importlib.util.module_from_spec(spec)
+        # Prevenir execução do bloco st.* de nível de módulo
+        import unittest.mock as mock
+        with mock.patch.dict("sys.modules", {"streamlit": mock.MagicMock()}):
+            spec.loader.exec_module(ma)
+
+        # Baixar dados
+        fx_sym = cfg.get("ma_fx_sym", "EURCHF=X")
+        assets = {}
+        for k, sym, per, itv in [
+            ("btc_d","BTC-USD","4y","1d"), ("btc_w","BTC-USD","8y","1wk"),
+            ("btc_m","BTC-USD","8y","1mo"), ("spy_w","SPY","8y","1wk"),
+            ("spy_m","SPY","8y","1mo"),
+            ("fx_d", fx_sym,"8y","1d"),  ("fx_w", fx_sym,"8y","1wk"),
+        ]:
+            try:
+                import yfinance as yf
+                df = yf.download(sym, period=per, interval=itv,
+                                 auto_adjust=True, progress=False)
+                if isinstance(df.columns, __import__("pandas").MultiIndex):
+                    df.columns = [c[0] for c in df.columns]
+                if not df.empty:
+                    assets[k] = df
+            except Exception:
+                pass
+
+        CHARTS = ["Risk-Return Weekly (BTC+SPY Macro)",
+                  "BTC Daily","BTC Weekly","BTC Monthly",
+                  "SPY Weekly","SPY Monthly","Forex Daily","Forex Weekly"]
+
+        sigs = ma.check_active_signals(assets, fx_sym, CHARTS)
+        active = {s["chart"]: s["direction"] for s in sigs}
+        return active
+
+    except Exception as e:
+        logger.debug(f"[MA] erro no scan: {e}")
+        return {}
 
 # ════════════════════════════════════════════════════════════════════════
 # INSTALADOR WINDOWS

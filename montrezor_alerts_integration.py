@@ -35,43 +35,57 @@ def load_telegram_config() -> tuple:
 
 
 def send_trading_alert(symbol: str, direction: str, signal_type: str, price: float,
-                       stoch_div: bool = False, mn_ema_div: bool = False) -> bool:
-    """Envia alerta de Trading System via Telegram com as novas travas."""
+                       stoch_div: bool = False, mn_ema_div: bool = False,
+                       touch_tfs: list = None, div_grade: str = None,
+                       vol_ratio: float = None, vol_high: bool = False,
+                       atr_low: bool = False, atr_ratio: float = None,
+                       elevated: bool = False, elevation_reason: str = None) -> bool:
+    """Envia alerta de Trading System via Telegram — mesmo formato do trading_system.py."""
     token, chat_id = load_telegram_config()
     if not token or not chat_id:
         return False
-
-    warns = ""
-    if stoch_div:
-        warns += "\n⚠️ <b>StochRSI</b>: No topo ou contra o movimento!"
-    if mn_ema_div:
-        warns += "\n🚨 <b>EMA Mensal</b>: Tendência principal divergente!"
 
     try:
         direction_icon = "📈" if direction == "COMPRA" else "📉"
         type_icon = "⭐" if signal_type == "SUPER" else "•"
         esc = html.escape
         ts = esc(pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"))
-        sym_l = symbol.lower().replace(" ", "")
-        dir_l = direction.lower().replace(" ", "")
-        extra_alerts = ""
-        f"{warns}\n"
+
+        tf_text   = f"<b>Toques RSI</b>: {esc(' | '.join(touch_tfs))}\n" if touch_tfs else ""
+        elev_text = f"<b>Elevação</b>: COMUM → SUPER ({esc(elevation_reason)})\n" if elevated and elevation_reason else ""
+        div_text  = f"<b>Div RSI</b>: {esc({'W1':'⚡ W1','D1':'D1','4H':'4H'}.get(div_grade, div_grade))}\n" if div_grade else ""
+        vol_text  = f"<b>Volume 4H</b>: {'🔥' if vol_high else '·'} {vol_ratio:.1f}x média\n" if vol_ratio is not None else ""
+        atr_text  = f"⚠️ <b>ATR baixo</b> ({atr_ratio:.2f}x) — mercado em range\n" if atr_low and atr_ratio else ""
+        verif_macro = f"🔍 <b>Verif. Macro</b>: {'Verifique divergencias no Market Analysis (D1 e W1)!'}\n"
+        warns_text = ""
+        if stoch_div:  warns_text += "⚠️ <b>StochRSI</b>: Contra o movimento!\n"
+        if mn_ema_div: warns_text += "🚨 <b>EMA Mensal</b>: Tendência divergente!\n"
+
         message = (
-            f"{direction_icon} <b>TRADING SINAL {esc(signal_type)}</b> {type_icon}\n"
+            f"{direction_icon} <b>SINAL {esc(signal_type)}</b> {type_icon}\n"
             "━━━━━━━━━━━━━━━━━━\n"
             f"<b>Par</b>: {esc(symbol)}\n"
             f"<b>Direção</b>: {esc(direction)}\n"
             f"<b>Preço</b>: {price:.5f}\n"
-            f"{extra_alerts}\n" # Adiciona os alertas aqui
-            f"<b>Hora</b>: {ts}\n"
-            "<b>Sistema</b>: 🎯 Montrezor Trading\n\n"
-            f"#trading #{sym_l} #{dir_l}"
+            f"{tf_text}{elev_text}{div_text}{vol_text}{atr_text}{warns_text}{verif_macro}\n"
+            f"<b>Hora</b>: {ts}\n\n"
+            "Montrezor Trading System"
         )
 
         url = f"https://api.telegram.org/bot{token}/sendMessage"
-        payload = {"chat_id": chat_id, "text": message, "parse_mode": "HTML"}
-        resp = requests.post(url, json=payload, timeout=5)
-        return resp.status_code == 200
+        resp = requests.post(url, json={"chat_id": chat_id, "text": message, "parse_mode": "HTML"}, timeout=15)
+        if resp.status_code == 200:
+            return True
+        # Fallback plain text
+        tf_plain  = ("Toques: " + " | ".join(touch_tfs) + "\n") if touch_tfs else ""
+        ts_plain  = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S")
+        plain = (
+            f"{direction_icon} SINAL {signal_type}\n"
+            f"Par: {symbol}\nDireção: {direction}\nPreço: {price:.5f}\n"
+            f"{tf_plain}Hora: {ts_plain}\nMontrezor Trading System"
+        )
+        resp2 = requests.post(url, json={"chat_id": chat_id, "text": plain}, timeout=15)
+        return resp2.status_code == 200
     except:
         return False
 

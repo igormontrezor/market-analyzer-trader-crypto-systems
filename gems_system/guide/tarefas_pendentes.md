@@ -23,6 +23,13 @@
 - [x] **ON TIME** - Não pode esperar fechamento
 - [x] Alerta imediato via Telegram
 
+
+Módulo de Backtesting: O sistema atual é excelente para o agora, mas não sabemos a taxa de acerto histórica desses sinais "Super" vs "Comum". Você poderia criar uma nova aba "📊 Backtest" que roda o check_signals em dados passados e plota um gráfico de curva de capital ou Win Rate da estratégia.
+
+3. Performance de Interface e UX
+Fim do "Pisca-Pisca" na Tela: Você está usando st_autorefresh(interval=120000) no app.py para atualizar o terminal. O problema é que isso recarrega a página inteira, interrompendo o usuário se ele estiver clicando em um gráfico ou lendo uma tabela.
+
+Solução (Streamlit Fragments): Use o decorador nativo @st.fragment (lançado recentemente no Streamlit). Você isola apenas a área do terminal em uma função e coloca o st_autorefresh ou um time.sleep dentro dela. Assim, só a caixinha do terminal atualiza, sem piscar o resto do seu HUD.
 ---
 
 ## 🔄 **Arquitetura Produção 24/7**

@@ -190,7 +190,7 @@ with st.sidebar:
 
             # Caminhos relativos genéricos
             current_dir = os.getcwd()
-            market_dir = os.path.abspath(os.path.join(current_dir, "..", "analysis_system", "web"))
+            market_dir = os.path.abspath(os.path.join(current_dir, "..", "analysis_system"))
             market_file = os.path.join(market_dir, "market_analysis_app.py")
 
             # Verificar se arquivo existe
