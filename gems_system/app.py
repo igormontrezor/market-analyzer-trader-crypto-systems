@@ -28,6 +28,12 @@ _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 try:
+    from portfolio_tab import render_portfolio_tab
+    _PORT_AVAILABLE = True
+except ImportError:
+    _PORT_AVAILABLE = False
+
+try:
     from montrezor_alerts_integration import send_gems_alert, log_signal
 except ImportError:
     def send_gems_alert(*args, **kwargs):
@@ -656,6 +662,99 @@ with col_right:
     """, unsafe_allow_html=True)
 
 st.code("Montrezor Central - Mesa de Operações", language=None)
+
+# ── RESUMO DO PORTFÓLIO (topo da página, colapsável) ─────────────────────────
+if "port_widget_open" not in st.session_state:
+    st.session_state.port_widget_open = True
+
+_btn_label = "▲ Ocultar Portfólio" if st.session_state.port_widget_open else "💼 Ver Portfólio"
+if st.button(_btn_label, key="toggle_port_widget"):
+    st.session_state.port_widget_open = not st.session_state.port_widget_open
+    st.rerun()
+
+if st.session_state.port_widget_open:
+    try:
+        import json, os
+        _PF = os.path.join(os.path.expanduser("~"), ".montrezor_portfolio.json")
+        _port_data = json.load(open(_PF, encoding="utf-8")) if os.path.exists(_PF) else {}
+        _positions  = [p for p in _port_data.get("positions",[]) if p.get("status")=="OPEN"]
+        _cash       = float(_port_data.get("cash_usd", 0.0))
+
+        # Buscar preços atuais (cache de 60s já está no portfolio_tab)
+        try:
+            from portfolio_tab import _fetch_price, _calc_roe, _calc_pnl, _calc_liq_price, LIQ_WARN_PCT
+            _enrich = True
+        except ImportError:
+            _enrich = False
+
+        _total_margin = 0.0
+        _total_pnl    = 0.0
+        _pos_rows     = []
+        for _p in _positions:
+            _margin = float(_p.get("total_margin", 0))
+            _total_margin += _margin
+            if _enrich:
+                _cg    = _fetch_price(_p["coin_id"])
+                _px    = _cg.get("price", float(_p.get("entry_avg",0)))
+                _roe   = _calc_roe(float(_p["entry_avg"]), _px, float(_p["leverage"]), _p.get("direction","LONG"))
+                _pnl   = _calc_pnl(float(_p["entry_avg"]), _px, float(_p["position_size"]), _p.get("direction","LONG"))
+                _liq   = _calc_liq_price(float(_p["entry_avg"]), float(_p["leverage"]), _p.get("direction","LONG"))
+                _near  = (abs(_px - _liq) / _px) < LIQ_WARN_PCT if _px > 0 else False
+                _total_pnl += _pnl
+            else:
+                _px = float(_p.get("entry_avg",0)); _roe = 0; _pnl = 0; _liq = 0; _near = False
+            _pos_rows.append({"coin": _p["coin_id"].upper(), "px": _px, "roe": _roe,
+                               "pnl": _pnl, "margin": _margin, "lev": _p.get("leverage",1),
+                               "liq": _liq, "near_liq": _near, "exc": _p.get("exchange","")})
+
+        _total_equity = _cash + _total_margin + _total_pnl
+
+        # ── Cards de topo ──
+        _pc1, _pc2, _pc3, _pc4 = st.columns(4)
+        _pc1.metric("💵 Dolarizado", f"${_cash:,.2f}")
+        _pc2.metric("📊 Investido", f"${_total_margin:,.2f}")
+        _pc3.metric("📈 P&L Aberto", f"${_total_pnl:+,.2f}",
+                    delta=f"{(_total_pnl/_total_margin*100) if _total_margin else 0:+.2f}%")
+        _pc4.metric("🏦 Patrimônio", f"${_total_equity:,.2f}")
+
+        # ── Cards de posições (linha horizontal) ──
+        if _pos_rows:
+            _cols = st.columns(min(len(_pos_rows), 4))
+            for _ci, _row in enumerate(_pos_rows):
+                with _cols[_ci % 4]:
+                    _clr = "#3fb950" if _row["roe"] >= 0 else "#f85149"
+                    _liq_html = (
+                        "<div style='font-size:10px;color:#f85149;margin-top:4px'>🚨 ZONA LIQ.</div>"
+                        if _row["near_liq"] else ""
+                    )
+                    st.markdown(
+                        f"<div style='background:#161b22;border:1px solid "
+                        f"{'#f85149' if _row['near_liq'] else '#30363d'};"
+                        f"border-radius:8px;padding:10px 12px;'>"
+                        f"<div style='font-size:13px;font-weight:700;color:#e6edf3;"
+                        f"font-family:JetBrains Mono,monospace'>{_row['coin']}</div>"
+                        f"<div style='font-size:11px;color:#8b949e;margin-bottom:4px'>"
+                        f"{_row['exc']} · {_row['lev']}x</div>"
+                        f"<div style='font-size:12px;color:#c9d1d9'>${_row['px']:,.4f}</div>"
+                        f"<div style='font-size:14px;font-weight:700;color:{_clr}'>"
+                        f"ROE {_row['roe']:+.2f}%</div>"
+                        f"<div style='font-size:11px;color:{_clr}'>${_row['pnl']:+,.2f}</div>"
+                        f"<div style='font-size:10px;color:#484f58;margin-top:2px'>"
+                        f"Liq: ${_row['liq']:,.4f}</div>"
+                        f"{_liq_html}</div>",
+                        unsafe_allow_html=True)
+        elif not _positions:
+            st.markdown(
+                "<div style='color:#484f58;font-size:12px;padding:4px 0'>"
+                "Nenhuma posição aberta. Acesse a aba 💼 Portfólio para adicionar.</div>",
+                unsafe_allow_html=True)
+
+    except Exception as _e:
+        st.markdown(
+            f"<div style='color:#484f58;font-size:12px'>Portfólio: {_e}</div>",
+            unsafe_allow_html=True)
+
+st.markdown("<div style='margin-bottom:8px'></div>", unsafe_allow_html=True)
 
 # Terminal logo abaixo do título
 with st.expander("🖥️ Terminal (Assíncrono - Auto Refresh)", expanded=True):
@@ -1488,7 +1587,7 @@ def plot_institucional_chart():
 
 # TABELAS ADICIONAIS
 st.markdown("---")
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["📁 Database de Arquivos", "📖 Guia do Sistema", "🏛️ Heatmap Institucional", "📌 Watchlist", "📡 Sinais"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📁 Database de Arquivos", "📖 Guia do Sistema", "🏛️ Heatmap Institucional", "📌 Watchlist", "📡 Sinais", "💼 Portfólio"])
 with tab1:
     st.write("Lista completa de snapshots disponíveis:")
     for snap in snapshots_list: st.text(f"• {os.path.basename(snap)}")
@@ -1926,8 +2025,111 @@ with tab5:
         unsafe_allow_html=True
     )
 
-    # ── 3. Fluxo de dados ─────────────────────────────────────────────
-    st.markdown("#### 3 · Fluxo de dados entre os sistemas")
+    # ── 3. MARKET ANALYSIS ───────────────────────────────────────────
+    st.markdown("#### 3 · Market Analysis — Sinais Macro/Risco (market_analysis_app.py)")
+    st.markdown(
+        "<p style='color:#8b949e;font-size:12px;margin-top:-8px;margin-bottom:12px;'>"
+        "Fonte: yfinance (BTC-USD, SPY, par Forex). Detecta o sinal mais recente de cada gráfico "
+        "comparando os indicadores do último candle com os thresholds definidos. "
+        "Cooldown de 24h por sinal — não reenvia entre reinicializações."
+        "</p>",
+        unsafe_allow_html=True
+    )
+    st.markdown("""
+<table class="sig-table">
+  <thead>
+    <tr>
+      <th style="width:22%">Gráfico</th>
+      <th style="width:20%">Indicadores</th>
+      <th style="width:35%">Condição BUY / SELL</th>
+      <th style="width:23%">O que significa</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b style="color:#c9d1d9;">Risk-Return Weekly<br>(BTC+SPY Macro)</b></td>
+      <td class="fonte-txt">Sharpe (52sem, 60per)<br>Sortino (52sem, 60per)</td>
+      <td class="fonte-txt"><span class="cond-code">macro_sig_btc(sh, so)</span> — confluência Sharpe ≥ −1.5/2.0 e Sortino ≥ −1.5/4.5</td>
+      <td class="fonte-txt">Regime macro BTC favorável ou defensivo no semanal</td>
+    </tr>
+    <tr>
+      <td><b style="color:#c9d1d9;">BTC Daily</b></td>
+      <td class="fonte-txt">RSI 14<br>StochRSI 14,3<br>BB%B 20,2</td>
+      <td class="fonte-txt"><span class="cond-code">combined([RSI, Stoch, BB], pesos [0.5, 0.5, 2.0], th=3.0)</span></td>
+      <td class="fonte-txt">Momentum diário com peso maior no BB%B — entrada tática</td>
+    </tr>
+    <tr>
+      <td><b style="color:#c9d1d9;">BTC Weekly</b></td>
+      <td class="fonte-txt">Sharpe (52sem, 60per)<br>Sortino (52sem, 60per)</td>
+      <td class="fonte-txt"><span class="cond-code">confirmed(sharpe_sig, sortino_sig)</span> — ambos confirmam simultaneamente</td>
+      <td class="fonte-txt">Risco/retorno semanal BTC com dupla confirmação</td>
+    </tr>
+    <tr>
+      <td><b style="color:#c9d1d9;">BTC Monthly</b></td>
+      <td class="fonte-txt">Sharpe (12m, 60per)<br>Sortino (12m, 60per)</td>
+      <td class="fonte-txt"><span class="cond-code">macro_sig_btc(sh, so)</span> — mensal</td>
+      <td class="fonte-txt">Regime macro BTC de longo prazo</td>
+    </tr>
+    <tr>
+      <td><b style="color:#c9d1d9;">SPY Weekly</b></td>
+      <td class="fonte-txt">Sharpe (52sem, 60per)<br>Sortino (52sem, 60per)</td>
+      <td class="fonte-txt"><span class="cond-code">macro_sig_spy(sh, so)</span> — thresholds SPY (sell=2.19 / 4.7)</td>
+      <td class="fonte-txt">Regime risco/retorno S&amp;P500 semanal</td>
+    </tr>
+    <tr>
+      <td><b style="color:#c9d1d9;">SPY Monthly</b></td>
+      <td class="fonte-txt">Sharpe (12m, 60per)<br>Sortino (12m, 60per)</td>
+      <td class="fonte-txt"><span class="cond-code">macro_sig_spy(sh, so)</span> — mensal</td>
+      <td class="fonte-txt">Regime macro S&amp;P500 de longo prazo</td>
+    </tr>
+    <tr>
+      <td><b style="color:#c9d1d9;">Forex Daily</b></td>
+      <td class="fonte-txt">RSI 14<br>StochRSI 14,3<br>BB%B 20,2</td>
+      <td class="fonte-txt"><span class="cond-code">combined([RSI, Stoch, BB], pesos [0.5, 0.5, 2.0], th=3.0)</span></td>
+      <td class="fonte-txt">Momentum diário do par Forex selecionado</td>
+    </tr>
+    <tr>
+      <td><b style="color:#c9d1d9;">Forex Weekly</b></td>
+      <td class="fonte-txt">RSI 14<br>StochRSI 14,3</td>
+      <td class="fonte-txt"><span class="cond-code">combined([RSI, Stoch], pesos [1, 1], th=2.0)</span></td>
+      <td class="fonte-txt">Momentum semanal do par Forex — confirmação de tendência</td>
+    </tr>
+    <tr>
+      <td><b style="color:#f85149;">⚠️ BTC Overextended<br>(Mensal)</b></td>
+      <td class="fonte-txt">Sharpe (12m)<br>Sortino (12m)</td>
+      <td class="fonte-txt">
+        <span class="cond-code">Sharpe ≥ 6.0</span> OU <span class="cond-code">Sortino ≥ 8.0</span><br>
+        <span style="font-size:11px;color:#6e7681;">Sempre gera SELL — euforia mensal BTC</span>
+      </td>
+      <td class="fonte-txt">BTC em território de euforia: Sharpe ou Sortino mensal muito acima dos padrões históricos — alerta de reversão iminente</td>
+    </tr>
+    <tr>
+      <td><b style="color:#f85149;">⚠️ SPY Overextended<br>(Mensal)</b></td>
+      <td class="fonte-txt">Sharpe (12m)<br>Sortino (12m)</td>
+      <td class="fonte-txt">
+        <span class="cond-code">Sharpe ≥ 6.0</span> OU <span class="cond-code">Sortino ≥ 5.0</span><br>
+        <span style="font-size:11px;color:#6e7681;">Sempre gera SELL — euforia mensal SPY</span>
+      </td>
+      <td class="fonte-txt">S&amp;P500 em euforia: thresholds mais conservadores que BTC por ser um índice menos volátil</td>
+    </tr>
+  </tbody>
+</table>
+""", unsafe_allow_html=True)
+
+    st.markdown(
+        "<div style='background:#161b22;border:1px solid #30363d;border-radius:6px;"
+        "padding:10px 14px;font-size:12px;color:#8b949e;margin-bottom:20px;'>"
+        "⏱ <b style='color:#c9d1d9;'>Cooldown 24h</b> — Cada sinal é identificado pela chave "
+        "<span style='font-family:monospace;background:#0d1117;padding:1px 4px;border-radius:3px;color:#79c0ff;'>"
+        "chart_DIRECTION</span>. Uma vez enviado, não reenvia por 24h mesmo que o sistema reinicie "
+        "(persiste em <span style='font-family:monospace;background:#0d1117;padding:1px 4px;"
+        "border-radius:3px;color:#79c0ff;'>~/.montrezor_ma_cooldown.json</span>)."
+        "</div>",
+        unsafe_allow_html=True
+    )
+
+    # ── 4. Fluxo de dados ─────────────────────────────────────────────
+    st.markdown("#### 4 · Fluxo de dados entre os sistemas")
     st.markdown("""
 <table class="sig-table">
   <thead>
@@ -1958,9 +2160,15 @@ with tab5:
       <td class="fonte-txt">Via <span class="cond-code">send_telegram_alert()</span> a cada ciclo com sinal ativo</td>
     </tr>
     <tr>
+      <td><b style="color:#c9d1d9;">market_analysis_app.py</b></td>
+      <td class="fonte-txt">8 sinais macro/risco + 2 alertas overextended (BTC e SPY)</td>
+      <td class="fonte-txt">yfinance (BTC-USD, SPY, par Forex) direto</td>
+      <td class="fonte-txt">Via <span class="cond-code">_send_tg_ma()</span>. Cooldown 24h persistido em disco — não reenvia entre reinicializações</td>
+    </tr>
+    <tr>
       <td><b style="color:#c9d1d9;">montrezor_daemon.py</b></td>
       <td class="fonte-txt">Todos os sinais acima, 24/7</td>
-      <td class="fonte-txt">MT5 + <span class="cond-code">macro_timing.json</span> + <span class="cond-code">.montrezor_data.json</span></td>
+      <td class="fonte-txt">MT5 + <span class="cond-code">macro_timing.json</span> + <span class="cond-code">.montrezor_data.json</span> + <span class="cond-code">market_analysis_app.py</span></td>
       <td class="fonte-txt">Telegram direto com cooldown. Independente do browser — roda em background mesmo com o Streamlit fechado</td>
     </tr>
   </tbody>
@@ -1969,3 +2177,12 @@ with tab5:
 
 # RODAPÉ
 st.markdown("<br><p style='text-align: center; color: #484f58; font-size: 12px;'>Montrezor Analysis System | Powered by Igor Montrezor</p>", unsafe_allow_html=True)
+
+with tab6:
+    st.markdown("### 💼 Portfólio de Futuros")
+    if _PORT_AVAILABLE:
+        # Passar o sinal macro atual para o portfólio
+        _current_macro = st.session_state.get("gems_macro_telegram_last")
+        render_portfolio_tab(macro_signal=_current_macro)
+    else:
+        st.warning("portfolio_tab.py não encontrado. Coloque na mesma pasta do app.py.")

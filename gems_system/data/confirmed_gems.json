@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-16T08:11:55.870946",
+  "last_updated": "2026-05-18T06:56:50.422493",
   "total_confirmed": 8,
   "confirmed_gems": [
     {
@@ -71,6 +71,23 @@
       "quality_score": 72.1954519941354
     },
     {
+      "symbol": "dogs",
+      "name": "Dogs",
+      "confirmed_at": "2026-05-18T06:56:50.418968",
+      "ratio_now": 0.8647782696840784,
+      "ratio_24h_ago": 0.5682012700375887,
+      "growth_percent": 52.19576500187513,
+      "strong_days": 3,
+      "acceleration_strength": 1.783120964947872,
+      "trend": "accelerating",
+      "market_cap": 27598752,
+      "volume": 23866801,
+      "priority": "alta",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 74.58457745552997
+    },
+    {
       "symbol": "cgpt",
       "name": "ChainGPT",
       "confirmed_at": "2026-05-16T08:11:55.853940",
@@ -86,23 +103,6 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 63.710583799762084
-    },
-    {
-      "symbol": "dogs",
-      "name": "Dogs",
-      "confirmed_at": "2026-05-14T19:49:51.447023",
-      "ratio_now": 1.7639050551430182,
-      "ratio_24h_ago": 0.945480159678164,
-      "growth_percent": 86.56182650553359,
-      "strong_days": 3,
-      "acceleration_strength": 3.515293278858972,
-      "trend": "accelerating",
-      "market_cap": 31822977,
-      "volume": 56132710,
-      "priority": "extrema",
-      "status": "confirmed",
-      "type": "lider_altseason",
-      "quality_score": 95.27810110286036
     },
     {
       "symbol": "neiro",

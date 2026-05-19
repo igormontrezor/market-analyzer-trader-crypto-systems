@@ -115,6 +115,45 @@ def _coingecko_get(url: str, params: Optional[Dict[str, Any]] = None, timeout: i
                 "precisa ser usada na base URL PRO (pro-api.coingecko.com)."
             )
 
+
+def _derive_macro_regime_from_monthly_bbp(m_usdt_bbp: pd.Series) -> Dict[str, bool]:
+    """Deriva o regime mensal a partir do histórico de BB%B com memória de estado.
+
+    Regras:
+    - `BUY` só entra após saída do topo mensal: prev >= 1.0 e curr < 1.0.
+    - `SELL` entra imediatamente ao tocar o fundo mensal: curr <= 0.0.
+    - Uma vez em um regime, ele persiste até o gatilho completo de reversão.
+    """
+    df_m = pd.DataFrame({"bbb": m_usdt_bbp}).reset_index(drop=True)
+    if df_m.empty:
+        return {"buy_mode": False, "sell_mode": False}
+
+    first_value = df_m.at[0, "bbb"]
+    if first_value >= 1.0:
+        current_regime = "BUY"
+    elif first_value <= 0.0:
+        current_regime = "SELL"
+    else:
+        current_regime = "BUY" if first_value > 0.5 else "SELL"
+
+    buy_mode = current_regime == "BUY"
+    sell_mode = current_regime == "SELL"
+
+    for i in range(1, len(df_m)):
+        prev_val = df_m.at[i - 1, "bbb"]
+        curr_val = df_m.at[i, "bbb"]
+
+        if curr_val <= 0.0:
+            current_regime = "SELL"
+        elif prev_val >= 1.0 and curr_val < 1.0:
+            current_regime = "BUY"
+
+        buy_mode = current_regime == "BUY"
+        sell_mode = current_regime == "SELL"
+
+    return {"buy_mode": buy_mode, "sell_mode": sell_mode}
+
+
 def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.0) -> dict:
     base_dir = os.path.dirname(__file__)
     macro_dir = os.path.join(base_dir, 'data', 'macro')
@@ -202,12 +241,11 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
             f.write(f"{timestamp_hour},{funding_rate:.6f}\n")
 
     # --- 2. DEFINIÇÃO DE REGIMES ---
-    buy_mode = (prev_m_usdt >= 1.0 and curr_m_usdt < 1.0) or (curr_m_usdt < 1.0 and curr_m_usdt > 0.2)
+    regime_flags = _derive_macro_regime_from_monthly_bbp(m_usdt_bbp)
+    buy_mode = regime_flags["buy_mode"]
+    sell_mode = regime_flags["sell_mode"]
 
-    # AJUSTE: Tocou < 0 já é Venda. E mantém venda enquanto estiver na zona de subida (< 0.8)
-    sell_mode = (curr_m_usdt <= 0.0) or (prev_m_usdt <= 0.0 and curr_m_usdt > 0.0) or (curr_m_usdt > 0.0 and curr_m_usdt < 0.8 and not buy_mode)
-
-    capitulation_lock = bool(sell_mode and curr_m_usdt >= 0.8)
+    capitulation_lock = bool(sell_mode and curr_m_usdt >= 0.55)
 
     weekly_state = {
         "date": w_usdt_bbp.index[-1].strftime('%Y-%m-%d'),

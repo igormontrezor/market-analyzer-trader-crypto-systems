@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-16T08:11:55.874820",
-  "total_candidates": 22,
+  "last_updated": "2026-05-19T09:06:21.501608",
+  "total_candidates": 27,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -287,6 +287,71 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 44.29084242860435
+    },
+    {
+      "symbol": "nkyc",
+      "name": "NKYC Token",
+      "detected_at": "2026-05-18T06:56:50.417971",
+      "ratio_now": 22.063608396268553,
+      "market_cap": 29279578,
+      "volume": 646013143,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "fida",
+      "name": "Bonfida",
+      "detected_at": "2026-05-18T06:56:50.418190",
+      "ratio_now": 4.434316199243796,
+      "market_cap": 22121261,
+      "volume": 98092666,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "msusd",
+      "name": "Metronome Synth USD",
+      "detected_at": "2026-05-18T06:56:50.418495",
+      "ratio_now": 1.0353045540838992,
+      "market_cap": 21446355,
+      "volume": 22203509,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 44.87275774834465
+    },
+    {
+      "symbol": "ont",
+      "name": "Ontology",
+      "detected_at": "2026-05-19T09:06:21.495925",
+      "ratio_now": 1.215900229572526,
+      "market_cap": 67052013,
+      "volume": 81528558,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 48.48467125811719
+    },
+    {
+      "symbol": "ron",
+      "name": "Ronin",
+      "detected_at": "2026-05-19T09:06:21.496152",
+      "ratio_now": 0.9039663009421665,
+      "market_cap": 91181659,
+      "volume": 82425147,
+      "priority": "alta",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 42.24599268551
     }
   ]
 }
