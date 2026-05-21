@@ -360,7 +360,7 @@ def _build_indicators(raw):
     df=_calc_stoch_rsi(df)   # FIX 3: identico ao trading_system
     return df
 
-def _near(a,b,pct=0.0075):  # FIX 4: identico ao trading_system (era 0.015)
+def _near(a,b,pct=0.0055):  # FIX 4: identico ao trading_system (era 0.015)
     try: return abs(float(a)-float(b))/abs(float(b))<pct if float(b)!=0 else False
     except: return False
 
@@ -428,7 +428,7 @@ def check_signals_trading(data, symbol, athena_levels):
 
     # FIX 6: NEAR_TF=0.015 (1.5 pts RSI) identico ao trading_system (era 0.03)
     NEAR_TF    = 0.015   # D1 / 4H
-    NEAR_W1_MN = 0.030   # Semanal / Mensal
+    NEAR_W1_MN = 0.020   # Semanal / Mensal
 
     d1_data   = data.get('1d')
     d1_current = _get_confirmed_row(d1_data, allow_current=True) if d1_data is not None else None

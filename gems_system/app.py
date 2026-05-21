@@ -34,6 +34,12 @@ except ImportError:
     _PORT_AVAILABLE = False
 
 try:
+    import gems_ai_filter as _ai
+    _AI_AVAILABLE = True
+except ImportError:
+    _AI_AVAILABLE = False
+
+try:
     from montrezor_alerts_integration import send_gems_alert, log_signal
 except ImportError:
     def send_gems_alert(*args, **kwargs):
@@ -1587,7 +1593,7 @@ def plot_institucional_chart():
 
 # TABELAS ADICIONAIS
 st.markdown("---")
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📁 Database de Arquivos", "📖 Guia do Sistema", "🏛️ Heatmap Institucional", "📌 Watchlist", "📡 Sinais", "💼 Portfólio"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["📁 Database de Arquivos", "📖 Guia do Sistema", "🏛️ Heatmap Institucional", "📌 Watchlist", "📡 Sinais", "💼 Portfólio", "🤖 AI Gems Filter"])
 with tab1:
     st.write("Lista completa de snapshots disponíveis:")
     for snap in snapshots_list: st.text(f"• {os.path.basename(snap)}")
@@ -2174,6 +2180,189 @@ with tab5:
   </tbody>
 </table>
 """, unsafe_allow_html=True)
+
+with tab7:
+    st.markdown("### 🤖 AI Gems Filter")
+    st.markdown(
+        "<p style='color:#8b949e;font-size:13px;margin-top:-10px'>"
+        "O Claude analisa todos os snapshots do Gems Finder e retorna as moedas "
+        "com maior probabilidade de valorização. Ciclo semanal (top 10) e mensal (top 3)."
+        "</p>", unsafe_allow_html=True)
+
+    if not _AI_AVAILABLE:
+        st.error("gems_ai_filter.py não encontrado. Coloque na mesma pasta do app.py.")
+        st.stop()
+
+    with st.expander("⚙️ Configuração", expanded=False):
+        ai_key_input = st.text_input(
+            "Anthropic API Key", type="password",
+            value=os.environ.get("ANTHROPIC_API_KEY",""),
+            help="Obtenha em console.anthropic.com. O plano gratuito é suficiente.")
+        if ai_key_input:
+            os.environ["ANTHROPIC_API_KEY"] = ai_key_input
+            try:
+                cfg_file = os.path.join(os.path.expanduser("~"), ".montrezor_ai.json")
+                json.dump({"anthropic_key": ai_key_input}, open(cfg_file,"w"))
+            except Exception:
+                pass
+            st.success("✅ API Key salva")
+        st.markdown(
+            "<div style='font-size:11px;color:#8b949e'>"
+            "Modelo: <b>claude-haiku-4-5</b> — rápido, econômico, gratuito no free tier. "
+            "Cada análise usa ~2000 tokens.</div>", unsafe_allow_html=True)
+
+    api_key = _ai._get_api_key()
+
+    weekly_result  = _ai.get_latest("weekly")
+    monthly_result = _ai.get_latest("monthly")
+
+    # Banner automático se ciclo vencido
+    if api_key:
+        if _ai.should_run("weekly"):
+            st.warning("⏰ **Análise semanal vencida** — clique em 'Rodar Análise Semanal' para atualizar.")
+        if _ai.should_run("monthly"):
+            st.info("📅 **Análise mensal disponível** — clique em 'Rodar Análise Mensal (Top 3)'.")
+
+    sw_col, sm_col = st.columns(2)
+    with sw_col:
+        w_ts  = weekly_result.get("generated_at","—") if weekly_result else "Nunca rodou"
+        w_due = "✅ Atualizado" if not _ai.should_run("weekly") else "⏳ Atualização disponível"
+        st.markdown(
+            f"<div style='background:#161b22;border:1px solid #30363d;border-radius:8px;"
+            f"padding:10px 14px;font-size:12px'>"
+            f"<b style='color:#c9d1d9'>📅 Ciclo Semanal</b><br>"
+            f"<span style='color:#8b949e'>Último run: {w_ts}</span><br>"
+            f"<span style='color:#{'3fb950' if 'Atualizado' in w_due else 'e3b341'}'>{w_due}</span>"
+            f"</div>", unsafe_allow_html=True)
+    with sm_col:
+        m_ts  = monthly_result.get("generated_at","—") if monthly_result else "Nunca rodou"
+        m_due = "✅ Atualizado" if not _ai.should_run("monthly") else "⏳ Atualização disponível"
+        st.markdown(
+            f"<div style='background:#161b22;border:1px solid #30363d;border-radius:8px;"
+            f"padding:10px 14px;font-size:12px'>"
+            f"<b style='color:#c9d1d9'>📅 Ciclo Mensal</b><br>"
+            f"<span style='color:#8b949e'>Último run: {m_ts}</span><br>"
+            f"<span style='color:#{'3fb950' if 'Atualizado' in m_due else 'e3b341'}'>{m_due}</span>"
+            f"</div>", unsafe_allow_html=True)
+
+    st.markdown("")
+
+    btn_col1, btn_col2, btn_col3 = st.columns([2,2,1])
+    with btn_col1:
+        run_weekly  = st.button("🔍 Rodar Análise Semanal",  type="primary",
+                                use_container_width=True, disabled=not bool(api_key))
+    with btn_col2:
+        run_monthly = st.button("🏆 Rodar Análise Mensal (Top 3)",
+                                use_container_width=True, disabled=not bool(api_key))
+    with btn_col3:
+        force_run = st.checkbox("Forçar", value=False,
+                                help="Rodar mesmo que o ciclo ainda não tenha vencido")
+
+    if not api_key:
+        st.warning("Configure a Anthropic API Key acima para usar o filtro AI.")
+
+    for cycle, trigger in [("weekly", run_weekly), ("monthly", run_monthly)]:
+        if not trigger:
+            continue
+        with st.spinner(f"Claude analisando dados... {'semanal' if cycle=='weekly' else 'mensal'}"):
+            try:
+                result = _ai.run_analysis(cycle, api_key, force=force_run)
+                st.success(f"✅ Análise {'semanal' if cycle=='weekly' else 'mensal'} concluída!")
+                if cycle == "weekly":
+                    weekly_result = result
+                else:
+                    monthly_result = result
+            except Exception as e:
+                st.error(f"Erro: {e}")
+
+    def _render_result(result, title, n_show):
+        if not result:
+            st.info(f"Nenhuma análise {title.lower()} disponível. Clique em rodar acima.")
+            return
+        sectors = result.get("sectors_in_focus",[])
+        avoid   = result.get("avoid",[])
+        picks   = result.get("top_picks",[])
+        st.markdown(f"#### {title}")
+        st.markdown(
+            f"<div style='background:#161b22;border:1px solid #30363d;border-radius:6px;"
+            f"padding:8px 14px;font-size:12px;color:#c9d1d9;margin-bottom:12px'>"
+            f"🌍 <b>Macro:</b> {result.get('regime','—')} &nbsp;|&nbsp; "
+            f"🏭 <b>Setores:</b> {', '.join(sectors) if sectors else '—'} &nbsp;|&nbsp; "
+            f"📅 {result.get('generated_at','—')}</div>", unsafe_allow_html=True)
+        macro_note = result.get("macro_note","")
+        if macro_note:
+            st.markdown(
+                f"<div style='background:#0d1117;border-left:3px solid #58a6ff;"
+                f"padding:8px 14px;font-size:12px;color:#8b949e;margin-bottom:12px'>"
+                f"{macro_note}</div>", unsafe_allow_html=True)
+        for row_i in range(0, len(picks[:n_show]), 2):
+            row_picks = picks[row_i:row_i+2]
+            cols = st.columns(len(row_picks))
+            for col, pick in zip(cols, row_picks):
+                risk_clr  = {"LOW":"#3fb950","MEDIUM":"#e3b341","HIGH":"#f85149"}.get(pick.get("risk","MEDIUM"),"#8b949e")
+                pot_icon  = {"x10+":"🚀","x5-x10":"⚡","x2-x5":"📈"}.get(pick.get("potential","x2-x5"),"•")
+                rank      = pick.get("rank",0)
+                rank_badge= "🥇" if rank==1 else ("🥈" if rank==2 else ("🥉" if rank==3 else f"#{rank}"))
+                col.markdown(
+                    f"<div style='background:#161b22;border:1px solid #30363d;border-radius:8px;"
+                    f"padding:14px;margin-bottom:8px'>"
+                    f"<div style='font-size:16px;font-weight:700;color:#e6edf3;margin-bottom:6px'>"
+                    f"{rank_badge} {pick.get('symbol','?')}"
+                    f"<span style='float:right;font-size:12px;color:{risk_clr};font-weight:600'>"
+                    f"{pick.get('risk','?')} RISK</span></div>"
+                    f"<div style='font-size:13px;color:#3fb950;font-weight:600;margin-bottom:6px'>"
+                    f"{pot_icon} {pick.get('potential','?')} potencial</div>"
+                    f"<div style='font-size:11px;color:#8b949e;line-height:1.5'>"
+                    f"{pick.get('rationale','—')}</div>"
+                    f"<div style='margin-top:8px;font-size:11px;color:#484f58'>"
+                    f"Score: <b style='color:#c9d1d9'>{pick.get('composite_score',0):.1f}</b>"
+                    f"</div></div>", unsafe_allow_html=True)
+        if avoid:
+            st.markdown(
+                "<div style='background:#2d0f0f;border:1px solid #da3633;border-radius:6px;"
+                "padding:8px 14px;font-size:12px;margin-top:8px'>"
+                "<b style='color:#f85149'>⛔ Evitar:</b> "
+                + " &nbsp;|&nbsp; ".join(f"<span style='color:#8b949e'>{a}</span>" for a in avoid)
+                + "</div>", unsafe_allow_html=True)
+
+    tab_w, tab_m, tab_data = st.tabs(["📅 Top 10 Semanal", "🏆 Top 3 Mensal", "📊 Dados Brutos"])
+    with tab_w:
+        _render_result(weekly_result, "Top 10 Semanal", 10)
+    with tab_m:
+        _render_result(monthly_result, "Top 3 Mensal", 3)
+    with tab_data:
+        dt1, dt2 = st.tabs(["📊 Dados Agregados", "🕐 Histórico de Runs"])
+        with dt1:
+            st.markdown("#### Dados Agregados dos Snapshots")
+            try:
+                df_agg = _ai.get_aggregated_data(7)
+                if df_agg.empty:
+                    st.info("Nenhum snapshot encontrado nos últimos 7 dias.")
+                else:
+                    show_cols = [c for c in ["symbol","composite_score","final_score","ratio",
+                                              "accumulation_score","social_score","appearances",
+                                              "momentum","sector","market_cap"]
+                                 if c in df_agg.columns]
+                    st.dataframe(df_agg[show_cols].head(50).reset_index(drop=True),
+                                 use_container_width=True)
+            except Exception as e:
+                st.error(f"Erro ao carregar dados: {e}")
+        with dt2:
+            st.markdown("#### Histórico de Execuções")
+            try:
+                hist = _ai.get_history()
+                if not hist:
+                    st.info("Nenhuma análise rodada ainda.")
+                else:
+                    rows_h = [{"Data": h.get("ts","")[:16],
+                               "Ciclo": h.get("cycle",""),
+                               "CSVs lidos": h.get("n_csvs",0),
+                               "Moedas analisadas": h.get("n_coins",0)}
+                              for h in reversed(hist[-50:])]
+                    st.dataframe(rows_h, use_container_width=True, hide_index=True)
+            except Exception as e:
+                st.error(f"Erro: {e}")
+
 
 # RODAPÉ
 st.markdown("<br><p style='text-align: center; color: #484f58; font-size: 12px;'>Montrezor Analysis System | Powered by Igor Montrezor</p>", unsafe_allow_html=True)
