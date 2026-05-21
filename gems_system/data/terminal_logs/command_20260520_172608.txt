@@ -1,0 +1,104 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-05-20 17:26:08
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+✅ Usando cache (válido até: 21:05:40)
+✅ Usando cache existente: 42 gems
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+📋 Cache: 8 gems encontradas
+✅ 50m_range: 8 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+📋 Cache: 15 gems encontradas
+✅ 10_49m_range: 15 gems
+📋 Cache válido - Nenhum cache atualizado
+
+📊 ANÁLISE - 50M_RANGE:
+
+📊 ANÁLISE DAS 8 GEMS:
+================================================================================
+Market Cap - Médio: $74,800,679
+Market Cap - Min: $54,877,661, Max: $94,594,829
+Volume - Médio: $34,154,060
+Volume - Min: $11,255,837, Max: $90,421,944
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 6 gems
+  🟠 Strong (0.5-1.0): 1 gems
+  🔥 Breakout (>1.0): 1 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/8 (0.0%)
+  💪 Resiliência de Preço: 0/8 (0.0%)
+  👑 POTENCIAL OURO: 0/8 (0.0%)
+  🚨 WASH TRADING: 0/8 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 8 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. enj      | MC: $  87,979,924 | Vol: $  90,421,944 | Ratio: 1.03 | B 📊📈    📊 | Enjin Coin
+ 2. usdon    | MC: $  56,721,652 | Vol: $  44,548,106 | Ratio: 0.79 | S 📊📈    📊 | Ondo U.S. Dollar Token
+ 3. bio      | MC: $  74,707,858 | Vol: $  33,624,072 | Ratio: 0.45 | E 📊📈    📊 | Bio Protocol
+ 4. ont      | MC: $  59,178,417 | Vol: $  23,624,960 | Ratio: 0.40 | E 📊📈    📊 | Ontology
+ 5. grx      | MC: $  94,594,829 | Vol: $  26,525,318 | Ratio: 0.28 | E 📊📈    📊 | GRX Chain
+ 6. orca     | MC: $  88,225,028 | Vol: $  24,273,674 | Ratio: 0.28 | E 📊📈    📊 | Orca
+ 7. ron      | MC: $  82,120,064 | Vol: $  18,958,569 | Ratio: 0.23 | E 📊📈    📊 | Ronin
+ 8. popcat   | MC: $  54,877,661 | Vol: $  11,255,837 | Ratio: 0.21 | E 📊📈    📊 | Popcat
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 15 GEMS:
+================================================================================
+Market Cap - Médio: $23,683,613
+Market Cap - Min: $14,129,622, Max: $43,089,780
+Volume - Médio: $14,159,556
+Volume - Min: $5,908,306, Max: $66,104,070
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 11 gems
+  🟠 Strong (0.5-1.0): 2 gems
+  🔥 Breakout (>1.0): 2 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/15 (0.0%)
+  💪 Resiliência de Preço: 0/15 (0.0%)
+  👑 POTENCIAL OURO: 0/15 (0.0%)
+  🚨 WASH TRADING: 0/15 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 15 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. fida     | MC: $  26,660,523 | Vol: $  66,104,070 | Ratio: 2.48 | B 📊📈    📊 | Bonfida
+ 2. tst      | MC: $  15,383,971 | Vol: $  18,376,758 | Ratio: 1.19 | B 📊📈    📊 | Test
+ 3. psg      | MC: $  15,342,565 | Vol: $   8,501,638 | Ratio: 0.55 | S 📊📈    📊 | Paris Saint-Germain Fan Token
+ 4. alt      | MC: $  41,693,893 | Vol: $  21,910,343 | Ratio: 0.53 | S 📊📈    📊 | AltLayer
+ 5. dogs     | MC: $  28,934,586 | Vol: $  12,581,563 | Ratio: 0.43 | E 📊📈    📊 | Dogs
+ 6. broccoli | MC: $  14,129,622 | Vol: $   5,908,306 | Ratio: 0.42 | E 📊📈    📊 | CZ's Dog
+ 7. bome     | MC: $  43,089,780 | Vol: $  17,822,649 | Ratio: 0.41 | E 📊📈    📊 | BOOK OF MEME
+ 8. prom     | MC: $  19,562,259 | Vol: $   7,377,465 | Ratio: 0.38 | E 📊📈    📊 | Prom
+ 9. dodo     | MC: $  19,755,694 | Vol: $   7,437,378 | Ratio: 0.38 | E 📊📈    📊 | DODO
+10. dood     | MC: $  20,707,392 | Vol: $   7,598,347 | Ratio: 0.37 | E 📊📈    📊 | Doodles
+
+📋 Usando dados existentes - Nenhum snapshot criado
+
+🎉 GEMS FINDER CONCLUÍDO!
+📊 Total de gems: 23
+📁 Arquivos salvos para análise histórica:
+   - snapshots/gems_*.csv (por faixa)
+   - snapshots/gems_consolidated_*.csv (completo)
+   - Cache válido por 12 horas (evita requisições excessivas)
+   - Snapshots criados apenas com dados novos

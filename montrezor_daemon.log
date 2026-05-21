@@ -10044,3 +10044,308 @@ WARNING:tvDatafeed.main:you are using nologin method,
 2026-05-19 11:13:03  INFO     [GEMS] macro_timing.json atualizado
 2026-05-19 11:13:17  INFO     [TRADING] COMUM BTCUSD#      COMPRA @ 76732.00000 [1D] tfs=1D 1M~ VOL=0.8x
 2026-05-19 11:13:19  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.97738 [1D] tfs=1D 1W~ VOL=0.9x
+2026-05-20 09:05:15  INFO     ================================================================
+2026-05-20 09:05:15  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-20 09:05:15  INFO       Modo: ALL
+2026-05-20 09:05:15  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-20 09:05:15  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-20 09:05:15  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-20 09:05:15  INFO     ================================================================
+2026-05-20 09:05:15  INFO     MT5 conectado: XM Global MT5
+2026-05-20 09:06:42  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 09:07:00  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-20 09:07:01  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-20 09:07:12  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-20 09:07:23  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-20 09:07:35  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-20 09:07:46  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-20 09:12:32  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 09:16:48  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 09:23:50  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 09:28:12  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 09:33:42  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 09:39:11  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 09:44:34  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 09:52:26  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 09:57:16  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 10:03:25  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 10:09:28  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 10:15:22  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 10:21:09  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 10:27:02  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 10:29:36  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.97961 [1D] tfs=1D 1W~ DIV=4H VOL=0.7x
+2026-05-20 10:29:37  INFO       ✅ Telegram -> AUDCAD# COMPRA COMUM
+2026-05-20 10:30:53  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.97958 [1D] tfs=1D 1W~ DIV=4H VOL=0.7x
+2026-05-20 10:33:08  INFO     [TRADING] ↩ Sinal encerrado: AUDCAD# COMPRA COMUM
+2026-05-20 10:33:13  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 10:39:29  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 10:44:31  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 10:49:41  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 10:54:42  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 10:59:44  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 11:04:52  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 11:10:53  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 11:11:08  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-20 11:11:10  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-20 11:11:21  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-20 11:11:23  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-20 11:11:34  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-20 11:11:36  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-20 11:16:00  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 11:21:52  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-20 11:27:30  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 11:36:50  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 11:39:46  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 11:45:21  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 11:51:39  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 11:57:42  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 12:03:19  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 12:08:50  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 12:14:05  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 12:17:26  INFO     [TRADING] COMUM EURNZD#      COMPRA @ 1.97746 [4H] tfs=4H 1M~ VOL=0.8x
+2026-05-20 12:17:43  INFO       ✅ Telegram -> EURNZD# COMPRA COMUM
+2026-05-20 12:19:17  INFO     [TRADING] COMUM EURNZD#      COMPRA @ 1.97793 [4H] tfs=4H 1M~ VOL=0.8x
+2026-05-20 12:20:14  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 12:21:59  INFO     [TRADING] COMUM EURNZD#      COMPRA @ 1.97793 [4H] tfs=4H 1M~ VOL=0.8x
+2026-05-20 12:24:02  INFO     [TRADING] COMUM EURNZD#      COMPRA @ 1.97826 [4H] tfs=4H 1M~ VOL=0.8x
+2026-05-20 12:26:26  INFO     [TRADING] ↩ Sinal encerrado: EURNZD# COMPRA COMUM
+2026-05-20 12:26:33  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 12:32:50  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 12:39:06  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 12:40:00  INFO     [TRADING] COMUM EURNZD#      COMPRA @ 1.97853 [4H] tfs=4H 1M~ VOL=0.8x
+2026-05-20 12:41:29  INFO     [TRADING] COMUM EURNZD#      COMPRA @ 1.97834 [4H] tfs=4H 1M~ VOL=0.8x
+2026-05-20 12:43:45  INFO     [TRADING] ↩ Sinal encerrado: EURNZD# COMPRA COMUM
+2026-05-20 12:43:52  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 12:49:37  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 12:52:23  INFO     ================================================================
+2026-05-20 12:52:23  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-20 12:52:23  INFO       Modo: ALL
+2026-05-20 12:52:23  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-20 12:52:23  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-20 12:52:23  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-20 12:52:23  INFO     ================================================================
+2026-05-20 12:52:23  INFO     MT5 conectado: XM Global MT5
+2026-05-20 12:53:35  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 12:53:52  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-20 12:54:03  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-20 12:54:14  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-20 12:54:25  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-20 12:54:37  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-20 12:54:48  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-20 12:59:07  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 13:04:28  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 13:08:47  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 13:14:09  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 13:19:32  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 13:26:02  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 13:30:24  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 13:35:46  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 13:42:18  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 13:48:10  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 13:54:22  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 13:59:19  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 14:05:49  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 14:10:36  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 14:17:53  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 14:24:42  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 14:30:39  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 14:36:42  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 14:44:30  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 14:49:04  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 14:55:21  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 14:55:28  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-20 14:55:30  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-20 14:55:41  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-20 14:55:44  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-20 14:55:46  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-20 14:55:57  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-20 15:00:38  INFO     ================================================================
+2026-05-20 15:00:38  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-20 15:00:38  INFO       Modo: ALL
+2026-05-20 15:00:38  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-20 15:00:38  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-20 15:00:38  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-20 15:00:38  INFO     ================================================================
+2026-05-20 15:00:38  INFO     MT5 conectado: XM Global MT5
+2026-05-20 15:01:55  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 15:02:12  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-20 15:02:13  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-20 15:02:24  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-20 15:02:35  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-20 15:02:47  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-20 15:02:48  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-20 15:09:11  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 15:13:41  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 15:20:26  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 15:25:19  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 15:28:26  INFO     ================================================================
+2026-05-20 15:28:26  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-20 15:28:26  INFO       Modo: ALL
+2026-05-20 15:28:26  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-20 15:28:26  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-20 15:28:26  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-20 15:28:26  INFO     ================================================================
+2026-05-20 15:28:26  INFO     MT5 conectado: XM Global MT5
+2026-05-20 15:29:47  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 15:29:54  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-20 15:29:55  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-20 15:30:06  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-20 15:30:18  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-20 15:30:29  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-20 15:30:40  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-20 15:35:16  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 15:41:13  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 15:47:09  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 15:53:02  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 15:58:59  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 16:05:19  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 16:11:14  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 16:17:07  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 16:23:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 16:28:53  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 16:34:43  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 16:40:48  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 16:46:38  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 16:52:30  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 16:58:37  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 17:04:36  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 17:10:14  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 17:15:59  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 17:21:49  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 17:27:23  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 17:33:11  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 17:33:28  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-20 17:33:39  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-20 17:33:52  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-20 17:34:03  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-20 17:34:15  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-20 17:34:27  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-20 17:38:38  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 17:43:52  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 17:48:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 17:54:26  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 17:59:58  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 18:04:16  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 18:09:48  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 18:16:11  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 18:21:24  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 18:25:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 18:32:07  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 18:34:43  INFO     [TRADING] SUPER EURNZD#      COMPRA @ 1.97862 [4H] tfs=4H 1M~ VOL=0.6x
+2026-05-20 18:35:00  INFO       ✅ Telegram -> EURNZD# COMPRA SUPER
+2026-05-20 18:36:33  INFO     [TRADING] ↩ Sinal encerrado: EURNZD# COMPRA SUPER
+2026-05-20 18:37:39  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 18:43:00  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 18:48:20  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 18:53:47  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-20 18:58:11  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 19:04:28  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 19:09:44  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 19:15:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 19:20:24  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 19:25:38  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 19:31:05  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 19:36:22  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 19:36:28  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-20 19:36:29  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-20 19:36:30  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-20 19:36:42  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-20 19:36:53  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-20 19:37:04  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-20 19:42:21  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 19:47:43  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 19:53:03  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 19:58:21  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 20:03:46  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 20:08:08  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 20:14:28  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 20:19:46  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 20:25:03  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 20:29:27  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 20:35:51  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 20:41:07  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 20:47:37  INFO     [GEMS] macro_timing.json atualizado
+2026-05-20 20:53:54  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 07:29:47  INFO     ================================================================
+2026-05-21 07:29:47  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-21 07:29:47  INFO       Modo: ALL
+2026-05-21 07:29:47  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-21 07:29:47  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-21 07:29:47  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-21 07:29:47  INFO     ================================================================
+2026-05-21 07:29:47  INFO     MT5 conectado: XM Global MT5
+2026-05-21 07:30:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88433 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:30:33  INFO       ✅ Telegram -> GBPAUD# VENDA COMUM
+2026-05-21 07:31:19  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-21 07:32:07  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-21 07:32:08  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-21 07:32:09  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-21 07:32:10  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-21 07:32:11  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-21 07:32:12  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-21 07:32:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88452 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:34:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88429 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:35:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88414 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:36:42  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 07:37:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88385 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:38:54  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88388 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:40:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88470 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:41:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88465 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:42:29  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 07:43:21  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88420 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:44:58  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88415 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:46:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88418 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:47:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88421 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:48:36  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 07:49:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88417 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:52:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88382 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:53:58  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88414 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:54:47  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 07:55:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88399 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:57:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88415 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:58:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88394 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 07:59:58  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88416 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:01:05  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 08:01:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88385 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:03:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88377 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:05:01  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88412 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:05:49  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 08:06:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88424 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:07:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88453 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:08:54  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88440 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:10:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88432 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:11:00  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-21 08:11:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88407 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:12:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88407 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:14:00  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88385 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:15:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88363 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:15:58  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-21 08:16:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88363 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:18:23  INFO     [TRADING] ↩ Sinal encerrado: GBPAUD# VENDA COMUM
+2026-05-21 08:22:07  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 08:27:05  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 08:33:02  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 08:37:10  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88369 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:38:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88388 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:39:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 08:39:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88370 [1D] tfs=1D 1W~ VOL=1.4x
+2026-05-21 08:41:25  INFO     [TRADING] ↩ Sinal encerrado: GBPAUD# VENDA COMUM
+2026-05-21 08:44:59  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 08:50:53  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 08:57:03  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 09:02:20  INFO     [GEMS] macro_timing.json atualizado

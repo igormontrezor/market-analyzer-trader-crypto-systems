@@ -35,7 +35,7 @@ def load_telegram_config() -> tuple:
 
 
 def send_trading_alert(symbol: str, direction: str, signal_type: str, price: float,
-                       stoch_div: bool = False, mn_ema_div: bool = False,
+                       stoch_div: bool = False, stoch_tf: str = None, mn_ema_div: bool = False,
                        touch_tfs: list = None, div_grade: str = None,
                        vol_ratio: float = None, vol_high: bool = False,
                        atr_low: bool = False, atr_ratio: float = None,
@@ -58,7 +58,7 @@ def send_trading_alert(symbol: str, direction: str, signal_type: str, price: flo
         atr_text  = f"⚠️ <b>ATR baixo</b> ({atr_ratio:.2f}x) — mercado em range\n" if atr_low and atr_ratio else ""
         verif_macro = f"🔍 <b>Verif. Macro</b>: {'Verifique divergencias no Market Analysis (D1 e W1)!'}\n"
         warns_text = ""
-        if stoch_div:  warns_text += "⚠️ <b>StochRSI</b>: Contra o movimento!\n"
+        if stoch_div:  warns_text += f"⚠️ <b>StochRSI</b>: Contra o movimento ({stoch_tf})!\n" if stoch_tf else "⚠️ <b>StochRSI</b>: Contra o movimento!\n"
         if mn_ema_div: warns_text += "🚨 <b>EMA Mensal</b>: Tendência divergente!\n"
 
         message = (
@@ -78,11 +78,12 @@ def send_trading_alert(symbol: str, direction: str, signal_type: str, price: flo
             return True
         # Fallback plain text
         tf_plain  = ("Toques: " + " | ".join(touch_tfs) + "\n") if touch_tfs else ""
+        stoch_plain = f"StochRSI: DIVERGENTE ({stoch_tf})\n" if stoch_div and stoch_tf else "StochRSI: DIVERGENTE\n" if stoch_div else ""
         ts_plain  = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S")
         plain = (
             f"{direction_icon} SINAL {signal_type}\n"
             f"Par: {symbol}\nDireção: {direction}\nPreço: {price:.5f}\n"
-            f"{tf_plain}Hora: {ts_plain}\nMontrezor Trading System"
+            f"{tf_plain}{stoch_plain}Hora: {ts_plain}\nMontrezor Trading System"
         )
         resp2 = requests.post(url, json={"chat_id": chat_id, "text": plain}, timeout=15)
         return resp2.status_code == 200

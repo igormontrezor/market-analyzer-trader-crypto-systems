@@ -67,7 +67,7 @@ def _load_tg():
         pass
     return "", ""
 
-def _send_tg_ma(chart, direction, indicators):
+def _send_tg_ma(chart, direction, indicators, fx_sym, signal_date):
     token, chat_id = _load_tg()
     if not token or not chat_id:
         return False
@@ -76,18 +76,38 @@ def _send_tg_ma(chart, direction, indicators):
         icon = "📈" if direction == "BUY" else "📉"
         ts   = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M")
         inds = " | ".join(indicators)
+
+        asset_info_line = ""
+        if "btc" in chart:
+            asset_info_line = f"<b>Ativo Cripto</b>: {e('BTC-USD')}"
+        elif "spy" in chart:
+            asset_info_line = f"<b>Ativo Ações</b>: {e('SPY')}"
+        elif "fx" in chart:
+            asset_info_line = f"<b>Ativo Forex</b>: {e(fx_sym)}"
+
         msg  = (icon + " <b>MARKET ANALYSIS SIGNAL</b>\n"
                 "━━━━━━━━━━━━━━━━━━\n"
                 "<b>Gráfico</b>: " + e(chart) + "\n"
                 "<b>Direção</b>: " + e(direction) + "\n"
+                + asset_info_line + "\n"
                 "<b>Indicadores</b>: " + e(inds) + "\n"
-                "<b>Hora</b>: " + ts + "\n\n"
+                f"<b>Sinal gerado</b>: {signal_date}\n"
+                "<b>Hora do envio</b>: " + ts + "\n\n"
                 "Montrezor Market Analysis")
         url = "https://api.telegram.org/bot" + token + "/sendMessage"
         r   = requests.post(url, json={"chat_id":chat_id,"text":msg,"parse_mode":"HTML"}, timeout=10)
         if r.status_code == 200:
             return True
-        requests.post(url, json={"chat_id":chat_id,"text":icon+" "+chart+" — "+direction+"\n"+inds+"\n"+ts}, timeout=10)
+        # Fallback plain text
+        asset_info_plain = ""
+        if "btc" in chart:
+            asset_info_plain = f"Ativo Cripto: BTC-USD"
+        elif "spy" in chart:
+            asset_info_plain = f"Ativo Ações: SPY"
+        elif "fx" in chart:
+            asset_info_plain = f"Ativo Forex: {fx_sym}"
+
+        requests.post(url, json={"chat_id":chat_id,"text":icon+" "+chart+" — "+direction+"\n"+asset_info_plain+"\n"+inds+"\n"+f"Sinal gerado: {signal_date}\n"+f"Hora do envio: {ts}"}, timeout=10)
         return False
     except Exception:
         return False
@@ -1545,7 +1565,7 @@ if active_sigs:
         # (data muda a cada candle novo mas o sinal pode ser o mesmo)
         sig_key = sig["chart"] + "_" + sig["direction"]
         if st.session_state.ma_tg_enabled and not _is_cooldown(sig_key):
-            ok = _send_tg_ma(sig["chart"], sig["direction"], sig["indicators"])
+            ok = _send_tg_ma(sig["chart"], sig["direction"], sig["indicators"], fx_sym, sig["date"])
             if ok:
                 _log_ma_signal(sig["chart"], sig["direction"], sig["indicators"])
             _mark_cooldown(sig_key)   # persiste em disco — sobrevive a reinicializações

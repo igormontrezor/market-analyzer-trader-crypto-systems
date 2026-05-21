@@ -1,7 +1,24 @@
 {
-  "last_updated": "2026-05-18T06:56:50.422493",
-  "total_confirmed": 8,
+  "last_updated": "2026-05-20T09:05:42.344879",
+  "total_confirmed": 9,
   "confirmed_gems": [
+    {
+      "symbol": "tst",
+      "name": "Test",
+      "confirmed_at": "2026-05-20T09:05:42.338853",
+      "ratio_now": 1.194539303278718,
+      "ratio_24h_ago": 0.5103123722634947,
+      "growth_percent": 134.08002004347438,
+      "strong_days": 3,
+      "acceleration_strength": 4.541372393432366,
+      "trend": "accelerating",
+      "market_cap": 15383971,
+      "volume": 18376758,
+      "priority": "maxima",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 83.89078606557436
+    },
     {
       "symbol": "act",
       "name": "Act I The AI Prophecy",

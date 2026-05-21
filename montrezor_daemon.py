@@ -96,7 +96,7 @@ def _post(token, chat_id, msg, parse_mode="HTML"):
     except Exception:
         return False
 
-def send_trading_tg(symbol, direction, sig_type, price, token, chat_id,
+def send_trading_tg(symbol, direction, sig_type, price, token, chat_id, signal_date=None,
                     touch_tfs=None, enrich=None):
     """
     enrich: dict com campos do enrich_signal (div_grade, vol_ratio, atr_low, elevated, etc.)
@@ -149,7 +149,8 @@ def send_trading_tg(symbol, direction, sig_type, price, token, chat_id,
     # --- NOVOS ALERTAS AQUI ---
     stoch_text = ""
     if enrich and enrich.get("stoch_div"):
-        stoch_text = "⚠️ <b>StochRSI</b>: Contra o movimento!\n"
+        tf = enrich.get("tf_menor", "?")
+        stoch_text = f"⚠️ <b>StochRSI</b>: Contra o movimento ({tf})!\n"
 
     ema_mn_text = ""
     if enrich and enrich.get("mn_ema_div"):
@@ -170,7 +171,8 @@ def send_trading_tg(symbol, direction, sig_type, price, token, chat_id,
         f"{stoch_text}"       # Inserir aqui
         f"{verif_macro}"      # Inserir aqui
         f"{ema_mn_text}"      # Inserir aqui
-        f"<b>Hora</b>: {e(ts)}\n\n"
+        f"<b>Sinal gerado</b>: {signal_date}\n" if signal_date else ""
+        f"<b>Hora do envio</b>: {e(ts)}\n\n"
         "Montrezor Trading [daemon]"
     )
     if _post(token, chat_id, msg): return True
@@ -181,12 +183,13 @@ def send_trading_tg(symbol, direction, sig_type, price, token, chat_id,
     vol_plain  = f"Volume: {enrich.get('vol_ratio',1.0):.1f}x\n" if enrich else ""
     atr_plain  = "ATR: RANGE MORTO\n" if enrich and enrich.get('atr_low') else ""
     elev_plain = f"Elevacao: COMUM->SUPER ({enrich.get('elevation_reason','')})\n" if enrich and enrich.get('elevated') else ""
-    stoch_plain = "StochRSI: DIVERGENTE\n" if enrich and enrich.get('stoch_div') else ""
+    stoch_plain = "StochRSI: DIVERGENTE" + (f" ({enrich.get('tf_menor', '?')})" if enrich and enrich.get('stoch_div') else "") + "\n" if enrich and enrich.get('stoch_div') else ""
     ema_mn_plain = "EMA Mensal: DIVERGENTE\n" if enrich and enrich.get('mn_ema_div') else ""
     verif_macro_plain = "🔍 Verif. Macro: Verifique divergencias no Market Analysis (D1 e W1)!\n"""
     plain = (
         f"SINAL {sig_type}\nPar: {symbol}\nDirecao: {direction}\nPreco: {price:.5f}\n"
-        f"{tf_plain}{elev_plain}{div_plain}{vol_plain}{atr_plain}{stoch_plain}{ema_mn_plain}{verif_macro_plain}Hora: {ts}\nMontrezor [daemon]"
+        f"{tf_plain}{elev_plain}{div_plain}{vol_plain}{atr_plain}{stoch_plain}{ema_mn_plain}{verif_macro_plain}" +
+        (f"Sinal gerado: {signal_date}\n" if signal_date else "") + f"Hora do envio: {ts}\nMontrezor Trading [daemon]"
     )
     return _post(token, chat_id, plain, "")
 
@@ -203,7 +206,7 @@ def send_gems_tg(symbol, sig_type, funding, token, chat_id):
             f"<b>Ativo</b>: {e(symbol)}\n<b>Sinal</b>: {e(sig_type)}\n"
             f"<b>Funding</b>: {funding:.4f}%\n<b>Hora</b>: {e(ts)}\n\nMontrezor Gems [daemon]")
     if _post(token, chat_id, msg): return True
-    plain = f"GEMS {sig_type}\nAtivo: {symbol}\nFunding: {funding:.4f}%\nHora: {ts}\nMontrezor [daemon]"
+    plain = f"GEMS {sig_type}\nAtivo: {symbol}\nFunding: {funding:.4f}%\nHora: {ts}\nMontrezor Gems [daemon]"
     return _post(token, chat_id, plain, "")
 
 # ════════════════════════════════════════════════════════════════════════
@@ -981,6 +984,7 @@ def run_daemon(logger, mode="all"):
                     elif t_state.ok(*sk):
                         ok = send_trading_tg(sym, sig["direction"], sig["type"],
                                              sig["price"], cfg["tg_token"], cfg["tg_chat_id"],
+                                             signal_date=signal_ts,
                                              touch_tfs=sig.get("touch_tfs"),
                                              enrich=sig)
                         if ok:
@@ -1040,25 +1044,76 @@ def run_daemon(logger, mode="all"):
         # ── MARKET ANALYSIS: avaliar sinais ──────────────────────
         if do_ma and (now - last_ma_scan) >= MA_SCAN_SEC:
             last_ma_scan = now
+            fx_sym = cfg.get("ma_fx_sym", "EURCHF=X")   # nome do par forex para a mensagem
             active_ma = _scan_market_analysis(logger, cfg, ma_state, prev_ma_sigs)
-            for chart, direction in active_ma.items():
-                sig_key = (chart, direction)
+            for chart, signal_data in active_ma.items():
+                direction = signal_data["direction"]
+                signal_date_ma = signal_data["date"]
                 if ma_state.ok(chart, direction):
-                    icon = "📈" if direction == "BUY" else "📉"
-                    msg  = (icon + " MARKET ANALYSIS\n"
-                            + chart + " — " + direction + "\n"
-                            + pd.Timestamp.now().strftime("%Y-%m-%d %H:%M")
-                            + "\nMontrezor [daemon]")
-                    url = "https://api.telegram.org/bot" + cfg["tg_token"] + "/sendMessage"
+                    icon     = "📈" if direction == "BUY" else "📉"
+                    dir_lbl  = "COMPRA" if direction == "BUY" else "VENDA"
+                    star     = "⭐ " if "Macro" in chart or "Monthly" in chart else ""
+                    ts       = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S")
+
+                    # Substituir "Forex" pelo símbolo real do par configurado
+                    chart_lbl = chart.replace("Forex", fx_sym)
+
+                    e = html.escape
+
+                    asset_info_line = ""
+                    if "btc" in chart:
+                        asset_info_line = f"<b>Ativo Cripto</b>: {e('BTC-USD')}"
+                    elif "spy" in chart:
+                        asset_info_line = f"<b>Ativo Ações</b>: {e('SPY')}"
+                    elif "fx" in chart:
+                        asset_info_line = f"<b>Ativo Forex</b>: {e(fx_sym)}"
+
+                    parts = [
+                        f"{icon} <b>MARKET SIGNAL</b> {star}",
+                        "━━━━━━━━━━━━━━━━━━",
+                        f"<b>Análise</b>: {e(chart_lbl)}",
+                        f"<b>Direção</b>: {e(dir_lbl)}",
+                        asset_info_line, # This line will be constructed dynamically
+                        f"<b>Sinal gerado</b>: {signal_date_ma}\n"
+                        f"<b>Hora do envio</b>: {e(ts)}",
+                        "",
+                        "Montrezor Market Analysis [daemon]",
+                    ]
+                    msg_html = "\n".join(parts)
+                    url = f"https://api.telegram.org/bot{cfg['tg_token']}/sendMessage"
                     try:
-                        r = requests.post(url, json={"chat_id":cfg["tg_chat_id"],"text":msg}, timeout=10)
-                        if r.status_code == 200:
-                            logger.info(f"  ✅ [MA] Telegram -> {chart} {direction}")
+                        r = requests.post(url, json={
+                            "chat_id": cfg["tg_chat_id"],
+                            "text": msg_html,
+                            "parse_mode": "HTML"
+                        }, timeout=10)
+                        if r.status_code == 200 and r.json().get("ok"):
+                            logger.info(f"  ✅ [MA] Telegram -> {chart_lbl} {dir_lbl}")
                             ma_state.mark(chart, direction)
                         else:
-                            logger.error(f"  ❌ [MA] Telegram falhou -> {chart} {direction}")
-                    except Exception as e:
-                        logger.error(f"  ❌ [MA] {e}")
+                            # fallback plain text
+                            asset_info_plain = ""
+                            if "btc" in chart:
+                                asset_info_plain = f"Ativo Cripto: BTC-USD"
+                            elif "spy" in chart:
+                                asset_info_plain = f"Ativo Ações: SPY"
+                            elif "fx" in chart:
+                                asset_info_plain = f"Ativo Forex: {fx_sym}"
+
+                            plain = (f"{icon} MARKET SIGNAL\n{chart_lbl} — {dir_lbl}\n"\
+                                     f"{asset_info_plain}\n"\
+                                     f"Sinal gerado: {signal_date_ma}\n"\
+                                     f"Hora do envio: {ts}\nMontrezor Market Analysis [daemon]")
+                            r2 = requests.post(url, json={
+                                "chat_id": cfg["tg_chat_id"], "text": plain
+                            }, timeout=10)
+                            if r2.status_code == 200:
+                                logger.info(f"  ✅ [MA] Telegram (plain) -> {chart_lbl} {dir_lbl}")
+                                ma_state.mark(chart, direction)
+                            else:
+                                logger.error(f"  ❌ [MA] Telegram falhou -> {chart_lbl}")
+                    except Exception as e_tg:
+                        logger.error(f"  ❌ [MA] {e_tg}")
                 else:
                     logger.debug(f"  ⏳ [MA] Cooldown: {chart} {direction}")
             # Encerrar sinais que sumiram
@@ -1128,7 +1183,7 @@ def _scan_market_analysis(logger, cfg, ma_state, prev_ma_sigs):
                   "SPY Weekly","SPY Monthly","Forex Daily","Forex Weekly"]
 
         sigs = ma.check_active_signals(assets, fx_sym, CHARTS)
-        active = {s["chart"]: s["direction"] for s in sigs}
+        active = {s["chart"]: {"direction": s["direction"], "date": s["date"]} for s in sigs}
         return active
 
     except Exception as e:
