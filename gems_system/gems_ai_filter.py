@@ -227,7 +227,7 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
                 row[col] = float(np.sum(vals * w) / wt) if wt > 0 else 0.0
 
         # Campos booleanos / categoricos: moda
-        for col in ["momentum","sector","is_gold","price_resilience","volume_recovery"]:
+        for col in ["momentum","sector","is_gold","price_resilience","volume_recovery", "seller_exhaustion"]:
             if col in grp.columns:
                 row[col] = grp[col].mode().iloc[0] if not grp[col].mode().empty else None
 
@@ -386,6 +386,47 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
         df_agg["smart_money_div"] = False
 
     df_agg = df_agg.sort_values("composite_score", ascending=False).reset_index(drop=True)
+
+    # ── Gerar hot_sectors.json automaticamente a partir dos dados agregados ──
+    # Usa os mesmos CSVs que já foram lidos — sem chamada externa
+    try:
+        if "sector" in df_agg.columns:
+            sector_stats = {}
+            for _, row in df_agg.iterrows():
+                sec = str(row.get("sector","")).strip()
+                if not sec or sec in ("","nan","None","?"): continue
+                if sec not in sector_stats:
+                    sector_stats[sec] = {"appearances":0, "score_sum":0.0, "count":0}
+                sector_stats[sec]["appearances"] += int(row.get("appearances", 1))
+                sector_stats[sec]["score_sum"]   += float(row.get("composite_score", 0))
+                sector_stats[sec]["count"]        += 1
+
+            if sector_stats:
+                # Score por setor = média ponderada por aparições
+                for sec in sector_stats:
+                    c = sector_stats[sec]["count"]
+                    sector_stats[sec]["avg_score"] = (
+                        sector_stats[sec]["score_sum"] / c if c > 0 else 0)
+
+                # Top setores: pelo menos 2 moedas, ordenado por avg_score
+                hot = sorted(
+                    [s for s,v in sector_stats.items() if v["count"] >= 2],
+                    key=lambda s: sector_stats[s]["avg_score"], reverse=True
+                )[:8]
+
+                hot_file = os.path.join(DATA_DIR, "hot_sectors.json")
+                json.dump({
+                    "timestamp": datetime.now().isoformat(),
+                    "hot": hot,
+                    "all_sectors": {s: {"avg_score": round(v["avg_score"],1),
+                                        "count": v["count"],
+                                        "appearances": v["appearances"]}
+                                    for s,v in sorted(sector_stats.items(),
+                                        key=lambda x: x[1]["avg_score"], reverse=True)}
+                }, open(hot_file,"w",encoding="utf-8"), indent=2)
+    except Exception:
+        pass   # silencioso — não quebra a análise
+
     return df_agg
 
 
@@ -1110,6 +1151,85 @@ def register_performance(cycle: str, symbol: str, rank: int,
     except Exception:
         pass
 
+def get_performance_dashboard(lookback_picks: int = 60) -> dict:
+    """
+    Retorna estatísticas de performance para exibição na UI.
+    """
+    perf = _load_performance()
+    if not perf:
+        return {"error": "Nenhuma performance registrada ainda."}
+
+    recent = perf[-lookback_picks:]
+    if not recent:
+        return {"error": "Sem dados recentes."}
+
+    # Classifica picks com base no pct_change
+    winners = [p for p in recent if p.get("pct_change", 0) > 10]
+    losers  = [p for p in recent if p.get("pct_change", 0) < -10]
+    neutrals = [p for p in recent if -10 <= p.get("pct_change", 0) <= 10]
+
+    total = len(recent)
+    win_rate = len(winners) / total * 100 if total else 0
+    loss_rate = len(losers) / total * 100 if total else 0
+
+    avg_win = sum(p.get("pct_change", 0) for p in winners) / len(winners) if winners else 0
+    avg_loss = sum(p.get("pct_change", 0) for p in losers) / len(losers) if losers else 0
+    risk_reward = abs(avg_win / avg_loss) if avg_loss != 0 else 0
+
+    # Melhores e piores
+    best = sorted(winners, key=lambda x: x.get("pct_change", 0), reverse=True)[:5]
+    worst = sorted(losers, key=lambda x: x.get("pct_change", 0))[:3]
+
+    # Por ciclo
+    cycle_stats = {}
+    for cycle in ["weekly", "monthly"]:
+        picks_cycle = [p for p in recent if p.get("cycle") == cycle]
+        wins_cycle = [p for p in picks_cycle if p.get("pct_change", 0) > 10]
+        cycle_stats[cycle] = {
+            "total": len(picks_cycle),
+            "wins": len(wins_cycle),
+            "win_rate": len(wins_cycle) / len(picks_cycle) * 100 if picks_cycle else 0
+        }
+
+    # Por rank (agrupa ranks)
+    rank_stats = {}
+    for p in recent:
+        r = str(p.get("rank", "?"))
+        # Agrupa ranks 3-5 como "3-5"
+        if r in ("3","4","5"):
+            r = "3-5"
+        if r not in rank_stats:
+            rank_stats[r] = {"total": 0, "wins": 0, "sum_pct": 0}
+        rank_stats[r]["total"] += 1
+        rank_stats[r]["sum_pct"] += p.get("pct_change", 0)
+        if p.get("pct_change", 0) > 10:
+            rank_stats[r]["wins"] += 1
+    for r in rank_stats:
+        rank_stats[r]["win_rate"] = rank_stats[r]["wins"] / rank_stats[r]["total"] * 100 if rank_stats[r]["total"] else 0
+        rank_stats[r]["avg_pct"] = rank_stats[r]["sum_pct"] / rank_stats[r]["total"]
+
+    # Classificação da qualidade do sistema
+    quality = "❌ Ruim (melhor que aleatório?)"
+    if win_rate > 60 and rank_stats.get("1", {}).get("win_rate", 0) > 70:
+        quality = "🔥 Excelente – confiável para operações"
+    elif win_rate > 55 and rank_stats.get("1", {}).get("win_rate", 0) > 65:
+        quality = "👍 Bom – com margem de segurança"
+    elif win_rate > 50:
+        quality = "⚖️ Neutro – pouco melhor que aleatório"
+
+    return {
+        "total_picks": total,
+        "win_rate": round(win_rate, 1),
+        "loss_rate": round(loss_rate, 1),
+        "avg_win": round(avg_win, 1),
+        "avg_loss": round(avg_loss, 1),
+        "risk_reward": round(risk_reward, 2),
+        "best_picks": [{"symbol": p["symbol"], "pct": p["pct_change"], "rank": p["rank"], "cycle": p["cycle"]} for p in best],
+        "worst_picks": [{"symbol": p["symbol"], "pct": p["pct_change"], "rank": p["rank"], "cycle": p["cycle"]} for p in worst],
+        "cycle_stats": cycle_stats,
+        "rank_stats": rank_stats,
+        "quality": quality
+    }
 
 def get_history() -> list:
     """Retorna histórico de execuções (ciclo, timestamp, n_coins analisadas)."""

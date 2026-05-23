@@ -2290,6 +2290,58 @@ with tab7:
             except Exception as e:
                 st.error(f"Erro: {e}")
 
+    # ========== DASHBOARD DE PERFORMANCE GERAL ==========
+    try:
+        perf_dash = _ai.get_performance_dashboard(lookback_picks=60)
+        if "error" not in perf_dash:
+            st.markdown("---")
+            st.markdown("### 📊 PERFORMANCE GERAL DO SISTEMA")
+            st.markdown(f"*Base: últimas {perf_dash['total_picks']} picks do Claude*")
+
+            col1, col2, col3, col4 = st.columns(4)
+            col1.metric("Win Rate", f"{perf_dash['win_rate']}%")
+            col2.metric("Ganho Médio (WIN)", f"+{perf_dash['avg_win']}%")
+            col3.metric("Perda Média (LOSS)", f"{perf_dash['avg_loss']}%")
+            col4.metric("Risk/Reward", f"{perf_dash['risk_reward']:.2f}x")
+
+            st.markdown(f"**🏷️ Classificação:** {perf_dash['quality']}")
+
+            # Gráfico de barras: win rate por rank
+            rank_data = {r: stats["win_rate"] for r, stats in perf_dash["rank_stats"].items() if r.isdigit() or r == "3-5"}
+            if rank_data:
+                import pandas as pd
+                df_rank = pd.DataFrame({"Rank": list(rank_data.keys()), "Win Rate (%)": list(rank_data.values())})
+                st.bar_chart(df_rank.set_index("Rank"))
+
+            with st.expander("📈 Detalhes por ciclo e rank", expanded=False):
+                col_a, col_b = st.columns(2)
+                with col_a:
+                    st.markdown("**Ciclo Semanal**")
+                    st.metric("Win Rate", f"{perf_dash['cycle_stats']['weekly']['win_rate']:.0f}%",
+                            f"{perf_dash['cycle_stats']['weekly']['wins']}/{perf_dash['cycle_stats']['weekly']['total']}")
+                    st.markdown("**Ciclo Mensal**")
+                    st.metric("Win Rate", f"{perf_dash['cycle_stats']['monthly']['win_rate']:.0f}%",
+                            f"{perf_dash['cycle_stats']['monthly']['wins']}/{perf_dash['cycle_stats']['monthly']['total']}")
+                with col_b:
+                    st.markdown("**Win Rate por Rank**")
+                    for r in ["1", "2", "3-5"]:
+                        if r in perf_dash["rank_stats"]:
+                            wr = perf_dash["rank_stats"][r]["win_rate"]
+                            avg = perf_dash["rank_stats"][r]["avg_pct"]
+                            st.metric(f"Rank {r}", f"{wr:.0f}%", f"média {avg:+.1f}%")
+
+            with st.expander("🏆 Top 5 Winners (maior retorno)", expanded=False):
+                for pick in perf_dash['best_picks']:
+                    st.write(f"**{pick['symbol']}**: +{pick['pct']:.0f}% (rank #{pick['rank']}, {pick['cycle']})")
+
+            with st.expander("📉 Worst 3 Losers", expanded=False):
+                for pick in perf_dash['worst_picks']:
+                    st.write(f"**{pick['symbol']}**: {pick['pct']:.0f}% (rank #{pick['rank']}, {pick['cycle']})")
+        else:
+            st.info(perf_dash['error'])
+    except Exception as e:
+        st.info(f"Aguardando dados de performance (execute pelo menos um ciclo semanal e aguarde 7 dias). {e}")
+
     def _render_result(result, title, n_show):
         if not result:
             st.info(f"Nenhuma análise {title.lower()} disponível. Clique em rodar acima.")

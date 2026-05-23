@@ -1,0 +1,46 @@
+{
+  "timestamp": "2026-05-23T20:19:48.597435",
+  "hot": [
+    "Gaming",
+    "Other",
+    "Meme",
+    "DeFi"
+  ],
+  "all_sectors": {
+    "Social": {
+      "avg_score": 20.1,
+      "count": 1,
+      "appearances": 2
+    },
+    "Gaming": {
+      "avg_score": 18.3,
+      "count": 3,
+      "appearances": 7
+    },
+    "Other": {
+      "avg_score": 17.9,
+      "count": 84,
+      "appearances": 223
+    },
+    "AI": {
+      "avg_score": 15.4,
+      "count": 1,
+      "appearances": 6
+    },
+    "Meme": {
+      "avg_score": 15.3,
+      "count": 10,
+      "appearances": 38
+    },
+    "DeFi": {
+      "avg_score": 10.3,
+      "count": 4,
+      "appearances": 9
+    },
+    "L1": {
+      "avg_score": 4.1,
+      "count": 1,
+      "appearances": 1
+    }
+  }
+}
