@@ -39,6 +39,7 @@ class GemsFinder:
         os.makedirs(self.snapshots_dir, exist_ok=True)
         self.daily_snapshots_dir = os.path.join(self.cache_dir, 'daily_snapshots')
         os.makedirs(self.daily_snapshots_dir, exist_ok=True)
+        self._price_cache = {}   # cache para preços históricos
 
         # Social Analyzer (Camada 4) - YouTube + Telegram
         self.social_analyzer = None
@@ -63,6 +64,63 @@ class GemsFinder:
         os.makedirs(self.macro_dir, exist_ok=True)
         self.macro_timing_path = os.path.join(self.macro_dir, 'macro_timing_cg.json')
         self.macro_raw_cache_path = os.path.join(self.macro_dir, 'macro_raw_cache.json')
+
+    def _get_historical_prices(self, symbol: str, days: int = 14) -> Optional[List[float]]:
+        """Busca preços de fechamento dos últimos `days` dias via CoinGecko com cache em memória (1h)."""
+        cache_key = f"prices_{symbol.lower()}_{days}"
+        now = datetime.now()
+        if cache_key in self._price_cache:
+            ts, prices = self._price_cache[cache_key]
+            if (now - ts).total_seconds() < 3600:
+                return prices
+
+        try:
+            # Buscar coin_id via search
+            search_data = self._coingecko_get(
+                "https://api.coingecko.com/api/v3/search",
+                params={"query": symbol.lower()},
+                timeout=8
+            )
+            coins = search_data.get('coins', [])
+            if not coins:
+                return None
+            coin_id = coins[0]['id']
+
+            # Buscar market_chart diário
+            chart_data = self._coingecko_get(
+                f"https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart",
+                params={"vs_currency": "usd", "days": days, "interval": "daily"},
+                timeout=10
+            )
+            prices = [p[1] for p in chart_data.get('prices', [])]
+            if len(prices) >= days:
+                self._price_cache[cache_key] = (now, prices[-days:])
+                return prices[-days:]
+        except Exception:
+            return None
+        return None
+
+    def _calculate_volatility(self, symbol: str, days: int = 14) -> Optional[float]:
+        """Retorna volatilidade diária (desvio padrão dos retornos)."""
+        prices = self._get_historical_prices(symbol, days)
+        if not prices or len(prices) < 5:
+            return None
+        returns = []
+        for i in range(1, len(prices)):
+            if prices[i-1] > 0:
+                returns.append((prices[i] - prices[i-1]) / prices[i-1])
+        if not returns:
+            return None
+        return float(pd.Series(returns).std())
+
+    def _avg_ratio_previous_days(self, symbol: str, historical_data: Dict[str, Dict], days: int = 3) -> float:
+        """Média do ratio (volume/mcap) dos últimos `days` dias a partir dos snapshots."""
+        ratios = []
+        for i in range(1, days+1):
+            date = (datetime.now() - timedelta(days=i)).strftime('%Y%m%d')
+            if date in historical_data and symbol in historical_data[date]:
+                ratios.append(historical_data[date][symbol].get('ratio', 0))
+        return sum(ratios) / len(ratios) if ratios else 0.0
 
     def _coingecko_get(self, url: str, params: Optional[Dict[str, Any]] = None, timeout: int = 20) -> Any:
         try:
@@ -1285,6 +1343,25 @@ class GemsFinder:
                         import json
                         gem['social_analysis'] = json.dumps({'should_analyze': False, 'combined_validation': 'INSUFFICIENT_DATA'})
                         print(f"📊 {gem['symbol']}: Dados insuficientes - primeira execução")
+                # --- SELLER EXHAUSTION INDEX (refinamento do drawdown) ---
+                    drawdown_pct = gem.get('drawdown_pct', 0)
+                    if drawdown_pct > 0.8 and has_historical_data:
+                        volatility = self._calculate_volatility(gem['symbol'], days=14)
+                        avg_ratio_prev = self._avg_ratio_previous_days(gem['symbol'], historical_data, days=3)
+                        ratio_now = gem['ratio']
+                        ratio_surge = ratio_now > (avg_ratio_prev * 2) if avg_ratio_prev > 0 else False
+                        seller_exhaustion = (volatility is not None and volatility < 0.06 and ratio_surge)
+                    else:
+                        seller_exhaustion = False
+                        volatility = 0.0
+                        ratio_surge = False
+
+                    gem['seller_exhaustion'] = seller_exhaustion
+                    gem['volatility_14d'] = volatility if volatility is not None else 0.0
+                    gem['ratio_surge'] = ratio_surge
+
+                    if seller_exhaustion:
+                        print(f"🔥 SELLER EXHAUSTION: {gem['symbol']} | drawdown={drawdown_pct:.1%} | vol={volatility:.4f} | ratio={ratio_now:.2f} (média ant={avg_ratio_prev:.2f})")
 
                 all_gems_list.extend(gems)
 
@@ -1652,6 +1729,10 @@ class GemsFinder:
 
         # Normalizar para escala -1 a 3
         score = max(-1.0, min(3.0, score))
+
+        # Seller Exhaustion – bônus refinado
+        if gem.get('seller_exhaustion', False):
+            score += 0.3
 
         return score
 

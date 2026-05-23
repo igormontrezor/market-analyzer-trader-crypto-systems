@@ -637,6 +637,7 @@ def _build_prompt(df_top: pd.DataFrame, macro: dict, confirmed: list,
         if row.get("vol_up"): extra.append("VOL_UP")
         if row.get("hot_narrative"): extra.append("HOT_NARRATIVE")
         if row.get("funding_squeeze"): extra.append("FUNDING_SQUEEZE")
+        if row.get("seller_exhaustion"): extra.append("SELLER_EXHAUSTION")
         trend_val = int(row.get("weekly_trend", 0))
         trend_lbl = {2:"TREND_UP↑↑", 1:"TREND_STABLE", -1:"TREND_FADING↓"}.get(trend_val, "")
         if trend_lbl: extra.append(trend_lbl)
@@ -708,6 +709,7 @@ RANK_UP = subiu >10 posições no ranking de market cap em 7 dias (entrada de ca
 VOL_UP = volume total em tendência de alta nos últimos 5 dias (acumulação silenciosa)
 HOT_NARRATIVE = setor identificado como quente pelo sistema (ex: AI, DePIN, RWA, GameFi, etc.)
 FUNDING_SQUEEZE = funding BTC negativo 3 dias + higher lows (potencial short squeeze)
+SELLER_EXHAUSTION = drawdown > 80% + volatilidade < 6% + ratio atual > 2x média 3d → fundo real, reversão explosiva
 
 === TOP {len(rows)} CANDIDATAS ===
 {data_str}
@@ -727,6 +729,7 @@ Dica adicional: Dê atenção extra a moedas com RANK_UP combinado com ratio alt
 Dica adicional: Moedas com VOL_UP + SMART_MONEY_DIV indicam acumulação silenciosa antes do movimento.
 Dica adicional: Priorize moedas com HOT_NARRATIVE + SMART_MONEY_DIV (narrativa quente + acumulação silenciosa) em ciclos de alta.
 Dica adicional: Moedas com FUNDING_SQUEEZE + SMART_MONEY_DIV indicam possível explosão de alta por aperto de shorts.
+Dica adicional: Moedas com SELLER_EXHAUSTION são candidatas a fundo real – priorize em ciclos de compra ou repique tático.
 
 Retorne APENAS este JSON:
 {{
