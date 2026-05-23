@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-19T09:06:21.501608",
-  "total_candidates": 27,
+  "last_updated": "2026-05-23T08:10:16.239666",
+  "total_candidates": 30,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -352,6 +352,45 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 42.24599268551
+    },
+    {
+      "symbol": "meta",
+      "name": "Metadium",
+      "detected_at": "2026-05-22T07:15:34.600522",
+      "ratio_now": 1.299018416474447,
+      "market_cap": 18108189,
+      "volume": 23522871,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 50.147034996155604
+    },
+    {
+      "symbol": "gmt",
+      "name": "GMT",
+      "detected_at": "2026-05-23T08:10:16.225341",
+      "ratio_now": 3.104403026076357,
+      "market_cap": 38269226,
+      "volume": 118803101,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "mtl",
+      "name": "Metal DAO",
+      "detected_at": "2026-05-23T08:10:16.225598",
+      "ratio_now": 1.7751055989622062,
+      "market_cap": 29349957,
+      "volume": 52099273,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 59.66877864591079
     }
   ]
 }

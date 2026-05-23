@@ -1612,7 +1612,7 @@ if __name__ == "__main__":
                                     st.session_state.tg_token, st.session_state.tg_chat_id,
                                     touch_tfs=sig.get('touch_tfs', []),
                                     stoch_div=sig.get('stoch_div', False),
-                                    stoch_tf=sig.get('tf_menor'),
+                                    #stoch_tf=sig.get('tf_menor'),
                                     mn_ema_div=sig.get('mn_ema_div', False),
                                     div_grade=sig.get('div_grade'),
                                     vol_ratio=sig.get('vol_ratio'),
@@ -1665,7 +1665,7 @@ if __name__ == "__main__":
                         typ_cls = "bg-super" if s["type"] == "SUPER" else "bg-comum"
 
                         # Badges de aviso adicionados aqui:
-                        stoch_warn = "<br><span style='background:#E0A905;color:#000;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;'>⚠️ STOCH CONTRA/TOPO</span>" if s.get('stoch_div') else ""
+                        stoch_warn = f"<br><span style='background:#E0A905;color:#000;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;'>⚠️ STOCH CONTRA/TOPO ({s.get('tf_menor', '?')})</span>" if s.get('stoch_div') else ""
                         mn_ema_warn = "<br><span style='background:#E04C4C;color:#FFF;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;'>🚨 EMA MENSAL DIV</span>" if s.get('mn_ema_div') else ""
 
                         st.markdown(f"""

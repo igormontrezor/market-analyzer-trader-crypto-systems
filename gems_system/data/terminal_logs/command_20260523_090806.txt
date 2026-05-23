@@ -1,0 +1,106 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-05-23 09:08:06
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+✅ Usando cache (válido até: 20:10:14)
+✅ Usando cache existente: 69 gems
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+📋 Cache: 10 gems encontradas
+✅ 50m_range: 10 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+📋 Cache: 15 gems encontradas
+✅ 10_49m_range: 15 gems
+📋 Cache válido - Nenhum cache atualizado
+
+📊 ANÁLISE - 50M_RANGE:
+
+📊 ANÁLISE DAS 10 GEMS:
+================================================================================
+Market Cap - Médio: $70,763,261
+Market Cap - Min: $52,359,006, Max: $87,189,462
+Volume - Médio: $24,455,847
+Volume - Min: $15,282,746, Max: $46,754,219
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 9 gems
+  🟠 Strong (0.5-1.0): 1 gems
+  🔥 Breakout (>1.0): 0 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/10 (0.0%)
+  💪 Resiliência de Preço: 0/10 (0.0%)
+  👑 POTENCIAL OURO: 0/10 (0.0%)
+  🚨 WASH TRADING: 0/10 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 10 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. usdon    | MC: $  60,909,431 | Vol: $  46,754,219 | Ratio: 0.77 | S 📊📈    📊 | Ondo U.S. Dollar Token
+ 2. xyo      | MC: $  58,621,125 | Vol: $  26,236,760 | Ratio: 0.45 | E 📊📈    📊 | XYO Network
+ 3. bio      | MC: $  70,619,682 | Vol: $  30,296,959 | Ratio: 0.43 | E 📊📈    📊 | Bio Protocol
+ 4. pnut     | MC: $  52,359,006 | Vol: $  17,861,266 | Ratio: 0.34 | E 📊📈    📊 | Peanut the Squirrel
+ 5. ordi     | MC: $  80,272,422 | Vol: $  25,766,488 | Ratio: 0.32 | E 📊📈    📊 | ORDI
+ 6. plume    | MC: $  74,595,677 | Vol: $  21,552,753 | Ratio: 0.29 | E 📊📈    📊 | Plume
+ 7. orca     | MC: $  84,990,388 | Vol: $  22,928,285 | Ratio: 0.27 | E 📊📈    📊 | Orca
+ 8. w        | MC: $  69,553,296 | Vol: $  18,073,468 | Ratio: 0.26 | E 📊📈    📊 | Wormhole
+ 9. grx      | MC: $  87,189,462 | Vol: $  19,805,528 | Ratio: 0.23 | E 📊📈    📊 | GRX Chain
+10. brett    | MC: $  68,522,117 | Vol: $  15,282,746 | Ratio: 0.22 | E 📊📈    📊 | Brett
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 15 GEMS:
+================================================================================
+Market Cap - Médio: $25,815,801
+Market Cap - Min: $15,843,564, Max: $38,269,226
+Volume - Médio: $26,972,356
+Volume - Min: $8,850,249, Max: $118,803,101
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 4 gems
+  🟠 Strong (0.5-1.0): 8 gems
+  🔥 Breakout (>1.0): 3 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/15 (0.0%)
+  💪 Resiliência de Preço: 0/15 (0.0%)
+  👑 POTENCIAL OURO: 0/15 (0.0%)
+  🚨 WASH TRADING: 0/15 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 15 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. gmt      | MC: $  38,269,226 | Vol: $ 118,803,101 | Ratio: 3.10 | B 📊📈    📊 | GMT
+ 2. fida     | MC: $  35,390,867 | Vol: $  66,121,019 | Ratio: 1.87 | B 📊📈    📊 | Bonfida
+ 3. mtl      | MC: $  29,349,957 | Vol: $  52,099,273 | Ratio: 1.78 | B 📊📈    📊 | Metal DAO
+ 4. psg      | MC: $  15,843,564 | Vol: $  14,912,981 | Ratio: 0.94 | S 📊📈    📊 | Paris Saint-Germain Fan Token
+ 5. msusd    | MC: $  34,803,220 | Vol: $  26,822,067 | Ratio: 0.77 | S 📊📈    📊 | Metronome Synth USD
+ 6. steem    | MC: $  29,033,949 | Vol: $  19,858,519 | Ratio: 0.68 | S 📊📈    📊 | Steem
+ 7. dodo     | MC: $  17,876,416 | Vol: $  11,598,367 | Ratio: 0.65 | S 📊📈    📊 | DODO
+ 8. tst      | MC: $  16,335,027 | Vol: $   9,574,406 | Ratio: 0.59 | S 📊📈    📊 | Test
+ 9. aixbt    | MC: $  27,867,820 | Vol: $  15,355,292 | Ratio: 0.55 | S 📊📈    📊 | aixbt
+10. hive     | MC: $  32,217,504 | Vol: $  17,372,760 | Ratio: 0.54 | S 📊📈    📊 | Hive
+
+📋 Usando dados existentes - Nenhum snapshot criado
+
+🎉 GEMS FINDER CONCLUÍDO!
+📊 Total de gems: 25
+📁 Arquivos salvos para análise histórica:
+   - snapshots/gems_*.csv (por faixa)
+   - snapshots/gems_consolidated_*.csv (completo)
+   - Cache válido por 12 horas (evita requisições excessivas)
+   - Snapshots criados apenas com dados novos

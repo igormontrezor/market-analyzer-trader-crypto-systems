@@ -1,0 +1,154 @@
+{
+  "weekly": {
+    "cycle": "weekly",
+    "generated_at": "2026-05-22 07:55",
+    "regime": "COMPRA ATIVA",
+    "top_picks": [
+      {
+        "rank": 1,
+        "symbol": "nkyc",
+        "composite_score": 59.9,
+        "rationale": "Ratio excepcional de 22.06 indica volume massivo vs market cap de apenas $29.3M. Pullback recente com atividade real confirmada, ideal para entrada em regime de compra ativa.",
+        "risk": "HIGH",
+        "potential": "x10+"
+      },
+      {
+        "rank": 2,
+        "symbol": "fida",
+        "composite_score": 75.0,
+        "rationale": "Score mais alto da lista com ratio s\u00f3lido de 3.99 e acumula\u00e7\u00e3o detectada (0.6). MC $32.7M com 4 apari\u00e7\u00f5es confirma consist\u00eancia e setup t\u00e9cnico favor\u00e1vel.",
+        "risk": "MEDIUM",
+        "potential": "x5-x10"
+      },
+      {
+        "rank": 3,
+        "symbol": "tst",
+        "composite_score": 35.8,
+        "rationale": "CONFIRMED_GEM com 7 apari\u00e7\u00f5es consecutivas, MC micro de $16.5M e ratio 1.39. Persist\u00eancia hist\u00f3rica indica acumula\u00e7\u00e3o institucional silenciosa em andamento.",
+        "risk": "MEDIUM",
+        "potential": "x10+"
+      },
+      {
+        "rank": 4,
+        "symbol": "cgpt",
+        "composite_score": 32.5,
+        "rationale": "CONFIRMED_GEM com 7 apari\u00e7\u00f5es e forte acumula\u00e7\u00e3o (0.6). MC $27.2M em setor de AI com narrativa forte no ciclo atual, apesar de ratio baixo tempor\u00e1rio.",
+        "risk": "MEDIUM",
+        "potential": "x5-x10"
+      },
+      {
+        "rank": 5,
+        "symbol": "meta",
+        "composite_score": 47.0,
+        "rationale": "MC ultra-baixo de $18.1M com 4 apari\u00e7\u00f5es consistentes e ratio acima de 1. Potencial explosivo por tamanho reduzido e presen\u00e7a persistente nos scans.",
+        "risk": "HIGH",
+        "potential": "x10+"
+      },
+      {
+        "rank": 6,
+        "symbol": "pnut",
+        "composite_score": 26.9,
+        "rationale": "Acumula\u00e7\u00e3o alta (0.7) detectada com MC $57.4M e 4 apari\u00e7\u00f5es. Smart money entrando silenciosamente antes de movimento maior em regime de compra ativa.",
+        "risk": "MEDIUM",
+        "potential": "x5-x10"
+      },
+      {
+        "rank": 7,
+        "symbol": "lumia",
+        "composite_score": 26.0,
+        "rationale": "Acumula\u00e7\u00e3o m\u00e1xima detectada (0.8) com MC micro de apenas $15.2M. Setup perfeito para entrada antes de breakout, apesar de \u00fanica apari\u00e7\u00e3o recente.",
+        "risk": "HIGH",
+        "potential": "x10+"
+      },
+      {
+        "rank": 8,
+        "symbol": "goat",
+        "composite_score": 27.1,
+        "rationale": "Meme coin com MC $18.5M, acumula\u00e7\u00e3o 0.5 e 5 apari\u00e7\u00f5es. Setor meme historicamente explosivo em regime de compra ativa com narrativa viral potencial.",
+        "risk": "HIGH",
+        "potential": "x10+"
+      },
+      {
+        "rank": 9,
+        "symbol": "psg",
+        "composite_score": 24.6,
+        "rationale": "CONFIRMED_GEM com 7 apari\u00e7\u00f5es, MC $16.0M e ratio 0.68. Fan token com liquidez real e base estabelecida, aguardando catalisador de movimento.",
+        "risk": "MEDIUM",
+        "potential": "x5-x10"
+      },
+      {
+        "rank": 10,
+        "symbol": "dodo",
+        "composite_score": 29.0,
+        "rationale": "7 apari\u00e7\u00f5es consecutivas com MC $18.9M e ratio 0.80. DeFi com presen\u00e7a consistente indicando base s\u00f3lida antes de pr\u00f3ximo leg up em mercado comprador.",
+        "risk": "MEDIUM",
+        "potential": "x5-x10"
+      }
+    ],
+    "macro_note": "Regime COMPRA ATIVA com funding rate neutro (0.0013%) favorece posi\u00e7\u00f5es agressivas em micro-caps. Aus\u00eancia de Weekly Buy Trigger sugere seletividade, priorizando setups t\u00e9cnicos individuais fortes com acumula\u00e7\u00e3o detectada e consist\u00eancia de apari\u00e7\u00f5es.",
+    "sectors_in_focus": [
+      "Meme",
+      "DeFi",
+      "AI",
+      "Gaming"
+    ],
+    "avoid": [
+      "enj - MC $87.4M alto demais para move explosivo, dilui\u00e7\u00e3o de potencial",
+      "ron - MC $85.9M sem acumula\u00e7\u00e3o detectada, tamanho excessivo para x10",
+      "orca - MC $88.6M pr\u00f3ximo de mid-cap, ratio baixo e upside limitado"
+    ]
+  },
+  "monthly": {
+    "cycle": "monthly",
+    "generated_at": "2026-05-22 21:27",
+    "regime": "COMPRA ATIVA",
+    "top_picks": [
+      {
+        "rank": 1,
+        "symbol": "nkyc",
+        "composite_score": 53.5,
+        "rationale": "Ratio excepcional de 22.06 (o mais alto disparado) indica atividade explosiva real vs market cap min\u00fasculo de $29.3M. SMART_MONEY_DIV + TREND_UP\u2191\u2191 confirma entrada recente de smart money antes do hype p\u00fablico.",
+        "risk": "HIGH",
+        "potential": "x10+"
+      },
+      {
+        "rank": 2,
+        "symbol": "fida",
+        "composite_score": 64.6,
+        "rationale": "Score composite mais alto (64.6) com 10 apari\u00e7\u00f5es consistentes mostra confiabilidade. Ratio 3.83 s\u00f3lido com acumula\u00e7\u00e3o 0.6 detectada. SMART_MONEY_DIV + TREND_STABLE oferece risco/retorno balanceado.",
+        "risk": "MEDIUM",
+        "potential": "x5-x10"
+      },
+      {
+        "rank": 3,
+        "symbol": "cgpt",
+        "composite_score": 30.7,
+        "rationale": "CONFIRMED_GEM + SMART_MONEY_DIV + TREND_UP\u2191\u2191 com 11 apari\u00e7\u00f5es hist\u00f3ricas. Acumula\u00e7\u00e3o 0.6 mostra whales comprando silenciosamente. Market cap $27.6M ideal para explos\u00e3o. Flag de confirma\u00e7\u00e3o hist\u00f3rica reduz risco.",
+        "risk": "MEDIUM",
+        "potential": "x10+"
+      }
+    ],
+    "macro_note": "Regime COMPRA ATIVA com funding rate neutro (0.0027%) favorece posi\u00e7\u00f5es em micro-caps. Aus\u00eancia de weekly buy trigger sugere momento de acumula\u00e7\u00e3o estrat\u00e9gica antes de pr\u00f3ximo impulso macro.",
+    "sectors_in_focus": [
+      "Other"
+    ],
+    "avoid": [
+      "goat - setor Meme com score baixo (26.3) e 24 apari\u00e7\u00f5es sem tra\u00e7\u00e3o real, sugere dilui\u00e7\u00e3o de momentum",
+      "lumia - social_score negativo (-0.2) e score composite apenas 20.6 indica rejei\u00e7\u00e3o de mercado"
+    ]
+  },
+  "history": [
+    {
+      "cycle": "weekly",
+      "ts": "2026-05-22T07:55:45.569539",
+      "n_csvs": 345,
+      "n_coins": 111
+    },
+    {
+      "cycle": "monthly",
+      "ts": "2026-05-22T21:27:52.440464",
+      "n_csvs": 1209,
+      "n_coins": 10
+    }
+  ]
+}

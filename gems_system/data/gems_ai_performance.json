@@ -1,0 +1,72 @@
+[
+  {
+    "cycle": "weekly",
+    "date": "2026-05-22",
+    "symbol": "nkyc",
+    "rank": 1,
+    "price_at_pick": 0.0,
+    "price_now": 7.55,
+    "pct_change": 0,
+    "result": "NEUTRAL"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-05-22",
+    "symbol": "tst",
+    "rank": 3,
+    "price_at_pick": 0.0,
+    "price_now": 0.04845514,
+    "pct_change": 0,
+    "result": "NEUTRAL"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-05-23",
+    "symbol": "cgpt",
+    "rank": 4,
+    "price_at_pick": 0.0,
+    "price_now": 0.02486851,
+    "pct_change": 0,
+    "result": "NEUTRAL"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-05-23",
+    "symbol": "cgpt",
+    "rank": 4,
+    "price_at_pick": 0.0,
+    "price_now": 0.02470224,
+    "pct_change": 0,
+    "result": "NEUTRAL"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-05-23",
+    "symbol": "meta",
+    "rank": 5,
+    "price_at_pick": 0.0,
+    "price_now": 0.02933626,
+    "pct_change": 0,
+    "result": "NEUTRAL"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-05-23",
+    "symbol": "cgpt",
+    "rank": 4,
+    "price_at_pick": 0.0,
+    "price_now": 0.02464192,
+    "pct_change": 0,
+    "result": "NEUTRAL"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-05-23",
+    "symbol": "meta",
+    "rank": 5,
+    "price_at_pick": 0.0,
+    "price_now": 0.02933693,
+    "pct_change": 0,
+    "result": "NEUTRAL"
+  }
+]

@@ -157,7 +157,7 @@ with st.sidebar:
     st.markdown("### 📈 Trading System")
 
     # Botão para abrir automaticamente
-    if st.button("🚀 Abrir Trading System", type="primary", use_container_width=True):
+    if st.button("🚀 Abrir Trading System", type="primary", width='stretch'):
         try:
             st.info("🔄 Iniciando Trading System...")
 
@@ -196,7 +196,7 @@ with st.sidebar:
     st.markdown("### 📊 Market Analysis")
 
     # Botão para abrir automaticamente
-    if st.button("📈 Abrir Market Analysis", type="primary", use_container_width=True):
+    if st.button("📈 Abrir Market Analysis", type="primary", width='stretch'):
         try:
             st.info("🔄 Iniciando Market Analysis...")
 
@@ -2199,19 +2199,34 @@ with tab7:
             value=os.environ.get("ANTHROPIC_API_KEY",""),
             help="Obtenha em console.anthropic.com. O plano gratuito é suficiente.")
         if ai_key_input:
-            os.environ["ANTHROPIC_API_KEY"] = ai_key_input
+            _clean_key = ai_key_input.strip().strip('"').strip("'").strip()
+            os.environ["ANTHROPIC_API_KEY"] = _clean_key
             try:
                 cfg_file = os.path.join(os.path.expanduser("~"), ".montrezor_ai.json")
-                json.dump({"anthropic_key": ai_key_input}, open(cfg_file,"w"))
+                json.dump({"anthropic_key": _clean_key}, open(cfg_file,"w", encoding="utf-8"))
             except Exception:
                 pass
-            st.success("✅ API Key salva")
+            # Validação rápida do formato
+            if not _clean_key.startswith("sk-ant-"):
+                st.warning("⚠️ Key salva mas formato inesperado — keys Anthropic começam com sk-ant-")
+            else:
+                st.success(f"✅ API Key salva ({_clean_key[:12]}...)")
         st.markdown(
             "<div style='font-size:11px;color:#8b949e'>"
             "Modelo: <b>claude-haiku-4-5</b> — rápido, econômico, gratuito no free tier. "
             "Cada análise usa ~2000 tokens.</div>", unsafe_allow_html=True)
 
     api_key = _ai._get_api_key()
+
+    # Auto-update performance ao carregar a aba (silencioso)
+    if "perf_auto_updated" not in st.session_state:
+        try:
+            n = _ai.auto_update_performance()
+            if n > 0:
+                st.toast(f"📈 {n} picks atualizadas automaticamente via CoinGecko")
+        except Exception:
+            pass
+        st.session_state.perf_auto_updated = True
 
     weekly_result  = _ai.get_latest("weekly")
     monthly_result = _ai.get_latest("monthly")
@@ -2250,10 +2265,10 @@ with tab7:
     btn_col1, btn_col2, btn_col3 = st.columns([2,2,1])
     with btn_col1:
         run_weekly  = st.button("🔍 Rodar Análise Semanal",  type="primary",
-                                use_container_width=True, disabled=not bool(api_key))
+                                width='stretch', disabled=not bool(api_key))
     with btn_col2:
         run_monthly = st.button("🏆 Rodar Análise Mensal (Top 3)",
-                                use_container_width=True, disabled=not bool(api_key))
+                                width='stretch', disabled=not bool(api_key))
     with btn_col3:
         force_run = st.checkbox("Forçar", value=False,
                                 help="Rodar mesmo que o ciclo ainda não tenha vencido")
@@ -2344,7 +2359,7 @@ with tab7:
                                               "momentum","sector","market_cap"]
                                  if c in df_agg.columns]
                     st.dataframe(df_agg[show_cols].head(50).reset_index(drop=True),
-                                 use_container_width=True)
+                                 width='stretch')
             except Exception as e:
                 st.error(f"Erro ao carregar dados: {e}")
         with dt2:
@@ -2359,9 +2374,71 @@ with tab7:
                                "CSVs lidos": h.get("n_csvs",0),
                                "Moedas analisadas": h.get("n_coins",0)}
                               for h in reversed(hist[-50:])]
-                    st.dataframe(rows_h, use_container_width=True, hide_index=True)
+                    st.dataframe(rows_h, width='stretch', hide_index=True)
             except Exception as e:
                 st.error(f"Erro: {e}")
+
+    # ── Performance Tracker ──────────────────────────────────────────────────
+    st.markdown("---")
+    with st.expander("📈 Performance Tracker — Registrar resultado das picks", expanded=False):
+        st.markdown(
+            "<div style='color:#8b949e;font-size:12px;margin-bottom:10px'>"
+            "Registre o preço atual das picks para alimentar o feedback loop do Claude. "
+            "Com o tempo, o Claude aprende quais moedas realmente performam.</div>",
+            unsafe_allow_html=True)
+
+        perf_data = _ai._load_performance()
+        latest_w  = _ai.get_latest("weekly")
+        picks_w   = latest_w.get("top_picks",[]) if latest_w else []
+
+        if picks_w:
+            st.markdown("**Registrar preços atuais (picks semanais):**")
+            for p in picks_w:
+                col_s, col_p, col_b = st.columns([2,2,1])
+                with col_s:
+                    st.markdown(f"**#{p['rank']} {p['symbol']}**")
+                with col_p:
+                    price_now = st.number_input(
+                        "Preço atual ($)", min_value=0.0, key=f"perf_px_{p['symbol']}",
+                        label_visibility="collapsed")
+                with col_b:
+                    if st.button("✅", key=f"perf_btn_{p['symbol']}",
+                                  help="Registrar performance"):
+                        if price_now > 0:
+                            _ai.register_performance(
+                                "weekly", p["symbol"], p["rank"],
+                                float(p.get("composite_score", 0)),
+                                price_now)
+                            st.success(f"{p['symbol']} registrado!")
+
+        if perf_data:
+            st.markdown("**Histórico de performance:**")
+            rows_p = [{
+                "Data":      e.get("date",""),
+                "Ciclo":     e.get("cycle",""),
+                "Símbolo":   e.get("symbol",""),
+                "Rank":      e.get("rank",""),
+                "Preço Pick":f"${e.get('price_at_pick',0):.4f}",
+                "Preço Atual":f"${e.get('price_now',0):.4f}",
+                "Δ%":        f"{e.get('pct_change',0):+.1f}%",
+                "Resultado": {"WIN":"✅ WIN","LOSS":"❌ LOSS","NEUTRAL":"➡️ NEUTRAL"}.get(
+                                e.get("result",""),"—"),
+            } for e in reversed(perf_data[-30:])]
+            st.dataframe(rows_p, width='stretch', hide_index=True)
+
+            wins_total = sum(1 for e in perf_data if e.get("result")=="WIN")
+            total      = len(perf_data)
+            wr         = wins_total/total*100 if total else 0
+            wr_clr     = "#3fb950" if wr >= 50 else "#f85149"
+            st.markdown(
+                f"<div style='background:#161b22;border:1px solid #30363d;"
+                f"border-radius:6px;padding:8px 14px;font-size:13px;margin-top:6px'>"
+                f"Win Rate total: <b style='color:{wr_clr}'>{wr:.0f}%</b> "
+                f"({wins_total}/{total} picks) &nbsp;·&nbsp; "
+                f"Modelo: <b style='color:#c9d1d9'>claude-sonnet-4-20250514</b></div>",
+                unsafe_allow_html=True)
+        else:
+            st.info("Nenhuma performance registrada ainda.")
 
 
 # RODAPÉ

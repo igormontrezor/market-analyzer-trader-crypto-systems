@@ -10557,3 +10557,901 @@ WARNING:tvDatafeed.main:you are using nologin method,
 2026-05-21 19:55:56  INFO     [GEMS] macro_timing.json atualizado
 2026-05-21 20:01:08  INFO     [GEMS] macro_timing.json atualizado
 2026-05-21 20:05:53  INFO     [GEMS] macro_timing.json atualizado
+2026-05-21 20:12:08  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 07:16:14  INFO     ================================================================
+2026-05-22 07:16:14  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-22 07:16:14  INFO       Modo: ALL
+2026-05-22 07:16:14  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-22 07:16:14  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-22 07:16:14  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-22 07:16:14  INFO     ================================================================
+2026-05-22 07:16:14  INFO     MT5 conectado: XM Global MT5
+2026-05-22 07:16:54  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88340 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:16:56  INFO       ✅ Telegram -> GBPAUD# VENDA COMUM
+2026-05-22 07:17:28  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 07:17:36  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-22 07:17:37  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-22 07:17:38  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-22 07:17:39  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-22 07:17:40  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-22 07:17:41  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-22 07:18:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88338 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:19:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88329 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:21:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88316 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:22:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88312 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:22:59  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 07:23:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88327 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:24:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88325 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:25:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88321 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:26:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88306 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:27:54  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88316 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:28:32  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 07:29:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88336 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:30:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88347 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:31:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88352 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:32:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88386 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:33:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88376 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:34:00  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 07:34:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88351 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:35:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88385 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:36:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88358 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:37:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88342 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:38:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88362 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:39:15  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 07:39:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88393 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:40:58  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88384 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:42:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88376 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:43:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88379 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:44:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88375 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:44:48  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 07:46:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88381 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:47:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88383 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:48:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88370 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:49:29  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:50:10  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 07:50:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88365 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:51:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:52:58  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88368 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:54:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88373 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:55:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88398 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:55:52  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 07:56:24  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88387 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:57:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88380 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:58:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88368 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 07:59:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88375 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:01:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88371 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:01:49  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 08:02:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88391 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:03:21  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88394 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:04:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88377 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:05:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88363 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:06:25  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 08:06:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88363 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:07:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88388 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:09:00  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88405 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:09:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88410 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:11:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88407 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:11:40  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 08:12:13  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88405 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:13:18  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88420 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:14:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88427 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:15:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88443 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:16:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88410 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:17:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 08:17:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88392 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:18:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88403 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:19:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88406 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:20:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88429 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:21:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88432 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:22:28  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 08:23:01  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88426 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:24:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88429 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:25:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88423 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:26:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88407 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:27:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88397 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:28:04  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 08:28:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:29:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88382 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:30:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88437 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:32:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88458 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:33:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88443 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:34:22  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 08:35:10  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88429 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:37:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88410 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:38:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88424 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:39:47  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 08:40:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88435 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:42:10  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88460 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:43:21  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88464 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:44:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88465 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:45:14  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-22 08:45:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88462 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:46:57  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88447 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:48:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88420 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:49:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88393 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:50:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88432 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:51:40  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-22 08:52:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88409 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:54:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88395 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:55:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88408 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:56:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88419 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:57:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 08:57:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88436 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:58:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88438 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 08:59:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88444 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:00:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88407 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:02:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88412 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:02:43  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 09:03:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88415 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:04:27  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88402 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:05:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88413 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:06:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88406 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:07:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88437 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:08:29  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 09:09:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88430 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:11:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88428 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:12:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88373 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:14:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88299 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:15:31  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 09:16:13  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88310 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:18:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88350 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:20:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88286 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:20:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 09:20:51  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-22 09:20:52  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-22 09:20:53  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-22 09:20:55  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-22 09:20:56  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-22 09:20:57  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-22 09:21:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88334 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:22:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88350 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:23:55  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88345 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:25:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88393 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:25:44  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 09:26:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88360 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:27:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88373 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:28:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88384 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:30:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88391 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:31:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88379 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:32:25  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 09:33:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88395 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:35:08  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88415 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:36:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88412 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:38:07  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88398 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:38:49  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 09:39:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88394 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:40:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88396 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:41:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88397 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:42:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88432 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:43:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88438 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:44:49  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 09:45:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88433 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:46:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88437 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:47:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88445 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:48:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88440 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:49:55  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88419 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:50:42  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-22 09:51:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88446 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:52:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88428 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:53:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88405 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:54:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88398 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:55:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88414 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:56:19  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 09:56:57  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88384 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:58:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88400 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 09:59:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88413 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:00:20  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88384 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:01:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88396 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:02:15  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 10:02:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88400 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:04:00  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88373 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:05:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88391 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:06:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88371 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:07:24  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88400 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:08:07  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 10:08:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88436 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:09:57  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88488 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:11:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88507 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:12:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88468 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:13:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88400 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:14:27  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 10:15:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88395 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:16:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88394 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:17:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88402 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:18:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88436 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:19:45  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-22 10:20:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88476 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:21:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88486 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:22:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88498 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:23:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88507 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:24:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88509 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:25:40  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-22 10:26:27  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88514 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:27:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88493 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:28:32  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88495 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:29:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88531 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:30:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88520 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:31:36  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 10:32:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88506 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:33:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88490 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:34:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88478 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:35:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88511 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:36:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88502 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:37:47  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-22 10:38:29  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88509 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:39:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88515 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:40:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88512 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:42:01  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88510 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:42:50  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 10:43:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88538 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:44:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88518 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:45:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88527 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:46:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88574 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:48:07  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88560 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:48:54  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 10:49:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88580 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:50:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88570 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:51:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88557 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:53:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88541 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 10:54:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88500 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:54:54  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 10:55:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88445 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:56:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88447 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:57:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88468 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 10:58:55  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88464 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:00:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88467 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:01:01  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 11:01:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88550 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:02:54  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88551 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:04:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88577 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:05:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88581 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:06:09  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 11:06:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88589 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:08:01  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88548 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:09:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88517 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:10:24  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88507 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:11:29  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 11:12:10  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88524 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:13:27  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88514 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:15:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88507 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:17:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88525 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:18:36  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-22 11:19:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88524 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:21:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88499 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:22:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88514 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:23:55  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88531 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:24:55  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 11:25:06  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-22 11:25:09  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-22 11:25:12  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-22 11:25:14  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-22 11:25:15  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-22 11:25:17  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-22 11:25:54  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88510 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:27:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88500 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:28:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88480 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:30:07  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88456 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:30:44  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 11:31:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88429 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:32:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88456 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:33:24  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88461 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:34:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88450 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:35:12  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-22 11:35:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88453 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:36:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88450 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:38:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88451 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:39:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88487 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:41:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88467 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:42:03  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 11:42:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88483 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:44:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88515 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:45:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88510 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:46:45  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88486 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:47:25  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 11:48:01  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88490 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:49:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88472 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:50:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88524 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 11:51:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88462 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:52:20  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88426 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:52:59  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 11:53:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88393 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:54:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88424 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:55:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88482 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:56:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88475 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:57:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88489 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 11:58:23  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 11:59:00  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88443 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:00:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88479 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:01:08  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88486 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:02:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88462 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:03:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88481 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:04:01  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 12:04:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88474 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:05:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88451 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:06:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88424 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:07:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88450 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:08:26  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 12:09:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88465 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:10:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88447 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:11:07  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88436 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:12:08  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88445 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:13:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88449 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:13:50  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 12:14:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88456 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:15:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88455 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:16:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88499 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:17:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88504 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:18:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88521 [1D] tfs=1D 1W VOL=1.0x
+2026-05-22 12:19:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88481 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:20:16  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 12:20:55  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88481 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:22:00  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88496 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:23:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88494 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:24:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88469 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:24:44  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 12:25:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88502 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:26:21  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88481 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:27:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88493 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:28:24  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88494 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:29:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88483 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:30:04  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 12:30:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88459 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:31:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88433 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:32:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88452 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:33:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88458 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:34:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88454 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:35:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88476 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:36:41  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 12:37:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88469 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:38:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88478 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:39:24  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88475 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:40:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88466 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:41:03  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 12:41:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88474 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:42:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88482 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:43:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88485 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:44:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88461 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:45:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88453 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:46:19  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 12:46:54  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88432 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:47:57  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88456 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:49:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88465 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:50:00  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88470 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:51:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88449 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:52:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88433 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:52:39  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 12:53:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88430 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:54:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88443 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:55:20  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88422 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:56:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88430 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:57:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 12:57:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88439 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:58:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88409 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 12:59:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88424 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:00:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88420 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:01:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88395 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:02:29  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 13:03:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88394 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:04:01  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88396 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:05:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88396 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:06:08  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88401 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:07:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88422 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:07:49  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 13:08:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88430 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:09:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88423 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:10:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88422 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:11:32  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88413 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:12:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88372 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:13:23  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 13:13:57  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88373 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:15:00  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88407 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:16:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88433 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:17:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88400 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:18:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88396 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:18:41  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 13:19:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88402 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:20:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88406 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:21:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88398 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:22:21  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88401 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:23:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88413 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:24:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 13:24:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88424 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:25:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88440 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:26:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88415 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:27:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88411 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:28:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88407 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:29:27  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 13:29:31  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-22 13:29:32  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-22 13:29:34  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-22 13:29:35  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-22 13:29:36  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-22 13:29:37  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-22 13:30:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88414 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:31:10  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88392 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:32:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88402 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:33:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88389 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:34:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88392 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:34:55  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 13:35:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88422 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:36:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88425 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:37:32  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88405 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:38:32  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88416 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:39:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88426 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:40:20  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 13:40:55  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88418 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:41:57  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88410 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:42:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88419 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:44:00  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88438 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:45:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88434 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:45:46  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-22 13:46:20  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88418 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:47:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88418 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:48:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88413 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:49:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88420 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:50:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88411 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:51:03  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 13:51:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88415 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:52:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88428 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:53:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88422 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:54:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88412 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:55:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88407 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:56:32  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-22 13:57:07  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88408 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:58:08  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88405 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 13:59:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88411 [1D] tfs=1D 1W~ VOL=1.0x
+2026-05-22 14:00:13  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88401 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:01:18  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88389 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:02:03  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-22 14:02:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88379 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:03:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88381 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:04:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88370 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:05:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88359 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:06:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88375 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:07:36  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-22 14:08:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88357 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:09:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88362 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:10:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88344 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:11:13  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88354 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:12:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88364 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:12:58  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 14:13:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88355 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:14:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88362 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:15:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88372 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:16:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88374 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:17:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88371 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:18:40  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 14:19:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88375 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:20:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88391 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:21:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88421 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:22:20  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88431 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:23:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88439 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:24:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 14:24:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88432 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:25:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88404 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:26:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88401 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:27:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88398 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:29:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88390 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:30:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88346 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:31:30  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 14:32:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88351 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:33:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88388 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:34:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88377 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:35:58  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88381 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:36:44  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 14:37:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88380 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:38:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88395 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:39:53  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88385 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:41:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88402 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:42:08  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 14:42:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88404 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:43:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88410 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:46:01  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88414 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:47:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88392 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:48:16  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 14:48:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88375 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:50:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88380 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:51:27  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88386 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:52:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88382 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:53:20  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 14:53:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88383 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:55:10  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88386 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:56:18  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88380 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:57:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88388 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:58:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88393 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 14:59:17  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 14:59:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88398 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:01:08  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88405 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:02:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88405 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:03:27  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88400 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:04:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88396 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:05:33  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 15:06:13  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88380 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:07:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88366 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:08:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88368 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:09:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88372 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:10:28  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 15:11:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88365 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:12:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88362 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:13:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88370 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:14:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88367 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:15:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88364 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:16:23  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 15:17:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88362 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:18:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88363 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:19:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88349 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:20:32  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88353 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:21:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88362 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:22:28  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-22 15:23:08  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88367 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:24:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:25:21  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88370 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:26:27  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88372 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:27:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88367 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:28:33  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 15:29:18  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88373 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:30:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88365 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:31:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88368 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:32:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88371 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:33:30  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 15:33:37  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-22 15:33:38  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-22 15:33:39  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-22 15:33:41  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-22 15:33:42  INFO       ✅ [MA] Telegram -> EURCHF=X Daily COMPRA
+2026-05-22 15:33:43  INFO       ✅ [MA] Telegram -> EURCHF=X Weekly COMPRA
+2026-05-22 15:34:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:35:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88389 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:36:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88392 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:37:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88394 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:38:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88401 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:39:35  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 15:40:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88358 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:41:27  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88356 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:42:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88374 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:43:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88358 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:44:29  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 15:45:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88362 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:46:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88375 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:47:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88373 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:48:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88377 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:49:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88371 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:50:43  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 15:51:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88374 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:52:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:53:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88379 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:54:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88382 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:55:28  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 15:56:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88390 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:57:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88390 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:58:21  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88385 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 15:59:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88379 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:00:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88372 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:01:39  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-22 16:02:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88386 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:03:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88386 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:05:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88386 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:06:27  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88375 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:07:33  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 16:08:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88383 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:09:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88384 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:10:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88382 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:11:53  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88376 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:12:47  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 16:13:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88368 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:14:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88373 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:15:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88383 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:16:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88377 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:17:43  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 16:18:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88370 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:19:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88362 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:20:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88382 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:21:58  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88385 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:22:45  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-22 16:23:24  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88386 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:24:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88380 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:25:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88387 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:26:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88391 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:28:01  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88393 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:28:49  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-22 16:29:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88394 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:30:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88406 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:31:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88411 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:32:58  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88410 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:34:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88402 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:35:01  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-22 16:35:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88401 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:36:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88414 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:38:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88416 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:39:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88420 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:39:55  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 16:40:32  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88432 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:41:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88413 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:42:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88418 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:44:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88411 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:45:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88415 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:46:10  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-05-22 16:46:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88426 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:48:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88432 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 16:49:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88427 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:22:14  INFO     ================================================================
+2026-05-22 21:22:14  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-22 21:22:14  INFO       Modo: ALL
+2026-05-22 21:22:14  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-22 21:22:14  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-22 21:22:14  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-22 21:22:14  INFO     ================================================================
+2026-05-22 21:24:17  INFO     ================================================================
+2026-05-22 21:24:17  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-22 21:24:17  INFO       Modo: ALL
+2026-05-22 21:24:17  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-22 21:24:17  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-22 21:24:17  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-22 21:24:17  INFO     ================================================================
+2026-05-22 21:24:17  INFO     MT5 conectado: XM Global MT5
+2026-05-22 21:26:27  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:26:28  INFO       ✅ Telegram -> GBPAUD# VENDA COMUM
+2026-05-22 21:26:58  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 21:27:14  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-22 21:27:15  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-22 21:27:16  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-22 21:27:17  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-22 21:27:28  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-22 21:27:39  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-22 21:27:39  INFO     [AI] Rodando ciclo monthly...
+2026-05-22 21:28:03  INFO     [AI] ✅ monthly concluído — Telegram enviado
+2026-05-22 21:28:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:29:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:30:02  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 21:30:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:31:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:32:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:33:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:34:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:35:16  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 21:35:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:36:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:37:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:38:55  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:39:55  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:40:28  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 21:40:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:41:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:43:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:44:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:45:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:46:00  INFO     [GEMS] macro_timing.json atualizado
+2026-05-22 21:46:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:47:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:48:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-22 21:49:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:09:43  INFO     ================================================================
+2026-05-23 08:09:43  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-23 08:09:43  INFO       Modo: ALL
+2026-05-23 08:09:43  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-23 08:09:43  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-23 08:09:43  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-23 08:09:43  INFO     ================================================================
+2026-05-23 08:09:43  INFO     MT5 conectado: XM Global MT5
+2026-05-23 08:10:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:10:32  INFO       ✅ Telegram -> GBPAUD# VENDA COMUM
+2026-05-23 08:11:05  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 08:11:21  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-23 08:11:32  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-23 08:11:43  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-23 08:11:55  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-23 08:12:06  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-23 08:12:17  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-23 08:12:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:13:45  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:14:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:15:24  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 08:15:55  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:16:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:18:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:19:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:20:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:20:44  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 08:21:13  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:22:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:23:18  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:24:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:25:27  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:26:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 08:26:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:27:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:28:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:29:32  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:30:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:31:12  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 08:31:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:32:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:33:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:34:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:35:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:36:57  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:37:32  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 08:38:21  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:39:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:40:20  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:41:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:41:58  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 08:42:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:43:29  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:44:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:45:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:46:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:47:15  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 08:47:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:48:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:49:58  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:50:54  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:51:57  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:52:34  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 08:53:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:54:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:55:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:56:20  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:57:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:57:58  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 08:58:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 08:59:29  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:00:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:01:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:02:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:03:10  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 09:03:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:04:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:05:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:06:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:07:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:08:31  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 09:09:00  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:10:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:11:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:12:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:13:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:13:46  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 09:14:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:15:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:16:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:17:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:18:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:19:05  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 09:19:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:20:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:21:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:22:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:23:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:24:15  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 09:24:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:25:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:26:45  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:27:45  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:28:45  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:29:24  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 09:29:53  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:30:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:31:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:32:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:34:01  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:34:34  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 09:35:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:36:07  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:37:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:38:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:39:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:39:50  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 09:40:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:41:24  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:42:29  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:43:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:44:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:45:17  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 09:45:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:46:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:47:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:48:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:49:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:50:29  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 09:50:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:51:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:53:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:54:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:55:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:55:43  INFO     [GEMS] macro_timing.json atualizado
+2026-05-23 09:56:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:57:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:58:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 09:59:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 10:00:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-23 10:01:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x

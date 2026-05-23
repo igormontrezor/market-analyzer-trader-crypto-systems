@@ -1,0 +1,71 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-05-22 09:07:31
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+✅ Usando cache (válido até: 19:15:34)
+✅ Usando cache existente: 36 gems
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+📋 Cache: 0 gems encontradas
+✅ 50m_range: 0 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+📋 Cache: 15 gems encontradas
+✅ 10_49m_range: 15 gems
+📋 Cache válido - Nenhum cache atualizado
+
+📊 ANÁLISE - 50M_RANGE:
+❌ Nenhuma gem para analisar
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 15 GEMS:
+================================================================================
+Market Cap - Médio: $31,525,465
+Market Cap - Min: $16,301,610, Max: $47,403,932
+Volume - Médio: $33,696,291
+Volume - Min: $8,292,883, Max: $225,381,740
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 8 gems
+  🟠 Strong (0.5-1.0): 2 gems
+  🔥 Breakout (>1.0): 5 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/15 (0.0%)
+  💪 Resiliência de Preço: 0/15 (0.0%)
+  👑 POTENCIAL OURO: 0/15 (0.0%)
+  🚨 WASH TRADING: 1/15 (6.7%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 15 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. fida     | MC: $  43,298,845 | Vol: $ 225,381,740 | Ratio: 5.21 | B 📊📈    📊 | Bonfida
+ 2. tst      | MC: $  17,124,756 | Vol: $  39,669,674 | Ratio: 2.32 | B 📊📈  🚨📊 | Test
+ 3. usdon    | MC: $  44,503,171 | Vol: $  66,293,167 | Ratio: 1.49 | B 📊📈    📊 | Ondo U.S. Dollar Token
+ 4. meta     | MC: $  18,108,189 | Vol: $  23,522,871 | Ratio: 1.30 | B 📊📈    📊 | Metadium
+ 5. dodo     | MC: $  18,463,571 | Vol: $  22,749,258 | Ratio: 1.23 | B 📊📈    📊 | DODO
+ 6. psg      | MC: $  16,301,610 | Vol: $  10,902,743 | Ratio: 0.67 | S 📊📈    📊 | Paris Saint-Germain Fan Token
+ 7. dogs     | MC: $  28,437,238 | Vol: $  15,570,388 | Ratio: 0.55 | S 📊📈    📊 | Dogs
+ 8. aixbt    | MC: $  32,117,431 | Vol: $  14,519,044 | Ratio: 0.45 | E 📊📈    📊 | aixbt
+ 9. pha      | MC: $  29,194,320 | Vol: $  11,453,716 | Ratio: 0.39 | E 📊📈    📊 | PHALA
+10. dood     | MC: $  21,295,580 | Vol: $   8,292,883 | Ratio: 0.39 | E 📊📈    📊 | Doodles
+
+📋 Usando dados existentes - Nenhum snapshot criado
+
+🎉 GEMS FINDER CONCLUÍDO!
+📊 Total de gems: 15
+📁 Arquivos salvos para análise histórica:
+   - snapshots/gems_*.csv (por faixa)
+   - snapshots/gems_consolidated_*.csv (completo)
+   - Cache válido por 12 horas (evita requisições excessivas)
+   - Snapshots criados apenas com dados novos

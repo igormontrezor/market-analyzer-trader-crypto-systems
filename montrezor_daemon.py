@@ -50,6 +50,7 @@ import requests
 TRADING_SCAN_SEC   = 60    # trading_system: checar a cada 60s
 GEMS_SCAN_SEC      = 300   # gems/macro: checar a cada 5 min
 MA_SCAN_SEC        = 300   # market_analysis: checar a cada 5 min
+AI_CHECK_SEC       = 3600  # verificar ciclos AI a cada 1h (executa só quando vencido)
 MA_COOLDOWN_MIN    = 120   # 2h cooldown market analysis
 MACRO_REBUILD_SEC  = 300   # visualizer: rebuild macro_timing.json a cada 5 min
 
@@ -930,6 +931,7 @@ def run_daemon(logger, mode="all"):
     prev_gems_sig  = None
     prev_ma_sigs   = {}
     last_ma_scan   = 0.0
+    last_ai_check  = 0.0
     ma_state       = AlertState(MA_COOLDOWN_MIN)
     do_ma          = mode in ("all",)
 
@@ -1044,7 +1046,7 @@ def run_daemon(logger, mode="all"):
         # ── MARKET ANALYSIS: avaliar sinais ──────────────────────
         if do_ma and (now - last_ma_scan) >= MA_SCAN_SEC:
             last_ma_scan = now
-            fx_sym = cfg.get("ma_fx_sym", "EURCHF=X")   # nome do par forex para a mensagem
+            fx_sym = cfg.get("ma_fx_sym", "EURUSD=X")   # nome do par forex para a mensagem
             active_ma = _scan_market_analysis(logger, cfg, ma_state, prev_ma_sigs)
             for chart, signal_data in active_ma.items():
                 direction = signal_data["direction"]
@@ -1122,6 +1124,38 @@ def run_daemon(logger, mode="all"):
                     ma_state.clear(chart, direction)
                     logger.info(f"[MA] ↩ Encerrado: {chart} {direction}")
             prev_ma_sigs = active_ma
+
+        # ── AI GEMS FILTER — roda ciclos automaticamente quando vencidos ──
+        if (now - last_ai_check) >= AI_CHECK_SEC:
+            last_ai_check = now
+            try:
+                import importlib.util
+                _ai_candidates = [
+                    os.path.join(PROJECT_DIR, "gems_system", "gems_ai_filter.py"),
+                    os.path.join(PROJECT_DIR, "analysis_system", "gems_ai_filter.py"),
+                    os.path.join(PROJECT_DIR, "gems_ai_filter.py"),
+                ]
+                _ai_path = next((p for p in _ai_candidates if os.path.exists(p)), None)
+                if _ai_path:
+                    spec = importlib.util.spec_from_file_location("gems_ai_filter", _ai_path)
+                    ai   = importlib.util.module_from_spec(spec)
+                    spec.loader.exec_module(ai)
+                    api_key = ai._get_api_key()
+                    if api_key:
+                        for cycle in ("weekly", "monthly"):
+                            if ai.should_run(cycle):
+                                logger.info(f"[AI] Rodando ciclo {cycle}...")
+                                try:
+                                    ai.run_analysis(cycle, api_key, force=False)
+                                    logger.info(f"[AI] ✅ {cycle} concluído — Telegram enviado")
+                                except Exception as _e:
+                                    logger.error(f"[AI] ❌ {cycle}: {_e}")
+                    else:
+                        logger.debug("[AI] API key não configurada — pulando")
+                else:
+                    logger.debug("[AI] gems_ai_filter.py não encontrado")
+            except Exception as _e_load:
+                logger.debug(f"[AI] erro ao carregar módulo: {_e_load}")
 
         time.sleep(5)
 
