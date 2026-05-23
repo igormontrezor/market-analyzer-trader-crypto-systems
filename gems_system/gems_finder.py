@@ -415,6 +415,9 @@ class GemsFinder:
                         market_cap = coin.get('market_cap')
                         volume = coin.get('total_volume', 0) or 0
 
+                        market_cap_rank = coin.get('market_cap_rank', 0)
+                        coin['market_cap_rank'] = market_cap_rank
+
                         # Ignorar sem market cap
                         if market_cap is None or market_cap <= 0:
                             continue
@@ -471,6 +474,15 @@ class GemsFinder:
                         # Se MC é muito baixo mas volume é altíssimo, pode ser manipulado
                         if market_cap < 15_000_000 and volume > market_cap * 2:
                             print(f"⚠️ {coin['symbol']}: Volume 2x MC - POSSÍVEL MANIPULAÇÃO - atenção")
+
+                        # Cálculo do drawdown desde o ATH
+                        ath = coin.get('ath', 0)
+                        current_price = coin.get('current_price', 0)
+                        if ath and current_price and ath > 0:
+                            drawdown_pct = (ath - current_price) / ath
+                        else:
+                            drawdown_pct = 0.0
+                        coin['drawdown_pct'] = round(drawdown_pct, 4)
 
                         # 🚨 D) FILTRO ANTI-WASH TRADING - Volume alto sem movimento de preço
                         price_change_24h = coin.get('price_change_percentage_24h', 0)
@@ -668,7 +680,9 @@ class GemsFinder:
                 'price_change_30d': gem.get('price_change_percentage_30d', 0),
                 'suspected_wash_trading': gem.get('suspected_wash_trading', False),
                 'momentum': gem.get('momentum', 'low'),
-                'timeframe_classification': gem.get('timeframe_classification', 'INSUFFICIENT_DATA')
+                'timeframe_classification': gem.get('timeframe_classification', 'INSUFFICIENT_DATA'),
+                'drawdown_pct': gem.get('drawdown_pct', 0.0),
+                'market_cap_rank': gem.get('market_cap_rank', 0)
             })
 
         # Ordenar por market cap crescente (menor para maior)
@@ -1432,6 +1446,18 @@ class GemsFinder:
 
         return filtered[:range_config['max_results']]
 
+    def save_early_stage_snapshot(self):
+        """Chama DexScreener e salva CSV de tokens early stage."""
+        try:
+            from dex_scanner import get_early_stage_tokens
+            df = get_early_stage_tokens(limit_per_chain=20)
+            if not df.empty:
+                path = os.path.join(self.cache_dir, "dex_early_stage.csv")
+                df.to_csv(path, index=False)
+                print(f"  🔍 DexScreener: {len(df)} early stage tokens salvos")
+        except Exception as e:
+            print(f"  ⚠️ DexScanner: {e}")
+
     def save_snapshots(self, gems_data: Dict[str, List[Dict[str, Any]]]):
         """
         Salva snapshots para análise histórica
@@ -1707,6 +1733,9 @@ class GemsFinder:
                 gem.setdefault('accumulation_slope',     0.0)
                 gem.setdefault('is_silent_accumulation', False)
                 gem.setdefault('sector',                 'Other')
+                gem.setdefault('drawdown_pct', 0.0)
+                gem.setdefault('market_cap_rank', 0)
+
 
             # ── Colunas de setor (já populadas em find_gems_by_ranges) ───────────
             # (nada extra a fazer aqui — sector já está em cada gem)
@@ -1800,6 +1829,14 @@ class GemsFinder:
                 print(f"\n🏭 RESUMO SETORIAL: {alert} | "
                       f"Setores quentes: {', '.join(hot) if hot else 'nenhum'} | "
                       f"Aquecendo: {', '.join(s['sector'] for s in warm[:3])}")
+            # Salvar setores quentes para uso posterior
+            hot_file = os.path.join(self.cache_dir, 'hot_sectors.json')
+            with open(hot_file, 'w', encoding='utf-8') as f:
+                json.dump({
+                    'hot': sector_result.get('hot_sectors', []),
+                    'warming': sector_result.get('warming_sectors', []),
+                    'timestamp': datetime.now().isoformat()
+                }, f)
 
     def analyze_gems(self, gems: List[Dict[str, Any]]) -> None:
         """Análise detalhada das gems encontradas"""
@@ -1904,6 +1941,9 @@ def test_gems_finder():
 
             # 🏆 Salvar enhanced snapshots com scores (apenas com dados novos)
             finder.save_enhanced_snapshots(gems_data, snapshot_date)
+
+            # 🔍 DexScreener: early stage tokens (pré-CoinGecko)
+            finder.save_early_stage_snapshot()
         else:
             print(f"\n📋 Usando dados existentes - Nenhum snapshot criado")
 

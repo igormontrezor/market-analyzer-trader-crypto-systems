@@ -51,8 +51,10 @@ TRADING_SCAN_SEC   = 60    # trading_system: checar a cada 60s
 GEMS_SCAN_SEC      = 300   # gems/macro: checar a cada 5 min
 MA_SCAN_SEC        = 300   # market_analysis: checar a cada 5 min
 AI_CHECK_SEC       = 3600  # verificar ciclos AI a cada 1h (executa só quando vencido)
+DEX_SCAN_SEC       = 7200  # DexScreener early stage: a cada 2h
 MA_COOLDOWN_MIN    = 120   # 2h cooldown market analysis
 MACRO_REBUILD_SEC  = 300   # visualizer: rebuild macro_timing.json a cada 5 min
+PERF_UPDATE_SEC = 21600   # a cada 6 horas (pode ajustar para 86400 = 24h)
 
 TRADING_COOLDOWN_MIN = 240  # 4h cooldown forex
 GEMS_COOLDOWN_MIN    = 60   # 1h cooldown crypto
@@ -889,6 +891,7 @@ def _gems_signal_type(macro):
 def run_daemon(logger, mode="all"):
     do_trading = mode in ("all","trading")
     do_gems    = mode in ("all","gems")
+    last_perf_update = 0.0
 
     logger.info("=" * 64)
     logger.info("  MONTREZOR DAEMON UNIFICADO")
@@ -932,6 +935,7 @@ def run_daemon(logger, mode="all"):
     prev_ma_sigs   = {}
     last_ma_scan   = 0.0
     last_ai_check  = 0.0
+    last_dex_scan  = 0.0
     ma_state       = AlertState(MA_COOLDOWN_MIN)
     do_ma          = mode in ("all",)
 
@@ -1125,21 +1129,63 @@ def run_daemon(logger, mode="all"):
                     logger.info(f"[MA] ↩ Encerrado: {chart} {direction}")
             prev_ma_sigs = active_ma
 
-        # ── AI GEMS FILTER — roda ciclos automaticamente quando vencidos ──
+        # ── DEX SCANNER — early stage tokens a cada 2h ─────────────────
+        if (now - last_dex_scan) >= DEX_SCAN_SEC:
+            last_dex_scan = now
+            try:
+                import importlib.util as _ilu
+                _gf_candidates = [
+                    os.path.join(PROJECT_DIR, "gems_system", "gems_finder.py"),
+                    os.path.join(PROJECT_DIR, "analysis_system", "gems_finder.py"),
+                ]
+                _gf_path = next((p for p in _gf_candidates if os.path.exists(p)), None)
+                if _gf_path:
+                    _spec = _ilu.spec_from_file_location("gems_finder", _gf_path)
+                    _gf   = _ilu.module_from_spec(_spec)
+                    _spec.loader.exec_module(_gf)
+                    _finder = _gf.GemsFinder()
+                    _finder.save_early_stage_snapshot()
+                    logger.info("[DEX] ✅ Early stage snapshot atualizado")
+            except Exception as _e_dex:
+                logger.debug(f"[DEX] {_e_dex}")
+
+        # ── AI GEMS FILTER — carregar módulo uma única vez ─────────────────────
         if (now - last_ai_check) >= AI_CHECK_SEC:
             last_ai_check = now
+
             try:
                 import importlib.util
+                # Lista de caminhos possíveis para gems_ai_filter.py
                 _ai_candidates = [
                     os.path.join(PROJECT_DIR, "gems_system", "gems_ai_filter.py"),
                     os.path.join(PROJECT_DIR, "analysis_system", "gems_ai_filter.py"),
                     os.path.join(PROJECT_DIR, "gems_ai_filter.py"),
                 ]
                 _ai_path = next((p for p in _ai_candidates if os.path.exists(p)), None)
-                if _ai_path:
+
+                if _ai_path is None:
+                    logger.debug("[AI] gems_ai_filter.py não encontrado")
+                else:
+                    # Carregar módulo uma única vez
                     spec = importlib.util.spec_from_file_location("gems_ai_filter", _ai_path)
-                    ai   = importlib.util.module_from_spec(spec)
+                    ai = importlib.util.module_from_spec(spec)
                     spec.loader.exec_module(ai)
+
+                    # 1. Atualizar performance (somente se passaram PERF_UPDATE_SEC)
+                    # Usar um atributo de função para persistir o último tempo
+                    if not hasattr(run_daemon, "_last_perf_update"):
+                        run_daemon._last_perf_update = 0.0
+
+                    if (now - run_daemon._last_perf_update) >= PERF_UPDATE_SEC:
+                        run_daemon._last_perf_update = now
+                        try:
+                            updated = ai.update_all_pending_performances()
+                            if updated > 0:
+                                logger.info(f"[PERF] {updated} performances atualizadas automaticamente")
+                        except Exception as e:
+                            logger.error(f"[PERF] erro ao atualizar performance: {e}")
+
+                    # 2. Rodar ciclos semanais/mensais (se vencidos)
                     api_key = ai._get_api_key()
                     if api_key:
                         for cycle in ("weekly", "monthly"):
@@ -1148,14 +1194,13 @@ def run_daemon(logger, mode="all"):
                                 try:
                                     ai.run_analysis(cycle, api_key, force=False)
                                     logger.info(f"[AI] ✅ {cycle} concluído — Telegram enviado")
-                                except Exception as _e:
-                                    logger.error(f"[AI] ❌ {cycle}: {_e}")
+                                except Exception as e:
+                                    logger.error(f"[AI] ❌ {cycle}: {e}")
                     else:
                         logger.debug("[AI] API key não configurada — pulando")
-                else:
-                    logger.debug("[AI] gems_ai_filter.py não encontrado")
-            except Exception as _e_load:
-                logger.debug(f"[AI] erro ao carregar módulo: {_e_load}")
+
+            except Exception as e:
+                logger.error(f"[AI] erro ao carregar módulo: {e}")
 
         time.sleep(5)
 

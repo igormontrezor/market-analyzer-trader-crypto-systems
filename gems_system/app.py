@@ -2340,13 +2340,13 @@ with tab7:
                 + " &nbsp;|&nbsp; ".join(f"<span style='color:#8b949e'>{a}</span>" for a in avoid)
                 + "</div>", unsafe_allow_html=True)
 
-    tab_w, tab_m, tab_data = st.tabs(["📅 Top 10 Semanal", "🏆 Top 3 Mensal", "📊 Dados Brutos"])
+    tab_w, tab_m, tab_data, tab_dex = st.tabs(["📅 Top 10 Semanal", "🏆 Top 3 Mensal", "📊 Dados Brutos", "🔬 DEX Early Stage"])
     with tab_w:
         _render_result(weekly_result, "Top 10 Semanal", 10)
     with tab_m:
         _render_result(monthly_result, "Top 3 Mensal", 3)
     with tab_data:
-        dt1, dt2 = st.tabs(["📊 Dados Agregados", "🕐 Histórico de Runs"])
+        dt1, dt2, dt3 = st.tabs(["📊 Dados Agregados", "🕐 Histórico de Runs", "🔬 DEX Early Stage"])
         with dt1:
             st.markdown("#### Dados Agregados dos Snapshots")
             try:
@@ -2378,6 +2378,66 @@ with tab7:
             except Exception as e:
                 st.error(f"Erro: {e}")
 
+        with dt3:
+            st.markdown("#### 🔬 DEX Early Stage — DexScreener")
+            st.markdown(
+                "<p style='color:#8b949e;font-size:12px;margin-top:-8px'>"
+                "Tokens em estágio inicial detectados pelo dex_scanner.py. "
+                "Atualizado a cada 2h pelo daemon. O Claude inclui esses dados "
+                "na próxima análise semanal automaticamente.</p>",
+                unsafe_allow_html=True)
+            try:
+                _dex_path = os.path.join("data", "dex_early_stage.csv")
+                if not os.path.exists(_dex_path):
+                    st.info("Nenhum dado DEX ainda. O daemon gera o arquivo a cada 2h, "
+                            "ou rode o Gems Finder manualmente.")
+                else:
+                    _dex_df = pd.read_csv(_dex_path)
+                    if _dex_df.empty:
+                        st.info("Arquivo DEX vazio.")
+                    else:
+                        # Badge de última atualização
+                        import datetime as _dt
+                        _mtime = _dt.datetime.fromtimestamp(os.path.getmtime(_dex_path))
+                        _age_min = int((datetime.now() - _mtime).total_seconds() / 60)
+                        _age_lbl = f"{_age_min}min atrás" if _age_min < 60 else f"{_age_min//60}h atrás"
+                        st.markdown(
+                            f"<div style='background:#161b22;border:1px solid #30363d;"
+                            f"border-radius:6px;padding:6px 12px;font-size:11px;color:#8b949e;"
+                            f"display:inline-block;margin-bottom:10px'>"
+                            f"📡 {len(_dex_df)} tokens | Atualizado {_age_lbl}</div>",
+                            unsafe_allow_html=True)
+
+                        # Colunas úteis
+                        _show = [c for c in ["symbol","chain","price_usd","price_change_24h",
+                                              "liquidity_usd","volume_24h_usd","buys_24h",
+                                              "sells_24h","buy_ratio","dex_score","pair_url"]
+                                 if c in _dex_df.columns]
+                        st.dataframe(
+                            _dex_df[_show].head(100).reset_index(drop=True),
+                            use_container_width=True)
+
+                        # Alerta: tokens com buy_ratio > 0.7 e volume alto
+                        if "buy_ratio" in _dex_df.columns and "volume_24h_usd" in _dex_df.columns:
+                            _hot = _dex_df[
+                                (_dex_df["buy_ratio"] > 0.70) &
+                                (_dex_df["volume_24h_usd"] > 50000)
+                            ].head(5)
+                            if not _hot.empty:
+                                st.markdown(
+                                    "<div style='background:#0f2a1a;border:1px solid #238636;"
+                                    "border-radius:6px;padding:8px 14px;font-size:12px;"
+                                    "color:#3fb950;margin-top:8px'>"
+                                    "🔥 <b>Tokens quentes</b> (buy_ratio > 70% + vol > $50k):<br>"
+                                    + " &nbsp;|&nbsp; ".join(
+                                        f"<b>{r['symbol']}</b> chain={r.get('chain','?')} "
+                                        f"ratio={r.get('buy_ratio',0):.0%}"
+                                        for _, r in _hot.iterrows())
+                                    + "</div>",
+                                    unsafe_allow_html=True)
+            except Exception as _e:
+                st.error(f"Erro ao carregar dados DEX: {_e}")
+
     # ── Performance Tracker ──────────────────────────────────────────────────
     st.markdown("---")
     with st.expander("📈 Performance Tracker — Registrar resultado das picks", expanded=False):
@@ -2404,12 +2464,11 @@ with tab7:
                 with col_b:
                     if st.button("✅", key=f"perf_btn_{p['symbol']}",
                                   help="Registrar performance"):
-                        if price_now > 0:
-                            _ai.register_performance(
-                                "weekly", p["symbol"], p["rank"],
-                                float(p.get("composite_score", 0)),
-                                price_now)
-                            st.success(f"{p['symbol']} registrado!")
+                        price_at_pick = p.get("price_usd", 0)
+                        if price_at_pick <= 0:
+                            st.warning(f"Preço de referência não disponível para {p['symbol']}. Rode a análise novamente.")
+                        else:
+                            _ai.register_performance("weekly", p["symbol"], p["rank"], price_at_pick, price_now)
 
         if perf_data:
             st.markdown("**Histórico de performance:**")

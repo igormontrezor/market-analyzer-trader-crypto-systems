@@ -21,7 +21,7 @@ import requests
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, List
 
 # ── Configuração ──────────────────────────────────────────────────────────────
 def _find_data_dir() -> str:
@@ -56,6 +56,105 @@ MONTHLY_LOOKBACK_DAYS = 30
 # Claude: usa claude-haiku-4-5 (gratuito via API free tier, suficiente para análise de texto)
 CLAUDE_MODEL = "claude-sonnet-4-5"
 CLAUDE_API   = "https://api.anthropic.com/v1/messages"
+
+
+# ════════════════════════════════════════════════════════════════════════════════
+# UTILITÁRIOS PARA FUNDING SQUEEZE
+# ════════════════════════════════════════════════════════════════════════════════
+
+_COIN_ID_CACHE = {}
+_PRICE_CACHE = {}
+
+def _get_coin_id(symbol: str) -> Optional[str]:
+    """Retorna o coin_id da CoinGecko para um símbolo (com cache)."""
+    sym_up = symbol.upper()
+    if sym_up in _COIN_ID_CACHE:
+        return _COIN_ID_CACHE[sym_up]
+    try:
+        url = f"https://api.coingecko.com/api/v3/search?query={symbol.lower()}"
+        r = requests.get(url, timeout=8)
+        if r.status_code == 200:
+            data = r.json()
+            coins = data.get('coins', [])
+            if coins:
+                coin_id = coins[0]['id']
+                _COIN_ID_CACHE[sym_up] = coin_id
+                return coin_id
+    except Exception:
+        pass
+    _COIN_ID_CACHE[sym_up] = None
+    return None
+
+def _get_historical_lows(coin_id: str, days: int = 5) -> List[float]:
+    """
+    Retorna lista de preços mínimos (low) diários dos últimos `days` dias.
+    Usa cache de 1 hora.
+    """
+    cache_key = f"{coin_id}_lows_{days}"
+    now = datetime.now()
+    if cache_key in _PRICE_CACHE:
+        ts, lows = _PRICE_CACHE[cache_key]
+        if (now - ts).total_seconds() < 3600:  # cache 1h
+            return lows
+    try:
+        url = f"https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart"
+        params = {"vs_currency": "usd", "days": days, "interval": "daily"}
+        r = requests.get(url, params=params, timeout=10)
+        if r.status_code == 200:
+            data = r.json()
+            # market_chart retorna listas de [timestamp, valor] para 'prices', 'market_caps', 'total_volumes'
+            # Para lows, usamos 'prices' (apenas preço de fechamento) – a CoinGecko não fornece low diretamente no endpoint gratuito.
+            # Alternativa: usar o endpoint /coins/{id}/ohlc?days=5 (requer API pro?). Como fallback, usamos o preço de fechamento.
+            # Para detectar higher lows, o fechamento já é razoável. Se precisar de low real, seria necessário outro endpoint.
+            # Vamos usar 'prices' (preço de fechamento diário) como proxy.
+            prices = data.get('prices', [])
+            if prices:
+                lows = [p[1] for p in prices[-days:]]  # últimos `days` dias
+                _PRICE_CACHE[cache_key] = (now, lows)
+                return lows
+    except Exception:
+        pass
+    return []
+
+def _check_funding_negative_last_2_days() -> bool:
+    """
+    Retorna True se os últimos 2 dias completos (cada dia inteiro) tiverem funding rate médio negativo.
+    """
+    try:
+        hist_path = os.path.join(DATA_DIR, "macro", "funding_rate_history.csv")
+        if not os.path.exists(hist_path):
+            macro = _load_macro()
+            funding = float(macro.get("funding_rate", 0.01))
+            return funding < 0
+        df = pd.read_csv(hist_path, parse_dates=['timestamp'])
+        if len(df) < 2:
+            return False
+        df['date'] = df['timestamp'].dt.date
+        daily_negative = df.groupby('date')['funding_rate'].mean() < 0
+        last_2 = daily_negative.tail(2)
+        if len(last_2) < 2:
+            return False
+        return last_2.all()
+    except Exception:
+        return False
+
+def _has_higher_lows(symbol: str) -> bool:
+    """
+    Verifica se a moeda está formando 'higher lows' nos últimos 3 dias.
+    Retorna True se low[-3] < low[-2] < low[-1] (mínimas sequencialmente mais altas).
+    """
+    try:
+        coin_id = _get_coin_id(symbol)
+        if not coin_id:
+            return False
+        lows = _get_historical_lows(coin_id, days=5)
+        if len(lows) < 3:
+            return False
+        # Pega os últimos 3 lows
+        last_3 = lows[-3:]
+        return last_3[0] < last_3[1] < last_3[2]
+    except Exception:
+        return False
 
 
 # ════════════════════════════════════════════════════════════════════════════════
@@ -96,6 +195,16 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
     Agrega múltiplas aparições da mesma moeda.
     Pondera scores mais recentes com peso maior (decaimento exponencial).
     """
+    HOT_SECTORS = []
+    try:
+        hot_file = os.path.join(DATA_DIR, 'hot_sectors.json')
+        if os.path.exists(hot_file):
+            with open(hot_file) as f:
+                hdata = json.load(f)
+                if (datetime.now() - datetime.fromisoformat(hdata['timestamp'])).days < 7:
+                    HOT_SECTORS = hdata.get('hot', [])
+    except:
+        pass
     if full.empty:
         return pd.DataFrame()
 
@@ -103,7 +212,7 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
     full["_weight"] = np.exp(-full["_file_age_days"] / 3.0)  # meia-vida de 3 dias
 
     score_cols = [c for c in ["final_score","ratio","accumulation_score","social_score",
-                               "consistency_score","market_cap","volume_24h","change_24h"]
+                               "consistency_score","market_cap","volume_24h","change_24h", "drawdown_pct"]
                   if c in full.columns]
 
     agg = {}
@@ -126,6 +235,74 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
         if "name" in grp.columns:
             row["name"] = grp.sort_values("_file_age_days")["name"].iloc[0]
 
+        # ── Ranking change (7 dias) ──────────────────────────────
+        # Coletar pares (file_age_days, rank) para este símbolo
+        ranks = []
+        for _, r in grp.iterrows():
+            rank = r.get('market_cap_rank', 0)
+            if rank is not None and rank > 0:
+                age = r['_file_age_days']
+                ranks.append((age, rank))
+        if ranks:
+            # Ordenar por idade (menor = mais recente)
+            ranks.sort(key=lambda x: x[0])
+            newest_rank = ranks[0][1]
+            oldest_rank = ranks[-1][1]
+            rank_change = oldest_rank - newest_rank   # positivo = subiu no ranking
+            row['rank_change_7d'] = rank_change
+            row['rank_up'] = rank_change > 10
+        else:
+            row['rank_change_7d'] = 0
+            row['rank_up'] = False
+
+                # ── Tendência de volume (VOL_UP) ──────────────────────────────
+        # Coletar volumes com suas idades (mais recente = menor _file_age_days)
+        volume_data = []
+        for _, r in grp.iterrows():
+            vol = r.get('total_volume', 0)
+            if vol > 0:
+                age = r['_file_age_days']
+                volume_data.append((age, vol))
+        if len(volume_data) >= 3:  # mínimo 3 pontos para regressão
+            # Ordenar por idade (mais recente primeiro)
+            volume_data.sort(key=lambda x: x[0])
+            # Pegar até 5 dias mais recentes
+            recent = volume_data[:5]
+            vols = [v for _, v in recent]
+            n = len(vols)
+            # Regressão linear simples: volume ~ posição (0..n-1)
+            x = list(range(n))
+            x_mean = sum(x) / n
+            y_mean = sum(vols) / n
+            num = sum((x[i] - x_mean) * (vols[i] - y_mean) for i in range(n))
+            den = sum((x[i] - x_mean) ** 2 for i in range(n))
+            slope = num / den if den != 0 else 0
+            # Média histórica do símbolo (todos os pontos)
+            all_vols = [v for _, v in volume_data]
+            historical_mean = sum(all_vols) / len(all_vols)
+            recent_mean = y_mean
+            if slope > 0 and recent_mean > historical_mean:
+                row['vol_up'] = True
+            else:
+                row['vol_up'] = False
+        else:
+            row['vol_up'] = False
+
+                # ── Narrativa quente (HOT_NARRATIVE) ──────────────────────────────
+        # Determinar setor mais frequente para este símbolo (moda)
+        sector_vals = [r.get('sector', '') for _, r in grp.iterrows() if r.get('sector')]
+        if sector_vals:
+            from collections import Counter
+            sector = Counter(sector_vals).most_common(1)[0][0]
+        else:
+            sector = ''
+        # Setor quente (dinâmico, carregado do hot_sectors.json)
+        is_hot = (sector in HOT_SECTORS)
+        # Opcional: lista fixa de símbolos conhecidos (adicione se quiser)
+        # HOT_SYMBOLS = {'FET', 'AGIX', 'RNDR', 'TAO', 'HNT', 'ONDO', 'GALA'}
+        # is_hot = is_hot or (sym.upper() in HOT_SYMBOLS)
+        row['hot_narrative'] = is_hot
+
         agg[sym] = row
 
     df_agg = pd.DataFrame(list(agg.values()))
@@ -145,6 +322,28 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
     # Normaliza pelo peso real disponível (evita inflação quando colunas faltam)
     if total_w > 0:
         df_agg["composite_score"] = ((df_agg["composite_score"] / total_w)).clip(0, 100).round(2)
+
+        # Bónus por tendência de volume crescente
+    if 'vol_up' in df_agg.columns:
+        df_agg['composite_score'] += df_agg['vol_up'].astype(float) * 3
+        df_agg['composite_score'] = df_agg['composite_score'].clip(0, 100)
+
+    # Bónus por subida no ranking (>10 posições)
+    if 'rank_up' in df_agg.columns:
+        df_agg['composite_score'] += df_agg['rank_up'].astype(float) * 5
+        df_agg['composite_score'] = df_agg['composite_score'].clip(0, 100)
+
+    # Bônus por drawdown > 70% (potencial de recuperação explosiva)
+    if 'drawdown_pct' in df_agg.columns:
+        # Bônus de 0 a 10 pontos, linear entre 0.7 e 1.0
+        bonus = (df_agg['drawdown_pct'].clip(0.7, 1.0) - 0.7) / 0.3 * 10
+        df_agg["composite_score"] += bonus.fillna(0)
+        df_agg["composite_score"] = df_agg["composite_score"].clip(0, 100)
+
+        # Bónus por narrativa quente (HOT_NARRATIVE)
+    if 'hot_narrative' in df_agg.columns:
+        df_agg['composite_score'] += df_agg['hot_narrative'].astype(float) * 4
+        df_agg['composite_score'] = df_agg['composite_score'].clip(0, 100)
 
     # Bônus por consistência de aparições
     appearances_max = df_agg["appearances"].max()
@@ -405,7 +604,8 @@ def _get_api_key() -> str:
 
 def _build_prompt(df_top: pd.DataFrame, macro: dict, confirmed: list,
                   watchlist: list, cycle: str, prev_top10: list,
-                  perf_txt: str = "", btc_ctx: dict = None) -> tuple:
+                  perf_txt: str = "", btc_ctx: dict = None,
+                  dex_df=None) -> tuple:
     """
     Retorna (system_prompt, user_prompt).
     cycle: "weekly" | "monthly"
@@ -433,6 +633,10 @@ def _build_prompt(df_top: pd.DataFrame, macro: dict, confirmed: list,
         if row["symbol"] in watchlist: extra.append("IN_WATCHLIST")
         # Flags adicionais
         if row.get("smart_money_div"): extra.append("SMART_MONEY_DIV")
+        if row.get("rank_up"): extra.append("RANK_UP")
+        if row.get("vol_up"): extra.append("VOL_UP")
+        if row.get("hot_narrative"): extra.append("HOT_NARRATIVE")
+        if row.get("funding_squeeze"): extra.append("FUNDING_SQUEEZE")
         trend_val = int(row.get("weekly_trend", 0))
         trend_lbl = {2:"TREND_UP↑↑", 1:"TREND_STABLE", -1:"TREND_FADING↓"}.get(trend_val, "")
         if trend_lbl: extra.append(trend_lbl)
@@ -440,6 +644,7 @@ def _build_prompt(df_top: pd.DataFrame, macro: dict, confirmed: list,
         consist = float(row.get("consistency_score", 0))
         rows.append(
             f"- {row['symbol']:<12} score={row.get('composite_score',0):.1f} "
+            f"drawdown={row.get('drawdown_pct',0):.2f} "
             f"mc=${row.get('market_cap',0)/1e6:.1f}M "
             f"ratio={row.get('ratio',0):.2f} "
             f"acum={row.get('accumulation_score',0):.1f} "
@@ -498,6 +703,11 @@ Status: {regime_txt} | Funding: {funding:.4f}% | Weekly Buy: {weekly_buy}
 composite_score=score combinado | ratio=volume/mcap (CENTRAL) | acum=acumulação silenciosa
 social=momentum público (BAIXO+score alto=SMART_MONEY_DIV) | TREND_UP=nova nos scans
 IS_GOLD=pullback+volume | CONFIRMED_GEM=múltiplos scans | consist=consistência histórica
+drawdown=queda desde o ATH (0=ATH, 0.7=70% abaixo, 0.9=90% abaixo) – >0.7 = potencial explosivo
+RANK_UP = subiu >10 posições no ranking de market cap em 7 dias (entrada de capital)
+VOL_UP = volume total em tendência de alta nos últimos 5 dias (acumulação silenciosa)
+HOT_NARRATIVE = setor identificado como quente pelo sistema (ex: AI, DePIN, RWA, GameFi, etc.)
+FUNDING_SQUEEZE = funding BTC negativo 3 dias + higher lows (potencial short squeeze)
 
 === TOP {len(rows)} CANDIDATAS ===
 {data_str}
@@ -511,7 +721,12 @@ IS_GOLD=pullback+volume | CONFIRMED_GEM=múltiplos scans | consist=consistência
 === MISSÃO: {cycle_txt} ===
 {mission}
 Prioridades: 1.SMART_MONEY_DIV+ratio+TREND_UP 2.IS_GOLD+acum 3.MCap<$30M 4.ciclo={cycle_pos}
-{"5. CAPITULATION LOCK: preferir LOW RISK." if cap_lock else ""}
+{ "5. CAPITULATION LOCK: preferir LOW RISK.\n" if cap_lock else "" }
+Dica adicional: Em ciclo BUY_CONFIRMED ou NEUTRO, dê peso extra para moedas com drawdown > 0.7 (potencial de recuperação explosiva).
+Dica adicional: Dê atenção extra a moedas com RANK_UP combinado com ratio alto (sinal de entrada institucional).
+Dica adicional: Moedas com VOL_UP + SMART_MONEY_DIV indicam acumulação silenciosa antes do movimento.
+Dica adicional: Priorize moedas com HOT_NARRATIVE + SMART_MONEY_DIV (narrativa quente + acumulação silenciosa) em ciclos de alta.
+Dica adicional: Moedas com FUNDING_SQUEEZE + SMART_MONEY_DIV indicam possível explosão de alta por aperto de shorts.
 
 Retorne APENAS este JSON:
 {{
@@ -536,6 +751,28 @@ Retorne APENAS este JSON:
   "smart_money_highlight": "símbolo SMART_MONEY_DIV mais promissor",
   "avoid": ["motivo curto"]
 }}"""
+
+    # ── Seção DexScreener (early stage, pré-CoinGecko) ──────────────────────
+    if dex_df is not None and not dex_df.empty:
+        dex_rows = []
+        for _, row in dex_df.head(15).iterrows():
+            dex_rows.append(
+                f"- {str(row.get('symbol','?')):<12} "
+                f"liq=${float(row.get('liquidity_usd',0))/1000:.0f}K "
+                f"vol=${float(row.get('volume_24h_usd',0))/1000:.0f}K "
+                f"buys={int(row.get('buys_24h',0))} "
+                f"sells={int(row.get('sells_24h',0))} "
+                f"ratio={float(row.get('buy_ratio',0)):.2f} "
+                f"chain={row.get('chain','?')}")
+        dex_header = "\n\n=== EARLY STAGE — DexScreener (pré-CoinGecko) ===\n"
+        dex_footer = ("\nPriorize tokens com buy_ratio > 0.6, liquidez crescente e "
+                      "ciclo BTC em BUY_CONFIRMED. Potencial x10-x100 mas risco HIGH obrigatório.\n")
+        user += dex_header + "\n".join(dex_rows) + dex_footer
+        system = system.replace(
+            "Retorna APENAS JSON válido, sem texto extra.",
+            "Retorna APENAS JSON válido, sem texto extra.\n"
+            "- EARLY STAGE (DexScreener): tokens <48h, alta atividade compra, pré-listing. "
+            "Potencial x10-x100. Sempre marque como HIGH risk.")
 
     return system, user
 
@@ -665,6 +902,19 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
     confirmed = _load_confirmed_gems()
     watchlist = _load_watchlist()
 
+    # ── Detectar Funding Squeeze para as top 30 candidatas ─────────────
+    funding_negative = _check_funding_negative_last_2_days()   # ← antes era _check_funding_negative_last_3_days()
+    if funding_negative:
+        agg_df['funding_squeeze'] = False
+        for idx in agg_df.head(30).index:
+            sym = agg_df.loc[idx, 'symbol']
+            if _has_higher_lows(sym):
+                agg_df.loc[idx, 'funding_squeeze'] = True
+                agg_df.loc[idx, 'composite_score'] += 4
+                agg_df.loc[idx, 'composite_score'] = agg_df.loc[idx, 'composite_score'].clip(0, 100)
+    else:
+        agg_df['funding_squeeze'] = False
+
     # Para análise mensal, usar top 10 semanal como candidatas
     _monthly_filtered = False
     if cycle == "monthly" and results.get("weekly"):
@@ -690,12 +940,29 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
     # Contexto BTC — cache 1h, silencioso se offline
     btc_ctx = _fetch_btc_context()
 
+    # Early stage DexScreener
+    dex_path = os.path.join(DATA_DIR, "dex_early_stage.csv")
+    try:
+        import pandas as _pd_dex
+        dex_df = _pd_dex.read_csv(dex_path) if os.path.exists(dex_path) else _pd_dex.DataFrame()
+    except Exception:
+        dex_df = __import__("pandas").DataFrame()
+
     # Construir system+user e chamar Claude
     system_prompt, user_prompt = _build_prompt(
-        agg_df, macro, confirmed, watchlist, cycle, prev_top, perf_txt, btc_ctx)
+        agg_df, macro, confirmed, watchlist, cycle, prev_top, perf_txt, btc_ctx, dex_df)
     result = _call_claude(system_prompt, user_prompt, api_key)
     if result_warning:
         result["macro_note"] = result_warning + " " + result.get("macro_note","")
+
+    if result and "top_picks" in result:
+        for pick in result["top_picks"]:
+            sym = pick.get("symbol")
+            if sym:
+                # Busca preço atual via CoinGecko (usa a mesma função que já existe)
+                price = _fetch_coingecko_price(sym)
+                pick["price_usd"] = price if price > 0 else None
+                pick["price_date"] = datetime.now().isoformat()
 
     # Salvar resultado
     results[cycle] = result
@@ -740,6 +1007,50 @@ def _fetch_coingecko_price(symbol: str) -> float:
         pass
     return 0.0
 
+def update_all_pending_performances() -> int:
+    """
+    Varre todos os ciclos (weekly, monthly) e, para cada pick que ainda não tem
+    performance registrada e cuja data de análise é anterior a 7/30 dias,
+    busca o preço atual e registra.
+    Retorna o número de registros atualizados.
+    """
+    results = _load_results()
+    perf    = _load_performance()
+    perf_keys = {(p["symbol"], p["date"]) for p in perf}
+    now = datetime.now()
+    updated = 0
+
+    for cycle in ("weekly", "monthly"):
+        result = results.get(cycle)
+        if not result:
+            continue
+        # Data da análise
+        gen_at = result.get("generated_at", "")
+        if not gen_at:
+            continue
+        try:
+            pick_date = datetime.fromisoformat(gen_at.replace(" ", "T")).date()
+        except:
+            continue
+
+        # Verificar se já passaram os dias necessários para avaliar
+        days_needed = 7 if cycle == "weekly" else 30
+        if (now.date() - pick_date).days < days_needed:
+            continue  # ainda não é hora de avaliar
+
+        for pick in result.get("top_picks", []):
+            sym = pick.get("symbol", "")
+            price_at_pick = pick.get("price_usd")
+            if not sym or not price_at_pick:
+                continue
+            if (sym, str(pick_date)) in perf_keys:
+                continue
+            price_now = _fetch_coingecko_price(sym)
+            if price_now > 0:
+                register_performance(cycle, sym, pick.get("rank", 0), price_at_pick, price_now)
+                perf_keys.add((sym, str(pick_date)))
+                updated += 1
+    return updated
 
 def auto_update_performance() -> int:
     """
@@ -759,11 +1070,14 @@ def auto_update_performance() -> int:
         pick_date = result.get("generated_at", "")[:10]
         for pick in result.get("top_picks", []):
             sym = pick.get("symbol", "")
-            if not sym or (sym, pick_date) in perf_keys:
+            price_at_pick = pick.get("price_usd")  # preço salvo no momento da análise
+            if not sym or not price_at_pick or price_at_pick <= 0:
+                continue
+            if (sym, pick_date) in perf_keys:
                 continue
             price_now = _fetch_coingecko_price(sym)
             if price_now > 0:
-                register_performance(cycle, sym, pick.get("rank", 0), 0.0, price_now)
+                register_performance(cycle, sym, pick.get("rank", 0), price_at_pick, price_now)
                 perf_keys.add((sym, pick_date))
                 updated += 1
     return updated
