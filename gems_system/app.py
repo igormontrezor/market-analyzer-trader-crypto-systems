@@ -1,17 +1,18 @@
+import sys
+import io
 import streamlit as st
 import pandas as pd
 import os
 import glob
 import json
 import subprocess
-import sys
 import requests
 from collections import Counter
 from datetime import datetime
-import time
 import sys
 import webbrowser
 import time
+from utils import get_exhaustion_status
 from streamlit_autorefresh import st_autorefresh
 
 
@@ -96,57 +97,6 @@ def maybe_telegram_macro_gems(m):
     except Exception:
         pass
     st.session_state["gems_macro_telegram_last"] = sig
-
-
-def get_exhaustion_status(row):
-    """
-    Identifica se a moeda está 'esticada' baseada em MC alto + Desaceleração
-    Usa as mesmas chaves que o GemsFinder já gera.
-    """
-    try:
-        # Recupera o Market Cap da linha atual
-        mc = float(row.get('market_cap', 0))
-
-        # O GemsFinder salva o timeframe_analysis como dicionário Python no CSV
-        analysis_raw = row.get('timeframe_analysis', '{}')
-
-        # Tratar diferentes formatos possíveis
-        if isinstance(analysis_raw, str):
-            # Se for string, tentar fazer parse JSON
-            try:
-                analysis = json.loads(analysis_raw.replace("'", '"'))
-            except json.JSONDecodeError:
-                # Se falhar, pode ser dicionário Python como string
-                try:
-                    # Avaliar a string como dicionário Python
-                    analysis = eval(analysis_raw)
-                except:
-                    # Se tudo falhar, usar dicionário vazio
-                    analysis = {}
-        elif isinstance(analysis_raw, dict):
-            # Se já for dicionário, usar diretamente
-            analysis = analysis_raw
-        else:
-            # Se for None ou outro tipo, usar dicionário vazio
-            analysis = {}
-
-        # Pega a tendência de aceleração (campo 'trend' do gems_finder.py)
-        trend = analysis.get('acceleration', {}).get('trend', 'stable')
-
-        # LÓGICA DE EXAUSTÃO: MC alto (> 35M) e tendência perdendo força
-        if mc > 35_000_000 and trend == 'decelerating':
-            return "⚠️ ESTICADA"
-        elif trend == 'accelerating':
-            return "🚀 ACELERANDO"
-        elif trend == 'decelerating':
-            return "📉 DESACELERANDO"
-
-        return "➡️ ESTÁVEL"
-    except:
-        return "—"
-
-# 1. CONFIGURAÇÃO DA PÁGINA (ESTILO PROFISSIONAL/DARK)
-st.set_page_config(page_title="MONTREZOR - Mesa de Operações", layout="wide", page_icon="💎")
 
 # --- ADIÇÃO: NAVEGAÇÃO AUTOMÁTICA ---
 with st.sidebar:

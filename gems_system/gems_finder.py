@@ -26,6 +26,15 @@ from accumulation_sector import (
 if sys.stdout.encoding != 'utf-8':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
+
+def _get_project_data_dir() -> str:
+    """
+    Retorna o diretório 'data' na raiz do projeto (dois níveis acima deste arquivo).
+    Mesma lógica usada originalmente em save_early_stage_snapshot.
+    """
+    base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base, "data")
+
 class GemsFinder:
 
     CACHE_FILE = "gems_cache.json"
@@ -104,12 +113,14 @@ class GemsFinder:
         """Retorna volatilidade diária (desvio padrão dos retornos)."""
         prices = self._get_historical_prices(symbol, days)
         if not prices or len(prices) < 5:
+            print(f"⚠️ Volatility: dados insuficientes para {symbol}")
             return None
         returns = []
         for i in range(1, len(prices)):
             if prices[i-1] > 0:
                 returns.append((prices[i] - prices[i-1]) / prices[i-1])
         if not returns:
+            print(f"⚠️ Volatility: retornos vazios para {symbol}")
             return None
         return float(pd.Series(returns).std())
 
@@ -1528,13 +1539,12 @@ class GemsFinder:
             from dex_scanner import get_early_stage_tokens
             df = get_early_stage_tokens(limit_per_chain=20)
             if not df.empty:
-                root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-                data_dir = os.path.join(root_dir, "data")
+                # Usar o diretório de cache do próprio GemsFinder (gems_system/data)
+                data_dir = self.cache_dir
                 os.makedirs(data_dir, exist_ok=True)
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 path_timestamp = os.path.join(data_dir, f"dex_early_stage_{timestamp}.csv")
                 df.to_csv(path_timestamp, index=False)
-                # também salva com nome fixo para o app.py
                 path_fixed = os.path.join(data_dir, "dex_early_stage.csv")
                 df.to_csv(path_fixed, index=False)
                 print(f"  🔍 DexScreener: {len(df)} early stage tokens salvos em {path_timestamp} e {path_fixed}")
@@ -1806,130 +1816,121 @@ class GemsFinder:
 
         final_gems = list(unique_gems.values())
 
-        if final_gems:
-            # 🏆 Adicionar contadores de persistência cumulativa
+        try:
             from persistence_tracker import PersistenceTracker
             tracker = PersistenceTracker()
             final_gems = tracker.update_persistence_counts(final_gems)
-
-            # 🏆 Ordenação FINAL após mesclagem de todos os ranges
-            final_gems.sort(key=lambda x: (
-                x.get('is_confirmed_leader', False),  # Líderes primeiro
-                x.get('persistence_days', 0),          # Mais persistência depois
-                x['final_score']                        # Score por último
-            ), reverse=True)
-
-            # ── Colunas de acumulação silenciosa ─────────────────────────────────
+        except ImportError:
             for gem in final_gems:
-                gem.setdefault('accumulation_score',     0.0)
-                gem.setdefault('accumulation_signal',    'none')
-                gem.setdefault('accumulation_slope',     0.0)
-                gem.setdefault('is_silent_accumulation', False)
-                gem.setdefault('sector',                 'Other')
-                gem.setdefault('drawdown_pct', 0.0)
-                gem.setdefault('market_cap_rank', 0)
+                gem.setdefault('persistence_days', 0)
 
+        # 🏆 Ordenação FINAL (sempre executada)
+        final_gems.sort(key=lambda x: (
+            x.get('is_confirmed_leader', False),  # Líderes primeiro
+            x.get('persistence_days', 0),          # Mais persistência depois
+            x['final_score']                        # Score por último
+        ), reverse=True)
 
-            # ── Colunas de setor (já populadas em find_gems_by_ranges) ───────────
-            # (nada extra a fazer aqui — sector já está em cada gem)
+        # ── Colunas de acumulação silenciosa e eventos especiais ─────────────
+        for gem in final_gems:
+            # Colunas de acumulação
+            gem.setdefault('accumulation_score', 0.0)
+            gem.setdefault('accumulation_signal', 'none')
+            gem.setdefault('accumulation_slope', 0.0)
+            gem.setdefault('is_silent_accumulation', False)
+            gem.setdefault('sector', 'Other')
+            gem.setdefault('drawdown_pct', 0.0)
+            gem.setdefault('market_cap_rank', 0)
 
-            # 🎯 Enriquecer com colunas de eventos especiais
-            for gem in final_gems:
-                # 📊 Persistência (referência visual)
-                # ✅ Parse timeframe_analysis se for string
-                timeframe_analysis = gem.get('timeframe_analysis', '{}')
-                if isinstance(timeframe_analysis, str):
-                    import json
-                    try:
-                        timeframe_analysis = json.loads(timeframe_analysis)
-                    except:
-                        timeframe_analysis = {}
-                persistence_days = timeframe_analysis.get('medium_term', {}).get('persistence_days', 0)
-                gem['persistence_days'] = persistence_days
+            # Persistência (referência visual)
+            timeframe_analysis = gem.get('timeframe_analysis', '{}')
+            if isinstance(timeframe_analysis, str):
+                import json
+                try:
+                    timeframe_analysis = json.loads(timeframe_analysis)
+                except:
+                    timeframe_analysis = {}
+            persistence_days = timeframe_analysis.get('medium_term', {}).get('persistence_days', 0)
+            gem['persistence_days'] = persistence_days
 
-                # 🏆 Líder confirmado (>7 dias)
-                gem['is_confirmed_leader'] = gem.get('timeframe_classification') == 'LEADER_CONFIRMED'
+            # Líder confirmado (>7 dias)
+            gem['is_confirmed_leader'] = gem.get('timeframe_classification') == 'LEADER_CONFIRMED'
 
-                # 🔥 Explosão social
-                social_analysis = gem.get('social_analysis', '{}')
-                if isinstance(social_analysis, str):
-                    # ✅ Parse JSON string para dict
-                    import json
-                    try:
-                        social_analysis = json.loads(social_analysis)
-                    except:
-                        social_analysis = {}
+            # Explosão social
+            social_analysis = gem.get('social_analysis', '{}')
+            if isinstance(social_analysis, str):
+                try:
+                    social_analysis = json.loads(social_analysis)
+                except:
+                    social_analysis = {}
+            gem['social_explosion'] = social_analysis.get('combined_validation') == 'SOCIAL_EXPLOSION'
+            gem['social_validation'] = social_analysis.get('combined_validation', 'NOT_APPLICABLE')
 
-                gem['social_explosion'] = social_analysis.get('combined_validation') == 'SOCIAL_EXPLOSION'
+            # RS vs BTC forte
+            gem['rs_strong'] = gem.get('rs_strong_24h', False)
 
-                # 🧠 Validação social (completa)
-                gem['social_validation'] = social_analysis.get('combined_validation', 'NOT_APPLICABLE')
+        df_all = pd.DataFrame(final_gems)
 
-                # 💪 RS vs BTC forte (usar campo já calculado)
-                gem['rs_strong'] = gem.get('rs_strong_24h', False)
+        # 🎯 Nome inteligente baseado nos ranges presentes
+        if len(range_limits) >= 2:
+            range_name = f"{min(range_limits)}_to_{max(range_limits)}"
+        else:
+            range_name = range_limits[0] if range_limits else 'consolidated'
 
-            df_all = pd.DataFrame(final_gems)
+        # Snapshot único enriquecido
+        enhanced_file = os.path.join(snapshots_dir, f"gems_{range_name}_enhanced_{date_str}.csv")
+        df_all.to_csv(enhanced_file, index=False)
+        print(f"  🏆 {range_name} enhanced: {len(final_gems)} gems com scores + eventos especiais")
+        print(f"  📁 Arquivo: {enhanced_file}")
 
-            # 🎯 Nome inteligente baseado nos ranges presentes
-            if len(range_limits) >= 2:
-                range_name = f"{min(range_limits)}_to_{max(range_limits)}"
-            else:
-                range_name = range_limits[0] if range_limits else 'consolidated'
+        # 🗑️ Deletar arquivo bruto após criar enhanced
+        consolidated_file = os.path.join(snapshots_dir, f"gems_{range_name}_{date_str}.csv")
+        if os.path.exists(consolidated_file):
+            os.remove(consolidated_file)
+            print(f"  🗑️ Arquivo bruto deletado: {consolidated_file}")
 
-            # Snapshot único enriquecido
-            enhanced_file = os.path.join(snapshots_dir, f"gems_{range_name}_enhanced_{date_str}.csv")
-            df_all.to_csv(enhanced_file, index=False)
-            print(f"  🏆 {range_name} enhanced: {len(final_gems)} gems com scores + eventos especiais")
-            print(f"  📁 Arquivo: {enhanced_file}")
+        # 📊 Mostrar top 10 por final_score
+        print(f"\n🏆 TOP 10 GEMS POR FINAL SCORE:")
+        print("-" * 120)
+        for i, gem in enumerate(final_gems[:10], 1):
+            mc = gem['market_cap']
+            vol = gem.get('total_volume', 0) or 0
+            ratio = vol / mc if mc > 0 else 0
+            final_score = gem['final_score']
+            persistence = gem.get('persistence_days', 0)
+            rs_flag = "💪" if gem.get('rs_strong', False) else "  "
+            leader_flag = "👑" if gem.get('is_confirmed_leader', False) else "  "
+            social_flag = "🔥" if gem.get('social_explosion', False) else "  "
 
-            # 🗑️ Deletar arquivo bruto após criar enhanced
-            consolidated_file = os.path.join(snapshots_dir, f"gems_{range_name}_{date_str}.csv")
-            if os.path.exists(consolidated_file):
-                os.remove(consolidated_file)
-                print(f"  🗑️ Arquivo bruto deletado: {consolidated_file}")
+            print(f"{i:2d}. {gem['symbol']:8s} | MC: ${mc:12,.0f} | Ratio: {ratio:.2f} | Final: {final_score:5.2f} | {persistence:2d}d {rs_flag}{leader_flag}{social_flag} | {gem['name']}")
 
-            # 📊 Mostrar top 10 por final_score
-            print(f"\n🏆 TOP 10 GEMS POR FINAL SCORE:")
-            print("-" * 120)
-            for i, gem in enumerate(final_gems[:10], 1):
-                mc = gem['market_cap']
-                vol = gem.get('total_volume', 0) or 0
-                ratio = vol / mc if mc > 0 else 0
-                final_score = gem['final_score']
-                persistence = gem.get('persistence_days', 0)
-                rs_flag = "💪" if gem.get('rs_strong', False) else "  "
-                leader_flag = "👑" if gem.get('is_confirmed_leader', False) else "  "
-                social_flag = "🔥" if gem.get('social_explosion', False) else "  "
+        # 📈 Estatísticas dos eventos especiais
+        confirmed_count = sum(1 for g in final_gems if g.get('is_confirmed_leader', False))
+        social_count = sum(1 for g in final_gems if g.get('social_explosion', False))
+        rs_count = sum(1 for g in final_gems if g.get('rs_strong', False))
 
-                print(f"{i:2d}. {gem['symbol']:8s} | MC: ${mc:12,.0f} | Ratio: {ratio:.2f} | Final: {final_score:5.2f} | {persistence:2d}d {rs_flag}{leader_flag}{social_flag} | {gem['name']}")
+        print(f"\n📊 EVENTOS ESPECIAIS DETECTADOS:")
+        print(f"  👑 Líderes confirmados: {confirmed_count}")
+        print(f"  🔥 Explosões sociais: {social_count}")
+        print(f"  💪 RS vs BTC forte: {rs_count}")
 
-            # 📈 Estatísticas dos eventos especiais
-            confirmed_count = sum(1 for g in final_gems if g.get('is_confirmed_leader', False))
-            social_count = sum(1 for g in final_gems if g.get('social_explosion', False))
-            rs_count = sum(1 for g in final_gems if g.get('rs_strong', False))
-
-            print(f"\n📊 EVENTOS ESPECIAIS DETECTADOS:")
-            print(f"  👑 Líderes confirmados: {confirmed_count}")
-            print(f"  🔥 Explosões sociais: {social_count}")
-            print(f"  💪 RS vs BTC forte: {rs_count}")
-
-            # ── Resumo setorial no terminal ───────────────────────────────────────
-            sector_result = getattr(self, '_last_sector_result', None)
-            if sector_result:
-                hot  = sector_result.get('hot_sectors', [])
-                warm = sector_result.get('warming_sectors', [])
-                alert= sector_result.get('current_alert', 'COLD')
-                print(f"\n🏭 RESUMO SETORIAL: {alert} | "
-                      f"Setores quentes: {', '.join(hot) if hot else 'nenhum'} | "
-                      f"Aquecendo: {', '.join(s['sector'] for s in warm[:3])}")
-            # Salvar setores quentes para uso posterior
-            hot_file = os.path.join(self.cache_dir, 'hot_sectors.json')
-            with open(hot_file, 'w', encoding='utf-8') as f:
-                json.dump({
-                    'hot': sector_result.get('hot_sectors', []),
-                    'warming': sector_result.get('warming_sectors', []),
-                    'timestamp': datetime.now().isoformat()
-                }, f)
+        # ── Resumo setorial no terminal ───────────────────────────────────────
+        sector_result = getattr(self, '_last_sector_result', None)
+        if sector_result:
+            hot  = sector_result.get('hot_sectors', [])
+            warm = sector_result.get('warming_sectors', [])
+            alert= sector_result.get('current_alert', 'COLD')
+            print(f"\n🏭 RESUMO SETORIAL: {alert} | "
+                    f"Setores quentes: {', '.join(hot) if hot else 'nenhum'} | "
+                    f"Aquecendo: {', '.join(s['sector'] for s in warm[:3])}")
+        # Salvar setores quentes para uso posterior
+        hot_file = os.path.join(self.cache_dir, 'hot_sectors.json')
+        with open(hot_file, 'w', encoding='utf-8') as f:
+            json.dump({
+                'hot': sector_result.get('hot_sectors', []),
+                'warming': sector_result.get('warming_sectors', []),
+                'timestamp': datetime.now().isoformat()
+            }, f)
 
     def analyze_gems(self, gems: List[Dict[str, Any]]) -> None:
         """Análise detalhada das gems encontradas"""

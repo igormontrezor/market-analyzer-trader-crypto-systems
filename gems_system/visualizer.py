@@ -18,6 +18,7 @@ import webbrowser
 import tempfile
 import numpy as np
 from tvDatafeed import TvDatafeed, Interval
+from utils import get_exhaustion_status
 from typing import Optional, Dict, Any
 from urllib.request import urlopen, Request
 from urllib.parse import urlencode
@@ -2554,40 +2555,6 @@ def create_advanced_summary_table(top10, crypto_ranking, total_periods, historic
         {trends_html}
     </div>
     """
-
-
-def get_exhaustion_status(row):
-    """
-    Identifica se a moeda está 'esticada' baseada em MC alto + Desaceleração
-    Usa as mesmas chaves que o GemsFinder já gera.
-    """
-    try:
-        # Recupera o Market Cap da linha atual
-        mc = float(row.get('market_cap', 0))
-
-        # O GemsFinder salva o timeframe_analysis como string JSON no CSV
-        analysis_raw = row.get('timeframe_analysis', '{}')
-        if isinstance(analysis_raw, str):
-            import json
-            analysis = json.loads(analysis_raw.replace("'", '"')) # Garante formato JSON
-        else:
-            analysis = analysis_raw
-
-        # Pega a tendência de aceleração (campo 'trend' do gems_finder.py)
-        trend = analysis.get('acceleration', {}).get('trend', 'stable')
-
-        # LÓGICA DE EXAUSTÃO: MC alto (> 35M) e tendência perdendo força
-        if mc > 35_000_000 and trend == 'decelerating':
-            return "⚠️ ESTICADA (Exaustão)"
-        elif trend == 'accelerating':
-            return "🚀 ACELERANDO"
-        elif trend == 'decelerating':
-            return "📉 DESACELERANDO"
-
-        return "➡️ ESTÁVEL"
-    except:
-        return "—"
-
 
 def create_interactive_table(df):
     """Tabela HTML estilizada igual à da comparação múltipla."""

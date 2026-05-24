@@ -29,21 +29,22 @@ from typing import Optional, List
 def _find_data_dir() -> str:
     """
     Busca a pasta data/ em múltiplos caminhos possíveis.
-    Suporta: mesma pasta do script, pasta pai, path absoluto via env var.
+    Prioriza o diretório ao lado do script (gems_system/data) para manter unificação.
     """
+    local_data = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     candidates = [
         os.environ.get("MONTREZOR_DATA_DIR", ""),
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), "data"),
+        local_data,   # ← PRIORIDADE: gems_system/data
+        os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data"),  # raiz (fallback)
         os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data"),
         os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "gems_system", "data"),
     ]
     for c in candidates:
         if c and os.path.isdir(c):
             return c
-    # Fallback: criar se não existir
-    fallback = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-    os.makedirs(fallback, exist_ok=True)
-    return fallback
+    # Fallback: criar ao lado do script se nada existir
+    os.makedirs(local_data, exist_ok=True)
+    return local_data
 
 DATA_DIR       = _find_data_dir()
 SNAPSHOTS_DIR  = os.path.join(DATA_DIR, "snapshots")
@@ -337,10 +338,13 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
 
     # Bônus por drawdown > 70% (potencial de recuperação explosiva)
     if 'drawdown_pct' in df_agg.columns:
-        # Bônus de 0 a 10 pontos, linear entre 0.7 e 1.0
-        bonus = (df_agg['drawdown_pct'].clip(0.7, 1.0) - 0.7) / 0.3 * 10
-        df_agg["composite_score"] += bonus.fillna(0)
-        df_agg["composite_score"] = df_agg["composite_score"].clip(0, 100)
+        # Apenas moedas com drawdown válido e > 0 recebem bônus
+        mask = (df_agg['drawdown_pct'] >= 0.7) & (df_agg['drawdown_pct'].notna())
+        if mask.any():
+            # Bônus linear de 0 a 10 pontos, apenas para drawdown entre 0.7 e 1.0
+            bonus = (df_agg.loc[mask, 'drawdown_pct'].clip(0.7, 1.0) - 0.7) / 0.3 * 10
+            df_agg.loc[mask, 'composite_score'] += bonus
+            df_agg['composite_score'] = df_agg['composite_score'].clip(0, 100)
 
         # Bónus por narrativa quente (HOT_NARRATIVE)
     if 'hot_narrative' in df_agg.columns:
@@ -387,7 +391,21 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
     except Exception:
         df_agg["smart_money_div"] = False
 
+    # ... (cálculo de composite_score, bônus, etc.)
+
+    # ── Calcular consistency_score (frequência de aparição no período) ──
+    if 'appearances' in df_agg.columns and '_file_age_days' in full.columns:
+        total_days = full['_file_age_days'].nunique()
+        if total_days > 0:
+            df_agg['consistency_score'] = (df_agg['appearances'] / total_days).clip(0, 1)
+        else:
+            df_agg['consistency_score'] = 0.0
+    else:
+        df_agg['consistency_score'] = 0.0
+
+    # ── Ordenar e retornar
     df_agg = df_agg.sort_values("composite_score", ascending=False).reset_index(drop=True)
+
 
     # ── Gerar hot_sectors.json automaticamente a partir dos dados agregados ──
     # Usa os mesmos CSVs que já foram lidos — sem chamada externa
@@ -1054,7 +1072,7 @@ def aggregate_dex_data(days: int = 7) -> pd.DataFrame:
     dos últimos `days` dias, agrupa por símbolo e retorna DataFrame
     com métricas agregadas (médias, contagem de aparições, etc.).
     """
-    data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+    data_dir = DATA_DIR
     pattern = os.path.join(data_dir, "dex_early_stage_*.csv")
     files = glob.glob(pattern)
     if not files:
@@ -1191,9 +1209,16 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
     # ── NOVO FLUXO PARA CICLO SEMANAL (análise individual) ──
     if cycle == "weekly":
         print("🔍 Usando análise individual para 15 candidatas...")
-        
+
         top_picks = _run_deep_analysis(agg_df, macro, confirmed, watchlist,
                                         btc_ctx, cycle, api_key, dex_df)
+
+        for pick in top_picks:
+            sym = pick.get("symbol")
+            if sym:
+                price = _fetch_coingecko_price(sym)
+                pick["price_usd"] = price if price > 0 else None
+                pick["price_date"] = datetime.now().isoformat()
 
         regime_txt = "COMPRA ATIVA" if macro.get("regime", {}).get("buy_mode") else \
                      ("VENDA" if macro.get("regime", {}).get("sell_mode") else "NEUTRO")

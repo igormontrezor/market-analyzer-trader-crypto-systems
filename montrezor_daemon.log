@@ -11765,3 +11765,51 @@ Dados insuficientes para treinar.
 2026-05-24 16:36:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
 2026-05-24 16:37:12  INFO     [DEX] Early stage snapshot atualizado com sucesso
 2026-05-24 16:37:53  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 19:52:27  INFO     [DEX] Early stage snapshot atualizado com sucesso
+2026-05-24 19:52:53  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88312 [1D] tfs=1D 1W~ VOL=0.8x
+2026-05-24 19:53:28  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 19:53:43  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-24 19:53:54  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-24 19:54:05  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-24 19:54:17  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-24 19:54:28  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-24 19:54:29  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-24 19:54:57  INFO     [DEX] Early stage snapshot atualizado com sucesso
+2026-05-24 19:55:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88303 [1D] tfs=1D 1W~ VOL=0.8x
+2026-05-24 19:56:22  INFO     [DEX] Early stage snapshot atualizado com sucesso
+2026-05-24 19:57:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88335 [1D] tfs=1D 1W~ VOL=0.8x
+2026-05-24 19:58:05  INFO     [DEX] Early stage snapshot atualizado com sucesso
+2026-05-24 19:58:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88337 [1D] tfs=1D 1W~ VOL=0.8x
+2026-05-24 19:59:18  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 19:59:55  INFO     [DEX] Early stage snapshot atualizado com sucesso
+2026-05-24 20:00:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88321 [1D] tfs=1D 1W~ VOL=0.8x
+2026-05-24 20:05:44  INFO     [DEX] Early stage snapshot atualizado com sucesso
+2026-05-24 20:06:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88330 [1D] tfs=1D 1W~ VOL=0.8x
+2026-05-24 20:08:21  INFO     ================================================================
+2026-05-24 20:08:21  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-24 20:08:21  INFO       Modo: ALL
+2026-05-24 20:08:21  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-24 20:08:21  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-24 20:08:21  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-24 20:08:21  INFO     ================================================================
+2026-05-24 20:08:21  INFO     MT5 conectado: XM Global MT5
+2026-05-24 20:08:21  INFO     [ML] Iniciando treinamento do modelo...
+2026-05-24 20:08:27  INFO     [ML] Treinamento concluído. Iniciando treinamento do modelo ML...
+Apenas 7 registros, mínimo 30 para treinar.
+Dados insuficientes para treinar.
+2026-05-24 20:09:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88326 [1D] tfs=1D 1W~ VOL=0.8x
+2026-05-24 20:09:23  INFO       ✅ Telegram -> GBPAUD# VENDA COMUM
+2026-05-24 20:09:53  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 20:10:09  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-24 20:10:21  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-24 20:10:35  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-24 20:10:36  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-24 20:10:48  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-24 20:11:00  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-24 20:11:28  INFO     [DEX] Early stage snapshot atualizado com sucesso
+2026-05-24 20:11:55  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88343 [1D] tfs=1D 1W~ VOL=0.8x
+2026-05-24 20:13:00  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88338 [1D] tfs=1D 1W~ VOL=0.8x
+2026-05-24 20:13:36  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 20:14:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88343 [1D] tfs=1D 1W~ VOL=0.8x
+2026-05-24 20:15:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88349 [1D] tfs=1D 1W~ VOL=0.8x
+2026-05-24 20:16:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88341 [1D] tfs=1D 1W~ VOL=0.8x

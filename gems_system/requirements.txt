@@ -5,3 +5,5 @@ plotly>=5.15.0
 requests>=2.31.0
 tvDatafeed>=2.1.0
 streamlit-autorefresh>=1.0.0
+pandas numpy plotly requests streamlit tvDatafeed MetaTrader5 xgboost scikit-learn yfinance
+streamlit-autorefresh anthropic
