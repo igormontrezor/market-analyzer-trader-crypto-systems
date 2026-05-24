@@ -1156,21 +1156,19 @@ def run_daemon(logger, mode="all"):
         if (now - last_dex_scan) >= DEX_SCAN_SEC:
             last_dex_scan = now
             try:
-                import importlib.util as _ilu
-                _gf_candidates = [
-                    os.path.join(PROJECT_DIR, "gems_system", "gems_finder.py"),
-                    os.path.join(PROJECT_DIR, "analysis_system", "gems_finder.py"),
-                ]
-                _gf_path = next((p for p in _gf_candidates if os.path.exists(p)), None)
-                if _gf_path:
-                    _spec = _ilu.spec_from_file_location("gems_finder", _gf_path)
-                    _gf   = _ilu.module_from_spec(_spec)
-                    _spec.loader.exec_module(_gf)
-                    _finder = _gf.GemsFinder()
-                    _finder.save_early_stage_snapshot()
-                    logger.info("[DEX] ✅ Early stage snapshot atualizado")
-            except Exception as _e_dex:
-                logger.debug(f"[DEX] {_e_dex}")
+                import subprocess
+                # Executa o mesmo comando que funcionou manualmente
+                cmd = [sys.executable, "-c",
+                    "from gems_finder import GemsFinder; GemsFinder().save_early_stage_snapshot()"]
+                # Executa no diretório correto (gems_system)
+                result = subprocess.run(cmd, cwd=os.path.join(PROJECT_DIR, "gems_system"),
+                                        capture_output=True, text=True, timeout=60)
+                if result.returncode == 0:
+                    logger.info("[DEX] Early stage snapshot atualizado com sucesso")
+                else:
+                    logger.error(f"[DEX] Falha: {result.stderr.strip()}")
+            except Exception as e:
+                logger.error(f"[DEX] Erro ao executar: {e}")
 
         # ── AI GEMS FILTER — carregar módulo uma única vez ─────────────────────
         if (now - last_ai_check) >= AI_CHECK_SEC:

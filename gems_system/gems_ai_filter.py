@@ -18,6 +18,8 @@ import json
 import glob
 import time
 import requests
+import glob
+from datetime import timedelta
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
@@ -809,7 +811,8 @@ Retorne APENAS este JSON:
                 f"buys={int(row.get('buys_24h',0))} "
                 f"sells={int(row.get('sells_24h',0))} "
                 f"ratio={float(row.get('buy_ratio',0)):.2f} "
-                f"chain={row.get('chain','?')}")
+                f"chain={row.get('chain','?')}"
+                f"count={int(row.get('appearances',1))}")
         dex_header = "\n\n=== EARLY STAGE — DexScreener (pré-CoinGecko) ===\n"
         dex_footer = ("\nPriorize tokens com buy_ratio > 0.6, liquidez crescente e "
                       "ciclo BTC em BUY_CONFIRMED. Potencial x10-x100 mas risco HIGH obrigatório.\n")
@@ -836,7 +839,7 @@ def _call_claude(system_prompt: str, user_prompt: str, api_key: str) -> dict:
     }
     body = {
         "model":      CLAUDE_MODEL,
-        "max_tokens": 2048,
+        "max_tokens": 4096,
         "system":     system_prompt,
         "messages":   [{"role": "user", "content": user_prompt}],
     }
@@ -921,6 +924,183 @@ def should_run(cycle: str) -> bool:
     except Exception:
         return True
 
+def _build_individual_prompt(row, macro, confirmed, watchlist, btc_ctx, cycle, dex_df=None):
+    """Constrói prompt para análise individual de uma moeda."""
+    regime = macro.get("regime", macro)
+    buy_mode   = bool(regime.get("buy_mode", False))
+    sell_mode  = bool(regime.get("sell_mode", False))
+    cap_lock   = bool(macro.get("capitulation_lock", regime.get("capitulation_lock", False)))
+    funding    = float(macro.get("funding_rate", 0))
+    signal     = macro.get("signal", {})
+    weekly_buy = bool(signal.get("weekly_buy_trigger", False))
+
+    regime_txt = "COMPRA ATIVA" if buy_mode else ("VENDA" if sell_mode else "NEUTRO")
+    if cap_lock:
+        regime_txt += " + CAPITULATION LOCK (evitar entradas)"
+
+    confirmed_syms = [g.get("symbol","") for g in confirmed if isinstance(g, dict)]
+    extra = []
+    if row.get("is_gold"): extra.append("IS_GOLD")
+    if row.get("price_resilience"): extra.append("PRICE_RESILIENT")
+    if row.get("volume_recovery"): extra.append("VOL_RECOVERY")
+    if row["symbol"] in confirmed_syms: extra.append("CONFIRMED_GEM")
+    if row["symbol"] in watchlist: extra.append("IN_WATCHLIST")
+    if row.get("smart_money_div"): extra.append("SMART_MONEY_DIV")
+    if row.get("rank_up"): extra.append("RANK_UP")
+    if row.get("vol_up"): extra.append("VOL_UP")
+    if row.get("hot_narrative"): extra.append("HOT_NARRATIVE")
+    if row.get("funding_squeeze"): extra.append("FUNDING_SQUEEZE")
+    if row.get("seller_exhaustion"): extra.append("SELLER_EXHAUSTION")
+    trend_val = int(row.get("weekly_trend", 0))
+    trend_lbl = {2:"TREND_UP↑↑", 1:"TREND_STABLE", -1:"TREND_FADING↓"}.get(trend_val, "")
+    if trend_lbl: extra.append(trend_lbl)
+
+    btc = btc_ctx or {}
+    btc_price  = float(btc.get("btc_price", 0))
+    btc_24h    = float(btc.get("btc_24h", 0))
+    btc_dom    = float(btc.get("btc_dom", 0))
+    total_mcap = float(btc.get("total_mcap_b", 0))
+    cycle_pos  = btc.get("cycle_pos", "desconhecido")
+    btc_line   = (f"BTC ${btc_price:,.0f} ({btc_24h:+.1f}% 24h) | Dom {btc_dom:.1f}% | MCap total ${total_mcap:.0f}B"
+                  if btc_price > 0 else "dados indisponíveis")
+
+    system = (
+        "Você é o Montrezor AI Gems Analyst — especializado em micro-cap e small-cap "
+        "crypto ANTES de moves explosivos.\n\n"
+        "Retorne APENAS JSON válido, sem texto extra.\n"
+        "O JSON deve conter:\n"
+        '{"symbol": "SYMBOL", "composite_score": 0.0, "key_flags": [],\n'
+        ' "rationale": "...", "entry_note": "...", "risk": "LOW|MEDIUM|HIGH",\n'
+        ' "potential": "x2-x5|x5-x10|x10+", "confidence": 0-100,\n'
+        ' "price_target": null, "stop_loss": null, "entry_zone": null}\n'
+        "Considere o contexto macro e os flags."
+    )
+
+    data_str = (
+        f"- {row['symbol']:<12} score={row.get('composite_score',0):.1f} "
+        f"drawdown={row.get('drawdown_pct',0):.2f} "
+        f"mc=${row.get('market_cap',0)/1e6:.1f}M "
+        f"ratio={row.get('ratio',0):.2f} "
+        f"acum={row.get('accumulation_score',0):.1f} "
+        f"social={row.get('social_score',0):.1f} "
+        f"resilience={float(row.get('price_resilience',0)):.1f} "
+        f"vol_recovery={int(bool(row.get('volume_recovery',False)))} "
+        f"momentum={row.get('momentum','?')} sector={row.get('sector','?')} "
+        f"appear={row.get('appearances',1)} "
+        f"{'[' + ' '.join(extra) + ']' if extra else ''}"
+    )
+
+    user = f"""=== CONTEXTO BTC ===
+{btc_line}
+Posição no ciclo: {cycle_pos}
+
+=== REGIME MACRO ===
+Status: {regime_txt} | Funding: {funding:.4f}% | Weekly Buy: {weekly_buy}
+{"CAPITULATION LOCK ATIVO" if cap_lock else ""}
+
+=== DADOS DA MOEDA ===
+{data_str}
+
+Responda APENAS com o JSON."""
+    return system, user
+
+def _analyze_coin_deep(row, macro, confirmed, watchlist, btc_ctx, cycle, api_key, dex_df=None):
+    """Chama Claude para análise individual de uma moeda. Retorna dict com campos padronizados."""
+    system_prompt, user_prompt = _build_individual_prompt(row, macro, confirmed, watchlist, btc_ctx, cycle, dex_df)
+    try:
+        result = _call_claude(system_prompt, user_prompt, api_key)
+        # Garantir campos obrigatórios
+        result.setdefault("composite_score", row.get("composite_score", 0))
+        result.setdefault("key_flags", [])
+        result.setdefault("rationale", "Análise não disponível")
+        result.setdefault("entry_note", "aguardar confirmação")
+        result.setdefault("risk", "MEDIUM")
+        result.setdefault("potential", "x2-x5")
+        result.setdefault("confidence", 50)
+        result.setdefault("price_target", None)
+        result.setdefault("stop_loss", None)
+        result.setdefault("entry_zone", None)
+        if "symbol" not in result:
+            result["symbol"] = row["symbol"]
+        return result
+    except Exception as e:
+        print(f"Erro na análise individual de {row['symbol']}: {e}")
+        return {
+            "symbol": row["symbol"],
+            "composite_score": row.get("composite_score", 0),
+            "rationale": f"Falha na análise: {str(e)[:100]}",
+            "risk": "MEDIUM",
+            "potential": "x2-x5",
+            "confidence": 30,
+        }
+
+def _run_deep_analysis(agg_df, macro, confirmed, watchlist, btc_ctx, cycle, api_key, dex_df=None):
+    """Itera sobre top 15, chama análise individual, retorna top 10 ordenado por confidence."""
+    top_candidates = agg_df.nlargest(15, "composite_score")
+    picks = []
+    for _, row in top_candidates.iterrows():
+        deep = _analyze_coin_deep(row, macro, confirmed, watchlist, btc_ctx, cycle, api_key, dex_df)
+        if deep:
+            picks.append(deep)
+        time.sleep(0.5)
+    picks.sort(key=lambda x: (x.get("confidence", 0), x.get("composite_score", 0)), reverse=True)
+    for i, pick in enumerate(picks[:10], 1):
+        pick["rank"] = i
+    return picks[:10]
+
+def aggregate_dex_data(days: int = 7) -> pd.DataFrame:
+    """
+    Lê todos os arquivos dex_early_stage_*.csv no diretório data/
+    dos últimos `days` dias, agrupa por símbolo e retorna DataFrame
+    com métricas agregadas (médias, contagem de aparições, etc.).
+    """
+    data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+    pattern = os.path.join(data_dir, "dex_early_stage_*.csv")
+    files = glob.glob(pattern)
+    if not files:
+        return pd.DataFrame()
+
+    cutoff = datetime.now() - timedelta(days=days)
+    dfs = []
+    for f in files:
+        mtime = datetime.fromtimestamp(os.path.getmtime(f))
+        if mtime < cutoff:
+            continue
+        try:
+            df = pd.read_csv(f)
+            if not df.empty:
+                dfs.append(df)
+        except Exception:
+            continue
+
+    if not dfs:
+        return pd.DataFrame()
+
+    combined = pd.concat(dfs, ignore_index=True)
+
+    # Agrupar por symbol
+    agg = combined.groupby('symbol').agg({
+        'buy_ratio': 'mean',
+        'volume_24h_usd': 'mean',
+        'liquidity_usd': 'mean',
+        'buys_24h': 'mean',
+        'sells_24h': 'mean',
+        'price_usd': 'mean',
+        'price_change_24h': 'mean',
+        'chain': lambda x: x.mode()[0] if not x.mode().empty else 'unknown',
+        'dex_score': 'mean'
+    }).reset_index()
+
+    # Contagem de aparições
+    count_series = combined.groupby('symbol').size().rename('appearances')
+    agg = agg.merge(count_series, on='symbol')
+
+    # Score composto (aparições * buy_ratio médio)
+    agg['composite_dex'] = agg['appearances'] * agg['buy_ratio']
+    agg = agg.sort_values('composite_dex', ascending=False)
+
+    # Limitar a top 30
+    return agg.head(30)
 
 def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
     """
@@ -999,13 +1179,54 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
     # Contexto BTC — cache 1h, silencioso se offline
     btc_ctx = _fetch_btc_context()
 
-    # Early stage DexScreener
-    dex_path = os.path.join(DATA_DIR, "dex_early_stage.csv")
-    try:
-        import pandas as _pd_dex
-        dex_df = _pd_dex.read_csv(dex_path) if os.path.exists(dex_path) else _pd_dex.DataFrame()
-    except Exception:
-        dex_df = __import__("pandas").DataFrame()
+    # Early stage DexScreener - agregado dos últimos 7 dias
+    dex_agg_df = aggregate_dex_data(days=7)
+    if not dex_agg_df.empty:
+        dex_df = dex_agg_df
+        # Opcional: log informativo
+        print(f"[DEX] Agregado {len(dex_df)} tokens early stage (últimos 7 dias)")
+    else:
+        dex_df = None
+
+    # ── NOVO FLUXO PARA CICLO SEMANAL (análise individual) ──
+    if cycle == "weekly":
+        print("🔍 Usando análise individual para 15 candidatas...")
+        
+        top_picks = _run_deep_analysis(agg_df, macro, confirmed, watchlist,
+                                        btc_ctx, cycle, api_key, dex_df)
+
+        regime_txt = "COMPRA ATIVA" if macro.get("regime", {}).get("buy_mode") else \
+                     ("VENDA" if macro.get("regime", {}).get("sell_mode") else "NEUTRO")
+        result = {
+            "cycle": "weekly",
+            "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "regime": regime_txt,
+            "btc_context": btc_ctx.get("cycle_pos", "desconhecido")[:80],
+            "top_picks": top_picks,
+            "top3_comparison": "",
+            "macro_note": "Análise individual profunda por moeda.",
+            "sectors_in_focus": [],
+            "smart_money_highlight": "",
+            "avoid": [],
+            "market_regime": _get_current_macro_regime()
+        }
+        # Tentar adicionar setores em foco
+        sectors = set()
+        for p in top_picks:
+            if "sector" in p:
+                sectors.add(p["sector"])
+        result["sectors_in_focus"] = list(sectors)[:3]
+
+        # Salvar resultado
+        results = _load_results()
+        results["weekly"] = result
+        results.setdefault("history", []).append({
+            "cycle": "weekly", "ts": datetime.now().isoformat(),
+            "n_csvs": len(full_df), "n_coins": len(agg_df)
+        })
+        _save_results(results)
+        _send_result_tg(result, "weekly")
+        return result
 
     # Construir system+user e chamar Claude
     system_prompt, user_prompt = _build_prompt(

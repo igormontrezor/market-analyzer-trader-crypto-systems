@@ -1,0 +1,103 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-05-24 12:23:29
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+✅ Usando cache (válido até: 00:17:25)
+✅ Usando cache existente: 43 gems
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+📋 Cache: 7 gems encontradas
+✅ 50m_range: 7 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+📋 Cache: 15 gems encontradas
+✅ 10_49m_range: 15 gems
+📋 Cache válido - Nenhum cache atualizado
+
+📊 ANÁLISE - 50M_RANGE:
+
+📊 ANÁLISE DAS 7 GEMS:
+================================================================================
+Market Cap - Médio: $81,275,233
+Market Cap - Min: $52,608,760, Max: $95,292,488
+Volume - Médio: $33,412,817
+Volume - Min: $11,492,401, Max: $61,421,428
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 5 gems
+  🟠 Strong (0.5-1.0): 2 gems
+  🔥 Breakout (>1.0): 0 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/7 (0.0%)
+  💪 Resiliência de Preço: 0/7 (0.0%)
+  👑 POTENCIAL OURO: 0/7 (0.0%)
+  🚨 WASH TRADING: 0/7 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 7 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. plume    | MC: $  88,823,780 | Vol: $  61,421,428 | Ratio: 0.69 | S 📊📈    📊 | Plume
+ 2. super    | MC: $  75,558,287 | Vol: $  49,598,210 | Ratio: 0.66 | S 📊📈    📊 | SuperVerse
+ 3. sn64     | MC: $  95,292,488 | Vol: $  37,379,805 | Ratio: 0.39 | E 📊📈    📊 | Chutes
+ 4. arkm     | MC: $  87,363,003 | Vol: $  28,788,050 | Ratio: 0.33 | E 📊📈    📊 | Arkham
+ 5. grx      | MC: $  87,273,478 | Vol: $  25,103,682 | Ratio: 0.29 | E 📊📈    📊 | GRX Chain
+ 6. ordi     | MC: $  82,006,833 | Vol: $  20,106,145 | Ratio: 0.25 | E 📊📈    📊 | ORDI
+ 7. pnut     | MC: $  52,608,760 | Vol: $  11,492,401 | Ratio: 0.22 | E 📊📈    📊 | Peanut the Squirrel
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 15 GEMS:
+================================================================================
+Market Cap - Médio: $28,377,840
+Market Cap - Min: $16,069,061, Max: $47,448,127
+Volume - Médio: $22,223,302
+Volume - Min: $5,800,652, Max: $83,919,349
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 7 gems
+  🟠 Strong (0.5-1.0): 5 gems
+  🔥 Breakout (>1.0): 3 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/15 (0.0%)
+  💪 Resiliência de Preço: 0/15 (0.0%)
+  👑 POTENCIAL OURO: 0/15 (0.0%)
+  🚨 WASH TRADING: 0/15 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 15 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. gmt      | MC: $  36,762,756 | Vol: $  83,919,349 | Ratio: 2.28 | B 📊📈    📊 | GMT
+ 2. fida     | MC: $  36,800,716 | Vol: $  64,464,549 | Ratio: 1.75 | B 📊📈    📊 | Bonfida
+ 3. pha      | MC: $  31,236,193 | Vol: $  33,109,844 | Ratio: 1.06 | B 📊📈    📊 | PHALA
+ 4. bico     | MC: $  20,358,723 | Vol: $  15,473,946 | Ratio: 0.76 | S 📊📈    📊 | Biconomy
+ 5. waves    | MC: $  40,221,914 | Vol: $  24,575,939 | Ratio: 0.61 | S 📊📈    📊 | Waves
+ 6. mtl      | MC: $  27,189,305 | Vol: $  14,717,555 | Ratio: 0.54 | S 📊📈    📊 | Metal DAO
+ 7. dogs     | MC: $  25,165,201 | Vol: $  13,101,102 | Ratio: 0.52 | S 📊📈    📊 | Dogs
+ 8. alt      | MC: $  47,448,127 | Vol: $  24,093,365 | Ratio: 0.51 | S 📊📈    📊 | AltLayer
+ 9. aixbt    | MC: $  28,487,830 | Vol: $  12,234,217 | Ratio: 0.43 | E 📊📈    📊 | aixbt
+10. tst      | MC: $  16,069,061 | Vol: $   6,238,043 | Ratio: 0.39 | E 📊📈    📊 | Test
+
+📋 Usando dados existentes - Nenhum snapshot criado
+
+🎉 GEMS FINDER CONCLUÍDO!
+📊 Total de gems: 22
+📁 Arquivos salvos para análise histórica:
+   - snapshots/gems_*.csv (por faixa)
+   - snapshots/gems_consolidated_*.csv (completo)
+   - Cache válido por 12 horas (evita requisições excessivas)
+   - Snapshots criados apenas com dados novos

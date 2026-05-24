@@ -7,9 +7,9 @@ import pandas as pd
 import numpy as np
 import joblib
 from datetime import datetime, timedelta
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+import xgboost as xgb
 
 # Caminhos relativos (ajuste conforme seu projeto)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -108,7 +108,15 @@ def train_model():
     # Dividir treino/validação
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
     # Modelo simples (pode ser XGBoost, mas evita dependência extra)
-    model = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=42)
+    model = xgb.XGBClassifier(
+    n_estimators=100,
+    max_depth=5,
+    learning_rate=0.1,
+    subsample=0.8,
+    random_state=42,
+    use_label_encoder=False,
+    eval_metric='logloss'
+    )
     model.fit(X_train, y_train)
     y_pred = model.predict(X_val)
     acc = accuracy_score(y_val, y_pred)

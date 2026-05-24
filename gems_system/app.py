@@ -2421,7 +2421,7 @@ with tab7:
                 + " &nbsp;|&nbsp; ".join(f"<span style='color:#8b949e'>{a}</span>" for a in avoid)
                 + "</div>", unsafe_allow_html=True)
 
-    tab_w, tab_m, tab_data, tab_dex = st.tabs(["📅 Top 10 Semanal", "🏆 Top 3 Mensal", "📊 Dados Brutos", "🔬 DEX Early Stage"])
+    tab_w, tab_m, tab_data = st.tabs(["📅 Top 10 Semanal", "🏆 Top 3 Mensal", "📊 Dados Brutos"])
     with tab_w:
         _render_result(weekly_result, "Top 10 Semanal", 10)
     with tab_m:
@@ -2468,7 +2468,9 @@ with tab7:
                 "na próxima análise semanal automaticamente.</p>",
                 unsafe_allow_html=True)
             try:
-                _dex_path = os.path.join("data", "dex_early_stage.csv")
+                # Define o caminho absoluto baseado no diretório do script app.py
+                _script_dir = os.path.dirname(os.path.abspath(__file__))
+                _dex_path = os.path.join(_script_dir, "data", "dex_early_stage.csv")
                 if not os.path.exists(_dex_path):
                     st.info("Nenhum dado DEX ainda. O daemon gera o arquivo a cada 2h, "
                             "ou rode o Gems Finder manualmente.")
@@ -2496,7 +2498,7 @@ with tab7:
                                  if c in _dex_df.columns]
                         st.dataframe(
                             _dex_df[_show].head(100).reset_index(drop=True),
-                            use_container_width=True)
+                            width='stretch')
 
                         # Alerta: tokens com buy_ratio > 0.7 e volume alto
                         if "buy_ratio" in _dex_df.columns and "volume_24h_usd" in _dex_df.columns:

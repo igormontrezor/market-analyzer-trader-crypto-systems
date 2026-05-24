@@ -11481,3 +11481,287 @@ WARNING:tvDatafeed.main:you are using nologin method,
 2026-05-23 10:17:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
 2026-05-23 10:18:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
 2026-05-23 10:19:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:16:59  INFO     ================================================================
+2026-05-24 12:16:59  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-24 12:16:59  INFO       Modo: ALL
+2026-05-24 12:16:59  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-24 12:16:59  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-24 12:16:59  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-24 12:16:59  INFO     ================================================================
+2026-05-24 12:16:59  INFO     MT5 conectado: XM Global MT5
+2026-05-24 12:16:59  INFO     [ML] Iniciando treinamento do modelo...
+2026-05-24 12:17:03  INFO     [ML] Treinamento concluído. Iniciando treinamento do modelo ML...
+Apenas 7 registros, mínimo 30 para treinar.
+Dados insuficientes para treinar.
+2026-05-24 12:17:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:18:03  INFO       ✅ Telegram -> GBPAUD# VENDA COMUM
+2026-05-24 12:18:32  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 12:18:48  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-24 12:18:59  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-24 12:19:10  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-24 12:19:32  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-24 12:19:47  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-24 12:19:59  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-24 12:20:27  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:21:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:22:15  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 12:22:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:23:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:24:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:25:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:27:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:28:06  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 12:28:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:29:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:30:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:31:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:32:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:33:19  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 12:33:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:35:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:36:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:37:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:37:57  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 12:38:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:39:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:40:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:41:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:42:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:43:29  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 12:44:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:45:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:46:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:47:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:48:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:49:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:49:47  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 12:50:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:51:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:52:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:53:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:54:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:55:17  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 12:55:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:56:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:57:54  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:59:00  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 12:59:35  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 13:00:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:01:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:02:24  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:03:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:04:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:05:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:06:06  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 13:06:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:07:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:08:43  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:09:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:10:30  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 13:11:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:12:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:13:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:14:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:15:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:15:59  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 13:16:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:19:01  INFO     ================================================================
+2026-05-24 13:19:01  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-24 13:19:01  INFO       Modo: ALL
+2026-05-24 13:19:01  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-24 13:19:01  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-24 13:19:01  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-24 13:19:01  INFO     ================================================================
+2026-05-24 13:19:01  INFO     MT5 conectado: XM Global MT5
+2026-05-24 13:19:01  INFO     [ML] Iniciando treinamento do modelo...
+2026-05-24 13:19:06  INFO     [ML] Treinamento concluído. Iniciando treinamento do modelo ML...
+Apenas 7 registros, mínimo 30 para treinar.
+Dados insuficientes para treinar.
+2026-05-24 13:19:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:20:04  INFO       ✅ Telegram -> GBPAUD# VENDA COMUM
+2026-05-24 13:20:35  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 13:20:50  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-24 13:21:01  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-24 13:21:04  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-24 13:21:17  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-24 13:21:18  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-24 13:21:32  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-24 13:22:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:23:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:24:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:24:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 13:25:20  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:26:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:28:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:30:25  INFO     ================================================================
+2026-05-24 13:30:25  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-24 13:30:25  INFO       Modo: ALL
+2026-05-24 13:30:25  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-24 13:30:25  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-24 13:30:25  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-24 13:30:25  INFO     ================================================================
+2026-05-24 13:30:25  INFO     MT5 conectado: XM Global MT5
+2026-05-24 13:30:25  INFO     [ML] Iniciando treinamento do modelo...
+2026-05-24 13:30:30  INFO     [ML] Treinamento concluído. Iniciando treinamento do modelo ML...
+Apenas 7 registros, mínimo 30 para treinar.
+Dados insuficientes para treinar.
+2026-05-24 13:31:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:31:53  INFO       ✅ Telegram -> GBPAUD# VENDA COMUM
+2026-05-24 13:32:30  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 13:32:46  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-24 13:32:57  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-24 13:33:08  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-24 13:33:19  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-24 13:33:30  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-24 13:33:41  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-24 13:34:07  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:35:10  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:35:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 13:36:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:38:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:39:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:40:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:41:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:41:35  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 13:42:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:43:10  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:44:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:45:17  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:46:18  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:46:51  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 13:47:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:48:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:49:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:50:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:51:31  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 13:52:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:53:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:54:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:55:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:56:08  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:56:42  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 13:57:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:58:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 13:59:16  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:00:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:01:25  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:02:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:03:03  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 14:03:37  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:04:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:05:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:06:41  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:07:17  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 14:07:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:08:51  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:09:58  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:10:57  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:12:01  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:12:37  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 14:13:06  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:14:08  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:15:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:16:13  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:17:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:17:55  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 14:18:24  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:19:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:20:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:21:29  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:22:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:23:07  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 14:23:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:24:39  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:25:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:26:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:27:54  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:28:53  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:29:24  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 14:29:57  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:30:57  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:32:01  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:33:54  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:35:01  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:35:35  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 14:36:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:37:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:38:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:39:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:40:31  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:41:04  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 14:41:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:42:36  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:43:40  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:44:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:45:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:46:35  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 14:47:14  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:48:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:49:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:50:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:51:11  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 14:51:45  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:52:44  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:53:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:54:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:55:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:56:27  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 14:56:58  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 14:58:03  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:18:24  INFO     ================================================================
+2026-05-24 16:18:24  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-24 16:18:24  INFO       Modo: ALL
+2026-05-24 16:18:24  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-24 16:18:24  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-24 16:18:24  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-24 16:18:24  INFO     ================================================================
+2026-05-24 16:18:24  INFO     MT5 conectado: XM Global MT5
+2026-05-24 16:18:24  INFO     [ML] Iniciando treinamento do modelo...
+2026-05-24 16:18:29  INFO     [ML] Treinamento concluído. Iniciando treinamento do modelo ML...
+Apenas 7 registros, mínimo 30 para treinar.
+Dados insuficientes para treinar.
+2026-05-24 16:19:07  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:19:23  INFO       ✅ Telegram -> GBPAUD# VENDA COMUM
+2026-05-24 16:19:52  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 16:20:27  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-24 16:20:28  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-24 16:20:30  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-24 16:20:41  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-24 16:20:52  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-24 16:21:03  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-24 16:21:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:22:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:24:13  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:25:13  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:25:48  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 16:26:21  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:27:29  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:28:26  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:29:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:30:05  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 16:30:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:32:59  INFO     ================================================================
+2026-05-24 16:32:59  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-24 16:32:59  INFO       Modo: ALL
+2026-05-24 16:32:59  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-24 16:32:59  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-24 16:32:59  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-24 16:32:59  INFO     ================================================================
+2026-05-24 16:32:59  INFO     MT5 conectado: XM Global MT5
+2026-05-24 16:32:59  INFO     [ML] Iniciando treinamento do modelo...
+2026-05-24 16:33:03  INFO     [ML] Treinamento concluído. Iniciando treinamento do modelo ML...
+Apenas 7 registros, mínimo 30 para treinar.
+Dados insuficientes para treinar.
+2026-05-24 16:33:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:33:59  INFO       ✅ Telegram -> GBPAUD# VENDA COMUM
+2026-05-24 16:34:29  INFO     [GEMS] macro_timing.json atualizado
+2026-05-24 16:34:44  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-24 16:34:56  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-24 16:35:07  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-24 16:35:08  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-24 16:35:19  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-24 16:35:20  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-24 16:35:46  INFO     [DEX] Early stage snapshot atualizado com sucesso
+2026-05-24 16:36:11  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-24 16:37:12  INFO     [DEX] Early stage snapshot atualizado com sucesso
+2026-05-24 16:37:53  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88378 [1D] tfs=1D 1W~ VOL=1.3x

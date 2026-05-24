@@ -1524,14 +1524,26 @@ class GemsFinder:
         return filtered[:range_config['max_results']]
 
     def save_early_stage_snapshot(self):
-        """Chama DexScreener e salva CSV de tokens early stage."""
         try:
             from dex_scanner import get_early_stage_tokens
             df = get_early_stage_tokens(limit_per_chain=20)
             if not df.empty:
-                path = os.path.join(self.cache_dir, "dex_early_stage.csv")
-                df.to_csv(path, index=False)
-                print(f"  🔍 DexScreener: {len(df)} early stage tokens salvos")
+                root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+                data_dir = os.path.join(root_dir, "data")
+                os.makedirs(data_dir, exist_ok=True)
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                path_timestamp = os.path.join(data_dir, f"dex_early_stage_{timestamp}.csv")
+                df.to_csv(path_timestamp, index=False)
+                # também salva com nome fixo para o app.py
+                path_fixed = os.path.join(data_dir, "dex_early_stage.csv")
+                df.to_csv(path_fixed, index=False)
+                print(f"  🔍 DexScreener: {len(df)} early stage tokens salvos em {path_timestamp} e {path_fixed}")
+                # Remover arquivos com mais de 7 dias
+                import glob, time
+                for f in glob.glob(os.path.join(data_dir, "dex_early_stage_*.csv")):
+                    if os.path.getmtime(f) < time.time() - 7*86400:
+                        os.remove(f)
+                        print(f"  🗑️ Removido arquivo antigo: {os.path.basename(f)}")
         except Exception as e:
             print(f"  ⚠️ DexScanner: {e}")
 
