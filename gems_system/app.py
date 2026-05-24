@@ -2329,6 +2329,24 @@ with tab7:
                             wr = perf_dash["rank_stats"][r]["win_rate"]
                             avg = perf_dash["rank_stats"][r]["avg_pct"]
                             st.metric(f"Rank {r}", f"{wr:.0f}%", f"média {avg:+.1f}%")
+                            # ── Win Rate por Regime Macro ───────────────────────────────
+            perf_data = _ai._load_performance()
+            if perf_data:
+                regime_stats = {}
+                for p in perf_data:
+                    regime = p.get("market_regime", "UNKNOWN")
+                    regime_stats.setdefault(regime, {"total": 0, "wins": 0})
+                    regime_stats[regime]["total"] += 1
+                    if p.get("pct_change", 0) > 10:
+                        regime_stats[regime]["wins"] += 1
+
+                if regime_stats:
+                    st.markdown("**📊 Win Rate por Regime Macro**")
+                    # Ordenar para exibir primeiro os regimes com mais picks
+                    for regime in sorted(regime_stats.keys(), key=lambda x: regime_stats[x]["total"], reverse=True):
+                        stats = regime_stats[regime]
+                        wr = stats["wins"] / stats["total"] * 100 if stats["total"] else 0
+                        st.metric(regime, f"{wr:.0f}%", f"{stats['wins']}/{stats['total']}")
 
             with st.expander("🏆 Top 5 Winners (maior retorno)", expanded=False):
                 for pick in perf_dash['best_picks']:
@@ -2362,6 +2380,10 @@ with tab7:
                 f"<div style='background:#0d1117;border-left:3px solid #58a6ff;"
                 f"padding:8px 14px;font-size:12px;color:#8b949e;margin-bottom:12px'>"
                 f"{macro_note}</div>", unsafe_allow_html=True)
+        comparison = result.get("top3_comparison")
+        if comparison:
+            st.markdown("#### 🔍 Comparação das Top 3")
+            st.info(comparison)
         for row_i in range(0, len(picks[:n_show]), 2):
             row_picks = picks[row_i:row_i+2]
             cols = st.columns(len(row_picks))
@@ -2370,6 +2392,10 @@ with tab7:
                 pot_icon  = {"x10+":"🚀","x5-x10":"⚡","x2-x5":"📈"}.get(pick.get("potential","x2-x5"),"•")
                 rank      = pick.get("rank",0)
                 rank_badge= "🥇" if rank==1 else ("🥈" if rank==2 else ("🥉" if rank==3 else f"#{rank}"))
+                ml_html = ""
+                if pick.get("ml_score") is not None:
+                    ml_pct = pick["ml_score"] * 100
+                    ml_html = f'<div style="margin-top:4px;font-size:10px;color:#a371f7;">🧠 ML Confidence: {ml_pct:.0f}%</div>'
                 col.markdown(
                     f"<div style='background:#161b22;border:1px solid #30363d;border-radius:8px;"
                     f"padding:14px;margin-bottom:8px'>"
@@ -2383,7 +2409,10 @@ with tab7:
                     f"{pick.get('rationale','—')}</div>"
                     f"<div style='margin-top:8px;font-size:11px;color:#484f58'>"
                     f"Score: <b style='color:#c9d1d9'>{pick.get('composite_score',0):.1f}</b>"
-                    f"</div></div>", unsafe_allow_html=True)
+                    f"</div>"
+                    f"{ml_html}"
+                    f"</div>", unsafe_allow_html=True)
+
         if avoid:
             st.markdown(
                 "<div style='background:#2d0f0f;border:1px solid #da3633;border-radius:6px;"

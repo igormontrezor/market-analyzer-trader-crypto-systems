@@ -224,7 +224,7 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
         for col in score_cols:
             if col in grp.columns:
                 vals = grp[col].fillna(0).values.astype(float)
-                row[col] = float(np.sum(vals * w) / wt) if wt > 0 else 0.0
+                row[col] = float(np.nansum(vals * w) / wt) if wt > 0 else 0.0
 
         # Campos booleanos / categoricos: moda
         for col in ["momentum","sector","is_gold","price_resilience","volume_recovery", "seller_exhaustion"]:
@@ -665,7 +665,7 @@ def _build_prompt(df_top: pd.DataFrame, macro: dict, confirmed: list,
 
     confirmed_syms = [g.get("symbol","") for g in confirmed if isinstance(g, dict)]
     rows = []
-    for _, row in df_top.head(30).iterrows():
+    for _, row in df_top.head(50).iterrows():
         extra = []
         if row.get("is_gold"): extra.append("IS_GOLD")
         if row.get("price_resilience"): extra.append("PRICE_RESILIENT")
@@ -749,7 +749,7 @@ drawdown=queda desde o ATH (0=ATH, 0.7=70% abaixo, 0.9=90% abaixo) – >0.7 = po
 RANK_UP = subiu >10 posições no ranking de market cap em 7 dias (entrada de capital)
 VOL_UP = volume total em tendência de alta nos últimos 5 dias (acumulação silenciosa)
 HOT_NARRATIVE = setor identificado como quente pelo sistema (ex: AI, DePIN, RWA, GameFi, etc.)
-FUNDING_SQUEEZE = funding BTC negativo 3 dias + higher lows (potencial short squeeze)
+FUNDING_SQUEEZE = funding BTC negativo 2 dias + higher lows (potencial short squeeze)
 SELLER_EXHAUSTION = drawdown > 80% + volatilidade < 6% + ratio atual > 2x média 3d → fundo real, reversão explosiva
 
 === TOP {len(rows)} CANDIDATAS ===
@@ -771,6 +771,7 @@ Dica adicional: Moedas com VOL_UP + SMART_MONEY_DIV indicam acumulação silenci
 Dica adicional: Priorize moedas com HOT_NARRATIVE + SMART_MONEY_DIV (narrativa quente + acumulação silenciosa) em ciclos de alta.
 Dica adicional: Moedas com FUNDING_SQUEEZE + SMART_MONEY_DIV indicam possível explosão de alta por aperto de shorts.
 Dica adicional: Moedas com SELLER_EXHAUSTION são candidatas a fundo real – priorize em ciclos de compra ou repique tático.
+**Importante: inclua o campo "top3_comparison" com uma análise comparativa detalhada das top 3 picks.**
 
 Retorne APENAS este JSON:
 {{
@@ -790,6 +791,7 @@ Retorne APENAS este JSON:
       "potential": "x2-x5|x5-x10|x10+"
     }}
   ],
+  "top3_comparison": "Parágrafo comparando as 3 principais candidatas (rank 1, 2 e 3). Destaque diferenças de risco, potencial, flags e contexto macro. Conclua qual delas tem o melhor risco/retorno.",
   "macro_note": "como ciclo BTC e macro afetam as escolhas",
   "sectors_in_focus": ["setor1"],
   "smart_money_highlight": "símbolo SMART_MONEY_DIV mais promissor",
@@ -925,6 +927,7 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
     Roda a análise completa para o ciclo especificado.
     Retorna o resultado (dict) ou lança exceção.
     """
+
     if not api_key:
         raise ValueError("ANTHROPIC_API_KEY não configurada. "
                          "Defina a variável de ambiente ou salve em ~/.montrezor_ai.json")
@@ -954,10 +957,22 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
             sym = agg_df.loc[idx, 'symbol']
             if _has_higher_lows(sym):
                 agg_df.loc[idx, 'funding_squeeze'] = True
-                agg_df.loc[idx, 'composite_score'] += 4
+                agg_df.loc[idx, 'composite_score'] += 2
                 agg_df.loc[idx, 'composite_score'] = agg_df.loc[idx, 'composite_score'].clip(0, 100)
     else:
         agg_df['funding_squeeze'] = False
+
+    # ── Bônus Seller Exhaustion (fundo real) ─────────────────────────────
+    if 'seller_exhaustion' in agg_df.columns:
+        agg_df['seller_exhaustion'] = agg_df['seller_exhaustion'].astype(bool).astype(float)
+        agg_df['composite_score'] += agg_df['seller_exhaustion'] * 8
+        agg_df['composite_score'] = agg_df['composite_score'].clip(0, 100)
+
+    # ── Smart Money Divergence (acumulação antes do hype) ───────────────
+    if 'smart_money_div' in agg_df.columns:
+        agg_df['smart_money_div'] = agg_df['smart_money_div'].astype(bool).astype(float)
+        agg_df['composite_score'] += agg_df['smart_money_div'] * 3
+        agg_df['composite_score'] = agg_df['composite_score'].clip(0, 100)
 
     # Para análise mensal, usar top 10 semanal como candidatas
     _monthly_filtered = False
@@ -996,6 +1011,12 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
     system_prompt, user_prompt = _build_prompt(
         agg_df, macro, confirmed, watchlist, cycle, prev_top, perf_txt, btc_ctx, dex_df)
     result = _call_claude(system_prompt, user_prompt, api_key)
+    result["market_regime"] = _get_current_macro_regime()
+    try:
+        from ml_ranker import ml_predict_picks
+        result = ml_predict_picks(result, agg_df)
+    except ImportError:
+        pass
     if result_warning:
         result["macro_note"] = result_warning + " " + result.get("macro_note","")
 
@@ -1018,6 +1039,7 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
 
     # Enviar resultado ao Telegram
     _send_result_tg(result, cycle)
+
 
     return result
 
@@ -1068,6 +1090,7 @@ def update_all_pending_performances() -> int:
         result = results.get(cycle)
         if not result:
             continue
+        regime = result.get("market_regime", "UNKNOWN")   # pega do resultado
         # Data da análise
         gen_at = result.get("generated_at", "")
         if not gen_at:
@@ -1091,7 +1114,7 @@ def update_all_pending_performances() -> int:
                 continue
             price_now = _fetch_coingecko_price(sym)
             if price_now > 0:
-                register_performance(cycle, sym, pick.get("rank", 0), price_at_pick, price_now)
+                register_performance(cycle, sym, pick.get("rank", 0), price_at_pick, price_now, market_regime=regime)
                 perf_keys.add((sym, str(pick_date)))
                 updated += 1
     return updated
@@ -1111,6 +1134,7 @@ def auto_update_performance() -> int:
         result = results.get(cycle)
         if not result:
             continue
+        regime = result.get("market_regime", "UNKNOWN")   # pega do resultado
         pick_date = result.get("generated_at", "")[:10]
         for pick in result.get("top_picks", []):
             sym = pick.get("symbol", "")
@@ -1121,14 +1145,14 @@ def auto_update_performance() -> int:
                 continue
             price_now = _fetch_coingecko_price(sym)
             if price_now > 0:
-                register_performance(cycle, sym, pick.get("rank", 0), price_at_pick, price_now)
+                register_performance(cycle, sym, pick.get("rank", 0), price_at_pick, price_now, market_regime=regime)
                 perf_keys.add((sym, pick_date))
                 updated += 1
     return updated
 
 
 def register_performance(cycle: str, symbol: str, rank: int,
-                          price_at_pick: float, price_now: float):
+                          price_at_pick: float, price_now: float, market_regime: str = "UNKNOWN"):
     """
     Registra o resultado real de uma pick.
     Chamar semanalmente para alimentar o feedback loop.
@@ -1145,6 +1169,7 @@ def register_performance(cycle: str, symbol: str, rank: int,
             "price_at_pick": price_at_pick,
             "price_now":     price_now,
             "pct_change":    round(pct, 2),
+            "market_regime": market_regime,
             "result":        "WIN" if pct > 10 else ("LOSS" if pct < -10 else "NEUTRAL"),
         })
         _save_performance(perf[-500:])  # manter últimas 500 entradas
@@ -1242,3 +1267,39 @@ def get_aggregated_data(max_age_days: int = 7) -> pd.DataFrame:
     if full.empty:
         return pd.DataFrame()
     return _aggregate(full)
+
+def _get_current_macro_regime() -> str:
+    """Retorna a classificação do regime macro atual baseada no macro_timing.json."""
+    macro = _load_macro()
+    if not macro:
+        return "UNKNOWN"
+
+    regime = macro.get("regime", {})
+    signal = macro.get("signal", {})
+
+    buy_mode = regime.get("buy_mode", False)
+    sell_mode = regime.get("sell_mode", False)
+    weekly_buy = signal.get("weekly_buy_trigger", False)
+    weekly_sell = signal.get("weekly_sell_trigger", False)
+    funding = float(macro.get("funding_rate", 0))
+    cap_lock = regime.get("capitulation_lock", False)
+    rebound = signal.get("tactical_rebound", False)
+
+    # Mesma hierarquia do HUD
+    if buy_mode and weekly_buy and funding < 0:
+        return "SUPER_BUY"
+    if buy_mode and weekly_buy:
+        return "BUY_CONFIRMED"
+    if buy_mode:
+        return "BUY_MACRO"
+    if sell_mode and weekly_sell and funding > 0.08:
+        return "SUPER_SELL"
+    if sell_mode and weekly_sell:
+        return "SELL_CONFIRMED"
+    if sell_mode and cap_lock:
+        return "CAPITULATION"
+    if sell_mode and rebound:
+        return "SELL_REBOUND"
+    if sell_mode:
+        return "SELL_MACRO"
+    return "NEUTRO"

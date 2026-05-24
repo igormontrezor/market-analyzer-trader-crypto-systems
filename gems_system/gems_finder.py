@@ -1732,7 +1732,7 @@ class GemsFinder:
 
         # Seller Exhaustion – bônus refinado
         if gem.get('seller_exhaustion', False):
-            score += 0.3
+            score += 0.8
 
         return score
 

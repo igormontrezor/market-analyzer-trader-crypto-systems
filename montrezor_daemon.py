@@ -55,6 +55,7 @@ DEX_SCAN_SEC       = 7200  # DexScreener early stage: a cada 2h
 MA_COOLDOWN_MIN    = 120   # 2h cooldown market analysis
 MACRO_REBUILD_SEC  = 300   # visualizer: rebuild macro_timing.json a cada 5 min
 PERF_UPDATE_SEC = 21600   # a cada 6 horas (pode ajustar para 86400 = 24h)
+ML_TRAIN_INTERVAL_SEC = 7 * 24 * 3600   # 7 dias
 
 TRADING_COOLDOWN_MIN = 240  # 4h cooldown forex
 GEMS_COOLDOWN_MIN    = 60   # 1h cooldown crypto
@@ -892,6 +893,7 @@ def run_daemon(logger, mode="all"):
     do_trading = mode in ("all","trading")
     do_gems    = mode in ("all","gems")
     last_perf_update = 0.0
+    last_ml_train = 0.0
 
     logger.info("=" * 64)
     logger.info("  MONTREZOR DAEMON UNIFICADO")
@@ -941,6 +943,27 @@ def run_daemon(logger, mode="all"):
 
     while True:
         now = time.time()
+
+        # ── TREINAMENTO ML (semanal) ──────────────────────────────────────
+        if (now - last_ml_train) >= ML_TRAIN_INTERVAL_SEC:
+            last_ml_train = now
+            try:
+                import subprocess
+                ml_script = os.path.join(PROJECT_DIR, "gems_system", "ml_ranker.py")
+                if os.path.exists(ml_script):
+                    logger.info("[ML] Iniciando treinamento do modelo...")
+                    result = subprocess.run(
+                        [sys.executable, ml_script, "--train"],
+                        capture_output=True, text=True, timeout=300
+                    )
+                    if result.returncode == 0:
+                        logger.info(f"[ML] Treinamento concluído. {result.stdout.strip()}")
+                    else:
+                        logger.error(f"[ML] Erro no treinamento: {result.stderr[:200]}")
+                else:
+                    logger.debug("[ML] ml_ranker.py não encontrado")
+            except Exception as e:
+                logger.error(f"[ML] Falha ao executar treino: {e}")
 
         # ── TRADING ──────────────────────────────────────────────────
         if do_trading and (now - last_t_scan) >= TRADING_SCAN_SEC:
