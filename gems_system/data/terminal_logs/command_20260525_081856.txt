@@ -1,0 +1,71 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-05-25 08:18:56
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+✅ Usando cache (válido até: 20:14:48)
+✅ Usando cache existente: 33 gems
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+📋 Cache: 0 gems encontradas
+✅ 50m_range: 0 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+📋 Cache: 15 gems encontradas
+✅ 10_49m_range: 15 gems
+📋 Cache válido - Nenhum cache atualizado
+
+📊 ANÁLISE - 50M_RANGE:
+❌ Nenhuma gem para analisar
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 15 GEMS:
+================================================================================
+Market Cap - Médio: $29,590,400
+Market Cap - Min: $16,792,043, Max: $48,465,074
+Volume - Médio: $20,467,901
+Volume - Min: $6,928,025, Max: $71,414,707
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 6 gems
+  🟠 Strong (0.5-1.0): 7 gems
+  🔥 Breakout (>1.0): 2 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/15 (0.0%)
+  💪 Resiliência de Preço: 0/15 (0.0%)
+  👑 POTENCIAL OURO: 0/15 (0.0%)
+  🚨 WASH TRADING: 1/15 (6.7%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 15 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. fida     | MC: $  35,840,206 | Vol: $  71,414,707 | Ratio: 1.99 | B 📊📈  🚨📊 | Bonfida
+ 2. usdr     | MC: $  20,593,756 | Vol: $  30,395,456 | Ratio: 1.48 | B 📊📈    📊 | StablR USD
+ 3. pha      | MC: $  34,706,735 | Vol: $  32,668,772 | Ratio: 0.94 | S 📊📈    📊 | PHALA
+ 4. psg      | MC: $  16,792,043 | Vol: $  12,621,215 | Ratio: 0.75 | S 📊📈    📊 | Paris Saint-Germain Fan Token
+ 5. dogs     | MC: $  26,844,948 | Vol: $  17,978,159 | Ratio: 0.67 | S 📊📈    📊 | Dogs
+ 6. tst      | MC: $  16,830,290 | Vol: $  11,111,595 | Ratio: 0.66 | S 📊📈    📊 | Test
+ 7. musd     | MC: $  32,097,411 | Vol: $  19,983,393 | Ratio: 0.62 | S 📊📈    📊 | MetaMask USD
+ 8. gmt      | MC: $  36,751,943 | Vol: $  21,951,480 | Ratio: 0.60 | S 📊📈    📊 | GMT
+ 9. flux     | MC: $  30,815,727 | Vol: $  15,669,053 | Ratio: 0.51 | S 📊📈    📊 | Flux
+10. cpool    | MC: $  33,262,692 | Vol: $  14,474,584 | Ratio: 0.44 | E 📊📈    📊 | Clearpool
+
+📋 Usando dados existentes - Nenhum snapshot criado
+
+🎉 GEMS FINDER CONCLUÍDO!
+📊 Total de gems: 15
+📁 Arquivos salvos para análise histórica:
+   - snapshots/gems_*.csv (por faixa)
+   - snapshots/gems_consolidated_*.csv (completo)
+   - Cache válido por 12 horas (evita requisições excessivas)
+   - Snapshots criados apenas com dados novos

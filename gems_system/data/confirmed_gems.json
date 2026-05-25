@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-20T09:05:42.344879",
+  "last_updated": "2026-05-25T08:15:06.562452",
   "total_confirmed": 9,
   "confirmed_gems": [
     {
@@ -90,19 +90,19 @@
     {
       "symbol": "dogs",
       "name": "Dogs",
-      "confirmed_at": "2026-05-18T06:56:50.418968",
-      "ratio_now": 0.8647782696840784,
-      "ratio_24h_ago": 0.5682012700375887,
-      "growth_percent": 52.19576500187513,
-      "strong_days": 3,
-      "acceleration_strength": 1.783120964947872,
+      "confirmed_at": "2026-05-25T08:15:06.560662",
+      "ratio_now": 0.6697036254270263,
+      "ratio_24h_ago": 0.5206039085481574,
+      "growth_percent": 28.639761329236492,
+      "strong_days": 2,
+      "acceleration_strength": 1.1281102447628342,
       "trend": "accelerating",
-      "market_cap": 27598752,
-      "volume": 23866801,
+      "market_cap": 26844948,
+      "volume": 17978159,
       "priority": "alta",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 74.58457745552997
+      "quality_score": 50.82878390140929
     },
     {
       "symbol": "cgpt",

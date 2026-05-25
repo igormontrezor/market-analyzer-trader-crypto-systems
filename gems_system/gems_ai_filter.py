@@ -477,16 +477,30 @@ def _load_confirmed_gems() -> list:
 
 
 def _load_watchlist() -> list:
-    """Carrega watchlist_selecionada.csv."""
+    """Carrega watchlist_selecionada.csv e também a lista de interesse do portfólio."""
+    symbols = []
+    # 1. CSV original
     path = os.path.join(DATA_DIR, "watchlist_selecionada.csv")
     if os.path.exists(path):
         try:
             df = pd.read_csv(path)
-            return df["symbol"].tolist() if "symbol" in df.columns else []
+            symbols.extend(df["symbol"].tolist())
         except Exception:
             pass
-    return []
-
+    # 2. Watchlist do portfólio (apenas os coin_ids)
+    port_file = os.path.join(os.path.expanduser("~"), ".montrezor_portfolio.json")
+    if os.path.exists(port_file):
+        try:
+            with open(port_file, encoding="utf-8") as f:
+                port = json.load(f)
+            watchlist = port.get("watchlist", [])
+            for item in watchlist:
+                sym = item.get("coin_id", "").upper()
+                if sym:
+                    symbols.append(sym)
+        except Exception:
+            pass
+    return list(set(symbols))  # remove duplicatas
 
 PERFORMANCE_FILE = os.path.join(DATA_DIR, "gems_ai_performance.json")
 BTC_CACHE_FILE   = os.path.join(DATA_DIR, "gems_ai_btc_cache.json")
@@ -1017,9 +1031,47 @@ Status: {regime_txt} | Funding: {funding:.4f}% | Weekly Buy: {weekly_buy}
 {"CAPITULATION LOCK ATIVO" if cap_lock else ""}
 
 === DADOS DA MOEDA ===
-{data_str}
+{data_str}"""
 
-Responda APENAS com o JSON."""
+    # ── Seção DexScreener (early stage) para esta moeda ──────────────────────
+    if dex_df is not None and not dex_df.empty:
+        # 1. Tentar correspondência exata por símbolo
+        sym = row['symbol'].upper()
+        dex_matches = dex_df[dex_df['symbol'].str.upper() == sym]
+        if not dex_matches.empty:
+            # Mostrar apenas os tokens correspondentes (máx. 5)
+            dex_rows = []
+            for _, drow in dex_matches.head(5).iterrows():
+                dex_rows.append(
+                    f"- {drow['symbol']:<12} liq=${drow.get('liquidity_usd',0)/1000:.0f}K "
+                    f"vol=${drow.get('volume_24h_usd',0)/1000:.0f}K "
+                    f"buys={int(drow.get('buys_24h',0))} sells={int(drow.get('sells_24h',0))} "
+                    f"buy_ratio={drow.get('buy_ratio',0):.2f} chain={drow.get('chain','?')} "
+                    f"appear={int(drow.get('appearances',1))}"
+                )
+            if dex_rows:
+                user += "\n\n=== DEX EARLY STAGE (mesmo símbolo) ===\n" + "\n".join(dex_rows)
+                user += "\nPriorize tokens com buy_ratio > 0.6 e liquidez crescente."
+        else:
+            # 2. Sem correspondência: mostrar top tokens DEX como contexto macro
+            top_dex = dex_df.head(5)   # top 5 por composite_dex (já ordenado)
+            if not top_dex.empty:
+                dex_rows = []
+                for _, drow in top_dex.iterrows():
+                    dex_rows.append(
+                        f"- {drow['symbol']:<12} liq=${drow.get('liquidity_usd',0)/1000:.0f}K "
+                        f"vol=${drow.get('volume_24h_usd',0)/1000:.0f}K "
+                        f"buy_ratio={drow.get('buy_ratio',0):.2f} "
+                        f"appear={int(drow.get('appearances',1))} chain={drow.get('chain','?')}"
+                    )
+                if dex_rows:
+                    user += "\n\n=== DEX EARLY STAGE (contexto macro – top tokens dos últimos 7 dias) ===\n"
+                    user += f"Nenhum token com símbolo '{sym}' foi encontrado no DexScreener. "
+                    user += "Abaixo os principais tokens early-stage detectados recentemente:\n"
+                    user += "\n".join(dex_rows)
+                    user += "\n\nConsidere o apetite geral por risco e as narrativas emergentes (ex.: setores, chains ativas)."
+
+    user += "\n\nResponda APENAS com o JSON."
     return system, user
 
 def _analyze_coin_deep(row, macro, confirmed, watchlist, btc_ctx, cycle, api_key, dex_df=None):

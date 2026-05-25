@@ -62,6 +62,7 @@ MA_COOLDOWN_MIN    = 120   # 2h cooldown market analysis
 MACRO_REBUILD_SEC  = 300   # visualizer: rebuild macro_timing.json a cada 5 min
 PERF_UPDATE_SEC = 21600   # a cada 6 horas (pode ajustar para 86400 = 24h)
 ML_TRAIN_INTERVAL_SEC = 7 * 24 * 3600   # 7 dias
+WATCHLIST_UPDATE_SEC = 3600  # atualizar preços da watchlist a cada 1 hora
 
 TRADING_COOLDOWN_MIN = 240  # 4h cooldown forex
 GEMS_COOLDOWN_MIN    = 60   # 1h cooldown crypto
@@ -203,7 +204,7 @@ def send_trading_tg(symbol, direction, sig_type, price, token, chat_id, signal_d
     )
     return _post(token, chat_id, plain, "")
 
-def send_gems_tg(symbol, sig_type, funding, token, chat_id):
+def send_gems_tg(symbol, sig_type, funding, token, chat_id, extra_msg=None):
     token = _norm(token); chat_id = _norm(chat_id)
     if not token or not chat_id: return False
     icons = {"SUPER_BUY":"⚡🟢","SUPER_SELL":"🚨🔴","SUPER_REPIQUE":"⚡🔵",
@@ -215,8 +216,12 @@ def send_gems_tg(symbol, sig_type, funding, token, chat_id):
             "━━━━━━━━━━━━━━━━━━\n"
             f"<b>Ativo</b>: {e(symbol)}\n<b>Sinal</b>: {e(sig_type)}\n"
             f"<b>Funding</b>: {funding:.4f}%\n<b>Hora</b>: {e(ts)}\n\nMontrezor Gems [daemon]")
+    if extra_msg:
+        msg += "\n" + extra_msg
     if _post(token, chat_id, msg): return True
     plain = f"GEMS {sig_type}\nAtivo: {symbol}\nFunding: {funding:.4f}%\nHora: {ts}\nMontrezor Gems [daemon]"
+    if extra_msg:
+        plain += "\n" + extra_msg
     return _post(token, chat_id, plain, "")
 
 # ════════════════════════════════════════════════════════════════════════
@@ -900,6 +905,7 @@ def run_daemon(logger, mode="all"):
     do_gems    = mode in ("all","gems")
     last_perf_update = 0.0
     last_ml_train = 0.0
+    last_watchlist_update = 0.0
 
     logger.info("=" * 64)
     logger.info("  MONTREZOR DAEMON UNIFICADO")
@@ -1072,6 +1078,31 @@ def run_daemon(logger, mode="all"):
                             g_state.mark("BTC", sig_type)
                         else:
                             logger.error(f"  ❌ Telegram falhou -> BTC {sig_type}")
+                        # Se for sinal de compra, enviar também alerta da watchlist
+                        if sig_type in ("BUY", "SUPER_BUY"):
+                            try:
+                                from portfolio_tab import get_portfolio_watchlist, update_portfolio_watchlist_prices
+                                # Atualiza preços antes de enviar
+                                update_portfolio_watchlist_prices()
+                                watchlist = get_portfolio_watchlist()
+                                if watchlist:
+                                    msg = f"📈 *SINAL DE COMPRA* ({sig_type}) - Sua Watchlist:\n"
+                                    for item in watchlist:
+                                        cid = item["coin_id"].upper()
+                                        price = item.get("current_price", 0)
+                                        change = item.get("change_24h", 0)
+                                        lev = item.get("leverage", "?")
+                                        margin = item.get("margin", "?")
+                                        if price:
+                                            msg += f"• {cid} ${price:,.4f} ({change:+.2f}%) | {lev}x | ${margin:.0f}\n"
+                                        else:
+                                            msg += f"• {cid} — preço indisponível\n"
+                                    # Usa a mesma função de envio, mas com símbolo "WATCHLIST"
+                                    send_gems_tg("WATCHLIST", sig_type, funding, cfg["tg_token"], cfg["tg_chat_id"], extra_msg=msg)
+                            except ImportError:
+                                logger.debug("[WATCHLIST] portfolio_tab não encontrado")
+                            except Exception as e:
+                                logger.error(f"[WATCHLIST] Erro ao enviar alerta: {e}")
                     else:
                         logger.debug(f"  ⏳ Cooldown: BTC {sig_type}")
                     prev_gems_sig = sig_type
@@ -1168,13 +1199,27 @@ def run_daemon(logger, mode="all"):
                     "from gems_finder import GemsFinder; GemsFinder().save_early_stage_snapshot()"]
                 # Executa no diretório correto (gems_system)
                 result = subprocess.run(cmd, cwd=os.path.join(PROJECT_DIR, "gems_system"),
-                                        capture_output=True, text=True, timeout=60)
+                                        capture_output=True, text=True, timeout=120)
                 if result.returncode == 0:
                     logger.info("[DEX] Early stage snapshot atualizado com sucesso")
                 else:
                     logger.error(f"[DEX] Falha: {result.stderr.strip()}")
             except Exception as e:
                 logger.error(f"[DEX] Erro ao executar: {e}")
+
+        # ── WATCHLIST: atualizar preços periodicamente ─────────────────
+        if (now - last_watchlist_update) >= WATCHLIST_UPDATE_SEC:
+            last_watchlist_update = now
+            try:
+                from portfolio_tab import update_portfolio_watchlist_prices
+                if update_portfolio_watchlist_prices():
+                    logger.info("[WATCHLIST] Preços atualizados com sucesso")
+                else:
+                    logger.debug("[WATCHLIST] Nenhum preço alterado")
+            except ImportError:
+                logger.debug("[WATCHLIST] portfolio_tab não encontrado — pulando")
+            except Exception as e:
+                logger.error(f"[WATCHLIST] Erro: {e}")
 
         # ── AI GEMS FILTER — carregar módulo uma única vez ─────────────────────
         if (now - last_ai_check) >= AI_CHECK_SEC:

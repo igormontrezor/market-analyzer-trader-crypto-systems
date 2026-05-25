@@ -148,6 +148,36 @@ def _calc_pnl(entry_avg: float, current: float, position_size: float,
         return round((current - entry_avg) * position_size, 2)
     return round((entry_avg - current) * position_size, 2)
 
+def update_portfolio_watchlist_prices() -> bool:
+    """Atualiza preços de todos os itens da watchlist. Retorna True se algum preço mudou."""
+    port = _load_port()
+    watchlist = port.get("watchlist", [])
+    updated = False
+    for item in watchlist:
+        cg = _fetch_price(item["coin_id"])
+        price = cg.get("price", 0)
+        if price > 0:
+            old_price = item.get("current_price", 0)
+            if old_price != price:
+                item["current_price"] = price
+                item["change_24h"] = cg.get("change_24h", 0)
+                updated = True
+    if updated:
+        _save_port(port)
+    return updated
+
+def get_portfolio_watchlist() -> list:
+    """Retorna a watchlist do portfólio com preços atualizados (se disponíveis)."""
+    port = _load_port()
+    watchlist = port.get("watchlist", [])
+    # Garantir que cada item tenha current_price e change_24h
+    for item in watchlist:
+        if "current_price" not in item or item.get("current_price", 0) == 0:
+            cg = _fetch_price(item["coin_id"])
+            item["current_price"] = cg.get("price", 0)
+            item["change_24h"] = cg.get("change_24h", 0)
+    return watchlist
+
 # ── Render principal ──────────────────────────────────────────────────────────
 def render_portfolio_tab(macro_signal: str = None):
     """

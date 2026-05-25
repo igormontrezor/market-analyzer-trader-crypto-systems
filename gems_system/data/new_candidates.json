@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-23T08:10:16.239666",
-  "total_candidates": 30,
+  "last_updated": "2026-05-25T08:15:06.564305",
+  "total_candidates": 31,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -391,6 +391,19 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 59.66877864591079
+    },
+    {
+      "symbol": "usdr",
+      "name": "StablR USD",
+      "detected_at": "2026-05-25T08:15:06.560409",
+      "ratio_now": 1.4759549447900615,
+      "market_cap": 20593756,
+      "volume": 30395456,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 53.68576556246789
     }
   ]
 }
