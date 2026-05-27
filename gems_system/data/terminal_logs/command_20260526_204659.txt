@@ -1,0 +1,14 @@
+=== Atualizando dados macro timing... ===
+Timestamp: 2026-05-26 20:46:59
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe -c import visualizer; visualizer._build_macro_timing()
+================================================================================
+
+you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+🔄 Tentando conexão TradingView (tentativa 1/3)...
+⚠️ Tentativa 1 falhou: Falha ao obter dados USDT.D monthly
+⏱️ Aguardando 2 segundos antes da próxima tentativa...
+🔄 Tentando conexão TradingView (tentativa 2/3)...
+✅ Dados TradingView recebidos com sucesso

@@ -1,0 +1,17 @@
+[
+  {
+    "timestamp": "2026-05-26T16:09:49.988279",
+    "date": "2026-05-26",
+    "regime": "BUY_MACRO",
+    "buy_mode": true,
+    "sell_mode": false,
+    "weekly_buy": false,
+    "weekly_sell": false,
+    "funding_rate": 0.01,
+    "btc_price_usd": 75758.0,
+    "evaluated_7d": false,
+    "outcome_7d": null,
+    "evaluated_30d": false,
+    "outcome_30d": null
+  }
+]

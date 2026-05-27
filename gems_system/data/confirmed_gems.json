@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-25T08:15:06.562452",
-  "total_confirmed": 9,
+  "last_updated": "2026-05-26T07:34:44.986170",
+  "total_confirmed": 10,
   "confirmed_gems": [
     {
       "symbol": "tst",
@@ -90,19 +90,19 @@
     {
       "symbol": "dogs",
       "name": "Dogs",
-      "confirmed_at": "2026-05-25T08:15:06.560662",
-      "ratio_now": 0.6697036254270263,
-      "ratio_24h_ago": 0.5206039085481574,
-      "growth_percent": 28.639761329236492,
-      "strong_days": 2,
-      "acceleration_strength": 1.1281102447628342,
+      "confirmed_at": "2026-05-26T07:34:44.975289",
+      "ratio_now": 1.2973149900890022,
+      "ratio_24h_ago": 0.6697036254270263,
+      "growth_percent": 93.71479275803367,
+      "strong_days": 3,
+      "acceleration_strength": 1.5058702749163708,
       "trend": "accelerating",
-      "market_cap": 26844948,
-      "volume": 17978159,
-      "priority": "alta",
+      "market_cap": 27432152,
+      "volume": 35588142,
+      "priority": "maxima",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 50.82878390140929
+      "quality_score": 79.76967823823468
     },
     {
       "symbol": "cgpt",
@@ -137,6 +137,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 78.96512269800351
+    },
+    {
+      "symbol": "pha",
+      "name": "PHALA",
+      "confirmed_at": "2026-05-26T07:34:44.974658",
+      "ratio_now": 2.969700271498978,
+      "ratio_24h_ago": 0.9412804748127417,
+      "growth_percent": 215.49579014584043,
+      "strong_days": 3,
+      "acceleration_strength": 3.5528228670890813,
+      "trend": "accelerating",
+      "market_cap": 41125385,
+      "volume": 122130067,
+      "priority": "extrema",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 100.0
     },
     {
       "symbol": "osmo",

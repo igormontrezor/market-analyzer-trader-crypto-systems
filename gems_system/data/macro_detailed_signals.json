@@ -1,0 +1,14 @@
+[
+  {
+    "timestamp": "2026-05-26T16:09:50.024205",
+    "date": "2026-05-26",
+    "signal": "weekly_buy",
+    "btc_price_usd": 75758.0,
+    "regime_at_signal": "BUY_MACRO",
+    "evaluated": false,
+    "outcome": null,
+    "exit_timestamp": null,
+    "exit_price": null,
+    "return_pct": null
+  }
+]

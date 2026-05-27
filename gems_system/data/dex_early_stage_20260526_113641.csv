@@ -1,0 +1,4 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+PP420,penispoop420,Ac8EScJ4ufRo8PiFkun7diUrcCCktg4JvArb3mPmpump,solana,0.0002793,-42.46,279335.0,49781.81,761882.05,18672,8964,0.68,44.8,https://dexscreener.com/solana/dyhvcioygvzrvvt7wsowmyi3uhrxnyzwzra6c55ptjb7,2026-05-26T11:36:36.192513,dexscreener,834.860231
+HPX,HyperionX,0x5CBFC46eB22aA38069f9De48A1c7a536DEd62652,base,0.001496,143.0,1496245.0,172531.31,273698.27,1102,685,0.62,15.4,https://dexscreener.com/base/0x99eafe785518c6add891a0b1c37e3df8d63768bf,2026-05-26T11:36:38.492035,dexscreener,352.95140100000003
+WMV,Woke Mind Virus,9fyNPievvYvvPWBLaQPYHzVnqnKhXuD8U55T6Ehppump,solana,0.000307,786.0,307062.0,43337.83,116897.33,1513,652,0.7,10.4,https://dexscreener.com/solana/9b88k8ne6z9gwwo8jhbjdbquglhwvsbhbratrxue2nz3,2026-05-26T11:36:36.192225,dexscreener,191.231113

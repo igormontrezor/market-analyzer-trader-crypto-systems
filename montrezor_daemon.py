@@ -31,12 +31,6 @@
 """
 
 import sys
-import io
-
-# Força UTF-8 no console (evita UnicodeDecodeError em subprocessos no Windows)
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
-
 import os
 import time
 import json
@@ -60,9 +54,6 @@ AI_CHECK_SEC       = 3600  # verificar ciclos AI a cada 1h (executa só quando v
 DEX_SCAN_SEC       = 7200  # DexScreener early stage: a cada 2h
 MA_COOLDOWN_MIN    = 120   # 2h cooldown market analysis
 MACRO_REBUILD_SEC  = 300   # visualizer: rebuild macro_timing.json a cada 5 min
-PERF_UPDATE_SEC = 21600   # a cada 6 horas (pode ajustar para 86400 = 24h)
-ML_TRAIN_INTERVAL_SEC = 7 * 24 * 3600   # 7 dias
-WATCHLIST_UPDATE_SEC = 3600  # atualizar preços da watchlist a cada 1 hora
 
 TRADING_COOLDOWN_MIN = 240  # 4h cooldown forex
 GEMS_COOLDOWN_MIN    = 60   # 1h cooldown crypto
@@ -204,7 +195,7 @@ def send_trading_tg(symbol, direction, sig_type, price, token, chat_id, signal_d
     )
     return _post(token, chat_id, plain, "")
 
-def send_gems_tg(symbol, sig_type, funding, token, chat_id, extra_msg=None):
+def send_gems_tg(symbol, sig_type, funding, token, chat_id):
     token = _norm(token); chat_id = _norm(chat_id)
     if not token or not chat_id: return False
     icons = {"SUPER_BUY":"⚡🟢","SUPER_SELL":"🚨🔴","SUPER_REPIQUE":"⚡🔵",
@@ -216,12 +207,8 @@ def send_gems_tg(symbol, sig_type, funding, token, chat_id, extra_msg=None):
             "━━━━━━━━━━━━━━━━━━\n"
             f"<b>Ativo</b>: {e(symbol)}\n<b>Sinal</b>: {e(sig_type)}\n"
             f"<b>Funding</b>: {funding:.4f}%\n<b>Hora</b>: {e(ts)}\n\nMontrezor Gems [daemon]")
-    if extra_msg:
-        msg += "\n" + extra_msg
     if _post(token, chat_id, msg): return True
     plain = f"GEMS {sig_type}\nAtivo: {symbol}\nFunding: {funding:.4f}%\nHora: {ts}\nMontrezor Gems [daemon]"
-    if extra_msg:
-        plain += "\n" + extra_msg
     return _post(token, chat_id, plain, "")
 
 # ════════════════════════════════════════════════════════════════════════
@@ -903,9 +890,6 @@ def _gems_signal_type(macro):
 def run_daemon(logger, mode="all"):
     do_trading = mode in ("all","trading")
     do_gems    = mode in ("all","gems")
-    last_perf_update = 0.0
-    last_ml_train = 0.0
-    last_watchlist_update = 0.0
 
     logger.info("=" * 64)
     logger.info("  MONTREZOR DAEMON UNIFICADO")
@@ -955,27 +939,6 @@ def run_daemon(logger, mode="all"):
 
     while True:
         now = time.time()
-
-        # ── TREINAMENTO ML (semanal) ──────────────────────────────────────
-        if (now - last_ml_train) >= ML_TRAIN_INTERVAL_SEC:
-            last_ml_train = now
-            try:
-                import subprocess
-                ml_script = os.path.join(PROJECT_DIR, "gems_system", "ml_ranker.py")
-                if os.path.exists(ml_script):
-                    logger.info("[ML] Iniciando treinamento do modelo...")
-                    result = subprocess.run(
-                        [sys.executable, ml_script, "--train"],
-                        capture_output=True, text=True, timeout=300
-                    )
-                    if result.returncode == 0:
-                        logger.info(f"[ML] Treinamento concluído. {result.stdout.strip()}")
-                    else:
-                        logger.error(f"[ML] Erro no treinamento: {result.stderr[:200]}")
-                else:
-                    logger.debug("[ML] ml_ranker.py não encontrado")
-            except Exception as e:
-                logger.error(f"[ML] Falha ao executar treino: {e}")
 
         # ── TRADING ──────────────────────────────────────────────────
         if do_trading and (now - last_t_scan) >= TRADING_SCAN_SEC:
@@ -1078,31 +1041,6 @@ def run_daemon(logger, mode="all"):
                             g_state.mark("BTC", sig_type)
                         else:
                             logger.error(f"  ❌ Telegram falhou -> BTC {sig_type}")
-                        # Se for sinal de compra, enviar também alerta da watchlist
-                        if sig_type in ("BUY", "SUPER_BUY"):
-                            try:
-                                from portfolio_tab import get_portfolio_watchlist, update_portfolio_watchlist_prices
-                                # Atualiza preços antes de enviar
-                                update_portfolio_watchlist_prices()
-                                watchlist = get_portfolio_watchlist()
-                                if watchlist:
-                                    msg = f"📈 *SINAL DE COMPRA* ({sig_type}) - Sua Watchlist:\n"
-                                    for item in watchlist:
-                                        cid = item["coin_id"].upper()
-                                        price = item.get("current_price", 0)
-                                        change = item.get("change_24h", 0)
-                                        lev = item.get("leverage", "?")
-                                        margin = item.get("margin", "?")
-                                        if price:
-                                            msg += f"• {cid} ${price:,.4f} ({change:+.2f}%) | {lev}x | ${margin:.0f}\n"
-                                        else:
-                                            msg += f"• {cid} — preço indisponível\n"
-                                    # Usa a mesma função de envio, mas com símbolo "WATCHLIST"
-                                    send_gems_tg("WATCHLIST", sig_type, funding, cfg["tg_token"], cfg["tg_chat_id"], extra_msg=msg)
-                            except ImportError:
-                                logger.debug("[WATCHLIST] portfolio_tab não encontrado")
-                            except Exception as e:
-                                logger.error(f"[WATCHLIST] Erro ao enviar alerta: {e}")
                     else:
                         logger.debug(f"  ⏳ Cooldown: BTC {sig_type}")
                     prev_gems_sig = sig_type
@@ -1191,73 +1129,49 @@ def run_daemon(logger, mode="all"):
 
         # ── DEX SCANNER — early stage tokens a cada 2h ─────────────────
         if (now - last_dex_scan) >= DEX_SCAN_SEC:
-            last_dex_scan = now
             try:
-                import subprocess
-                # Executa o mesmo comando que funcionou manualmente
-                cmd = [sys.executable, "-c",
-                    "from gems_finder import GemsFinder; GemsFinder().save_early_stage_snapshot()"]
-                # Executa no diretório correto (gems_system)
-                result = subprocess.run(cmd, cwd=os.path.join(PROJECT_DIR, "gems_system"),
-                                        capture_output=True, text=True, timeout=120)
-                if result.returncode == 0:
-                    logger.info("[DEX] Early stage snapshot atualizado com sucesso")
+                import importlib.util as _ilu
+                import sys as _sys
+                _gf_candidates = [
+                    os.path.join(PROJECT_DIR, "gems_system", "gems_finder.py"),
+                    os.path.join(PROJECT_DIR, "analysis_system", "gems_finder.py"),
+                    os.path.join(PROJECT_DIR, "gems_finder.py"),
+                ]
+                _gf_path = next((p for p in _gf_candidates if os.path.exists(p)), None)
+                if _gf_path:
+                    # Adicionar o diretório do gems_finder ao sys.path para resolver imports
+                    _gf_dir = os.path.dirname(_gf_path)
+                    if _gf_dir not in _sys.path:
+                        _sys.path.insert(0, _gf_dir)
+                    _spec = _ilu.spec_from_file_location("gems_finder", _gf_path)
+                    _gf   = _ilu.module_from_spec(_spec)
+                    _spec.loader.exec_module(_gf)
+                    _finder = _gf.GemsFinder()
+                    _finder.save_early_stage_snapshot()
+                    last_dex_scan = now
+                    logger.info("[DEX] ✅ Early stage snapshot atualizado")
                 else:
-                    logger.error(f"[DEX] Falha: {result.stderr.strip()}")
-            except Exception as e:
-                logger.error(f"[DEX] Erro ao executar: {e}")
+                    logger.error("[DEX] gems_finder.py não encontrado — scan cancelado")
+                    last_dex_scan = now
+            except Exception as _e_dex:
+                logger.error(f"[DEX] ❌ Erro no scan: {_e_dex}")
+                last_dex_scan = now - DEX_SCAN_SEC + 300
 
-        # ── WATCHLIST: atualizar preços periodicamente ─────────────────
-        if (now - last_watchlist_update) >= WATCHLIST_UPDATE_SEC:
-            last_watchlist_update = now
-            try:
-                from portfolio_tab import update_portfolio_watchlist_prices
-                if update_portfolio_watchlist_prices():
-                    logger.info("[WATCHLIST] Preços atualizados com sucesso")
-                else:
-                    logger.debug("[WATCHLIST] Nenhum preço alterado")
-            except ImportError:
-                logger.debug("[WATCHLIST] portfolio_tab não encontrado — pulando")
-            except Exception as e:
-                logger.error(f"[WATCHLIST] Erro: {e}")
-
-        # ── AI GEMS FILTER — carregar módulo uma única vez ─────────────────────
+        # ── AI GEMS FILTER — roda ciclos automaticamente quando vencidos ──
         if (now - last_ai_check) >= AI_CHECK_SEC:
             last_ai_check = now
-
             try:
                 import importlib.util
-                # Lista de caminhos possíveis para gems_ai_filter.py
                 _ai_candidates = [
                     os.path.join(PROJECT_DIR, "gems_system", "gems_ai_filter.py"),
                     os.path.join(PROJECT_DIR, "analysis_system", "gems_ai_filter.py"),
                     os.path.join(PROJECT_DIR, "gems_ai_filter.py"),
                 ]
                 _ai_path = next((p for p in _ai_candidates if os.path.exists(p)), None)
-
-                if _ai_path is None:
-                    logger.debug("[AI] gems_ai_filter.py não encontrado")
-                else:
-                    # Carregar módulo uma única vez
+                if _ai_path:
                     spec = importlib.util.spec_from_file_location("gems_ai_filter", _ai_path)
-                    ai = importlib.util.module_from_spec(spec)
+                    ai   = importlib.util.module_from_spec(spec)
                     spec.loader.exec_module(ai)
-
-                    # 1. Atualizar performance (somente se passaram PERF_UPDATE_SEC)
-                    # Usar um atributo de função para persistir o último tempo
-                    if not hasattr(run_daemon, "_last_perf_update"):
-                        run_daemon._last_perf_update = 0.0
-
-                    if (now - run_daemon._last_perf_update) >= PERF_UPDATE_SEC:
-                        run_daemon._last_perf_update = now
-                        try:
-                            updated = ai.update_all_pending_performances()
-                            if updated > 0:
-                                logger.info(f"[PERF] {updated} performances atualizadas automaticamente")
-                        except Exception as e:
-                            logger.error(f"[PERF] erro ao atualizar performance: {e}")
-
-                    # 2. Rodar ciclos semanais/mensais (se vencidos)
                     api_key = ai._get_api_key()
                     if api_key:
                         for cycle in ("weekly", "monthly"):
@@ -1266,14 +1180,50 @@ def run_daemon(logger, mode="all"):
                                 try:
                                     ai.run_analysis(cycle, api_key, force=False)
                                     logger.info(f"[AI] ✅ {cycle} concluído — Telegram enviado")
-                                except Exception as e:
-                                    logger.error(f"[AI] ❌ {cycle}: {e}")
+                                except Exception as _e:
+                                    logger.error(f"[AI] ❌ {cycle}: {_e}")
+
+                        # ─────────────────────────────────────────────────────────
+                        # ATUALIZAR PERFORMANCE DAS PICKS ANTIGAS E TREINAR ML
+                        # ─────────────────────────────────────────────────────────
+                        try:
+                            updated = ai.auto_update_performance()
+                            if updated > 0:
+                                logger.info(f"[AI] ✅ {updated} nova(s) performance(s) registrada(s).")
+
+                            perf = ai._load_performance()
+                            n_picks = len(perf)
+                            logger.info(f"[AI] 📊 Total de picks avaliados no histórico: {n_picks}")
+
+                            if n_picks >= 30:
+                                logger.info("[AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...")
+                                import subprocess
+                                ml_script = os.path.join(PROJECT_DIR, "gems_system", "ml_ranker.py")
+                                if os.path.exists(ml_script):
+                                    result = subprocess.run(
+                                        [sys.executable, ml_script],
+                                        capture_output=True, text=True, timeout=120
+                                    )
+                                    if result.returncode == 0:
+                                        logger.info("[AI] ✅ Modelo ML treinado com sucesso.")
+                                        for line in result.stdout.strip().split('\n')[-3:]:
+                                            if line:
+                                                logger.info(f"     {line}")
+                                    else:
+                                        logger.warning(f"[AI] ❌ Falha no treinamento: {result.stderr[:200]}")
+                                else:
+                                    logger.warning("[AI] ml_ranker.py não encontrado – pulando treinamento.")
+                            else:
+                                falta = 30 - n_picks
+                                logger.info(f"[AI] ⏳ Aguardando mais {falta} picks para iniciar treinamento do ML (mínimo 30).")
+                        except Exception as _perf_e:
+                            logger.error(f"[AI] Erro ao atualizar performance/treinar: {_perf_e}")
                     else:
                         logger.debug("[AI] API key não configurada — pulando")
-
-            except Exception as e:
-                logger.error(f"[AI] erro ao carregar módulo: {e}")
-
+                else:
+                    logger.debug("[AI] gems_ai_filter.py não encontrado")
+            except Exception as _e_load:
+                logger.debug(f"[AI] erro ao carregar módulo: {_e_load}")
         time.sleep(5)
 
 

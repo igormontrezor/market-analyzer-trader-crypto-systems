@@ -435,6 +435,36 @@ st.markdown("""
         background: linear-gradient(90deg, #1f6feb 0%, #111 100%);
         border: none; color: white; width: 100%; height: 3.5em; font-weight: bold;
     }
+
+    /* Novos estilos para AI Gems Filter */
+    .pick-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 14px; position: relative; overflow: hidden; margin-bottom: 12px; }
+    .pick-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
+    .pick-card .rank { font-size: 20px; font-weight: 500; margin-bottom: 2px; }
+    .pick-card .symbol { font-size: 18px; font-weight: 500; }
+    .pick-card .potential { font-size: 12px; font-weight: 500; margin: 6px 0; color: #ef9f27; }
+    .pick-card .rationale { font-size: 12px; color: #8b949e; line-height: 1.5; }
+    .pick-card .flags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+    .pick-card .score { margin-top: 8px; font-size: 10px; color: #484f58; }
+    .pick-card .ml { margin-top: 4px; font-size: 10px; color: #a371f7; }
+
+    .flag { font-size: 10px; font-weight: 500; padding: 2px 6px; border-radius: 4px; background: #1c2128; color: #8b949e; border: 0.5px solid #30363d; }
+    .flag-hot { background: #eeedfe; color: #534ab7; border-color: #afa9ec; }
+    .flag-up { background: #e1f5ee; color: #0f6e56; border-color: #5dcaa5; }
+    .flag-gold { background: #faeeda; color: #854f0b; border-color: #ef9f27; }
+
+    .badge-ok { background: #e1f5ee; color: #0f6e56; display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-size: 11px; }
+    .badge-warn { background: #faeeda; color: #854f0b; display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-size: 11px; }
+    .badge-danger { background: #fcebeb; color: #a32d2d; }
+
+    .macro-bar { background: #0d1117; border: 1px solid #30363d; border-radius: 10px; padding: 12px 16px; margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .macro-note { margin-top: 8px; background: #1c2128; border-left: 3px solid #378add; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #8b949e; }
+    .avoid-bar { margin-top: 8px; background: #2d0f0f; border: 1px solid #da3633; border-radius: 8px; padding: 8px 14px; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+    .avoid-pill { background: #f7c1c1; color: #791f1f; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+
+    .cycle-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 12px 16px; }
+    .progress-bar-bg { background: #0d1117; border-radius: 6px; height: 6px; margin: 8px 0; }
+    .progress-fill { height: 6px; border-radius: 6px; }
+    .metric-mini-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 12px 16px; flex: 1; min-width: 150px; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -2188,27 +2218,46 @@ with tab7:
         if _ai.should_run("monthly"):
             st.info("📅 **Análise mensal disponível** — clique em 'Rodar Análise Mensal (Top 3)'.")
 
-    sw_col, sm_col = st.columns(2)
-    with sw_col:
-        w_ts  = weekly_result.get("generated_at","—") if weekly_result else "Nunca rodou"
-        w_due = "✅ Atualizado" if not _ai.should_run("weekly") else "⏳ Atualização disponível"
-        st.markdown(
-            f"<div style='background:#161b22;border:1px solid #30363d;border-radius:8px;"
-            f"padding:10px 14px;font-size:12px'>"
-            f"<b style='color:#c9d1d9'>📅 Ciclo Semanal</b><br>"
-            f"<span style='color:#8b949e'>Último run: {w_ts}</span><br>"
-            f"<span style='color:#{'3fb950' if 'Atualizado' in w_due else 'e3b341'}'>{w_due}</span>"
-            f"</div>", unsafe_allow_html=True)
-    with sm_col:
-        m_ts  = monthly_result.get("generated_at","—") if monthly_result else "Nunca rodou"
-        m_due = "✅ Atualizado" if not _ai.should_run("monthly") else "⏳ Atualização disponível"
-        st.markdown(
-            f"<div style='background:#161b22;border:1px solid #30363d;border-radius:8px;"
-            f"padding:10px 14px;font-size:12px'>"
-            f"<b style='color:#c9d1d9'>📅 Ciclo Mensal</b><br>"
-            f"<span style='color:#8b949e'>Último run: {m_ts}</span><br>"
-            f"<span style='color:#{'3fb950' if 'Atualizado' in m_due else 'e3b341'}'>{m_due}</span>"
-            f"</div>", unsafe_allow_html=True)
+    # --- Cards de ciclos com barra de progresso ---
+    def _cycle_progress(last_run_str, period_days):
+        if not last_run_str or last_run_str == "Nunca rodou":
+            return 0.0, "Nunca"
+        try:
+            last = datetime.strptime(last_run_str.split()[0], "%Y-%m-%d")
+            days_passed = (datetime.now() - last).days
+            progress = min(days_passed / period_days, 1.0)
+            remaining = max(0, period_days - days_passed)
+            return progress, f"{remaining}d restantes" if remaining > 0 else "Vencido"
+        except:
+            return 0.0, "?"
+
+    w_ts = weekly_result.get("generated_at", "Nunca rodou") if weekly_result else "Nunca rodou"
+    m_ts = monthly_result.get("generated_at", "Nunca rodou") if monthly_result else "Nunca rodou"
+    w_prog, w_rem = _cycle_progress(w_ts, 7)
+    m_prog, m_rem = _cycle_progress(m_ts, 30)
+
+    st.markdown(f"""
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+        <div class="cycle-card">
+            <div><span>📅</span> <b>Ciclo semanal</b></div>
+            <div style="font-size:12px;color:#8b949e">Último run: {w_ts[:10] if w_ts != 'Nunca rodou' else '—'}</div>
+            <div class="progress-bar-bg"><div class="progress-fill" style="width:{w_prog*100}%;background:#3fb950"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#8b949e">
+                <span>{w_rem}</span>
+                <span class="badge-ok">✅ Atualizado</span>
+            </div>
+        </div>
+        <div class="cycle-card">
+            <div><span>📅</span> <b>Ciclo mensal</b></div>
+            <div style="font-size:12px;color:#8b949e">Último run: {m_ts[:10] if m_ts != 'Nunca rodou' else '—'}</div>
+            <div class="progress-bar-bg"><div class="progress-fill" style="width:{m_prog*100}%;background:#e3b341"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#8b949e">
+                <span>{m_rem}</span>
+                <span class="badge-warn">⏳ Vencendo</span>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     st.markdown("")
 
@@ -2248,15 +2297,106 @@ with tab7:
             st.markdown("### 📊 PERFORMANCE GERAL DO SISTEMA")
             st.markdown(f"*Base: últimas {perf_dash['total_picks']} picks do Claude*")
 
-            col1, col2, col3, col4 = st.columns(4)
-            col1.metric("Win Rate", f"{perf_dash['win_rate']}%")
-            col2.metric("Ganho Médio (WIN)", f"+{perf_dash['avg_win']}%")
-            col3.metric("Perda Média (LOSS)", f"{perf_dash['avg_loss']}%")
-            col4.metric("Risk/Reward", f"{perf_dash['risk_reward']:.2f}x")
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("Win rate", f"{perf_dash['win_rate']}%")
+            c2.metric("Ganho médio (WIN)", f"+{perf_dash['avg_win']}%")
+            c3.metric("Perda média (LOSS)", f"{perf_dash['avg_loss']}%")
+            c4.metric("Risk / reward", f"{perf_dash['risk_reward']:.2f}x")
+
+            # ML Performance
+            ml_perf = _ai.get_ml_performance()
+            if "error" not in ml_perf:
+                ml_acc = ml_perf['accuracy']
+                ml_correct = ml_perf['correct']
+                ml_total = ml_perf['total']
+            else:
+                ml_acc = 0
+                ml_correct = 0
+                ml_total = 0
+
+            # Win rate por rank
+            wr1 = perf_dash['rank_stats'].get('1', {}).get('win_rate', 0)
+            wr2 = perf_dash['rank_stats'].get('2', {}).get('win_rate', 0)
+            wr3 = perf_dash['rank_stats'].get('3', {}).get('win_rate', 0)
+            wr23 = (wr2 + wr3) / 2 if wr3 else wr2
+
+            st.markdown(f"""
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
+                <div class="metric-mini-card">
+                    <div style="font-size:12px;color:#8b949e">🧠 ML Confidence</div>
+                    <div style="font-size:22px;font-weight:500">{ml_acc}%</div>
+                    <div style="font-size:11px;color:#8b949e">{ml_correct}/{ml_total} picks</div>
+                </div>
+                <div class="metric-mini-card">
+                    <div style="font-size:12px;color:#8b949e">Win rate rank #1</div>
+                    <div style="font-size:22px;font-weight:500">{wr1:.0f}%</div>
+                </div>
+                <div class="metric-mini-card">
+                    <div style="font-size:12px;color:#8b949e">Win rate rank #2-3</div>
+                    <div style="font-size:22px;font-weight:500">{wr23:.0f}%</div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
             st.markdown(f"**🏷️ Classificação:** {perf_dash['quality']}")
 
+            st.markdown("---")
+            st.markdown("### 📡 Winrate dos Sinais (7 dias)")
+            try:
+                macro_stats = _ai.get_macro_signal_performance(days_window=7)
+                if macro_stats:
+                    import pandas as pd
+                    df_macro = pd.DataFrame([
+                        {"Regime": r, "Acertos": s["wins"], "Total": s["total"], "Winrate": f"{s['winrate']:.0f}%"}
+                        for r, s in macro_stats.items() if s["total"] >= 1
+                    ])
+                    st.dataframe(df_macro, hide_index=True, width='stretch')
+                    # Gráfico de barras
+                    chart_data = {r: s["winrate"] for r, s in macro_stats.items() if s["total"] >= 1}
+                    if chart_data:
+                        st.bar_chart(chart_data)
+                else:
+                    st.info("Nenhum sinal macro avaliado ainda. Aguarde 7 dias após o primeiro registro.")
+            except Exception as e:
+                st.info(f"Aguardando dados: {e}")
+
+            st.markdown("### 📡 Winrate dos Sinais de Entrada (weekly_buy, rebound, etc.)")
+            try:
+                detailed_stats = _ai.get_detailed_signal_performance()
+                if detailed_stats:
+                    import pandas as pd
+                    df_detailed = pd.DataFrame([
+                        {"Sinal": s, "Acertos": d["wins"], "Total": d["total"], "Winrate": f"{d['winrate']:.0f}%", "Retorno Médio": f"{d['avg_return']:+.1f}%"}
+                        for s, d in detailed_stats.items() if d["total"] >= 1
+                    ])
+                    st.dataframe(df_detailed, hide_index=True, width='stretch')
+                else:
+                    st.info("Nenhum sinal de entrada avaliado ainda. Aguarde o primeiro sinal e próximo sinal do mesmo tipo.")
+            except Exception as e:
+                st.info(f"Aguardando dados: {e}")
+
+            st.markdown("### 📊 Ciclos Completos de Regime (BUY→SELL / SELL→BUY)")
+            try:
+                cycle_stats = _ai.get_macro_cycle_stats()
+                if cycle_stats:
+                    col1, col2, col3, col4 = st.columns(4)
+                    with col1:
+                        st.metric("Ciclos BUY", cycle_stats["buy_cycles"].get("total", 0),
+                                 f"{cycle_stats['buy_cycles'].get('winrate',0):.0f}% acerto")
+                    with col2:
+                        st.metric("Retorno médio (BUY)", f"{cycle_stats['buy_cycles'].get('avg_return',0):+.1f}%")
+                    with col3:
+                        st.metric("Ciclos SELL", cycle_stats["sell_cycles"].get("total", 0),
+                                 f"{cycle_stats['sell_cycles'].get('winrate',0):.0f}% acerto")
+                    with col4:
+                        st.metric("Retorno médio (SELL)", f"{cycle_stats['sell_cycles'].get('avg_return',0):+.1f}%")
+                else:
+                    st.info("Nenhum ciclo completo registrado ainda. Aguarde transições BUY↔SELL.")
+            except Exception as e:
+                st.info(f"Aguardando dados: {e}")
+
             # Gráfico de barras: win rate por rank
+            st.markdown("#### 🏆 Win Rate por Rank (picks do Claude)")
             rank_data = {r: stats["win_rate"] for r, stats in perf_dash["rank_stats"].items() if r.isdigit() or r == "3-5"}
             if rank_data:
                 import pandas as pd
@@ -2272,6 +2412,7 @@ with tab7:
                     st.markdown("**Ciclo Mensal**")
                     st.metric("Win Rate", f"{perf_dash['cycle_stats']['monthly']['win_rate']:.0f}%",
                             f"{perf_dash['cycle_stats']['monthly']['wins']}/{perf_dash['cycle_stats']['monthly']['total']}")
+
                 with col_b:
                     st.markdown("**Win Rate por Rank**")
                     for r in ["1", "2", "3-5"]:
@@ -2279,7 +2420,8 @@ with tab7:
                             wr = perf_dash["rank_stats"][r]["win_rate"]
                             avg = perf_dash["rank_stats"][r]["avg_pct"]
                             st.metric(f"Rank {r}", f"{wr:.0f}%", f"média {avg:+.1f}%")
-                            # ── Win Rate por Regime Macro ───────────────────────────────
+
+            # ── Win Rate por Regime Macro (picks reais) ─────────────────
             perf_data = _ai._load_performance()
             if perf_data:
                 regime_stats = {}
@@ -2291,12 +2433,13 @@ with tab7:
                         regime_stats[regime]["wins"] += 1
 
                 if regime_stats:
-                    st.markdown("**📊 Win Rate por Regime Macro**")
-                    # Ordenar para exibir primeiro os regimes com mais picks
-                    for regime in sorted(regime_stats.keys(), key=lambda x: regime_stats[x]["total"], reverse=True):
-                        stats = regime_stats[regime]
-                        wr = stats["wins"] / stats["total"] * 100 if stats["total"] else 0
-                        st.metric(regime, f"{wr:.0f}%", f"{stats['wins']}/{stats['total']}")
+                    st.markdown("**📊 Win Rate por Regime Macro (picks reais)**")
+                    df_regime = pd.DataFrame([
+                        {"Regime": r, "Wins": s["wins"], "Total": s["total"],
+                         "Win Rate": f"{s['wins']/s['total']*100:.0f}%" if s['total']>0 else "0%"}
+                        for r, s in regime_stats.items()
+                    ])
+                    st.dataframe(df_regime, hide_index=True, width='stretch')
 
             with st.expander("🏆 Top 5 Winners (maior retorno)", expanded=False):
                 for pick in perf_dash['best_picks']:
@@ -2310,72 +2453,77 @@ with tab7:
     except Exception as e:
         st.info(f"Aguardando dados de performance (execute pelo menos um ciclo semanal e aguarde 7 dias). {e}")
 
-    def _render_result(result, title, n_show):
+    def _render_pick_cards(result, title, n_show):
         if not result:
             st.info(f"Nenhuma análise {title.lower()} disponível. Clique em rodar acima.")
             return
-        sectors = result.get("sectors_in_focus",[])
-        avoid   = result.get("avoid",[])
-        picks   = result.get("top_picks",[])
+        picks = result.get("top_picks", [])[:n_show]
+        if not picks:
+            return
         st.markdown(f"#### {title}")
-        st.markdown(
-            f"<div style='background:#161b22;border:1px solid #30363d;border-radius:6px;"
-            f"padding:8px 14px;font-size:12px;color:#c9d1d9;margin-bottom:12px'>"
-            f"🌍 <b>Macro:</b> {result.get('regime','—')} &nbsp;|&nbsp; "
-            f"🏭 <b>Setores:</b> {', '.join(sectors) if sectors else '—'} &nbsp;|&nbsp; "
-            f"📅 {result.get('generated_at','—')}</div>", unsafe_allow_html=True)
-        macro_note = result.get("macro_note","")
+        # Agrupar em linhas de 3 colunas
+        for i in range(0, len(picks), 3):
+            cols = st.columns(3)
+            for idx, pick in enumerate(picks[i:i+3]):
+                with cols[idx]:
+                    rank = pick.get('rank', 0)
+                    medal = "🥇" if rank == 1 else ("🥈" if rank == 2 else ("🥉" if rank == 3 else f"#{rank}"))
+                    risk = pick.get('risk', 'MEDIUM')
+                    risk_color = {"LOW":"#3fb950","MEDIUM":"#e3b341","HIGH":"#f85149"}.get(risk, "#8b949e")
+                    risk_badge = f'<span style="background:{risk_color}20;color:{risk_color};padding:2px 8px;border-radius:12px;font-size:11px">{risk} risk</span>'
+                    potential = pick.get('potential', 'x2-x5')
+                    pot_icon = {"x10+":"🚀","x5-x10":"⚡","x2-x5":"📈"}.get(potential, "•")
+                    flags = pick.get('key_flags', [])
+                    def flag_class(f):
+                        f_low = f.lower()
+                        if 'smart_money' in f_low or 'div' in f_low:
+                            return 'flag-hot'
+                        if 'trend_up' in f_low or 'rank_up' in f_low or 'vol_up' in f_low:
+                            return 'flag-up'
+                        if 'gold' in f_low or 'is_gold' in f_low:
+                            return 'flag-gold'
+                        return ''
+                    flags_html = "".join([f'<span class="flag {flag_class(flag)}">{flag}</span>' for flag in flags])
+                    ml_score = pick.get('ml_score')
+                    ml_html = f'<div class="ml">🧠 ML {ml_score*100:.0f}%</div>' if ml_score else ''
+                    rationale = pick.get('rationale', '—').replace('\n', '<br>')
+                    st.markdown(f"""
+                    <div class="pick-card" style="border-color:#30363d;">
+                        <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:{risk_color}"></div>
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                            <div><div class="rank">{medal}</div><div class="symbol">{pick['symbol']}</div></div>
+                            {risk_badge}
+                        </div>
+                        <div class="potential">{pot_icon} {potential} potencial</div>
+                        <div class="rationale">{rationale}</div>
+                        <div class="flags">{flags_html}</div>
+                        <div class="score">Score <b style="color:#c9d1d9">{pick.get('composite_score',0):.1f}</b></div>
+                        {ml_html}
+                    </div>
+                    """, unsafe_allow_html=True)
+
+        # Exibir macro_note, top3_comparison, avoid (elementos que já estavam em _render_result)
+        macro_note = result.get("macro_note", "")
         if macro_note:
-            st.markdown(
-                f"<div style='background:#0d1117;border-left:3px solid #58a6ff;"
-                f"padding:8px 14px;font-size:12px;color:#8b949e;margin-bottom:12px'>"
-                f"{macro_note}</div>", unsafe_allow_html=True)
+            st.markdown(f'<div class="macro-note">{macro_note}</div>', unsafe_allow_html=True)
         comparison = result.get("top3_comparison")
         if comparison:
             st.markdown("#### 🔍 Comparação das Top 3")
             st.info(comparison)
-        for row_i in range(0, len(picks[:n_show]), 2):
-            row_picks = picks[row_i:row_i+2]
-            cols = st.columns(len(row_picks))
-            for col, pick in zip(cols, row_picks):
-                risk_clr  = {"LOW":"#3fb950","MEDIUM":"#e3b341","HIGH":"#f85149"}.get(pick.get("risk","MEDIUM"),"#8b949e")
-                pot_icon  = {"x10+":"🚀","x5-x10":"⚡","x2-x5":"📈"}.get(pick.get("potential","x2-x5"),"•")
-                rank      = pick.get("rank",0)
-                rank_badge= "🥇" if rank==1 else ("🥈" if rank==2 else ("🥉" if rank==3 else f"#{rank}"))
-                ml_html = ""
-                if pick.get("ml_score") is not None:
-                    ml_pct = pick["ml_score"] * 100
-                    ml_html = f'<div style="margin-top:4px;font-size:10px;color:#a371f7;">🧠 ML Confidence: {ml_pct:.0f}%</div>'
-                col.markdown(
-                    f"<div style='background:#161b22;border:1px solid #30363d;border-radius:8px;"
-                    f"padding:14px;margin-bottom:8px'>"
-                    f"<div style='font-size:16px;font-weight:700;color:#e6edf3;margin-bottom:6px'>"
-                    f"{rank_badge} {pick.get('symbol','?')}"
-                    f"<span style='float:right;font-size:12px;color:{risk_clr};font-weight:600'>"
-                    f"{pick.get('risk','?')} RISK</span></div>"
-                    f"<div style='font-size:13px;color:#3fb950;font-weight:600;margin-bottom:6px'>"
-                    f"{pot_icon} {pick.get('potential','?')} potencial</div>"
-                    f"<div style='font-size:11px;color:#8b949e;line-height:1.5'>"
-                    f"{pick.get('rationale','—')}</div>"
-                    f"<div style='margin-top:8px;font-size:11px;color:#484f58'>"
-                    f"Score: <b style='color:#c9d1d9'>{pick.get('composite_score',0):.1f}</b>"
-                    f"</div>"
-                    f"{ml_html}"
-                    f"</div>", unsafe_allow_html=True)
-
+        avoid = result.get("avoid", [])
         if avoid:
-            st.markdown(
-                "<div style='background:#2d0f0f;border:1px solid #da3633;border-radius:6px;"
-                "padding:8px 14px;font-size:12px;margin-top:8px'>"
-                "<b style='color:#f85149'>⛔ Evitar:</b> "
-                + " &nbsp;|&nbsp; ".join(f"<span style='color:#8b949e'>{a}</span>" for a in avoid)
-                + "</div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class="avoid-bar">
+                <span>⛔</span> <b>Evitar:</b>
+                {" ".join([f'<span class="avoid-pill">{a}</span>' for a in avoid[:3]])}
+            </div>
+            """, unsafe_allow_html=True)
 
     tab_w, tab_m, tab_data = st.tabs(["📅 Top 10 Semanal", "🏆 Top 3 Mensal", "📊 Dados Brutos"])
     with tab_w:
-        _render_result(weekly_result, "Top 10 Semanal", 10)
+        _render_pick_cards(weekly_result, "Top 10 Semanal", 10)
     with tab_m:
-        _render_result(monthly_result, "Top 3 Mensal", 3)
+        _render_pick_cards(monthly_result, "Top 3 Mensal", 3)
     with tab_data:
         dt1, dt2, dt3 = st.tabs(["📊 Dados Agregados", "🕐 Histórico de Runs", "🔬 DEX Early Stage"])
         with dt1:
@@ -2470,6 +2618,21 @@ with tab7:
                                     unsafe_allow_html=True)
             except Exception as _e:
                 st.error(f"Erro ao carregar dados DEX: {_e}")
+
+    # --- Barra de contexto macro (usando weekly_result) ---
+    #if weekly_result:
+    #    regime = weekly_result.get('regime', '—')
+    #    btc_ctx = weekly_result.get('btc_context', '')
+    #    sectors = weekly_result.get('sectors_in_focus', [])
+    #    gen_at = weekly_result.get('generated_at', '')[:10]
+    #    st.markdown(f"""
+    #    <div class="macro-bar">
+    #        <span><b>Regime:</b> {regime}</span>
+    #        <span><b>BTC:</b> {btc_ctx[:40]}</span>
+    #        <span><b>Setores:</b> {', '.join(sectors) if sectors else '—'}</span>
+    #        <span style="margin-left:auto;font-size:11px;color:#8b949e">{gen_at}</span>
+    #    </div>
+    #    """, unsafe_allow_html=True)
 
     # ── Performance Tracker ──────────────────────────────────────────────────
     st.markdown("---")

@@ -19,8 +19,10 @@ import glob
 import time
 import requests
 import glob
+import random
 from datetime import timedelta
 import pandas as pd
+import math
 import numpy as np
 from datetime import datetime, timedelta
 from typing import Optional, List
@@ -291,7 +293,7 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
         else:
             row['vol_up'] = False
 
-                # ── Narrativa quente (HOT_NARRATIVE) ──────────────────────────────
+        # ── Narrativa quente (HOT_NARRATIVE) ──────────────────────────────
         # Determinar setor mais frequente para este símbolo (moda)
         sector_vals = [r.get('sector', '') for _, r in grp.iterrows() if r.get('sector')]
         if sector_vals:
@@ -310,6 +312,17 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
 
     df_agg = pd.DataFrame(list(agg.values()))
 
+
+    # ── Calcular consistency_score (frequência de aparição no período) ──
+    if 'appearances' in df_agg.columns and '_file_age_days' in full.columns:
+        total_days = math.ceil(full['_file_age_days'].max()) + 1
+        if total_days > 0:
+            df_agg['consistency_score'] = (df_agg['appearances'] / total_days).clip(0, 1)
+        else:
+            df_agg['consistency_score'] = 0.0
+    else:
+        df_agg['consistency_score'] = 0.0
+
     # Score composto normalizado (0–100)
     # Pesos: final_score=40%, ratio=20%, accumulation=20%, social=10%, consistency=10%
     weight_map = {"final_score":0.40,"ratio":0.20,"accumulation_score":0.20,
@@ -326,7 +339,7 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
     if total_w > 0:
         df_agg["composite_score"] = ((df_agg["composite_score"] / total_w)).clip(0, 100).round(2)
 
-        # Bónus por tendência de volume crescente
+    # Bónus por tendência de volume crescente
     if 'vol_up' in df_agg.columns:
         df_agg['composite_score'] += df_agg['vol_up'].astype(float) * 3
         df_agg['composite_score'] = df_agg['composite_score'].clip(0, 100)
@@ -346,7 +359,7 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
             df_agg.loc[mask, 'composite_score'] += bonus
             df_agg['composite_score'] = df_agg['composite_score'].clip(0, 100)
 
-        # Bónus por narrativa quente (HOT_NARRATIVE)
+    # Bónus por narrativa quente (HOT_NARRATIVE)
     if 'hot_narrative' in df_agg.columns:
         df_agg['composite_score'] += df_agg['hot_narrative'].astype(float) * 4
         df_agg['composite_score'] = df_agg['composite_score'].clip(0, 100)
@@ -393,19 +406,8 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
 
     # ... (cálculo de composite_score, bônus, etc.)
 
-    # ── Calcular consistency_score (frequência de aparição no período) ──
-    if 'appearances' in df_agg.columns and '_file_age_days' in full.columns:
-        total_days = full['_file_age_days'].nunique()
-        if total_days > 0:
-            df_agg['consistency_score'] = (df_agg['appearances'] / total_days).clip(0, 1)
-        else:
-            df_agg['consistency_score'] = 0.0
-    else:
-        df_agg['consistency_score'] = 0.0
-
     # ── Ordenar e retornar
     df_agg = df_agg.sort_values("composite_score", ascending=False).reset_index(drop=True)
-
 
     # ── Gerar hot_sectors.json automaticamente a partir dos dados agregados ──
     # Usa os mesmos CSVs que já foram lidos — sem chamada externa
@@ -451,18 +453,27 @@ def _aggregate(full: pd.DataFrame) -> pd.DataFrame:
 
 
 def _load_macro() -> dict:
-    """Carrega o macro_timing.json do visualizer."""
-    for path in [
-        os.path.join(MACRO_DIR, "macro_timing.json"),
-        os.path.join(MACRO_DIR, "macro_timing_cg.json"),
-    ]:
-        if os.path.exists(path):
-            try:
-                return json.load(open(path, encoding="utf-8"))
-            except Exception:
-                pass
-    return {}
+    """
+    Carrega o macro_timing.json do diretório data/macro do projeto.
+    Garante que o arquivo seja encontrado independentemente do DATA_DIR.
+    """
+    # Caminho absoluto baseado no arquivo atual (gems_ai_filter.py)
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    macro_file = os.path.join(current_dir, "data", "macro", "macro_timing.json")
 
+    # Fallback: caso não exista, tenta o caminho antigo (DATA_DIR)
+    if not os.path.exists(macro_file):
+        macro_file = os.path.join(DATA_DIR, "macro", "macro_timing.json")
+
+    if os.path.exists(macro_file):
+        try:
+            with open(macro_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception:
+            pass
+
+    # Se ainda não achou, retorna vazio
+    return {}
 
 def _load_confirmed_gems() -> list:
     """Carrega confirmed_gems.json do gems_finder."""
@@ -504,7 +515,18 @@ def _load_watchlist() -> list:
 
 PERFORMANCE_FILE = os.path.join(DATA_DIR, "gems_ai_performance.json")
 BTC_CACHE_FILE   = os.path.join(DATA_DIR, "gems_ai_btc_cache.json")
+MACRO_SIGNALS_FILE = os.path.join(DATA_DIR, "macro_signals.json")
+MACRO_DETAILED_SIGNALS_FILE = os.path.join(DATA_DIR, "macro_detailed_signals.json")
+MACRO_CYCLES_FILE = os.path.join(DATA_DIR, "macro_cycles.json")
 
+_last_signal_states = {
+    "weekly_buy": False,
+    "weekly_sell": False,
+    "rebound": False,
+    "rebound_super": False,
+    "super_buy": False,
+    "super_sell": False
+}
 
 def _fetch_btc_context() -> dict:
     """
@@ -602,6 +624,269 @@ def _load_performance() -> list:
 def _save_performance(data: list):
     json.dump(data, open(PERFORMANCE_FILE, "w", encoding="utf-8"), indent=2, default=str)
 
+def _load_macro_signals() -> list:
+    if os.path.exists(MACRO_SIGNALS_FILE):
+        try:
+            with open(MACRO_SIGNALS_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return []
+
+def _save_macro_signals(signals: list):
+    try:
+        with open(MACRO_SIGNALS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(signals[-500:], f, indent=2, default=str)
+    except Exception:
+        pass
+
+def _load_detailed_macro_signals() -> list:
+    if os.path.exists(MACRO_DETAILED_SIGNALS_FILE):
+        try:
+            with open(MACRO_DETAILED_SIGNALS_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return []
+
+def _save_detailed_macro_signals(signals: list):
+    try:
+        with open(MACRO_DETAILED_SIGNALS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(signals[-500:], f, indent=2, default=str)
+    except Exception:
+        pass
+
+def evaluate_pending_macro_signals() -> int:
+    """Avalia sinais macro pendentes (7d e 30d) comparando com preço do BTC."""
+    signals = _load_macro_signals()
+    updated = 0
+    now = datetime.now()
+    for sig in signals:
+        if sig.get("evaluated_7d") and sig.get("evaluated_30d"):
+            continue
+        sig_date = datetime.fromisoformat(sig["timestamp"])
+        btc_then = sig.get("btc_price_usd", 0.0)
+        if btc_then <= 0:
+            continue
+
+        # Avaliação 7 dias
+        if not sig.get("evaluated_7d") and (now - sig_date).days >= 7:
+            btc_now = _fetch_btc_context().get("btc_price", 0.0)
+            if btc_now > 0:
+                pct = (btc_now - btc_then) / btc_then * 100
+                regime = sig["regime"]
+                if "BUY" in regime or "SUPER_BUY" in regime:
+                    win = pct > 3
+                elif "SELL" in regime or "SUPER_SELL" in regime or "CAPITULATION" in regime:
+                    win = pct < -3
+                else:
+                    win = abs(pct) < 5
+                sig["outcome_7d"] = "WIN" if win else "LOSS"
+                sig["evaluated_7d"] = True
+                updated += 1
+        # Avaliação 30 dias
+        if not sig.get("evaluated_30d") and (now - sig_date).days >= 30:
+            btc_now = _fetch_btc_context().get("btc_price", 0.0)
+            if btc_now > 0:
+                pct = (btc_now - btc_then) / btc_then * 100
+                regime = sig["regime"]
+                if "BUY" in regime or "SUPER_BUY" in regime:
+                    win = pct > 10
+                elif "SELL" in regime or "SUPER_SELL" in regime or "CAPITULATION" in regime:
+                    win = pct < -10
+                else:
+                    win = abs(pct) < 15
+                sig["outcome_30d"] = "WIN" if win else "LOSS"
+                sig["evaluated_30d"] = True
+                updated += 1
+    if updated:
+        _save_macro_signals(signals)
+    return updated
+
+def evaluate_pending_detailed_signals() -> int:
+    """Avalia sinais detalhados pendentes: compara com próximo sinal do mesmo tipo ou mudança de regime."""
+    detailed = _load_detailed_macro_signals()
+    if not detailed:
+        return 0
+    updated = 0
+    for i, sig in enumerate(detailed):
+        if sig.get("evaluated"):
+            continue
+        signal_type = sig["signal"]
+        btc_then = sig.get("btc_price_usd", 0.0)
+        if btc_then <= 0:
+            continue
+
+        # 1. Tentar encontrar o próximo sinal do MESMO tipo
+        next_signal = None
+        for j in range(i + 1, len(detailed)):
+            if detailed[j]["signal"] == signal_type:
+                next_signal = detailed[j]
+                break
+
+        if next_signal:
+            btc_now = next_signal.get("btc_price_usd", 0.0)
+            if btc_now > 0:
+                pct = (btc_now - btc_then) / btc_then * 100
+                if "buy" in signal_type or "rebound" in signal_type or "super_buy" in signal_type:
+                    win = pct > 0
+                else:
+                    win = pct < 0
+                sig["outcome"] = "WIN" if win else "LOSS"
+                sig["return_pct"] = round(pct, 2)
+                sig["exit_timestamp"] = next_signal["timestamp"]
+                sig["exit_price"] = btc_now
+                sig["evaluated"] = True
+                updated += 1
+                print(f"📊 Sinal {signal_type} de {sig['date']} avaliado: {sig['outcome']} ({pct:+.2f}%) até próximo {signal_type} em {next_signal['date'][:10]}")
+            continue
+
+        # 2. Se não há próximo sinal, usar mudança de regime contrário
+        macro_signals = _load_macro_signals()
+        sig_ts = datetime.fromisoformat(sig["timestamp"])
+        current_regime = sig.get("regime_at_signal", "")
+        # Determinar se é sinal de compra ou venda
+        is_buy_signal = any(x in signal_type for x in ["buy", "rebound", "super_buy"])
+        opposite_regime = None
+        for ms in macro_signals:
+            ms_ts = datetime.fromisoformat(ms["timestamp"])
+            if ms_ts > sig_ts:
+                if is_buy_signal and "SELL" in ms["regime"]:
+                    opposite_regime = ms
+                    break
+                elif not is_buy_signal and "BUY" in ms["regime"]:
+                    opposite_regime = ms
+                    break
+        if opposite_regime:
+            btc_now = opposite_regime.get("btc_price_usd", 0.0)
+            if btc_now > 0:
+                pct = (btc_now - btc_then) / btc_then * 100
+                win = (pct > 0) if is_buy_signal else (pct < 0)
+                sig["outcome"] = "WIN" if win else "LOSS"
+                sig["return_pct"] = round(pct, 2)
+                sig["exit_timestamp"] = opposite_regime["timestamp"]
+                sig["exit_price"] = btc_now
+                sig["evaluated"] = True
+                updated += 1
+                print(f"📊 Sinal {signal_type} de {sig['date']} avaliado por mudança de regime: {sig['outcome']} ({pct:+.2f}%) até {opposite_regime['date'][:10]}")
+    if updated:
+        _save_detailed_macro_signals(detailed)
+    return updated
+
+def evaluate_macro_regime_cycles() -> list:
+    """Avalia ciclos completos de regime macro (ex.: BUY_CONFIRMED → SELL_CONFIRMED)."""
+    signals = _load_macro_signals()
+    if len(signals) < 2:
+        return []
+    cycles = []
+    current_cycle = None
+    for sig in signals:
+        regime = sig["regime"]
+        if "BUY" in regime or "SELL" in regime:
+            if current_cycle is None:
+                current_cycle = {"type": regime, "start_ts": sig["timestamp"], "start_price": sig.get("btc_price_usd", 0)}
+            elif ("BUY" in current_cycle["type"] and "SELL" in regime) or ("SELL" in current_cycle["type"] and "BUY" in regime):
+                current_cycle["end_ts"] = sig["timestamp"]
+                current_cycle["end_price"] = sig.get("btc_price_usd", 0)
+                cycles.append(current_cycle)
+                current_cycle = None
+    cycle_results = []
+    for c in cycles:
+        if c["start_price"] > 0 and c.get("end_price", 0) > 0:
+            ret = (c["end_price"] - c["start_price"]) / c["start_price"] * 100
+            win = (ret > 0 and "BUY" in c["type"]) or (ret < 0 and "SELL" in c["type"])
+            cycle_results.append({
+                "type": c["type"],
+                "start": c["start_ts"],
+                "end": c["end_ts"],
+                "return_pct": round(ret, 2),
+                "win": win
+            })
+    try:
+        with open(MACRO_CYCLES_FILE, 'w', encoding='utf-8') as f:
+            json.dump(cycle_results, f, indent=2, default=str)
+    except Exception:
+        pass
+    return cycle_results
+
+def get_macro_signal_performance(days_window: int = 7) -> dict:
+    """Retorna winrate por regime macro para janela de 7d ou 30d."""
+    signals = _load_macro_signals()
+    stats = {}
+    for sig in signals:
+        if days_window == 7:
+            outcome = sig.get("outcome_7d")
+        else:
+            outcome = sig.get("outcome_30d")
+        if outcome is None:
+            continue
+        regime = sig["regime"]
+        if regime not in stats:
+            stats[regime] = {"total": 0, "wins": 0}
+        stats[regime]["total"] += 1
+        if outcome == "WIN":
+            stats[regime]["wins"] += 1
+    for r in stats:
+        stats[r]["winrate"] = stats[r]["wins"] / stats[r]["total"] * 100 if stats[r]["total"] else 0
+    return stats
+
+def get_detailed_signal_performance(signal_type_filter=None) -> dict:
+    """Retorna winrate e retorno médio por tipo de sinal detalhado."""
+    detailed = _load_detailed_macro_signals()
+    stats = {}
+    for sig in detailed:
+        if sig.get("outcome") is None:
+            continue
+        s_type = sig["signal"]
+        if signal_type_filter and s_type != signal_type_filter:
+            continue
+        if s_type not in stats:
+            stats[s_type] = {"total": 0, "wins": 0, "returns": []}
+        stats[s_type]["total"] += 1
+        if sig["outcome"] == "WIN":
+            stats[s_type]["wins"] += 1
+        ret = sig.get("return_pct", 0)
+        if ret is not None:
+            stats[s_type]["returns"].append(ret)
+    for s in stats:
+        t = stats[s]["total"]
+        stats[s]["winrate"] = stats[s]["wins"] / t * 100 if t else 0
+        stats[s]["avg_return"] = sum(stats[s]["returns"]) / len(stats[s]["returns"]) if stats[s]["returns"] else 0
+    return stats
+
+def get_macro_cycle_stats() -> dict:
+    """Retorna estatísticas dos ciclos completos (BUY→SELL ou SELL→BUY)."""
+    if not os.path.exists(MACRO_CYCLES_FILE):
+        return {}
+    try:
+        with open(MACRO_CYCLES_FILE, 'r', encoding='utf-8') as f:
+            cycles = json.load(f)
+    except:
+        return {}
+    if not cycles:
+        return {}
+
+    buy_cycles = [c for c in cycles if "BUY" in c["type"]]
+    sell_cycles = [c for c in cycles if "SELL" in c["type"]]
+
+    def stats(cycle_list):
+        if not cycle_list:
+            return {}
+        wins = sum(1 for c in cycle_list if c["win"])
+        total = len(cycle_list)
+        avg_return = sum(c["return_pct"] for c in cycle_list) / total
+        return {
+            "total": total,
+            "wins": wins,
+            "winrate": wins / total * 100,
+            "avg_return": avg_return
+        }
+
+    return {
+        "buy_cycles": stats(buy_cycles),
+        "sell_cycles": stats(sell_cycles),
+        "all_cycles": stats(cycles)
+    }
 
 def _build_performance_summary(perf: list, lookback_runs: int = 6) -> str:
     """
@@ -652,6 +937,7 @@ def _build_performance_summary(perf: list, lookback_runs: int = 6) -> str:
     lines.append("INSTRUÇÃO: use esses padrões para calibrar suas escolhas. "
                  "Prefira características que correlacionam com wins históricos.")
     return "\n".join(lines)
+
 
 
 def _get_api_key() -> str:
@@ -754,13 +1040,14 @@ def _build_prompt(df_top: pd.DataFrame, macro: dict, confirmed: list,
     system = (
         "Você é o Montrezor AI Gems Analyst — especializado em micro-cap e small-cap "
         "crypto ANTES de moves explosivos.\n\n"
-        "Detecta padrões invisíveis:\n"
-        "- SMART_MONEY_DIV: acumulação alta + social baixo = whales antes do hype\n"
-        "- TREND_UP: nova nos scans = smart money acabou de entrar\n"
-        "- IS_GOLD + acum: pullback + acumulação silenciosa = entrada perfeita\n\n"
-        "Considera o ciclo BTC para calibrar potencial e risco.\n"
-        "É CÉTICO com hype sem fundamentals.\n"
-        "Retorna APENAS JSON válido, sem texto extra."
+        "Retorne APENAS JSON válido, sem texto extra.\n"
+        "O JSON deve conter:\n"
+        '{"symbol": "SYMBOL", "composite_score": 0.0, "key_flags": [],\n'
+        ' "rationale": "...", "entry_note": "...", "risk": "LOW|MEDIUM|HIGH",\n'
+        ' "potential": "x2-x5|x5-x10|x10+", "confidence": 0-100,\n'
+        ' "price_target": null, "stop_loss": null, "entry_zone": null}\n'
+        "Considere o contexto macro e os flags.\n\n"
+        "**Formatação:** Use quebras de linha (`\\n`) e, se apropriado, bullet points (ex.: `- item`) para organizar a rationale, tornando-a fácil de ler."
     )
 
     mission = ("Selecione as 10 moedas com maior probabilidade de valorização expressiva "
@@ -819,7 +1106,7 @@ Retorne APENAS este JSON:
       "symbol": "SYMBOL",
       "composite_score": 0.0,
       "key_flags": ["FLAG1"],
-      "rationale": "dados específicos: ratio, flags, trend que destacam esta moeda",
+      "rationale": "2-3 frases específicas: explique porque esta moeda se destaca (ratio, flags, tendência, contexto macro, etc.)",
       "entry_note": "entrada em pullback / em momentum / aguardar confirmação",
       "risk": "LOW|MEDIUM|HIGH",
       "potential": "x2-x5|x5-x10|x10+"
@@ -938,6 +1225,26 @@ def _load_results() -> dict:
             pass
     return {"weekly": None, "monthly": None, "history": []}
 
+def _get_ml_score_for_pick(cycle: str, symbol: str, pick_date: str) -> Optional[float]:
+    """
+    Busca o ml_score que foi salvo para um pick específico.
+    Retorna None se não encontrado.
+    """
+    results = _load_results()
+    result = results.get(cycle)
+    if not result:
+        return None
+    # pick_date está no formato "YYYY-MM-DD" (ex: "2025-05-26")
+    # generated_at está no formato "2025-05-26 12:34"
+    gen_date = result.get("generated_at", "")[:10]
+    if gen_date != pick_date:
+        # Pode acontecer se a data de registro for diferente da data da análise
+        # Ainda assim tentamos encontrar pelo símbolo (último resultado do ciclo)
+        pass
+    for pick in result.get("top_picks", []):
+        if pick.get("symbol") == symbol:
+            return pick.get("ml_score")
+    return None
 
 def _save_results(results: dict):
     json.dump(results, open(RESULTS_FILE, "w", encoding="utf-8"), indent=2, default=str)
@@ -1005,7 +1312,8 @@ def _build_individual_prompt(row, macro, confirmed, watchlist, btc_ctx, cycle, d
         ' "rationale": "...", "entry_note": "...", "risk": "LOW|MEDIUM|HIGH",\n'
         ' "potential": "x2-x5|x5-x10|x10+", "confidence": 0-100,\n'
         ' "price_target": null, "stop_loss": null, "entry_zone": null}\n'
-        "Considere o contexto macro e os flags."
+        "Considere o contexto macro e os flags.\n\n"
+        "**Formatação:** Use quebras de linha (`\\n`) e, se apropriado, bullet points (ex.: `- item`) para organizar a rationale, tornando-a fácil de ler."
     )
 
     data_str = (
@@ -1246,6 +1554,36 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
     perf     = _load_performance()
     perf_txt = _build_performance_summary(perf)
 
+    # Adicionar performance histórica dos sinais macro
+    macro_perf = get_macro_signal_performance(days_window=7)
+    macro_lines = []
+    for regime, data in macro_perf.items():
+        if data["total"] >= 3:
+            macro_lines.append(f"{regime}: {data['winrate']:.0f}% acerto ({data['wins']}/{data['total']})")
+    if macro_lines:
+        perf_txt += "\n\n=== PERFORMANCE DOS SINAIS MACRO (7d) ===\n" + "\n".join(macro_lines)
+
+    # Adicionar performance dos sinais detalhados (entradas)
+    detailed_perf = get_detailed_signal_performance()
+    if detailed_perf:
+        perf_txt += "\n\n=== PERFORMANCE DOS SINAIS DE ENTRADA ===\n"
+        for s, data in detailed_perf.items():
+            if data["total"] >= 3:
+                perf_txt += f"{s}: {data['winrate']:.0f}% acerto ({data['wins']}/{data['total']}) | retorno médio {data['avg_return']:+.1f}%\n"
+
+    cycle_stats = get_macro_cycle_stats()
+    if cycle_stats:
+        buy_total = cycle_stats.get("buy_cycles", {}).get("total", 0)
+        sell_total = cycle_stats.get("sell_cycles", {}).get("total", 0)
+        if buy_total >= 1 or sell_total >= 1:
+            perf_txt += "\n\n=== CICLOS COMPLETOS DE REGIME ===\n"
+            buy = cycle_stats["buy_cycles"]
+            sell = cycle_stats["sell_cycles"]
+            if buy_total >= 1:
+                perf_txt += f"Ciclos BUY: {buy.get('total',0)} | acerto {buy.get('winrate',0):.0f}% | retorno médio {buy.get('avg_return',0):+.1f}%\n"
+            if sell_total >= 1:
+                perf_txt += f"Ciclos SELL: {sell.get('total',0)} | acerto {sell.get('winrate',0):.0f}% | retorno médio {sell.get('avg_return',0):+.1f}%"
+
     # Contexto BTC — cache 1h, silencioso se offline
     btc_ctx = _fetch_btc_context()
 
@@ -1265,12 +1603,25 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
         top_picks = _run_deep_analysis(agg_df, macro, confirmed, watchlist,
                                         btc_ctx, cycle, api_key, dex_df)
 
-        for pick in top_picks:
+        # Aplicar modelo ML nos picks semanais
+        try:
+            from ml_ranker import ml_predict_picks
+            temp_result = {"top_picks": top_picks}
+            temp_result = ml_predict_picks(temp_result, agg_df)
+            top_picks = temp_result["top_picks"]
+        except ImportError:
+            pass
+
+            # ── Preencher preços com delay entre chamadas ──
+        for i, pick in enumerate(top_picks):
             sym = pick.get("symbol")
             if sym:
-                price = _fetch_coingecko_price(sym)
+                price = _fetch_coingecko_price(sym)   # agora é a versão robusta
                 pick["price_usd"] = price if price > 0 else None
                 pick["price_date"] = datetime.now().isoformat()
+                # Aguarda 2 segundos entre chamadas (evita rate limit)
+                if i < len(top_picks) - 1:
+                    time.sleep(2)
 
         regime_txt = "COMPRA ATIVA" if macro.get("regime", {}).get("buy_mode") else \
                      ("VENDA" if macro.get("regime", {}).get("sell_mode") else "NEUTRO")
@@ -1319,13 +1670,15 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
         result["macro_note"] = result_warning + " " + result.get("macro_note","")
 
     if result and "top_picks" in result:
-        for pick in result["top_picks"]:
+        for i, pick in enumerate(top_picks):
             sym = pick.get("symbol")
             if sym:
-                # Busca preço atual via CoinGecko (usa a mesma função que já existe)
-                price = _fetch_coingecko_price(sym)
+                price = _fetch_coingecko_price(sym)   # agora com retry robusto
                 pick["price_usd"] = price if price > 0 else None
                 pick["price_date"] = datetime.now().isoformat()
+                # Aguarda 3 segundos entre um pick e outro
+                if i < len(top_picks) - 1:
+                    time.sleep(3)
 
     # Salvar resultado
     results[cycle] = result
@@ -1346,41 +1699,123 @@ def get_latest(cycle: str) -> Optional[dict]:
     """Retorna o último resultado salvo sem rodar nova análise."""
     return _load_results().get(cycle)
 
+# ── CACHE PERSISTENTE DE PREÇOS (CoinGecko) ─────────────────────────────────
+_PRICE_CACHE_FILE = os.path.join(DATA_DIR, "coingecko_price_cache.json")
+_PRICE_MEM_CACHE = {}
 
-def _fetch_coingecko_price(symbol: str) -> float:
-    """Busca preço atual via CoinGecko. Tenta coin id direto, depois search."""
+def _load_price_cache() -> dict:
+    if os.path.exists(_PRICE_CACHE_FILE):
+        try:
+            with open(_PRICE_CACHE_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except:
+            pass
+    return {}
+
+def _save_price_cache(cache: dict):
     try:
-        sym = symbol.lower().replace("usdt","").replace("usd","").strip()
-        url = "https://api.coingecko.com/api/v3/simple/price"
-        r   = requests.get(url, params={"ids": sym, "vs_currencies": "usd"}, timeout=8)
-        if r.status_code == 200:
-            data = r.json()
-            if sym in data:
-                return float(data[sym].get("usd", 0))
-        # Fallback: search por nome
-        r2 = requests.get("https://api.coingecko.com/api/v3/search",
-                           params={"query": sym}, timeout=8)
-        if r2.status_code == 200:
-            coins = r2.json().get("coins", [])
-            if coins:
-                coin_id = coins[0]["id"]
-                r3 = requests.get(url, params={"ids": coin_id, "vs_currencies": "usd"}, timeout=8)
-                if r3.status_code == 200:
-                    return float(r3.json().get(coin_id, {}).get("usd", 0))
-    except Exception:
+        with open(_PRICE_CACHE_FILE, 'w', encoding='utf-8') as f:
+            json.dump(cache, f, indent=2, default=str)
+    except:
         pass
+
+def _fetch_coingecko_price(symbol: str, max_total_seconds: int = 120) -> float:
+    """
+    Busca preço atual via CoinGecko com tentativas exaustivas.
+    - Retry infinito (limitado por tempo máximo)
+    - Backoff exponencial com jitter
+    - Cache em memória + arquivo (TTL 1h)
+    - Retorna 0 só se símbolo inválido ou tempo esgotado.
+    """
+    sym = symbol.upper()
+    start_time = datetime.now()
+
+    # 1. Cache em memória
+    if sym in _PRICE_MEM_CACHE:
+        ts, price = _PRICE_MEM_CACHE[sym]
+        if (datetime.now() - ts).total_seconds() < 3600:
+            return price
+
+    # 2. Cache persistente
+    persistent_cache = _load_price_cache()
+    if sym in persistent_cache:
+        ts_str = persistent_cache[sym].get('timestamp')
+        price = persistent_cache[sym].get('price', 0)
+        if ts_str and price > 0:
+            try:
+                ts = datetime.fromisoformat(ts_str)
+                if (datetime.now() - ts).total_seconds() < 3600:
+                    _PRICE_MEM_CACHE[sym] = (ts, price)
+                    return price
+            except:
+                pass
+
+    attempt = 0
+    delay = 3.0
+
+    while (datetime.now() - start_time).total_seconds() < max_total_seconds:
+        try:
+            # Busca via search
+            search_url = f"https://api.coingecko.com/api/v3/search?query={symbol.lower()}"
+            r = requests.get(search_url, timeout=10, headers={'User-Agent': 'Mozilla/5.0'})
+
+            if r.status_code == 200:
+                data = r.json()
+                coins = data.get('coins', [])
+                if coins:
+                    coin_id = coins[0]['id']
+                    price_url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin_id}&vs_currencies=usd"
+                    r2 = requests.get(price_url, timeout=10)
+                    if r2.status_code == 200:
+                        price_data = r2.json()
+                        price = price_data.get(coin_id, {}).get('usd', 0)
+                        if price > 0:
+                            _PRICE_MEM_CACHE[sym] = (datetime.now(), price)
+                            persistent_cache[sym] = {'timestamp': datetime.now().isoformat(), 'price': price}
+                            _save_price_cache(persistent_cache)
+                            return price
+
+            # Fallback: busca direta
+            fallback_url = f"https://api.coingecko.com/api/v3/coins/{symbol.lower()}"
+            r3 = requests.get(fallback_url, timeout=10)
+            if r3.status_code == 200:
+                coin_data = r3.json()
+                price = coin_data.get('market_data', {}).get('current_price', {}).get('usd', 0)
+                if price > 0:
+                    _PRICE_MEM_CACHE[sym] = (datetime.now(), price)
+                    persistent_cache[sym] = {'timestamp': datetime.now().isoformat(), 'price': price}
+                    _save_price_cache(persistent_cache)
+                    return price
+
+            # Símbolo não encontrado (404 ou sem coins)
+            if r.status_code == 404 or (r.status_code == 200 and not coins):
+                print(f"❌ Símbolo {symbol} não encontrado na CoinGecko")
+                return 0.0
+
+        except Exception as e:
+            print(f"⚠️ Tentativa {attempt+1} para {symbol} falhou: {e}")
+
+        # Backoff exponencial com jitter (máx 60s)
+        delay = min(delay * 2, 60)
+        wait = delay * random.uniform(0.8, 1.5)
+        print(f"⏳ Aguardando {wait:.1f}s antes de tentar novamente ({symbol})...")
+        time.sleep(wait)
+        attempt += 1
+
+    # Fallback: usa último preço do cache mesmo expirado
+    if sym in persistent_cache:
+        old_price = persistent_cache[sym].get('price', 0)
+        if old_price > 0:
+            print(f"⚠️ Usando preço antigo em cache para {symbol}: ${old_price:.4f}")
+            return old_price
+
+    print(f"❌ Não foi possível obter preço para {symbol} após {max_total_seconds}s")
     return 0.0
 
 def update_all_pending_performances() -> int:
-    """
-    Varre todos os ciclos (weekly, monthly) e, para cada pick que ainda não tem
-    performance registrada e cuja data de análise é anterior a 7/30 dias,
-    busca o preço atual e registra.
-    Retorna o número de registros atualizados.
-    """
     results = _load_results()
     perf    = _load_performance()
-    perf_keys = {(p["symbol"], p["date"]) for p in perf}
+    perf_keys = {(p["symbol"], p.get("analysis_date", p["date"])) for p in perf}
     now = datetime.now()
     updated = 0
 
@@ -1388,32 +1823,32 @@ def update_all_pending_performances() -> int:
         result = results.get(cycle)
         if not result:
             continue
-        regime = result.get("market_regime", "UNKNOWN")   # pega do resultado
-        # Data da análise
+        regime = result.get("market_regime", "UNKNOWN")
         gen_at = result.get("generated_at", "")
         if not gen_at:
             continue
         try:
-            pick_date = datetime.fromisoformat(gen_at.replace(" ", "T")).date()
-        except:
+            pick_date_obj = datetime.fromisoformat(gen_at.replace(" ", "T")).date()
+            pick_date_str = str(pick_date_obj)
+        except Exception:
             continue
 
-        # Verificar se já passaram os dias necessários para avaliar
         days_needed = 7 if cycle == "weekly" else 30
-        if (now.date() - pick_date).days < days_needed:
-            continue  # ainda não é hora de avaliar
+        if (now.date() - pick_date_obj).days < days_needed:
+            continue
 
         for pick in result.get("top_picks", []):
             sym = pick.get("symbol", "")
             price_at_pick = pick.get("price_usd")
             if not sym or not price_at_pick:
                 continue
-            if (sym, str(pick_date)) in perf_keys:
+            if (sym, pick_date_str) in perf_keys:
                 continue
             price_now = _fetch_coingecko_price(sym)
             if price_now > 0:
-                register_performance(cycle, sym, pick.get("rank", 0), price_at_pick, price_now, market_regime=regime)
-                perf_keys.add((sym, str(pick_date)))
+                register_performance(cycle, sym, pick.get("rank", 0), price_at_pick, price_now,
+                                     market_regime=regime, analysis_date=pick_date_str)
+                perf_keys.add((sym, pick_date_str))
                 updated += 1
     return updated
 
@@ -1426,7 +1861,7 @@ def auto_update_performance() -> int:
     results = _load_results()
     perf    = _load_performance()
     updated = 0
-    perf_keys = {(p["symbol"], p["date"]) for p in perf}
+    perf_keys = {(p["symbol"], p.get("analysis_date", p["date"])) for p in perf}
 
     for cycle in ("weekly", "monthly"):
         result = results.get(cycle)
@@ -1443,20 +1878,35 @@ def auto_update_performance() -> int:
                 continue
             price_now = _fetch_coingecko_price(sym)
             if price_now > 0:
-                register_performance(cycle, sym, pick.get("rank", 0), price_at_pick, price_now, market_regime=regime)
+                register_performance(cycle, sym, pick.get("rank", 0), price_at_pick, price_now,
+                                    market_regime=regime, analysis_date=pick_date)
                 perf_keys.add((sym, pick_date))
                 updated += 1
+    try:
+        evaluate_pending_macro_signals()
+        evaluate_pending_detailed_signals()
+        evaluate_macro_regime_cycles()
+    except Exception:
+        pass
     return updated
 
 
 def register_performance(cycle: str, symbol: str, rank: int,
-                          price_at_pick: float, price_now: float, market_regime: str = "UNKNOWN"):
+                          price_at_pick: float, price_now: float,
+                          market_regime: str = "UNKNOWN",
+                          ml_score: Optional[float] = None,
+                          analysis_date: Optional[str] = None):
     """
     Registra o resultado real de uma pick.
-    Chamar semanalmente para alimentar o feedback loop.
-    Pode ser chamado manualmente pela UI ou pelo daemon.
+    analysis_date: data da análise no formato "YYYY-MM-DD" (opcional)
     """
     try:
+        # Se ml_score não foi fornecido, tentar buscar do resultado salvo
+        if ml_score is None:
+            if analysis_date is None:
+                analysis_date = datetime.now().strftime("%Y-%m-%d")
+            ml_score = _get_ml_score_for_pick(cycle, symbol, analysis_date)
+
         perf = _load_performance()
         pct  = (price_now - price_at_pick) / price_at_pick * 100 if price_at_pick > 0 else 0
         perf.append({
@@ -1469,8 +1919,10 @@ def register_performance(cycle: str, symbol: str, rank: int,
             "pct_change":    round(pct, 2),
             "market_regime": market_regime,
             "result":        "WIN" if pct > 10 else ("LOSS" if pct < -10 else "NEUTRAL"),
+            "ml_score":      ml_score,
+            "analysis_date": analysis_date,  # guardar também para referência
         })
-        _save_performance(perf[-500:])  # manter últimas 500 entradas
+        _save_performance(perf[-500:])
     except Exception:
         pass
 
@@ -1554,6 +2006,31 @@ def get_performance_dashboard(lookback_picks: int = 60) -> dict:
         "quality": quality
     }
 
+def get_ml_performance() -> dict:
+    """Retorna estatísticas de acurácia do modelo de ML."""
+    perf = _load_performance()
+    if not perf:
+        return {"error": "Nenhuma performance registrada."}
+
+    total = 0
+    correct = 0
+    for p in perf:
+        ml_score = p.get("ml_score")
+        if ml_score is None:
+            continue
+        total += 1
+        pred_win = ml_score > 0.5
+        actual_win = p.get("result") == "WIN"
+        if pred_win == actual_win:
+            correct += 1
+    if total == 0:
+        return {"error": "Nenhum pick com ml_score registrado ainda."}
+    return {
+        "total": total,
+        "accuracy": round(correct / total * 100, 1),
+        "correct": correct,
+    }
+
 def get_history() -> list:
     """Retorna histórico de execuções (ciclo, timestamp, n_coins analisadas)."""
     return _load_results().get("history", [])
@@ -1584,20 +2061,87 @@ def _get_current_macro_regime() -> str:
     rebound = signal.get("tactical_rebound", False)
 
     # Mesma hierarquia do HUD
+    regime_result = "NEUTRO"
     if buy_mode and weekly_buy and funding < 0:
-        return "SUPER_BUY"
-    if buy_mode and weekly_buy:
-        return "BUY_CONFIRMED"
-    if buy_mode:
-        return "BUY_MACRO"
-    if sell_mode and weekly_sell and funding > 0.08:
-        return "SUPER_SELL"
-    if sell_mode and weekly_sell:
-        return "SELL_CONFIRMED"
-    if sell_mode and cap_lock:
-        return "CAPITULATION"
-    if sell_mode and rebound:
-        return "SELL_REBOUND"
-    if sell_mode:
-        return "SELL_MACRO"
-    return "NEUTRO"
+        regime_result = "SUPER_BUY"
+    elif buy_mode and weekly_buy:
+        regime_result = "BUY_CONFIRMED"
+    elif buy_mode:
+        regime_result = "BUY_MACRO"
+    elif sell_mode and weekly_sell and funding > 0.08:
+        regime_result = "SUPER_SELL"
+    elif sell_mode and weekly_sell:
+        regime_result = "SELL_CONFIRMED"
+    elif sell_mode and cap_lock:
+        regime_result = "CAPITULATION"
+    elif sell_mode and rebound:
+        regime_result = "SELL_REBOUND"
+    elif sell_mode:
+        regime_result = "SELL_MACRO"
+    # else: regime_result já "NEUTRO"
+
+    # ── REGISTRO DE SINAL MACRO (regime) ──
+    try:
+        signals = _load_macro_signals()
+        last = signals[-1] if signals else None
+        now = datetime.now()
+        if (not last or last.get("regime") != regime_result or
+            (now - datetime.fromisoformat(last["timestamp"])).days >= 1):
+            btc_ctx = _fetch_btc_context()
+            signals.append({
+                "timestamp": now.isoformat(),
+                "date": now.strftime("%Y-%m-%d"),
+                "regime": regime_result,
+                "buy_mode": buy_mode,
+                "sell_mode": sell_mode,
+                "weekly_buy": weekly_buy,
+                "weekly_sell": weekly_sell,
+                "funding_rate": funding,
+                "btc_price_usd": btc_ctx.get("btc_price", 0.0),
+                "evaluated_7d": False,
+                "outcome_7d": None,
+                "evaluated_30d": False,
+                "outcome_30d": None,
+            })
+            _save_macro_signals(signals)
+    except Exception as e:
+        print(f"⚠️ Erro ao registrar sinal macro: {e}")
+
+    # ── REGISTRO DE SINAIS DETALHADOS (entradas) ──
+    try:
+        current_signal_states = {
+            "weekly_buy": weekly_buy,
+            "weekly_sell": weekly_sell,
+            "rebound": rebound,
+            "rebound_super": bool(rebound and funding < 0),
+            "super_buy": (buy_mode and weekly_buy and funding < 0),
+            "super_sell": (sell_mode and weekly_sell and funding > 0.08)
+        }
+
+        global _last_signal_states
+        for signal_name, current in current_signal_states.items():
+            previous = _last_signal_states.get(signal_name, False)
+            if current and not previous:
+                # Sinal ativado agora
+                btc_ctx = _fetch_btc_context()
+                new_signal = {
+                    "timestamp": datetime.now().isoformat(),
+                    "date": datetime.now().strftime("%Y-%m-%d"),
+                    "signal": signal_name,
+                    "btc_price_usd": btc_ctx.get("btc_price", 0.0),
+                    "regime_at_signal": regime_result,
+                    "evaluated": False,
+                    "outcome": None,
+                    "exit_timestamp": None,
+                    "exit_price": None,
+                    "return_pct": None
+                }
+                detailed = _load_detailed_macro_signals()
+                detailed.append(new_signal)
+                _save_detailed_macro_signals(detailed)
+                print(f"📢 Novo sinal detalhado: {signal_name} em {new_signal['date']}")
+            _last_signal_states[signal_name] = current
+    except Exception as e:
+        print(f"⚠️ Erro ao registrar sinal detalhado: {e}")
+
+    return regime_result
