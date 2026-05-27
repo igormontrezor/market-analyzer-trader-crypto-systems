@@ -1621,7 +1621,7 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
                 pick["price_date"] = datetime.now().isoformat()
                 # Aguarda 2 segundos entre chamadas (evita rate limit)
                 if i < len(top_picks) - 1:
-                    time.sleep(2)
+                    time.sleep(3)
 
         regime_txt = "COMPRA ATIVA" if macro.get("regime", {}).get("buy_mode") else \
                      ("VENDA" if macro.get("regime", {}).get("sell_mode") else "NEUTRO")
@@ -1719,7 +1719,7 @@ def _save_price_cache(cache: dict):
     except:
         pass
 
-def _fetch_coingecko_price(symbol: str, max_total_seconds: int = 120) -> float:
+def _fetch_coingecko_price(symbol: str, max_total_seconds: int = 240) -> float:
     """
     Busca preço atual via CoinGecko com tentativas exaustivas.
     - Retry infinito (limitado por tempo máximo)
@@ -1867,27 +1867,45 @@ def auto_update_performance() -> int:
         result = results.get(cycle)
         if not result:
             continue
-        regime = result.get("market_regime", "UNKNOWN")   # pega do resultado
+        regime = result.get("market_regime", "UNKNOWN")
         pick_date = result.get("generated_at", "")[:10]
-        for pick in result.get("top_picks", []):
+        top_picks = result.get("top_picks", [])
+        total_picks = len(top_picks)
+
+        for idx, pick in enumerate(top_picks):
             sym = pick.get("symbol", "")
-            price_at_pick = pick.get("price_usd")  # preço salvo no momento da análise
+            price_at_pick = pick.get("price_usd")
             if not sym or not price_at_pick or price_at_pick <= 0:
                 continue
             if (sym, pick_date) in perf_keys:
                 continue
-            price_now = _fetch_coingecko_price(sym)
+
+            # 🔁 Busca preço atual com timeout de 240 segundos (4 minutos)
+            price_now = _fetch_coingecko_price(sym, max_total_seconds=240)
+
             if price_now > 0:
                 register_performance(cycle, sym, pick.get("rank", 0), price_at_pick, price_now,
-                                    market_regime=regime, analysis_date=pick_date)
+                                     market_regime=regime, analysis_date=pick_date)
                 perf_keys.add((sym, pick_date))
                 updated += 1
+                print(f"[PERF] ✅ {sym} atualizado: {price_now:.4f} (variação {((price_now-price_at_pick)/price_at_pick*100):+.2f}%)")
+            else:
+                print(f"[PERF] ❌ Falha ao obter preço para {sym}")
+
+            # ⏱️ Delay de 3 segundos entre picks (exceto após o último)
+            if idx < total_picks - 1:
+                time.sleep(3)
+
+        # ⏱️ Delay de 5 segundos entre ciclos (weekly → monthly)
+        time.sleep(5)
+
     try:
         evaluate_pending_macro_signals()
         evaluate_pending_detailed_signals()
         evaluate_macro_regime_cycles()
     except Exception:
         pass
+
     return updated
 
 

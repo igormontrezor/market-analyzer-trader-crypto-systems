@@ -36,9 +36,18 @@ except ImportError:
 
 try:
     import gems_ai_filter as _ai
+    try:
+        from ml_ranker import get_current_model_info
+        _ML_AVAILABLE = True
+    except ImportError:
+        _ML_AVAILABLE = False
+        def get_current_model_info():
+            return None
     _AI_AVAILABLE = True
 except ImportError:
     _AI_AVAILABLE = False
+    def get_current_model_info():
+        return None
 
 try:
     from montrezor_alerts_integration import send_gems_alert, log_signal
@@ -2288,6 +2297,24 @@ with tab7:
                     monthly_result = result
             except Exception as e:
                 st.error(f"Erro: {e}")
+
+    # ── Exibir versão do modelo ML ─────────────────────────────────
+    if _ML_AVAILABLE:
+        model_info = get_current_model_info()
+        if model_info:
+            acc_str = f"{model_info['accuracy']*100:.1f}%" if model_info['accuracy'] is not None else "N/A"
+            st.markdown(f"""
+            <div style="background:#0d1117; border:1px solid #30363d; border-radius:8px; padding:8px 12px; margin:10px 0;">
+                <span style="font-size:12px; color:#8b949e;">🧠 Modelo ML ativo:</span>
+                <span style="font-size:12px; font-weight:500; color:#a371f7;"> versão {model_info['version']} </span>
+                <span style="font-size:11px; color:#8b949e;"> (acurácia {acc_str} | {model_info['n_samples']} amostras)</span>
+                <span style="font-size:11px; color:#484f58;"> treinado em {model_info['date'][:10] if model_info['date'] else '?'}</span>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.info("🧠 Nenhum modelo ML treinado ainda. Aguardando 30 picks avaliados.")
+    else:
+        st.info("🧠 Módulo ml_ranker não disponível.")
 
     # ========== DASHBOARD DE PERFORMANCE GERAL ==========
     try:

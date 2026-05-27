@@ -1,0 +1,4 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+HYPU,hypurliqwid,iJMcUZNW9KXVXwkTMJMXZWgGrs8EPwVUK7xxHvxpump,solana,0.0002961,142.0,283683.0,47808.66,1561123.29,12628,9851,0.56,25.9,https://dexscreener.com/solana/2auni6vrn16d3udi2wlphnykaujhtvjzun4ehwxy8l5d,2026-05-27T08:11:30.897438,dexscreener,1621.904156
+LUCE,Ferrari EV,AuE37gZv7Teperv3d3HbMd22HynVnQ8Ai6h73Szpump,solana,0.0001812,258.0,181243.0,34233.96,735987.33,4737,4208,0.53,3.6,https://dexscreener.com/solana/taavc5xjpmt3u9bqqimembcwri2pnpzkfojxzj4sd94,2026-05-27T08:11:30.897377,dexscreener,792.410726
+POPO,popo,4egUye8LzZ55f68RruH6uHDLSajoxJrGFaRf6zeRpump,solana,0.0001514,318.0,151446.0,30285.72,156085.97,7842,4635,0.63,1.6,https://dexscreener.com/solana/daqgaxaetsyl23utwcwthgdmnppilq9sxgpvm2e2yrj4,2026-05-27T08:11:30.897176,dexscreener,222.114542

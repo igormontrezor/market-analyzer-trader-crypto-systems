@@ -18,6 +18,10 @@ PERF_FILE = os.path.join(DATA_DIR, "gems_ai_performance.json")
 MODEL_FILE = os.path.join(DATA_DIR, "ml_ranker.pkl")
 HISTORICAL_SNAPSHOTS_DIR = os.path.join(DATA_DIR, "snapshots")  # para buscar features
 
+MODELS_DIR = os.path.join(DATA_DIR, "models")
+os.makedirs(MODELS_DIR, exist_ok=True)
+VERSIONS_FILE = os.path.join(MODELS_DIR, "ml_model_versions.json")
+MAX_VERSIONS = 10  # manter apenas as 10 versões mais recentes
 
 def _load_macro_signals():
     macro_path = os.path.join(DATA_DIR, "macro_signals.json")
@@ -141,6 +145,27 @@ def load_training_data():
         # Adicionar one-hot do regime (opcional, mas recomendado)
         features.extend(_one_hot_regime(regime))
 
+        # --- Adicionar features derivadas (interações) ---
+        # 1. ratio * regime_winrate
+        ratio_val = features[feature_cols.index("ratio")] if "ratio" in feature_cols else 0
+        ratio_interaction = ratio_val * regime_winrate
+        features.append(ratio_interaction)
+
+        # 2. drawdown_pct * regime_winrate
+        drawdown_val = features[feature_cols.index("drawdown_pct")] if "drawdown_pct" in feature_cols else 0
+        drawdown_interaction = drawdown_val * regime_winrate
+        features.append(drawdown_interaction)
+
+        # 3. composite_score * regime_winrate
+        comp_score_val = features[feature_cols.index("composite_score")] if "composite_score" in feature_cols else 0
+        comp_interaction = comp_score_val * regime_winrate
+        features.append(comp_interaction)
+
+        # 4. seller_exhaustion * regime_winrate (seller_exhaustion é booleano, converter para float)
+        seller_val = features[feature_cols.index("seller_exhaustion")] if "seller_exhaustion" in feature_cols else 0
+        seller_interaction = float(seller_val) * regime_winrate
+        features.append(seller_interaction)
+
         # Target: 1 se ganhou mais de 10%
         target = 1 if entry.get("pct_change", 0) > 10 else 0
         X_list.append(features)
@@ -199,15 +224,133 @@ def train_model():
     y_pred = model.predict(X_val)
     acc = accuracy_score(y_val, y_pred)
     print(f"Acurácia na validação: {acc:.2f}")
+
+    # Salvar versão com timestamp e metadados
+    n_samples = X.shape[0]          # número total de amostras usadas no treino
+    n_features = X.shape[1]         # número de features
+    _save_model_version(model, acc, n_samples, n_features)
+
+def _save_model_version(model, accuracy: float, n_samples: int, n_features: int):
+    """Salva o modelo com timestamp e registra metadados."""
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"ml_ranker_{timestamp}.pkl"
+    filepath = os.path.join(MODELS_DIR, filename)
+
     # Salvar modelo
+    joblib.dump(model, filepath)
+
+    # Carregar versões existentes
+    versions = []
+    if os.path.exists(VERSIONS_FILE):
+        with open(VERSIONS_FILE, "r") as f:
+            versions = json.load(f)
+
+    # Adicionar nova versão
+    versions.append({
+        "version": timestamp,
+        "filename": filename,
+        "accuracy": round(accuracy, 4),
+        "n_samples": n_samples,
+        "n_features": n_features,
+        "date": datetime.now().isoformat()
+    })
+
+    # Manter apenas as MAX_VERSIONS mais recentes (primeiras no arquivo = mais antigas)
+    versions = versions[-MAX_VERSIONS:]
+
+    # Salvar metadados
+    with open(VERSIONS_FILE, "w") as f:
+        json.dump(versions, f, indent=2)
+
+    # Opcional: excluir arquivos de versões antigas que não estão na lista
+    keep_filenames = {v["filename"] for v in versions}
+    for f in os.listdir(MODELS_DIR):
+        if f.startswith("ml_ranker_") and f.endswith(".pkl") and f not in keep_filenames:
+            os.remove(os.path.join(MODELS_DIR, f))
+
+    # Também sobrescrever o modelo padrão (para compatibilidade)
     joblib.dump(model, MODEL_FILE)
-    print(f"Modelo salvo em {MODEL_FILE}")
+
+    print(f"✅ Modelo versão {timestamp} salvo (acurácia {accuracy:.2f}, {n_samples} amostras)")
+
+def _get_best_model():
+    """
+    Carrega a versão do modelo com maior acurácia registrada no arquivo de versões.
+    Se não encontrar, tenta carregar o modelo padrão (ml_ranker.pkl).
+    Retorna o modelo carregado ou None se nenhum for encontrado.
+    """
+    # Tenta carregar a lista de versões
+    if not os.path.exists(VERSIONS_FILE):
+        # Fallback: modelo padrão
+        if os.path.exists(MODEL_FILE):
+            print("[ML] Nenhum registro de versões encontrado. Usando modelo padrão.")
+            return joblib.load(MODEL_FILE)
+        return None
+
+    try:
+        with open(VERSIONS_FILE, "r") as f:
+            versions = json.load(f)
+    except Exception as e:
+        print(f"[ML] Erro ao ler versões: {e}. Usando modelo padrão.")
+        if os.path.exists(MODEL_FILE):
+            return joblib.load(MODEL_FILE)
+        return None
+
+    if not versions:
+        print("[ML] Nenhuma versão registrada. Usando modelo padrão.")
+        if os.path.exists(MODEL_FILE):
+            return joblib.load(MODEL_FILE)
+        return None
+
+    # Encontra a versão com maior acurácia
+    best_version = max(versions, key=lambda v: v.get("accuracy", 0))
+    best_path = os.path.join(MODELS_DIR, best_version["filename"])
+
+    if not os.path.exists(best_path):
+        print(f"[ML] Arquivo da melhor versão ({best_version['filename']}) não encontrado. Usando modelo padrão.")
+        if os.path.exists(MODEL_FILE):
+            return joblib.load(MODEL_FILE)
+        return None
+
+    print(f"[ML] ✅ Usando melhor modelo: versão {best_version['version']} (acurácia {best_version['accuracy']:.2f}, {best_version['n_samples']} amostras)")
+    return joblib.load(best_path)
+
+def get_current_model_info():
+    """
+    Retorna informações da melhor versão do modelo disponível.
+    Retorna dict com: version, accuracy, n_samples, n_features, date
+    Se nenhum modelo existir, retorna None.
+    """
+    if not os.path.exists(VERSIONS_FILE):
+        # Se não houver versões salvas, tenta carregar o modelo padrão e extrair info?
+        if os.path.exists(MODEL_FILE):
+            # Modelo padrão existe mas não temos metadados
+            return {"version": "legacy", "accuracy": None, "n_samples": None, "n_features": None, "date": None}
+        return None
+
+    with open(VERSIONS_FILE, "r") as f:
+        versions = json.load(f)
+
+    if not versions:
+        return None
+
+    # Retorna a versão com maior acurácia (ou a mais recente se preferir)
+    best = max(versions, key=lambda v: v["accuracy"])
+    return {
+        "version": best["version"],
+        "accuracy": best["accuracy"],
+        "n_samples": best["n_samples"],
+        "n_features": best["n_features"],
+        "date": best["date"]
+    }
 
 def ml_predict_picks(claude_result, df_agg):
     if not os.path.exists(MODEL_FILE):
         return claude_result
-    model = joblib.load(MODEL_FILE)
-
+    model = _get_best_model()
+    if model is None:
+        print("[ML] Nenhum modelo disponível para predição.")
+        return claude_result
     # Carregar macro signals para calcular winrate atual
     macro_signals = _load_macro_signals()
     current_date = datetime.now().strftime("%Y-%m-%d")
@@ -228,7 +371,7 @@ def ml_predict_picks(claude_result, df_agg):
     # Número de features macro adicionadas: 1 (winrate) + len(one_hot)
     # Precisamos saber quantas são – podemos usar a mesma lista de regimes definida em _one_hot_regime
     # Aqui usaremos um valor fixo baseado na função (9 regimes)
-    NUM_MACRO_FEATURES = 1 + 9  # winrate + 9 one-hot (ajuste conforme lista)
+    NUM_MACRO_FEATURES = 1 + 9 + 4  # winrate + 9 one-hot (ajuste conforme lista)
 
     for pick in claude_result.get("top_picks", []):
         sym = pick["symbol"]
@@ -248,6 +391,24 @@ def ml_predict_picks(claude_result, df_agg):
         # Adicionar features macro
         X.append(regime_winrate)
         X.extend(one_hot)
+
+        # --- Adicionar features derivadas (mesma ordem do treinamento) ---
+        # 1. ratio * regime_winrate
+        ratio_val = X[feature_cols.index("ratio")] if "ratio" in feature_cols else 0
+        X.append(ratio_val * regime_winrate)
+
+        # 2. drawdown_pct * regime_winrate
+        drawdown_val = X[feature_cols.index("drawdown_pct")] if "drawdown_pct" in feature_cols else 0
+        X.append(drawdown_val * regime_winrate)
+
+        # 3. composite_score * regime_winrate
+        comp_score_val = X[feature_cols.index("composite_score")] if "composite_score" in feature_cols else 0
+        X.append(comp_score_val * regime_winrate)
+
+        # 4. seller_exhaustion * regime_winrate
+        seller_val = X[feature_cols.index("seller_exhaustion")] if "seller_exhaustion" in feature_cols else 0
+        X.append(float(seller_val) * regime_winrate)
+
         # Garantir que o número de features bate com o modelo
         if len(X) != model.n_features_in_:
             print(f"⚠️ Número de features incompatível: modelo espera {model.n_features_in_}, temos {len(X)}")

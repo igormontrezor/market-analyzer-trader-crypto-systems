@@ -1,0 +1,2 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+DOGEUS,Dogeus Maximus,0x759F8B83db57033aed95545694F6AdA480b6e987,ethereum,0.0005298,18561.0,529851.0,60473.5,673873.21,1607,984,0.62,3.8,https://dexscreener.com/ethereum/0x12d44f8b4d3e28bdeb35e8e2e6585dfcc33eda5f,2026-05-27T14:04:36.295055,dexscreener,741.92056

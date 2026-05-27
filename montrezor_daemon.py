@@ -58,12 +58,20 @@ MACRO_REBUILD_SEC  = 300   # visualizer: rebuild macro_timing.json a cada 5 min
 TRADING_COOLDOWN_MIN = 240  # 4h cooldown forex
 GEMS_COOLDOWN_MIN    = 60   # 1h cooldown crypto
 
+# Intervalo para verificar envio de relatório semanal (a cada 1 hora, mas só envia se for domingo e horário específico)
+WEEKLY_REPORT_CHECK_SEC = 3600  # verifica a cada 1h
+WEEKLY_REPORT_DAY = 6  # Sunday (0=Monday, 6=Sunday)
+WEEKLY_REPORT_HOUR = 20  # 20h (8 PM)
+
 PERSIST_FILE  = os.path.join(os.path.expanduser("~"), ".montrezor_data.json")
 TELEGRAM_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_telegram.json")
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 MACRO_JSON  = os.path.join(PROJECT_DIR, "gems_system", "data", "macro", "macro_timing.json")
 LOG_FILE    = os.path.join(PROJECT_DIR, "montrezor_daemon.log")
+
+# Intervalo para atualizar performance dos sinais (4 horas)
+PERFORMANCE_UPDATE_SEC = 4 * 3600   # 14400 segundos
 
 # ════════════════════════════════════════════════════════════════════════
 # LOGGING
@@ -210,6 +218,70 @@ def send_gems_tg(symbol, sig_type, funding, token, chat_id):
     if _post(token, chat_id, msg): return True
     plain = f"GEMS {sig_type}\nAtivo: {symbol}\nFunding: {funding:.4f}%\nHora: {ts}\nMontrezor Gems [daemon]"
     return _post(token, chat_id, plain, "")
+
+def send_csv_via_telegram(csv_content, token, chat_id, filename="relatorio_semanal.csv"):
+    """Envia um arquivo CSV para o chat do Telegram."""
+    import requests
+    token = _norm(token); chat_id = _norm(chat_id)
+    if not token or not chat_id:
+        return False
+    url = f"https://api.telegram.org/bot{token}/sendDocument"
+    files = {'document': (filename, csv_content, 'text/csv')}
+    try:
+        r = requests.post(url, files=files, data={'chat_id': chat_id}, timeout=30)
+        return r.status_code == 200 and r.json().get('ok', False)
+    except Exception as e:
+        return False
+
+# ============================================================
+# RELATÓRIO SEMANAL CSV
+# ============================================================
+def gerar_csv_semanal(logger):
+    """
+    Carrega o arquivo .montrezor_performance.json, filtra os sinais
+    dos últimos 7 dias e retorna o conteúdo CSV como string.
+    Retorna None se não houver dados.
+    """
+    import os, json, pandas as pd
+    from datetime import datetime, timedelta
+
+    perf_file = os.path.join(os.path.expanduser("~"), ".montrezor_performance.json")
+    if not os.path.exists(perf_file):
+        logger.warning("[REL] Arquivo de performance não encontrado.")
+        return None
+
+    try:
+        with open(perf_file, 'r', encoding='utf-8') as f:
+            perf = json.load(f)
+    except Exception as e:
+        logger.error(f"[REL] Erro ao ler performance: {e}")
+        return None
+
+    if not perf:
+        return None
+
+    df = pd.DataFrame(perf.values())
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    # Últimos 7 dias
+    semana_atras = datetime.now() - timedelta(days=7)
+    df_semana = df[df['timestamp'] >= semana_atras].copy()
+
+    if df_semana.empty:
+        logger.info("[REL] Nenhum sinal na última semana.")
+        return None
+
+    # Ordenar e selecionar colunas relevantes
+    df_semana = df_semana.sort_values('timestamp')
+    colunas = ['timestamp', 'symbol', 'direction', 'signal_type', 'entry_price',
+               'result_24h', 'result_7d', 'result_30d']
+    # Garantir que todas existem
+    for c in colunas:
+        if c not in df_semana.columns:
+            df_semana[c] = None
+    df_out = df_semana[colunas]
+
+    # Converter para CSV string
+    return df_out.to_csv(index=False)
 
 # ════════════════════════════════════════════════════════════════════════
 # CONFIG LOADER
@@ -488,16 +560,6 @@ def check_signals_trading(data, symbol, athena_levels):
     try: signal_ts = tfm.name
     except: signal_ts = None
 
-    # FIX 10: touch_tfs para mensagem Telegram enriquecida
-    touch_tfs = []
-    if hit_d1:  touch_tfs.append('1D')
-    if hit_4h:  touch_tfs.append('4H')
-    if hit_w1:  touch_tfs.append('1W')
-    elif near_w1: touch_tfs.append('1W~')
-    if hit_mn:  touch_tfs.append('1M')
-    elif near_mn: touch_tfs.append('1M~')
-
-    # ... código existente ...
     # FIX 10: touch_tfs para mensagem Telegram enriquecida
     touch_tfs = []
     if hit_d1:  touch_tfs.append('1D')
@@ -885,11 +947,108 @@ def _gems_signal_type(macro):
     return None
 
 # ════════════════════════════════════════════════════════════════════════
+# ATUALIZAÇÃO DE PERFORMANCE (24h/7d/30d)
+# ════════════════════════════════════════════════════════════════════════
+PERFORMANCE_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_performance.json")
+
+def load_performance_data():
+    if os.path.exists(PERFORMANCE_FILE):
+        try:
+            with open(PERFORMANCE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except:
+            pass
+    return {}
+
+def save_performance_data(perf):
+    try:
+        with open(PERFORMANCE_FILE, "w", encoding="utf-8") as f:
+            json.dump(perf, f, indent=2, ensure_ascii=False)
+    except:
+        pass
+
+def fetch_price_at_date(symbol: str, target_date: pd.Timestamp) -> float | None:
+    """
+    Retorna o preço de fechamento do candle diário que cobre a target_date.
+    target_date deve ser tz‑naive UTC.
+    """
+    df = _mt5_fetch(symbol, "1d")   # usa a mesma função de download do daemon
+    if df is None or df.empty:
+        return None
+    df.index = pd.to_datetime(df.index).tz_localize(None)
+    idx = df.index.searchsorted(target_date, side="right") - 1
+    if idx >= 0:
+        return float(df["Close"].iloc[idx])
+    return None
+
+def update_pending_performance(logger):
+    """
+    Atualiza preços futuros (24h, 7d, 30d) para sinais ainda não fechados.
+    Similar à função do trading_system.py, mas usando as funções do daemon.
+    """
+    perf = load_performance_data()
+    if not perf:
+        return
+
+    updated = False
+    now = pd.Timestamp.now(tz=None)   # UTC naive
+
+    for sid, rec in perf.items():
+        if rec.get("closed", False):
+            continue
+
+        signal_time = pd.Timestamp(rec["timestamp"]).tz_localize(None)
+        # 24h
+        if rec.get("price_24h") is None and (now - signal_time).total_seconds() >= 24*3600:
+            target = signal_time + pd.Timedelta(days=1)
+            price = fetch_price_at_date(rec["symbol"], target)
+            if price is not None:
+                rec["price_24h"] = price
+                if rec["direction"] == "COMPRA":
+                    rec["result_24h"] = (price - rec["entry_price"]) / rec["entry_price"]
+                else:
+                    rec["result_24h"] = (rec["entry_price"] - price) / rec["entry_price"]
+                updated = True
+                logger.info(f"[PERF] 24h ok: {rec['symbol']} {rec['direction']} @ {rec['entry_price']} -> {price:.5f}")
+
+        # 7 dias
+        if rec.get("price_7d") is None and (now - signal_time).total_seconds() >= 7*24*3600:
+            target = signal_time + pd.Timedelta(days=7)
+            price = fetch_price_at_date(rec["symbol"], target)
+            if price is not None:
+                rec["price_7d"] = price
+                if rec["direction"] == "COMPRA":
+                    rec["result_7d"] = (price - rec["entry_price"]) / rec["entry_price"]
+                else:
+                    rec["result_7d"] = (rec["entry_price"] - price) / rec["entry_price"]
+                updated = True
+                logger.info(f"[PERF] 7d ok: {rec['symbol']}")
+
+        # 30 dias
+        if rec.get("price_30d") is None and (now - signal_time).total_seconds() >= 30*24*3600:
+            target = signal_time + pd.Timedelta(days=30)
+            price = fetch_price_at_date(rec["symbol"], target)
+            if price is not None:
+                rec["price_30d"] = price
+                if rec["direction"] == "COMPRA":
+                    rec["result_30d"] = (price - rec["entry_price"]) / rec["entry_price"]
+                else:
+                    rec["result_30d"] = (rec["entry_price"] - price) / rec["entry_price"]
+                rec["closed"] = True
+                updated = True
+                logger.info(f"[PERF] 30d ok: {rec['symbol']} -> fechado")
+
+    if updated:
+        save_performance_data(perf)
+        logger.info("[PERF] Arquivo de performance atualizado")
+
+# ════════════════════════════════════════════════════════════════════════
 # LOOP PRINCIPAL
 # ════════════════════════════════════════════════════════════════════════
 def run_daemon(logger, mode="all"):
     do_trading = mode in ("all","trading")
     do_gems    = mode in ("all","gems")
+    last_weekly_report = 0.0   # timestamp do último envio
 
     logger.info("=" * 64)
     logger.info("  MONTREZOR DAEMON UNIFICADO")
@@ -928,6 +1087,7 @@ def run_daemon(logger, mode="all"):
     last_t_scan    = 0.0
     last_g_scan    = 0.0
     last_rebuild   = 0.0
+    last_perf_update = 0.0
     prev_t_active  = set()
     prev_gems_sig  = None
     prev_ma_sigs   = {}
@@ -1044,6 +1204,33 @@ def run_daemon(logger, mode="all"):
                     else:
                         logger.debug(f"  ⏳ Cooldown: BTC {sig_type}")
                     prev_gems_sig = sig_type
+
+        # ── Atualização de performance (24h/7d/30d) a cada 4 horas ──
+        if now - last_perf_update >= PERFORMANCE_UPDATE_SEC:
+            last_perf_update = now
+            update_pending_performance(logger)
+
+        # ── RELATÓRIO SEMANAL (domingo às 20h) ──
+        now = time.time()
+        # Só executa se já passou 24h desde o último envio (para não enviar várias vezes no mesmo domingo)
+        if now - last_weekly_report >= 86400:   # 24h
+            # Verificar se é domingo (weekday 6) e hora >= 20
+            dt = datetime.now()
+            if dt.weekday() == 6 and dt.hour >= 20:
+                logger.info("[REL] Gerando relatório semanal...")
+                csv_data = gerar_csv_semanal(logger)
+                if csv_data:
+                    cfg = load_config()
+                    ok = send_csv_via_telegram(csv_data, cfg["tg_token"], cfg["tg_chat_id"])
+                    if ok:
+                        logger.info("[REL] Relatório semanal enviado com sucesso.")
+                        last_weekly_report = now
+                    else:
+                        logger.error("[REL] Falha ao enviar relatório.")
+                else:
+                    logger.info("[REL] Nenhum dado para enviar.")
+
+        time.sleep(5)
 
         # ── MARKET ANALYSIS: avaliar sinais ──────────────────────
         if do_ma and (now - last_ma_scan) >= MA_SCAN_SEC:

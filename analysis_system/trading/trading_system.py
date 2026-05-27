@@ -103,6 +103,27 @@ def fetch_ohlcv(symbol: str, interval: str) -> pd.DataFrame | None:
            .sort_index())
     return df
 
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_daily_prices(symbol):
+    return fetch_ohlcv(symbol, '1d')
+
+def fetch_price_at_date(symbol: str, target_date: pd.Timestamp) -> float | None:
+    """
+    Retorna o preço de fechamento do candle diário que cobre a target_date.
+    target_date deve ser tz-naive UTC.
+    """
+    df = fetch_daily_prices(symbol)
+    if df is None or df.empty:
+        return None
+    # Garantir index tz-naive
+    df.index = pd.to_datetime(df.index).tz_localize(None)
+    # Encontrar o candle cujo índice é <= target_date e o próximo é > target_date
+    # Ou usar searchsorted
+    idx = df.index.searchsorted(target_date, side='right') - 1
+    if idx >= 0:
+        return float(df['Close'].iloc[idx])
+    return None
+
 def get_data_source_label() -> str:
     """Retorna string com nome do terminal MT5 conectado."""
     if _init_mt5():
@@ -420,6 +441,7 @@ st.markdown("""
 # 2. SESSION STATES + PERSISTÊNCIA
 # ============================================================
 PERSIST_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_data.json")
+PERFORMANCE_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_performance.json")
 
 def load_persisted_data():
     """Carrega ativos e níveis Athena do JSON no disco."""
@@ -442,6 +464,66 @@ def save_persisted_data(symbols, athena, signals_log):
 
 _persisted = load_persisted_data()
 
+def save_performance_data():
+    """Salva performance_data em JSON no disco."""
+    try:
+        with open(PERFORMANCE_FILE, 'w', encoding='utf-8') as f:
+            json.dump(st.session_state.performance_data, f, indent=2, ensure_ascii=False)
+    except:
+        pass
+
+def update_pending_performance():
+    """Atualiza preços futuros (24h, 7d, 30d) para sinais ainda não fechados."""
+    updated = False
+    now = pd.Timestamp.now(tz=None)  # UTC naive
+
+    for sid, rec in st.session_state.performance_data.items():
+        if rec.get('closed', False):
+            continue
+
+        signal_time = pd.Timestamp(rec['timestamp']).tz_localize(None)
+        # Verificar se já passou 24h
+        if rec.get('price_24h') is None and (now - signal_time).total_seconds() >= 24*3600:
+            target = signal_time + pd.Timedelta(days=1)
+            price = fetch_price_at_date(rec['symbol'], target)
+            if price is not None:
+                rec['price_24h'] = price
+                # Calcular resultado com base na direção
+                if rec['direction'] == 'COMPRA':
+                    rec['result_24h'] = (price - rec['entry_price']) / rec['entry_price']
+                else:
+                    rec['result_24h'] = (rec['entry_price'] - price) / rec['entry_price']
+                updated = True
+
+        # 7 dias
+        if rec.get('price_7d') is None and (now - signal_time).total_seconds() >= 7*24*3600:
+            target = signal_time + pd.Timedelta(days=7)
+            price = fetch_price_at_date(rec['symbol'], target)
+            if price is not None:
+                rec['price_7d'] = price
+                if rec['direction'] == 'COMPRA':
+                    rec['result_7d'] = (price - rec['entry_price']) / rec['entry_price']
+                else:
+                    rec['result_7d'] = (rec['entry_price'] - price) / rec['entry_price']
+                updated = True
+
+        # 30 dias
+        if rec.get('price_30d') is None and (now - signal_time).total_seconds() >= 30*24*3600:
+            target = signal_time + pd.Timedelta(days=30)
+            price = fetch_price_at_date(rec['symbol'], target)
+            if price is not None:
+                rec['price_30d'] = price
+                if rec['direction'] == 'COMPRA':
+                    rec['result_30d'] = (price - rec['entry_price']) / rec['entry_price']
+                else:
+                    rec['result_30d'] = (rec['entry_price'] - price) / rec['entry_price']
+                rec['closed'] = True  # após 30 dias, marcamos como fechado
+                updated = True
+
+    if updated:
+        save_performance_data()
+
+
 if 'step_active'      not in st.session_state: st.session_state.step_active      = 0
 if 'hougaard_step'    not in st.session_state: st.session_state.hougaard_step    = -1
 if 'tracked_symbols'  not in st.session_state: st.session_state.tracked_symbols  = _persisted.get("symbols", ["CHFJPY#", "EURUSD#", "BTCUSD#"])
@@ -452,6 +534,17 @@ if 'auto_update'      not in st.session_state: st.session_state.auto_update     
 if 'last_update'      not in st.session_state: st.session_state.last_update      = 0
 if 'cached_data'      not in st.session_state: st.session_state.cached_data      = {}
 if 'na_tf_select'     not in st.session_state: st.session_state.na_tf_select     = {}
+
+if 'performance_data' not in st.session_state:
+    # Carregar do arquivo se existir
+    if os.path.exists(PERFORMANCE_FILE):
+        try:
+            with open(PERFORMANCE_FILE, 'r', encoding='utf-8') as f:
+                st.session_state.performance_data = json.load(f)
+        except:
+            st.session_state.performance_data = {}
+    else:
+        st.session_state.performance_data = {}
 
 # Carregar config Telegram
 _tg_token, _tg_chat_id = load_telegram_config()
@@ -947,15 +1040,24 @@ def check_signals(data, symbol, athena_levels):
     try:
         stk = float(tfm['StochRSI_K'])
         std = float(tfm['StochRSI_D'])
+        tf_name = tf_menor_key.upper()   # '4H', '1D', etc.
         if direction == "COMPRA":
-            # Compra, mas Stoch está no topo (>=80) ou ainda apontando pra baixo (K < D)
-            stoch_div = (stk >= 80) or (stk < std)
-        else:
-            # Venda, mas Stoch está no fundo (<=20) ou ainda apontando pra cima (K > D)
-            stoch_div = (stk <= 20) or (stk > std)
+            if stk >= 80:
+                stoch_div = True
+                stoch_warning = f"STOCH TOPO ({tf_name})"
+            else:
+                stoch_div = False
+                stoch_warning = None
+        else:  # VENDA
+            if stk <= 20:
+                stoch_div = True
+                stoch_warning = f"STOCH FUNDO ({tf_name})"
+            else:
+                stoch_div = False
+                stoch_warning = None
     except:
         stoch_div = False
-
+        stoch_warning = None
     # Se desejar TRAVAR (bloquear) o sinal em vez de apenas alertar,
     # basta descomentar as duas linhas abaixo:
     # if stoch_div or mn_ema_div:
@@ -972,6 +1074,7 @@ def check_signals(data, symbol, athena_levels):
         "signal_ts": signal_ts,
         "touch_tfs": touch_tfs,  # TFs onde houve toque/near no canal RSI
         "stoch_div": stoch_div,    # Adicionado para a UI
+        "stoch_warning": stoch_warning,
         "mn_ema_div": mn_ema_div,  # Adicionado para a UI
         # debug: quais condicoes passaram
         "_debug": {
@@ -1443,7 +1546,8 @@ if __name__ == "__main__":
         "📋 Método Hougaard",
         "🔬 Simulador",
         "📊 Backtest",
-        "⚙️ Configurações"
+        "⚙️ Configurações",
+        "📈 Performance"
     ])
 
     # ════════════════════════════════════════════════════════════
@@ -1623,7 +1727,7 @@ if __name__ == "__main__":
                                     elevation_reason=sig.get('elevation_reason'),
                                 )
 
-            # ── Adicionar novos sinais ao histórico ──
+            # ── Adicionar novos sinais ao histórico e performance ──
             for sig in new_signals:
                 log_entry = {
                     "timestamp": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -1633,10 +1737,36 @@ if __name__ == "__main__":
                     "price": float(sig["price"]),
                     "touch_tfs": sig.get("touch_tfs", []),
                 }
-                st.session_state.signals_log.insert(0, log_entry)  # Inserir no topo
-                # Manter apenas últimos 100 sinais
+                st.session_state.signals_log.insert(0, log_entry)
                 if len(st.session_state.signals_log) > 100:
                     st.session_state.signals_log = st.session_state.signals_log[:100]
+
+                # --- Criar registro de performance ---
+                # Usar o timestamp do candle que gerou o sinal (mais preciso)
+                candle_ts = sig.get('signal_ts')
+                if candle_ts is None:
+                    candle_ts = pd.Timestamp.now()
+                if hasattr(candle_ts, 'strftime'):
+                    ts_str = candle_ts.strftime('%Y%m%d_%H%M%S')
+                else:
+                    ts_str = pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')
+                signal_id = f"{sig['symbol']}_{sig['direction']}_{ts_str}"
+                if signal_id not in st.session_state.performance_data:
+                    st.session_state.performance_data[signal_id] = {
+                        "timestamp": candle_ts.isoformat() if hasattr(candle_ts, 'isoformat') else pd.Timestamp.now().isoformat(),
+                        "symbol": sig['symbol'],
+                        "direction": sig['direction'],
+                        "signal_type": sig['type'],
+                        "entry_price": float(sig['price']),
+                        "price_24h": None,
+                        "price_7d": None,
+                        "price_30d": None,
+                        "result_24h": None,
+                        "result_7d": None,
+                        "result_30d": None,
+                        "closed": False
+                    }
+                    save_performance_data()   # salvar imediatamente
 
             progress_ph.empty()
 
@@ -1665,7 +1795,9 @@ if __name__ == "__main__":
                         typ_cls = "bg-super" if s["type"] == "SUPER" else "bg-comum"
 
                         # Badges de aviso adicionados aqui:
-                        stoch_warn = f"<br><span style='background:#E0A905;color:#000;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;'>⚠️ STOCH CONTRA/TOPO ({s.get('tf_menor', '?')})</span>" if s.get('stoch_div') else ""
+                        stoch_warn = ""
+                        if s.get('stoch_div') and s.get('stoch_warning'):
+                            stoch_warn = f"<br><span style='background:#E0A905;color:#000;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;'>⚠️ {s['stoch_warning']}</span>"
                         mn_ema_warn = "<br><span style='background:#E04C4C;color:#FFF;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;'>🚨 EMA MENSAL DIV</span>" if s.get('mn_ema_div') else ""
 
                         st.markdown(f"""
@@ -2420,14 +2552,311 @@ if __name__ == "__main__":
         - **Segurança**: Configure um PIN no seu PC para proteger o arquivo de config
         """)
 
+    with tabs[7]:
+        st.markdown("### 📈 Performance dos Sinais")
+
+        # Botão para atualizar resultados pendentes
+        if st.button("🔄 Atualizar Resultados (24h/7d/30d)", use_container_width=True):
+            with st.spinner("Buscando preços futuros no MT5..."):
+                update_pending_performance()
+            st.success("Atualização concluída!")
+            st.rerun()
+
+        st.caption("ℹ️ O sistema atualiza automaticamente a cada 4 horas via daemon. Este botão é apenas para atualização manual imediata.")
+
+        # Carregar dados de performance
+        perf = st.session_state.performance_data
+        if not perf:
+            st.info("Nenhum sinal registrado. Aguarde novos sinais.")
+        else:
+            # Converter para DataFrame
+            df_perf = pd.DataFrame(perf.values())
+            df_perf['timestamp'] = pd.to_datetime(df_perf['timestamp'])
+
+            # ======================== FILTROS INTERATIVOS ========================
+            st.markdown("#### 🔍 Filtros")
+            col_f1, col_f2, col_f3 = st.columns(3)
+            with col_f1:
+                ativos_opcoes = sorted(df_perf["symbol"].unique())
+                ativos_selecionados = st.multiselect(
+                    "Ativos",
+                    options=ativos_opcoes,
+                    default=ativos_opcoes,
+                    key="filter_symbols"
+                )
+            with col_f2:
+                tipos_opcoes = ["COMUM", "SUPER"]
+                tipos_selecionados = st.multiselect(
+                    "Tipo de sinal",
+                    options=tipos_opcoes,
+                    default=tipos_opcoes,
+                    key="filter_types"
+                )
+            with col_f3:
+                direcoes_opcoes = ["COMPRA", "VENDA"]
+                direcoes_selecionadas = st.multiselect(
+                    "Direção",
+                    options=direcoes_opcoes,
+                    default=direcoes_opcoes,
+                    key="filter_directions"
+                )
+
+            # Seletor de período
+            data_min = df_perf["timestamp"].min().date()
+            data_max = df_perf["timestamp"].max().date()
+            col_d1, col_d2 = st.columns(2)
+            with col_d1:
+                data_inicio = st.date_input("Data inicial", value=data_min, key="filter_start_date")
+            with col_d2:
+                data_fim = st.date_input("Data final", value=data_max, key="filter_end_date")
+
+            # Aplicar filtros
+            mask = (df_perf["symbol"].isin(ativos_selecionados)) & \
+                (df_perf["signal_type"].isin(tipos_selecionados)) & \
+                (df_perf["direction"].isin(direcoes_selecionadas)) & \
+                (df_perf["timestamp"].dt.date >= data_inicio) & \
+                (df_perf["timestamp"].dt.date <= data_fim)
+
+            df_filtrado = df_perf[mask].copy()
+
+            if df_filtrado.empty:
+                st.warning("Nenhum sinal corresponde aos filtros selecionados.")
+            else:
+                # Estatísticas básicas (já existentes)
+                total = len(df_filtrado)
+                super_count = len(df_filtrado[df_filtrado['signal_type'] == 'SUPER'])
+                comum_count = total - super_count
+                compra_count = len(df_filtrado[df_filtrado['direction'] == 'COMPRA'])
+                venda_count = total - compra_count
+
+                col1, col2, col3, col4 = st.columns(4)
+                col1.metric("Total Sinais", total)
+                col2.metric("⭐ SUPER", super_count, delta=f"{super_count/total:.0%}" if total else "")
+                col3.metric("• COMUM", comum_count)
+                col4.metric("Direção", f"▲ {compra_count} / ▼ {venda_count}")
+
+                st.markdown("---")
+
+                st.markdown("#### 📊 Resultados por Horizonte (quando disponíveis)")
+
+                # Criar três colunas
+                col24, col7, col30 = st.columns(3)
+
+                # Lista com (nome, coluna do dataframe, objeto coluna)
+                horizontes = [
+                    ("24h", "result_24h", col24),
+                    ("7d",  "result_7d",  col7),
+                    ("30d", "result_30d", col30),
+                ]
+
+                # Preencher cada coluna
+                for nome, col_df, col_obj in horizontes:
+                    df_h = df_filtrado.dropna(subset=[col_df])
+                    if not df_h.empty:
+                        win_rate = (df_h[col_df] > 0).mean()
+                        avg_return = df_h[col_df].mean()
+                        total_return = df_h[col_df].sum()
+                        col_obj.metric(
+                            f"🎯 Acerto {nome}",
+                            f"{win_rate:.1%}",
+                            delta=f"Retorno médio: {avg_return:.2%}"
+                        )
+                        col_obj.caption(f"Lucro acumulado: {total_return:.2%}")
+                    else:
+                        col_obj.info(f"Nenhum sinal com resultado {nome}")
+
+                st.markdown("---")
+
+                # Tabela de sinais com resultados (filtrada)
+                st.markdown("#### 📋 Detalhamento dos Sinais")
+                display_cols = ['timestamp', 'symbol', 'direction', 'signal_type', 'entry_price', 'result_24h', 'result_7d', 'result_30d']
+                st.dataframe(df_filtrado[display_cols].sort_values('timestamp', ascending=False).head(20))
+
+                # ── Gráfico de Equity Curve ─────────────────────────────────────────
+                st.markdown("### 📈 Equity Curve Simulada")
+
+                # Escolher o horizonte para a simulação
+                horizonte = st.selectbox(
+                    "Horizonte de trade:",
+                    options=["24h", "7d", "30d"],
+                    index=0,
+                    key="equity_horizon"
+                )
+
+                # Mapear para a coluna do DataFrame
+                col_map = {"24h": "result_24h", "7d": "result_7d", "30d": "result_30d"}
+                col_result = col_map[horizonte]
+
+                # Filtrar sinais que têm resultado neste horizonte
+                df_eq = df_filtrado.dropna(subset=[col_result]).copy()
+                if not df_eq.empty:
+                    # Ordenar por timestamp (mais antigo primeiro)
+                    df_eq = df_eq.sort_values("timestamp")
+
+                    # Capital inicial hipotético
+                    capital_inicial = 10000.0  # R$ 10.000,00
+                    capital = capital_inicial
+                    first_ts = df_eq.iloc[0]["timestamp"]
+                    dates = [first_ts - pd.Timedelta(minutes=1)]
+                    equity = [capital_inicial]
+
+                    for i, row in df_eq.iterrows():
+                        capital = capital * (1 + row[col_result])
+                        equity.append(capital)
+                        dates.append(row["timestamp"])
+
+                    # Plotar (sem fill e fillcolor)
+                    fig_eq = go.Figure()
+                    fig_eq.add_trace(go.Scatter(
+                        x=dates, y=equity,
+                        mode="lines",
+                        name=f"Equity ({horizonte})",
+                        line=dict(color="#5DCAA5", width=2)
+                    ))
+                    fig_eq.update_layout(
+                        title=f"Evolução do capital (entrada fixa de R$ {capital_inicial:,.2f} por operação)",
+                        xaxis_title="Data do sinal",
+                        yaxis_title="Capital acumulado (R$)",
+                        template="plotly_dark",
+                        height=450,
+                        hovermode="x unified"
+                    )
+                    # Linha horizontal no capital inicial
+                    fig_eq.add_hline(y=capital_inicial, line_dash="dot", line_color="gray", annotation_text="Capital inicial")
+                    st.plotly_chart(fig_eq, use_container_width=True)
+
+                    # Estatísticas adicionais da simulação
+                    retorno_total = (equity[-1] - capital_inicial) / capital_inicial
+                    num_trades = len(df_eq)
+                    win_rate = (df_eq[col_result] > 0).mean()
+                    st.metric(
+                        f"Resultado simulada ({horizonte})",
+                        f"{retorno_total:.2%}",
+                        delta=f"{num_trades} trades | Acerto: {win_rate:.1%}"
+                    )
+                else:
+                    st.info(f"Nenhum sinal com resultado {horizonte} disponível ainda. Aguarde a atualização automática.")
+
+                # ── Heatmap de Performance por Ativo/Mês ─────────────────────────────
+                st.markdown("### 🗺️ Heatmap de Performance por Ativo e Mês")
+
+                # Seletor de horizonte para o heatmap (pode ser independente)
+                heatmap_horizon = st.selectbox(
+                    "Horizonte para análise:",
+                    options=["24h", "7d", "30d"],
+                    index=0,
+                    key="heatmap_horizon"
+                )
+                heatmap_col = {"24h": "result_24h", "7d": "result_7d", "30d": "result_30d"}[heatmap_horizon]
+
+                # Filtrar sinais com resultado disponível
+                df_heat = df_filtrado.dropna(subset=[heatmap_col]).copy()
+                if not df_heat.empty:
+                    # Criar coluna de ano-mês
+                    df_heat["year_month"] = df_heat["timestamp"].dt.strftime("%Y-%m")
+                    # Criar coluna de vitória (True/False)
+                    df_heat["win"] = df_heat[heatmap_col] > 0
+
+                    # Agrupar por símbolo e mês: calcular taxa de acerto e número de trades
+                    heatmap_data = df_heat.groupby(["symbol", "year_month"]).agg(
+                        win_rate=("win", "mean"),
+                        count=("win", "count")
+                    ).reset_index()
+
+                    # Pivot para formato matriz (linhas = symbol, colunas = year_month) para win_rate
+                    pivot = heatmap_data.pivot(index="symbol", columns="year_month", values="win_rate")
+                    # Pivot para count
+                    count_pivot = heatmap_data.pivot(index="symbol", columns="year_month", values="count")
+
+                    # Ordenar colunas cronologicamente
+                    pivot = pivot.reindex(sorted(pivot.columns), axis=1)
+                    count_pivot = count_pivot.reindex(sorted(count_pivot.columns), axis=1)
+
+                    # --- Criar tabela resumo por ativo para ordenação ---
+                    summary = df_heat.groupby("symbol").agg(
+                        total_sinais=("win", "count"),
+                        win_rate=("win", "mean"),
+                        retorno_medio=(heatmap_col, "mean"),
+                        retorno_total=(heatmap_col, "sum")
+                    ).round(4)
+                    summary["win_rate_pct"] = summary["win_rate"]  # guardar numérico para ordenar
+                    # Ordenar resumo por win_rate decrescente
+                    summary_sorted = summary.sort_values("win_rate", ascending=False)
+
+                    # Reordenar as linhas do pivot e count_pivot conforme o resumo ordenado
+                    pivot = pivot.reindex(summary_sorted.index)
+                    count_pivot = count_pivot.reindex(summary_sorted.index)
+
+                    # Preparar texto customizado para hover (mostrar taxa de acerto e número de trades)
+                    hover_text = []
+                    for idx, row in pivot.iterrows():
+                        row_text = []
+                        for month in pivot.columns:
+                            v = row[month]
+                            c = count_pivot.loc[idx, month] if month in count_pivot.columns else 0
+                            if pd.notna(v):
+                                row_text.append(f"Acerto: {v:.0%}<br>Trades: {int(c)}")
+                            else:
+                                row_text.append("")
+                        hover_text.append(row_text)
+
+                    # Criar heatmap com Plotly
+                    fig_heat = go.Figure(data=go.Heatmap(
+                        z=pivot.values,
+                        x=pivot.columns,
+                        y=pivot.index,
+                        colorscale="RdYlGn",
+                        zmid=0.5,
+                        text=pivot.values.round(2),
+                        texttemplate="%{text:.0%}",
+                        textfont={"size": 10},
+                        hoverongaps=False,
+                        hovertext=hover_text,
+                        hovertemplate="%{hovertext}<extra></extra>",
+                        colorbar=dict(title="Taxa de Acerto", tickformat=".0%")
+                    ))
+                    fig_heat.update_layout(
+                        title=f"Taxa de Acerto por Ativo e Mês ({heatmap_horizon})",
+                        xaxis_title="Mês",
+                        yaxis_title="Ativo",
+                        height=400,
+                        template="plotly_dark",
+                        xaxis={"tickangle": -45}
+                    )
+                    st.plotly_chart(fig_heat, use_container_width=True)
+
+                    # Tabela resumo por ativo (já ordenada)
+                    st.markdown("#### 📊 Resumo por Ativo (todos os meses)")
+                    display_summary = summary_sorted[["total_sinais", "win_rate", "retorno_medio", "retorno_total"]].copy()
+                    display_summary["win_rate"] = display_summary["win_rate"].apply(lambda x: f"{x:.1%}")
+                    display_summary["retorno_medio"] = display_summary["retorno_medio"].apply(lambda x: f"{x:.2%}")
+                    display_summary["retorno_total"] = display_summary["retorno_total"].apply(lambda x: f"{x:.2%}")
+                    st.dataframe(display_summary, use_container_width=True)
+                else:
+                    st.info(f"Nenhum sinal com resultado {heatmap_horizon} disponível ainda.")
+
+                # ── Botão de exportar CSV filtrado ──
+                st.markdown("---")
+                st.markdown("### 📥 Exportar Dados")
+                csv_filtrado = df_filtrado.to_csv(index=False)
+                st.download_button(
+                    label="📥 Baixar CSV (com filtros atuais)",
+                    data=csv_filtrado,
+                    file_name=f"montrezor_performance_{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                    mime="text/csv",
+                    use_container_width=True
+                )
+
+
+
 # ════════════════════════════════════════════════════════════
 # SALVAR DADOS ANTES DE SAIR
 # ════════════════════════════════════════════════════════════
-    save_persisted_data(
-        st.session_state.tracked_symbols,
-        st.session_state.neuro_athena,
-        st.session_state.signals_log
-    )
+save_persisted_data(
+    st.session_state.tracked_symbols,
+    st.session_state.neuro_athena,
+    st.session_state.signals_log
+)
 
 # ════════════════════════════════════════════════════════════
 # AUTO-REFRESH — baseado em tempo decorrido, sem sleep
@@ -2435,20 +2864,20 @@ if __name__ == "__main__":
 # Agora: registra o timestamp do último refresh e só recarrega
 # quando 60s tiverem passado E o toggle estiver ativo.
 # ════════════════════════════════════════════════════════════
-    if st.session_state.auto_update:
-        now = time.time()
-        last = st.session_state.get("last_update", 0)
-        elapsed = now - last
-        if elapsed >= 60:
-            st.session_state.last_update = now
-            st.cache_data.clear()
-            st.rerun()
-        else:
-            # Agendar rerun para quando os 60s completarem
-            remaining_ms = int((60 - elapsed) * 1000)
-            st.markdown(
-                f"<div style='color:#484f58;font-size:11px;text-align:right'>"
-                f"⏱ próximo refresh em {int(60 - elapsed)}s</div>",
-                unsafe_allow_html=True)
-            time.sleep(max(1, 60 - int(elapsed)))
-            st.rerun()
+if st.session_state.auto_update:
+    now = time.time()
+    last = st.session_state.get("last_update", 0)
+    elapsed = now - last
+    if elapsed >= 60:
+        st.session_state.last_update = now
+        st.cache_data.clear()
+        st.rerun()
+    else:
+        # Agendar rerun para quando os 60s completarem
+        remaining_ms = int((60 - elapsed) * 1000)
+        st.markdown(
+            f"<div style='color:#484f58;font-size:11px;text-align:right'>"
+            f"⏱ próximo refresh em {int(60 - elapsed)}s</div>",
+            unsafe_allow_html=True)
+        time.sleep(max(1, 60 - int(elapsed)))
+        st.rerun()

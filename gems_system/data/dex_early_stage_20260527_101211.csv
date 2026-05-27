@@ -1,0 +1,4 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+DOGWIFGUN,Dogwifgun,GQnXYbbFTNJob7rzhFEFNgYMLghu4jLiK22xhrsRpump,solana,0.0004303,1143.0,430332.0,54480.69,1489567.88,15314,10927,0.58,10.1,https://dexscreener.com/solana/ddhdxr7fhvhdna4ee8ubq74hbxtk2dun4d96bci2dh2q,2026-05-27T10:12:05.183904,dexscreener,1553.0159489999999
+GOSLING,Justice for Gosling,DSwHWYXTvQtTQPnfAqKdVMtLUKzTCRzne49e6maxpump,solana,0.0001436,327.0,143655.0,30768.44,599099.88,6089,5251,0.54,0.4,https://dexscreener.com/solana/526eh7skztncmdgunrzcsubzlqvfp3hbaitggkmqnmyw,2026-05-27T10:12:05.183779,dexscreener,656.176724
+POPO,popo,4egUye8LzZ55f68RruH6uHDLSajoxJrGFaRf6zeRpump,solana,0.0001836,407.0,183638.0,33828.75,404000.18,14659,6443,0.69,3.6,https://dexscreener.com/solana/daqgaxaetsyl23utwcwthgdmnppilq9sxgpvm2e2yrj4,2026-05-27T10:12:05.184116,dexscreener,476.383055
