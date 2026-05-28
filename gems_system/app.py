@@ -25,6 +25,10 @@ from subprocess import Popen, DEVNULL
 # Importa as bibliotecas do sistema
 import visualizer
 
+def _tooltip(text, icon="ℹ️"):
+    """Retorna um span com tooltip (title) sem poluir o layout."""
+    return f'<span style="cursor:help; border-bottom:1px dotted #484f58;" title="{text}">{icon}</span>'
+
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
@@ -2325,10 +2329,18 @@ with tab7:
             st.markdown(f"*Base: últimas {perf_dash['total_picks']} picks do Claude*")
 
             c1, c2, c3, c4 = st.columns(4)
-            c1.metric("Win rate", f"{perf_dash['win_rate']}%")
-            c2.metric("Ganho médio (WIN)", f"+{perf_dash['avg_win']}%")
-            c3.metric("Perda média (LOSS)", f"{perf_dash['avg_loss']}%")
-            c4.metric("Risk / reward", f"{perf_dash['risk_reward']:.2f}x")
+            with c1:
+                st.markdown(f"Win rate {_tooltip('Porcentagem de picks que tiveram retorno positivo após 30 dias')}", unsafe_allow_html=True)
+                st.metric(" ", f"{perf_dash['win_rate']}%", label_visibility="collapsed")
+            with c2:
+                st.markdown(f"Ganho médio (WIN) {_tooltip('Retorno médio apenas dos picks que foram vencedores')}", unsafe_allow_html=True)
+                st.metric(" ", f"+{perf_dash['avg_win']}%", label_visibility="collapsed")
+            with c3:
+                st.markdown(f"Perda média (LOSS) {_tooltip('Retorno médio apenas dos picks que tiveram prejuízo')}", unsafe_allow_html=True)
+                st.metric(" ", f"{perf_dash['avg_loss']}%", label_visibility="collapsed")
+            with c4:
+                st.markdown(f"Risk / reward {_tooltip('Média do ganho médio dividido pela perda média. Quanto maior, melhor.')}", unsafe_allow_html=True)
+                st.metric(" ", f"{perf_dash['risk_reward']:.2f}x", label_visibility="collapsed")
 
             # ML Performance
             ml_perf = _ai.get_ml_performance()
@@ -2350,16 +2362,16 @@ with tab7:
             st.markdown(f"""
             <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
                 <div class="metric-mini-card">
-                    <div style="font-size:12px;color:#8b949e">🧠 ML Confidence</div>
+                    <div style="font-size:12px;color:#8b949e">🧠 ML Confidence {_tooltip('Acurácia do modelo de machine learning nos picks avaliados. Baseado em features como score, ratio, momentum e regime macro.')}</div>
                     <div style="font-size:22px;font-weight:500">{ml_acc}%</div>
                     <div style="font-size:11px;color:#8b949e">{ml_correct}/{ml_total} picks</div>
                 </div>
                 <div class="metric-mini-card">
-                    <div style="font-size:12px;color:#8b949e">Win rate rank #1</div>
+                    <div style="font-size:12px;color:#8b949e">Win rate rank #1 {_tooltip('Taxa de acerto dos picks classificados como rank 1 (melhor score) pelo Claude')}</div>
                     <div style="font-size:22px;font-weight:500">{wr1:.0f}%</div>
                 </div>
                 <div class="metric-mini-card">
-                    <div style="font-size:12px;color:#8b949e">Win rate rank #2-3</div>
+                    <div style="font-size:12px;color:#8b949e">Win rate rank #2-3 {_tooltip('Média da taxa de acerto dos picks ranks 2 e 3')}</div>
                     <div style="font-size:22px;font-weight:500">{wr23:.0f}%</div>
                 </div>
             </div>
@@ -2369,6 +2381,7 @@ with tab7:
 
             st.markdown("---")
             st.markdown("### 📡 Winrate dos Sinais (7 dias)")
+            st.caption("Porcentagem de acerto dos sinais macro (SUPER_BUY, BUY, SUPER_SELL, etc.) nos últimos 7 dias. Um sinal é considerado acerto se o BTC subiu >3% (BUY) ou desceu >3% (SELL) nos 5 dias seguintes.")
             try:
                 macro_stats = _ai.get_macro_signal_performance(days_window=7)
                 if macro_stats:
@@ -2388,6 +2401,7 @@ with tab7:
                 st.info(f"Aguardando dados: {e}")
 
             st.markdown("### 📡 Winrate dos Sinais de Entrada (weekly_buy, rebound, etc.)")
+            st.caption("Indicadores específicos do regime macro: weekly_buy_trigger, rebound, rebound_super. Mostra a eficácia de cada gatilho isoladamente.")
             try:
                 detailed_stats = _ai.get_detailed_signal_performance()
                 if detailed_stats:
@@ -2403,6 +2417,7 @@ with tab7:
                 st.info(f"Aguardando dados: {e}")
 
             st.markdown("### 📊 Ciclos Completos de Regime (BUY→SELL / SELL→BUY)")
+            st.caption("Análise de períodos onde o regime macro mudou de COMPRA para VENDA ou vice-versa. O retorno é medido desde o início do novo regime até a próxima mudança.")
             try:
                 cycle_stats = _ai.get_macro_cycle_stats()
                 if cycle_stats:
@@ -2431,22 +2446,31 @@ with tab7:
                 st.bar_chart(df_rank.set_index("Rank"))
 
             with st.expander("📈 Detalhes por ciclo e rank", expanded=False):
-                col_a, col_b = st.columns(2)
-                with col_a:
-                    st.markdown("**Ciclo Semanal**")
-                    st.metric("Win Rate", f"{perf_dash['cycle_stats']['weekly']['win_rate']:.0f}%",
-                            f"{perf_dash['cycle_stats']['weekly']['wins']}/{perf_dash['cycle_stats']['weekly']['total']}")
-                    st.markdown("**Ciclo Mensal**")
-                    st.metric("Win Rate", f"{perf_dash['cycle_stats']['monthly']['win_rate']:.0f}%",
-                            f"{perf_dash['cycle_stats']['monthly']['wins']}/{perf_dash['cycle_stats']['monthly']['total']}")
-
-                with col_b:
-                    st.markdown("**Win Rate por Rank**")
-                    for r in ["1", "2", "3-5"]:
-                        if r in perf_dash["rank_stats"]:
-                            wr = perf_dash["rank_stats"][r]["win_rate"]
-                            avg = perf_dash["rank_stats"][r]["avg_pct"]
-                            st.metric(f"Rank {r}", f"{wr:.0f}%", f"média {avg:+.1f}%")
+                # Verificar se existem dados de ciclos
+                if "cycle_stats" in perf_dash and perf_dash["cycle_stats"]:
+                    col_a, col_b = st.columns(2)
+                    with col_a:
+                        st.markdown("**Ciclo Semanal**")
+                        st.metric(
+                            "Win Rate",
+                            f"{perf_dash['cycle_stats']['weekly']['win_rate']:.0f}%",
+                            f"{perf_dash['cycle_stats']['weekly']['wins']}/{perf_dash['cycle_stats']['weekly']['total']}"
+                        )
+                        st.markdown("**Ciclo Mensal**")
+                        st.metric(
+                            "Win Rate",
+                            f"{perf_dash['cycle_stats']['monthly']['win_rate']:.0f}%",
+                            f"{perf_dash['cycle_stats']['monthly']['wins']}/{perf_dash['cycle_stats']['monthly']['total']}"
+                        )
+                    with col_b:
+                        st.markdown("**Win Rate por Rank**")
+                        for r in ["1", "2", "3-5"]:
+                            if r in perf_dash["rank_stats"]:
+                                wr = perf_dash["rank_stats"][r]["win_rate"]
+                                avg = perf_dash["rank_stats"][r]["avg_pct"]
+                                st.metric(f"Rank {r}", f"{wr:.0f}%", f"média {avg:+.1f}%")
+                else:
+                    st.info("Ainda não há ciclos completos para análise. Aguarde pelo menos uma transição de regime (COMPRA ↔ VENDA).")
 
             # ── Win Rate por Regime Macro (picks reais) ─────────────────
             perf_data = _ai._load_performance()
@@ -2555,6 +2579,16 @@ with tab7:
         dt1, dt2, dt3 = st.tabs(["📊 Dados Agregados", "🕐 Histórico de Runs", "🔬 DEX Early Stage"])
         with dt1:
             st.markdown("#### Dados Agregados dos Snapshots")
+            st.caption("""
+                - **composite_score**: média ponderada de score social, acumulação e momentum (0-100)
+                - **final_score**: score final usado pelo Claude (0-100)
+                - **ratio**: volume / market cap (liquidez relativa)
+                - **accumulation_score**: indicador de acúmulo baseado em volatilidade e ordem de compra
+                - **social_score**: engajamento social e hype
+                - **appearances**: quantos snapshots consecutivos a moeda aparece
+                - **momentum**: variação de preço nos últimos 7 dias (%)
+                - **sector**: setor (DeFi, Layer1, Meme, etc.)
+                """)
             try:
                 df_agg = _ai.get_aggregated_data(7)
                 if df_agg.empty:
@@ -2586,6 +2620,12 @@ with tab7:
 
         with dt3:
             st.markdown("#### 🔬 DEX Early Stage — DexScreener")
+            st.caption("""
+                - **buy_ratio**: proporção de compras vs vendas (0 = só vendas, 1 = só compras)
+                - **liquidity_usd**: liquidez em USD
+                - **dex_score**: score interno de qualidade (quanto maior, melhor)
+                - **pair_url**: link para o par na DexScreener
+                """)
             st.markdown(
                 "<p style='color:#8b949e;font-size:12px;margin-top:-8px'>"
                 "Tokens em estágio inicial detectados pelo dex_scanner.py. "

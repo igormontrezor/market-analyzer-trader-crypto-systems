@@ -73,6 +73,29 @@ LOG_FILE    = os.path.join(PROJECT_DIR, "montrezor_daemon.log")
 # Intervalo para atualizar performance dos sinais (4 horas)
 PERFORMANCE_UPDATE_SEC = 4 * 3600   # 14400 segundos
 
+_MA_DAEMON_STATE_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_ma_daemon_state.json")
+
+def _load_daemon_ma_state():
+    try:
+        if os.path.exists(_MA_DAEMON_STATE_FILE):
+            with open(_MA_DAEMON_STATE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+    except:
+        pass
+    return {}
+
+def _save_daemon_ma_state(state):
+    try:
+        with open(_MA_DAEMON_STATE_FILE, "w", encoding="utf-8") as f:
+            json.dump(state, f, indent=2)
+    except:
+        pass
+
+def _ma_signal_changed(chart, direction, last_state):
+    """Verifica se o sinal mudou em relação ao estado salvo."""
+    last = last_state.get(chart)
+    return last != direction
+
 # ════════════════════════════════════════════════════════════════════════
 # LOGGING
 # ════════════════════════════════════════════════════════════════════════
@@ -582,12 +605,24 @@ def check_signals_trading(data, symbol, athena_levels):
     try:
         stk = float(tfm['StochRSI_K'])
         std = float(tfm['StochRSI_D'])
+        tf_name = tf_menor_key.upper()   # '4H', '1D', etc.
         if direction == "COMPRA":
-            stoch_div = (stk >= 80) or (stk < std)
-        else:
-            stoch_div = (stk <= 20) or (stk > std)
+            if stk >= 80:
+                stoch_div = True
+                stoch_warning = f"STOCH TOPO ({tf_name})"
+            else:
+                stoch_div = False
+                stoch_warning = None
+        else:  # VENDA
+            if stk <= 20:
+                stoch_div = True
+                stoch_warning = f"STOCH FUNDO ({tf_name})"
+            else:
+                stoch_div = False
+                stoch_warning = None
     except:
         stoch_div = False
+        stoch_warning = None
 
     # if stoch_div or mn_ema_div:
     #     return None
@@ -603,6 +638,7 @@ def check_signals_trading(data, symbol, athena_levels):
         "signal_ts": signal_ts,
         "touch_tfs": touch_tfs,
         "stoch_div": stoch_div,    # Repassando para o bot
+        "stoch_warning": stoch_warning,
         "mn_ema_div": mn_ema_div,  # Repassando para o bot
         "_debug": {
             "hit_tfm": hit_tfm, "hit_w1": hit_w1, "hit_mn": hit_mn,
@@ -1235,83 +1271,64 @@ def run_daemon(logger, mode="all"):
         # ── MARKET ANALYSIS: avaliar sinais ──────────────────────
         if do_ma and (now - last_ma_scan) >= MA_SCAN_SEC:
             last_ma_scan = now
-            fx_sym = cfg.get("ma_fx_sym", "EURUSD=X")   # nome do par forex para a mensagem
+            cfg = load_config()
+            fx_sym = cfg.get("ma_fx_sym", "EURUSD=X")
             active_ma = _scan_market_analysis(logger, cfg, ma_state, prev_ma_sigs)
+
+            # Carregar estado persistente de mudanças
+            ma_last_state = _load_daemon_ma_state()
+
             for chart, signal_data in active_ma.items():
                 direction = signal_data["direction"]
                 signal_date_ma = signal_data["date"]
-                if ma_state.ok(chart, direction):
-                    icon     = "📈" if direction == "BUY" else "📉"
-                    dir_lbl  = "COMPRA" if direction == "BUY" else "VENDA"
-                    star     = "⭐ " if "Macro" in chart or "Monthly" in chart else ""
-                    ts       = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S")
 
-                    # Substituir "Forex" pelo símbolo real do par configurado
+                # Só envia se mudou em relação ao último estado salvo
+                if _ma_signal_changed(chart, direction, ma_last_state):
+                    icon = "📈" if direction == "BUY" else "📉"
+                    dir_lbl = "COMPRA" if direction == "BUY" else "VENDA"
+                    star = "⭐ " if "Macro" in chart or "Monthly" in chart else ""
+                    ts = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S")
                     chart_lbl = chart.replace("Forex", fx_sym)
-
                     e = html.escape
 
                     asset_info_line = ""
                     if "btc" in chart:
-                        asset_info_line = f"<b>Ativo Cripto</b>: {e('BTC-USD')}"
+                        asset_info_line = f"<b>Ativo Cripto</b>: BTC-USD"
                     elif "spy" in chart:
-                        asset_info_line = f"<b>Ativo Ações</b>: {e('SPY')}"
+                        asset_info_line = f"<b>Ativo Ações</b>: SPY"
                     elif "fx" in chart:
-                        asset_info_line = f"<b>Ativo Forex</b>: {e(fx_sym)}"
+                        asset_info_line = f"<b>Ativo Forex</b>: {fx_sym}"
 
-                    parts = [
-                        f"{icon} <b>MARKET SIGNAL</b> {star}",
-                        "━━━━━━━━━━━━━━━━━━",
-                        f"<b>Análise</b>: {e(chart_lbl)}",
-                        f"<b>Direção</b>: {e(dir_lbl)}",
-                        asset_info_line, # This line will be constructed dynamically
+                    msg_html = (
+                        f"{icon} <b>MARKET SIGNAL</b> {star}\n"
+                        "━━━━━━━━━━━━━━━━━━\n"
+                        f"<b>Análise</b>: {e(chart_lbl)}\n"
+                        f"<b>Direção</b>: {e(dir_lbl)}\n"
+                        f"{asset_info_line}\n"
                         f"<b>Sinal gerado</b>: {signal_date_ma}\n"
-                        f"<b>Hora do envio</b>: {e(ts)}",
-                        "",
-                        "Montrezor Market Analysis [daemon]",
-                    ]
-                    msg_html = "\n".join(parts)
-                    url = f"https://api.telegram.org/bot{cfg['tg_token']}/sendMessage"
-                    try:
-                        r = requests.post(url, json={
-                            "chat_id": cfg["tg_chat_id"],
-                            "text": msg_html,
-                            "parse_mode": "HTML"
-                        }, timeout=10)
-                        if r.status_code == 200 and r.json().get("ok"):
-                            logger.info(f"  ✅ [MA] Telegram -> {chart_lbl} {dir_lbl}")
-                            ma_state.mark(chart, direction)
-                        else:
-                            # fallback plain text
-                            asset_info_plain = ""
-                            if "btc" in chart:
-                                asset_info_plain = f"Ativo Cripto: BTC-USD"
-                            elif "spy" in chart:
-                                asset_info_plain = f"Ativo Ações: SPY"
-                            elif "fx" in chart:
-                                asset_info_plain = f"Ativo Forex: {fx_sym}"
+                        f"<b>Hora do envio</b>: {e(ts)}\n\n"
+                        "Montrezor Market Analysis [daemon]"
+                    )
 
-                            plain = (f"{icon} MARKET SIGNAL\n{chart_lbl} — {dir_lbl}\n"\
-                                     f"{asset_info_plain}\n"\
-                                     f"Sinal gerado: {signal_date_ma}\n"\
-                                     f"Hora do envio: {ts}\nMontrezor Market Analysis [daemon]")
-                            r2 = requests.post(url, json={
-                                "chat_id": cfg["tg_chat_id"], "text": plain
-                            }, timeout=10)
-                            if r2.status_code == 200:
-                                logger.info(f"  ✅ [MA] Telegram (plain) -> {chart_lbl} {dir_lbl}")
-                                ma_state.mark(chart, direction)
-                            else:
-                                logger.error(f"  ❌ [MA] Telegram falhou -> {chart_lbl}")
-                    except Exception as e_tg:
-                        logger.error(f"  ❌ [MA] {e_tg}")
+                    ok = _post(cfg["tg_token"], cfg["tg_chat_id"], msg_html, parse_mode="HTML")
+                    if ok:
+                        logger.info(f"  ✅ [MA] Telegram -> {chart_lbl} {dir_lbl}")
+                        # Atualiza estado persistente
+                        ma_last_state[chart] = direction
+                        _save_daemon_ma_state(ma_last_state)
+                    else:
+                        logger.error(f"  ❌ [MA] Telegram falhou -> {chart_lbl}")
                 else:
-                    logger.debug(f"  ⏳ [MA] Cooldown: {chart} {direction}")
-            # Encerrar sinais que sumiram
+                    logger.debug(f"  ⏳ [MA] Sem mudança: {chart} {direction}")
+
+            # Limpeza de sinais que sumiram — remove do estado persistente
             for chart, direction in list(prev_ma_sigs.items()):
                 if chart not in active_ma:
-                    ma_state.clear(chart, direction)
                     logger.info(f"[MA] ↩ Encerrado: {chart} {direction}")
+                    ma_last_state = _load_daemon_ma_state()
+                    if chart in ma_last_state:
+                        del ma_last_state[chart]
+                        _save_daemon_ma_state(ma_last_state)
             prev_ma_sigs = active_ma
 
         # ── DEX SCANNER — early stage tokens a cada 2h ─────────────────

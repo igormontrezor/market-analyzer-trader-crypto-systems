@@ -19,44 +19,43 @@ import json, os, html, requests
 _TG_CFG          = os.path.join(os.path.expanduser("~"), ".montrezor_telegram.json")
 _MA_SIGNALS_FILE  = os.path.join(os.path.expanduser("~"), ".montrezor_ma_signals.json")
 _MA_COOLDOWN_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_ma_cooldown.json")
-_MA_COOLDOWN_HOURS = 24   # mesmo sinal não reenvia por 24h
 
-def _load_cooldown() -> dict:
-    """Carrega sinais já enviados do disco — persiste entre reinicializações."""
+# NOVAS FUNÇÕES DE ESTADO PERSISTENTE
+_MA_STATE_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_ma_last_state.json")
+
+def _load_last_state() -> dict:
+    """Retorna dict {chart_direction: timestamp ou direção}"""
     try:
-        if os.path.exists(_MA_COOLDOWN_FILE):
-            return json.load(open(_MA_COOLDOWN_FILE, encoding="utf-8"))
+        if os.path.exists(_MA_STATE_FILE):
+            return json.load(open(_MA_STATE_FILE, encoding="utf-8"))
     except Exception:
         pass
     return {}
 
-def _save_cooldown(data: dict):
+def _save_last_state(state: dict):
     try:
-        json.dump(data, open(_MA_COOLDOWN_FILE, "w", encoding="utf-8"), indent=2)
+        json.dump(state, open(_MA_STATE_FILE, "w", encoding="utf-8"), indent=2)
     except Exception:
         pass
 
-def _is_cooldown(sig_key: str) -> bool:
-    """Retorna True se o sinal ainda está em cooldown (não deve reenviar)."""
-    cd = _load_cooldown()
-    if sig_key not in cd:
-        return False
-    try:
-        sent_at = pd.Timestamp(cd[sig_key])
-        elapsed = (pd.Timestamp.now() - sent_at).total_seconds() / 3600
-        return elapsed < _MA_COOLDOWN_HOURS
-    except Exception:
-        return False
+def _get_state_key(chart: str) -> str:
+    """Chave para armazenar o último estado: chart + ultima_direcao_ou_None"""
+    return chart
 
-def _mark_cooldown(sig_key: str):
-    """Marca o sinal como enviado com timestamp atual."""
-    cd = _load_cooldown()
-    cd[sig_key] = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M")
-    # Limpar entradas expiradas
-    now = pd.Timestamp.now()
-    cd = {k: v for k, v in cd.items()
-          if (now - pd.Timestamp(v)).total_seconds() / 3600 < _MA_COOLDOWN_HOURS * 2}
-    _save_cooldown(cd)
+def _has_changed(chart: str, current_direction: str) -> bool:
+    """Retorna True se o sinal mudou em relação ao último estado salvo."""
+    state = _load_last_state()
+    last = state.get(_get_state_key(chart))
+    # Se nunca enviou, ou a direção mudou (considerando None como inativo)
+    if last is None:
+        return True
+    return last != current_direction
+
+def _update_state(chart: str, current_direction: str):
+    """Atualiza o estado salvo com o sinal atual (ou None se inativo)."""
+    state = _load_last_state()
+    state[_get_state_key(chart)] = current_direction
+    _save_last_state(state)
 
 def _load_tg():
     try:
@@ -1520,10 +1519,23 @@ BUILDERS = {
 # ── PAINEL DE SINAIS ATIVOS ─────────────────────────────────────
 active_sigs = check_active_signals(assets, fx_sym, sel)
 
-if "ma_alerted" not in st.session_state:
-    # Recarregar do disco para não perder controle entre reinicializações
-    cd = _load_cooldown()
-    st.session_state.ma_alerted = {k: True for k in cd if not _is_cooldown(k) is False}
+# Inicializa o estado da última execução se necessário
+if "ma_last_active_charts" not in st.session_state:
+    st.session_state.ma_last_active_charts = set()
+
+# Conjunto de gráficos com sinal ativo agora
+current_active = {sig["chart"] for sig in active_sigs}
+
+# Remove do estado persistente os gráficos que sumiram
+for chart in st.session_state.ma_last_active_charts - current_active:
+    state = _load_last_state()
+    if chart in state:
+        del state[chart]
+        _save_last_state(state)
+
+# Atualiza o conjunto para a próxima execução
+st.session_state.ma_last_active_charts = current_active
+
 if "ma_tg_enabled" not in st.session_state: st.session_state.ma_tg_enabled = True
 
 if active_sigs:
@@ -1564,12 +1576,13 @@ if active_sigs:
         # Chave sem data — mesmo sinal de direção em gráfico não reenvia por 24h
         # (data muda a cada candle novo mas o sinal pode ser o mesmo)
         sig_key = sig["chart"] + "_" + sig["direction"]
-        if st.session_state.ma_tg_enabled and not _is_cooldown(sig_key):
-            ok = _send_tg_ma(sig["chart"], sig["direction"], sig["indicators"], fx_sym, sig["date"])
+        chart = sig["chart"]
+        direction = sig["direction"]
+        if st.session_state.ma_tg_enabled and _has_changed(chart, direction):
+            ok = _send_tg_ma(chart, direction, sig["indicators"], fx_sym, sig["date"])
             if ok:
-                _log_ma_signal(sig["chart"], sig["direction"], sig["indicators"])
-            _mark_cooldown(sig_key)   # persiste em disco — sobrevive a reinicializações
-            st.session_state.ma_alerted[sig_key] = True
+                _log_ma_signal(chart, direction, sig["indicators"])
+            _update_state(chart, direction)
 
     logs = _load_ma_signals()
     if logs:

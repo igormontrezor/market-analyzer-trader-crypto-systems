@@ -1,0 +1,2 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+WIFPAPER,catwifpaper,3GFJDwLeTyMgHVSAZ5MnNo1uwWi6919Jxkfhm3ggpump,solana,0.0001522,309.0,152287.0,33471.54,2043003.18,9899,8359,0.54,1.6,https://dexscreener.com/solana/chwhdw87umaydyzl3ll6uzb9rf8ve9ghzpgtcxj9pjxl,2026-05-27T18:58:19.147335,dexscreener,2100.3503339999997

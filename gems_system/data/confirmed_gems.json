@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-26T07:34:44.986170",
-  "total_confirmed": 10,
+  "last_updated": "2026-05-28T07:22:25.583694",
+  "total_confirmed": 11,
   "confirmed_gems": [
     {
       "symbol": "tst",
@@ -120,6 +120,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 63.710583799762084
+    },
+    {
+      "symbol": "usdp",
+      "name": "Pax Dollar",
+      "confirmed_at": "2026-05-28T07:22:25.579644",
+      "ratio_now": 0.6790959379956151,
+      "ratio_24h_ago": 0.5493956520416705,
+      "growth_percent": 23.60781077752452,
+      "strong_days": 3,
+      "acceleration_strength": 1.5467608068085312,
+      "trend": "accelerating",
+      "market_cap": 31947676,
+      "volume": 21695537,
+      "priority": "alta",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 67.91642884501894
     },
     {
       "symbol": "neiro",

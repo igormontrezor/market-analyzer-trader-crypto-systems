@@ -12737,3 +12737,484 @@ ERROR:tvDataf
 2026-05-27 12:34:32  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4438.19000 [4H] tfs=4H 1M VOL=1.4x
 2026-05-27 12:35:55  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4438.37000 [4H] tfs=4H 1M VOL=1.4x
 2026-05-27 12:36:08  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 12:39:24  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4440.62000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:41:14  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4439.80000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:42:57  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4438.75000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:43:07  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 12:44:31  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4435.68000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:45:55  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4436.83000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:47:14  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4435.15000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:48:49  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4432.86000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:49:04  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 12:50:40  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4433.95000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:51:55  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4431.71000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:53:14  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4431.78000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:54:37  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4434.07000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:54:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 12:56:32  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4434.42000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:58:10  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4436.80000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 12:59:57  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4435.94000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:00:09  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 13:01:34  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4441.10000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:02:49  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4440.39000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:03:01  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-27 13:03:01  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-27 13:04:12  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4435.89000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:05:26  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4437.89000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:05:34  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 13:06:51  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4437.47000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:08:07  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4434.64000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:09:14  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4436.18000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:10:26  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4437.14000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:10:34  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 13:11:42  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4439.92000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:12:48  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4440.33000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:13:55  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4439.53000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:14:59  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4440.21000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:16:06  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4440.91000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:16:14  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 13:17:21  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4441.32000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:18:30  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4442.12000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:19:42  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4441.86000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:20:49  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4442.23000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:22:21  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4443.63000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:22:35  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 13:24:10  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4443.40000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:25:21  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4444.42000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:26:47  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4446.95000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:27:57  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4447.03000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:28:05  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 13:29:12  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4446.65000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:30:23  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4445.71000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:31:33  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4446.60000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:32:41  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4448.95000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:33:53  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4448.69000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:34:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 13:35:05  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4449.40000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:36:16  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.05000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:37:25  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.01000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:38:37  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.25000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:39:45  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4449.89000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:39:53  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 13:40:58  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.18000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:42:06  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.88000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:43:11  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.89000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:44:18  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.57000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:45:22  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.25000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:45:34  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 13:46:43  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.06000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:47:49  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.42000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:49:03  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.19000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:50:29  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.16000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:51:55  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.34000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:52:07  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 13:53:35  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.04000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:55:04  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.71000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:56:39  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4449.70000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:57:49  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4449.60000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 13:57:59  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 13:59:08  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.94000 [4H] tfs=4H 1M VOL=1.4x
+2026-05-27 14:00:19  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.13000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:01:38  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.10000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:03:02  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4448.75000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:03:22  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 14:03:37  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-27 14:03:49  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-27 14:04:00  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-27 14:04:12  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-27 14:04:23  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-27 14:04:34  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-27 14:05:06  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-05-27 14:05:16  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-27 14:05:16  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-27 14:06:33  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.07000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:07:53  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4448.10000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:09:16  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4444.94000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:09:26  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 14:10:46  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4444.95000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:12:08  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4441.51000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:13:31  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4442.89000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:14:48  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4443.33000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:15:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 14:16:28  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4446.05000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:17:45  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4446.85000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:19:03  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4445.96000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:20:27  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4447.00000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:20:35  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 14:21:51  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4446.75000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:23:07  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4446.35000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:24:21  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4446.37000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:25:29  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4445.88000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:25:37  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 14:26:49  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4446.98000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:28:00  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4447.16000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:29:06  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4447.72000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:30:20  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.64000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:31:30  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.09000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:31:39  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 14:32:49  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.80000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:34:08  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.70000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:35:26  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.90000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:36:57  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 14:37:05  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 14:39:51  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.59000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:40:08  INFO       ✅ Telegram -> GOLD# COMPRA COMUM
+2026-05-27 14:41:43  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.64000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:42:52  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.22000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:43:00  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 14:44:20  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.77000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:45:29  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.19000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:46:46  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.48000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:48:05  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.50000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:48:14  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 14:49:35  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.22000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:50:50  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.39000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:52:06  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.01000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:53:29  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 14:53:38  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 14:58:53  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.22000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 14:59:03  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 15:00:40  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4449.78000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:02:42  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.45000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:04:07  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.02000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:04:16  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 15:04:31  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-27 15:04:31  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-27 15:06:09  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4448.85000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:07:08  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4448.41000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:08:17  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4448.32000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:09:25  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4448.03000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:09:35  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 15:10:46  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4448.05000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:12:01  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4448.97000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:13:10  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4449.20000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:14:24  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4449.05000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:15:37  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.14000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:15:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 15:16:58  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.53000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:18:16  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.24000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:19:26  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.09000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:20:39  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 15:20:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 15:26:00  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 15:31:08  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 15:35:40  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.65000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:36:55  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.41000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:37:05  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 15:38:21  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.53000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:40:06  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 15:43:11  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 15:45:59  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.60000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:47:00  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 15:47:17  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 15:51:41  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.88000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:53:14  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 15:54:18  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.70000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 15:54:25  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 15:55:48  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 16:00:29  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 16:03:30  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-05-27 16:04:37  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.00000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:04:49  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-27 16:04:49  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-27 16:06:10  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.44000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:06:20  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 16:06:35  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-27 16:06:36  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-27 16:06:48  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-27 16:06:49  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-27 16:07:00  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-27 16:07:11  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-27 16:08:30  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 16:09:41  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.68000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:10:44  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.85000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:12:06  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.76000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:12:14  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 16:13:26  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.02000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:15:11  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.79000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:16:23  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.46000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:17:22  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.25000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:17:31  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 16:18:35  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.67000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:19:40  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.03000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:20:43  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.20000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:21:56  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.03000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:22:54  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.78000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:23:02  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 16:24:27  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 16:25:37  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.81000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:26:38  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.28000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:27:44  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.61000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:28:43  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.99000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:28:56  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 16:30:00  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.03000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:31:05  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.31000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:32:07  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.85000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:33:11  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.64000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:34:20  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.16000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:34:28  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 16:35:28  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 16:37:33  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.72000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:38:31  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.68000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:38:43  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 16:40:18  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 16:45:43  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 16:49:02  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.11000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:50:07  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.36000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:51:06  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.22000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:51:13  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 16:52:26  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.38000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:53:28  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.09000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:54:24  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.96000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:55:27  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.05000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:55:40  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 16:56:37  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.17000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:57:43  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.20000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:58:41  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4449.05000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 16:59:47  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.35000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:00:46  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4450.81000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:00:58  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 17:02:01  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 17:03:02  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.56000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:04:25  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.22000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:05:57  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.76000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:06:09  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-27 17:06:09  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-27 17:07:07  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.09000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:07:20  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 17:08:35  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 17:10:39  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.80000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:11:49  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.56000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:12:50  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 17:13:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 17:18:20  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 17:24:02  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 17:29:13  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 17:35:12  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 17:37:32  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.80000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:38:32  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.88000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:39:42  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.52000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:40:45  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4452.23000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:40:57  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 17:41:56  INFO     [TRADING] COMUM GOLD#        COMPRA @ 4451.85000 [4H] tfs=4H 1M VOL=1.8x
+2026-05-27 17:42:56  INFO     [TRADING] ↩ Sinal encerrado: GOLD# COMPRA COMUM
+2026-05-27 17:45:17  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 17:51:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 17:56:02  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 18:02:48  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 18:05:01  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-05-27 18:06:35  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-27 18:06:35  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-27 18:07:44  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 18:07:59  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-27 18:08:10  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-27 18:08:21  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-27 18:08:32  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-27 18:08:43  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-27 18:08:55  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-27 18:13:16  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 18:18:28  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 18:23:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 18:30:16  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 18:35:00  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 18:40:40  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 18:46:04  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 18:50:35  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 18:55:31  INFO     ================================================================
+2026-05-27 18:55:31  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-27 18:55:31  INFO       Modo: ALL
+2026-05-27 18:55:31  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-27 18:55:31  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-27 18:55:31  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-27 18:55:31  INFO     ================================================================
+2026-05-27 18:55:31  INFO     MT5 conectado: XM Global MT5
+2026-05-27 18:56:44  INFO     [GEMS] macro_timing.json atualizado
+2026-05-27 18:57:04  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-27 18:57:16  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-27 18:57:27  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-27 18:57:38  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-27 18:57:49  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-27 18:58:00  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-27 18:58:24  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-05-27 18:58:34  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-27 18:58:34  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-28 07:20:37  INFO     ================================================================
+2026-05-28 07:20:37  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-28 07:20:37  INFO       Modo: ALL
+2026-05-28 07:20:37  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-28 07:20:37  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-28 07:20:37  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-28 07:20:37  INFO     ================================================================
+2026-05-28 07:20:37  INFO     MT5 conectado: XM Global MT5
+2026-05-28 07:22:45  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 07:23:07  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-28 07:23:19  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-28 07:23:20  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-28 07:23:22  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-28 07:23:33  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-28 07:23:45  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-28 07:24:17  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-05-28 07:24:27  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-28 07:24:27  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-28 07:26:56  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 07:32:59  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 07:39:12  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 07:44:27  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 07:49:59  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-28 07:55:11  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 08:00:22  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 08:05:39  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-05-28 08:10:37  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 08:15:43  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 08:22:52  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-28 08:23:12  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-28 08:23:12  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-28 08:27:23  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 08:32:42  INFO     ================================================================
+2026-05-28 08:32:42  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-28 08:32:42  INFO       Modo: ALL
+2026-05-28 08:32:42  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-28 08:32:42  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-28 08:32:42  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-28 08:32:42  INFO     ================================================================
+2026-05-28 08:32:42  INFO     MT5 conectado: XM Global MT5
+2026-05-28 08:34:07  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 08:36:18  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-28 08:36:22  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-28 08:36:34  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-28 08:36:47  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-28 08:36:59  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-28 08:37:10  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-28 08:37:41  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-05-28 08:37:51  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-28 08:37:51  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-28 08:39:06  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 08:43:42  INFO     ================================================================
+2026-05-28 08:43:42  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-28 08:43:42  INFO       Modo: ALL
+2026-05-28 08:43:42  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-28 08:43:42  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-28 08:43:42  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-28 08:43:42  INFO     ================================================================
+2026-05-28 08:43:42  INFO     MT5 conectado: XM Global MT5
+2026-05-28 08:45:01  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 08:45:21  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-28 08:45:32  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-28 08:45:44  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-28 08:45:55  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-28 08:46:06  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-28 08:46:07  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-28 08:46:33  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-05-28 08:46:43  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-28 08:46:43  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-28 08:49:03  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 08:57:03  INFO     ================================================================
+2026-05-28 08:57:03  INFO       MONTREZOR DAEMON UNIFICADO
+2026-05-28 08:57:03  INFO       Modo: ALL
+2026-05-28 08:57:03  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-05-28 08:57:03  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-05-28 08:57:03  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-05-28 08:57:03  INFO     ================================================================
+2026-05-28 08:57:03  INFO     MT5 conectado: XM Global MT5
+2026-05-28 08:57:56  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.88355 [1D] tfs=1D 1W~ VOL=1.3x
+2026-05-28 08:58:13  INFO       ✅ Telegram -> GBPAUD# VENDA COMUM
+2026-05-28 08:58:50  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-28 08:59:10  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-28 08:59:21  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-28 08:59:33  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-28 08:59:44  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-28 08:59:55  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-28 09:00:06  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-28 09:00:32  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-05-28 09:00:42  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-28 09:00:42  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-28 09:01:49  INFO     [TRADING] ↩ Sinal encerrado: GBPAUD# VENDA COMUM
+2026-05-28 09:07:37  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 09:13:26  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 09:19:28  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-28 09:25:38  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 09:31:27  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 09:37:22  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 09:43:15  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 09:48:50  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 09:53:58  INFO     [MA] ↩ Encerrado: Risk-Return Weekly (BTC+SPY Macro) {'direction': 'SELL', 'date': '2024-12-09'}
+2026-05-28 09:53:58  INFO     [MA] ↩ Encerrado: BTC Daily {'direction': 'BUY', 'date': '2026-02-05'}
+2026-05-28 09:53:58  INFO     [MA] ↩ Encerrado: BTC Weekly {'direction': 'SELL', 'date': '2024-12-09'}
+2026-05-28 09:53:58  INFO     [MA] ↩ Encerrado: SPY Weekly {'direction': 'SELL', 'date': '2024-12-23'}
+2026-05-28 09:53:58  INFO     [MA] ↩ Encerrado: Forex Daily {'direction': 'BUY', 'date': '2026-01-30'}
+2026-05-28 09:53:58  INFO     [MA] ↩ Encerrado: Forex Weekly {'direction': 'BUY', 'date': '2022-09-19'}
+2026-05-28 09:55:51  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-28 09:59:13  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-28 09:59:13  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-28 10:00:53  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 10:05:54  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-28 10:11:12  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-28 10:16:29  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 10:22:56  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 10:28:27  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 10:34:19  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 10:40:21  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 10:44:42  INFO     [MA] ↩ Encerrado: Forex Weekly {'direction': 'BUY', 'date': '2022-09-19'}
+2026-05-28 10:46:15  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 10:52:22  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 10:58:29  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-28 11:00:23  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-05-28 11:00:33  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-28 11:00:33  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-28 11:03:22  INFO       ✅ [MA] Telegram -> Risk-Return Weekly (BTC+SPY Macro) VENDA
+2026-05-28 11:03:33  INFO       ✅ [MA] Telegram -> BTC Daily COMPRA
+2026-05-28 11:03:45  INFO       ✅ [MA] Telegram -> BTC Weekly VENDA
+2026-05-28 11:03:56  INFO       ✅ [MA] Telegram -> SPY Weekly VENDA
+2026-05-28 11:03:57  INFO       ✅ [MA] Telegram -> EURUSD=X Daily COMPRA
+2026-05-28 11:04:09  INFO       ✅ [MA] Telegram -> EURUSD=X Weekly COMPRA
+2026-05-28 11:05:37  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 11:11:10  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 11:17:15  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-05-28 11:23:05  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 11:28:48  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 11:34:31  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 11:40:23  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 11:46:06  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 11:51:58  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 11:57:53  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 12:01:07  INFO     [AI] 📊 Total de picks avaliados no histórico: 17
+2026-05-28 12:01:07  INFO     [AI] ⏳ Aguardando mais 13 picks para iniciar treinamento do ML (mínimo 30).
+2026-05-28 12:03:55  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 12:09:38  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 12:15:25  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 12:21:02  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 12:26:36  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 12:32:14  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 12:37:56  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 12:43:39  INFO     [GEMS] macro_timing.json atualizado
+2026-05-28 12:50:04  INFO     [GEMS] macro_timing.json atualizado

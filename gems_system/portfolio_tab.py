@@ -34,6 +34,9 @@ from plotly.subplots import make_subplots
 _PORT_FILE  = os.path.join(os.path.expanduser("~"), ".montrezor_portfolio.json")
 _TG_CFG     = os.path.join(os.path.expanduser("~"), ".montrezor_telegram.json")
 
+_PRICE_CACHE_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_price_cache.json")
+_PRICE_CACHE_TTL = 300  # 5 minutos
+
 # Alertas de liquidação — quanto % acima do preço liq para disparar
 LIQ_WARN_PCT = 0.10   # alerta quando preço está a 10% do preço de liquidação
 
@@ -59,23 +62,93 @@ def _send_tg(msg: str):
     except Exception: return False
 
 # ── CoinGecko ─────────────────────────────────────────────────────────────────
-@st.cache_data(ttl=60, show_spinner=False)
-def _fetch_price(coin_id: str) -> dict:
-    """Busca nome e preço atual via CoinGecko. Retorna {"name","symbol","price","change_24h"}."""
+
+def _load_price_cache() -> dict:
     try:
-        url  = f"https://api.coingecko.com/api/v3/coins/{coin_id.lower()}"
+        with open(_PRICE_CACHE_FILE, "r") as f:
+            return json.load(f)
+    except:
+        return {}
+
+def _save_price_cache(cache: dict):
+    try:
+        with open(_PRICE_CACHE_FILE, "w") as f:
+            json.dump(cache, f, indent=2)
+    except:
+        pass
+
+def _fetch_price(coin_id: str, use_cache: bool = True) -> dict:
+    """Busca nome e preço com cache persistente e retry em caso de 429."""
+    cache = _load_price_cache()
+    now = time.time()
+
+    # Se cache válido e uso permitido, retorna
+    if use_cache and coin_id in cache:
+        entry = cache[coin_id]
+        if (now - entry.get("ts", 0)) < _PRICE_CACHE_TTL:
+            return entry.get("data", {})
+
+    # Fetch com retry
+    for attempt in range(3):
+        try:
+            url = f"https://api.coingecko.com/api/v3/coins/{coin_id.lower()}"
+            resp = requests.get(url, timeout=8)
+            if resp.status_code == 200:
+                d = resp.json()
+                md = d.get("market_data", {})
+                data = {
+                    "name":       d.get("name", ""),
+                    "symbol":     d.get("symbol", "").upper(),
+                    "price":      float(md.get("current_price", {}).get("usd", 0)),
+                    "change_24h": float(md.get("price_change_percentage_24h") or 0),
+                }
+                # Atualiza cache
+                cache[coin_id] = {"ts": now, "data": data}
+                _save_price_cache(cache)
+                return data
+            elif resp.status_code == 429:
+                wait = (2 ** attempt)  # 1, 2, 4 segundos
+                time.sleep(wait)
+                continue
+            else:
+                # Outro erro, para de tentar
+                break
+        except Exception:
+            if attempt == 2:
+                break
+            time.sleep(1)
+    # Fallback: retorna cache antigo se existir
+    if coin_id in cache:
+        return cache[coin_id].get("data", {})
+    return {}
+
+def _fetch_many_prices(coin_ids: list) -> dict:
+    """
+    Busca preço e variação 24h para vários coins via /simple/price.
+    Retorna dicionário {coin_id: {"price": x, "change_24h": y}}.
+    """
+    if not coin_ids:
+        return {}
+    ids_str = ",".join([c.lower() for c in coin_ids])
+    url = f"https://api.coingecko.com/api/v3/simple/price?ids={ids_str}&vs_currencies=usd&include_24hr_change=true"
+    try:
         resp = requests.get(url, timeout=8)
-        if resp.status_code != 200:
+        if resp.status_code == 200:
+            data = resp.json()
+            result = {}
+            for cid in coin_ids:
+                cid_low = cid.lower()
+                if cid_low in data:
+                    result[cid] = {
+                        "price": float(data[cid_low].get("usd", 0)),
+                        "change_24h": float(data[cid_low].get("usd_24h_change", 0))
+                    }
+                else:
+                    result[cid] = {"price": 0, "change_24h": 0}
+            return result
+        else:
             return {}
-        d    = resp.json()
-        md   = d.get("market_data",{})
-        return {
-            "name":       d.get("name",""),
-            "symbol":     d.get("symbol","").upper(),
-            "price":      float(md.get("current_price",{}).get("usd",0)),
-            "change_24h": float(md.get("price_change_percentage_24h") or 0),
-        }
-    except Exception:
+    except:
         return {}
 
 @st.cache_data(ttl=300, show_spinner=False)
@@ -154,7 +227,7 @@ def update_portfolio_watchlist_prices() -> bool:
     watchlist = port.get("watchlist", [])
     updated = False
     for item in watchlist:
-        cg = _fetch_price(item["coin_id"])
+        cg = _fetch_price(item["coin_id"], use_cache=True)
         price = cg.get("price", 0)
         if price > 0:
             old_price = item.get("current_price", 0)
@@ -173,7 +246,7 @@ def get_portfolio_watchlist() -> list:
     # Garantir que cada item tenha current_price e change_24h
     for item in watchlist:
         if "current_price" not in item or item.get("current_price", 0) == 0:
-            cg = _fetch_price(item["coin_id"])
+            cg = _fetch_price(item["coin_id"], use_cache=True)
             item["current_price"] = cg.get("price", 0)
             item["change_24h"] = cg.get("change_24h", 0)
     return watchlist
@@ -184,6 +257,10 @@ def render_portfolio_tab(macro_signal: str = None):
     Renderiza a aba de portfólio.
     macro_signal: sinal atual do sistema ("SUPER_BUY","BUY","SELL","SUPER_SELL",None)
     """
+
+    if "editing_position_index" not in st.session_state:
+        st.session_state.editing_position_index = None
+
     port = _load_port()
     positions = port.get("positions", [])
     cash      = float(port.get("cash_usd", 0.0))
@@ -191,6 +268,31 @@ def render_portfolio_tab(macro_signal: str = None):
 
     is_buy_signal  = macro_signal in ("SUPER_BUY","BUY")
     is_sell_signal = macro_signal in ("SUPER_SELL","SELL")
+
+    # Coletar todos os coin_ids de posições abertas e watchlist
+    all_coin_ids = set()
+    for pos in positions:
+        if pos.get("status") == "OPEN":
+            all_coin_ids.add(pos["coin_id"])
+    for w in port.get("watchlist", []):
+        all_coin_ids.add(w["coin_id"])
+
+    # Buscar preços em lote e atualizar cache
+    if all_coin_ids:
+        batch_data = _fetch_many_prices(list(all_coin_ids))
+        cache = _load_price_cache()
+        now = time.time()
+        for cid, data in batch_data.items():
+            if data.get("price", 0) > 0:
+                # Monta estrutura igual à de _fetch_price
+                cached_entry = {
+                    "name": cache.get(cid, {}).get("data", {}).get("name", cid.upper()),
+                    "symbol": cid.upper(),
+                    "price": data["price"],
+                    "change_24h": data["change_24h"]
+                }
+                cache[cid] = {"ts": now, "data": cached_entry}
+        _save_price_cache(cache)
 
     # ── Header com resumo financeiro ─────────────────────────────────────────
     st.markdown(
@@ -204,7 +306,7 @@ def render_portfolio_tab(macro_signal: str = None):
     positions_enriched = []
     for pos in positions:
         if pos.get("status") != "OPEN": continue
-        cg    = _fetch_price(pos["coin_id"])
+        cg    = _fetch_price(pos["coin_id"], use_cache=True)
         price = cg.get("price", pos.get("entry_avg", 0))
         pos_size = float(pos.get("position_size", 0))
         entry    = float(pos.get("entry_avg", 0))
@@ -463,6 +565,75 @@ def render_portfolio_tab(macro_signal: str = None):
                                 _save_port(port)
                                 st.rerun()
 
+                        # Botão para editar
+                        if st.button("✏️ Editar", key=f"edit_btn_{i}"):
+                            if st.session_state.editing_position_index == i:
+                                st.session_state.editing_position_index = None   # fecha
+                            else:
+                                st.session_state.editing_position_index = i      # abre
+                            st.rerun()
+
+                        # Formulário de edição – só aparece quando a posição está com o índice correto
+                        if st.session_state.editing_position_index == i:
+                            with st.form(key=f"edit_form_{i}"):
+                                st.markdown("**📝 Editar posição**")
+
+                                new_leverage = st.number_input(
+                                    "Alavancagem",
+                                    min_value=1.0, max_value=125.0,
+                                    value=float(pos["leverage"]),
+                                    step=0.5,
+                                    key=f"edit_lev_{i}"
+                                )
+                                new_margin = st.number_input(
+                                    "Margem total ($)",
+                                    min_value=0.0,
+                                    value=float(pos["total_margin"]),
+                                    step=10.0,
+                                    key=f"edit_margin_{i}"
+                                )
+                                new_entry = st.number_input(
+                                    "Preço de entrada médio ($)",
+                                    min_value=0.0,
+                                    value=float(pos["entry_avg"]),
+                                    format="%.6f",
+                                    key=f"edit_entry_{i}"
+                                )
+
+                                st.caption("⚠️ Alterar o preço de entrada médio pode distorcer o histórico de DCA. Use com cuidado.")
+
+                                col1, col2 = st.columns(2)
+                                with col1:
+                                    submitted = st.form_submit_button("💾 Salvar alterações")
+                                with col2:
+                                    if st.form_submit_button("❌ Cancelar"):
+                                        st.session_state.editing_position_index = None
+                                        st.rerun()
+
+                                if submitted:
+                                    if new_margin <= 0 or new_entry <= 0 or new_leverage <= 0:
+                                        st.error("Margem, preço e alavancagem devem ser positivos.")
+                                    else:
+                                        # Recalcula o tamanho da posição
+                                        new_position_size = (new_margin * new_leverage) / new_entry
+
+                                        # Atualiza a posição no objeto `port` (carregado no início)
+                                        for p in port["positions"]:
+                                            if p["coin_id"] == pos["coin_id"] and p.get("status") == "OPEN":
+                                                p["leverage"] = new_leverage
+                                                p["total_margin"] = new_margin
+                                                p["entry_avg"] = new_entry
+                                                p["position_size"] = round(new_position_size, 8)
+                                                # Registra a edição nas notas
+                                                old_notes = p.get("notes", "")
+                                                p["notes"] = f"{old_notes}\n[Editado em {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}] Lev:{new_leverage}x Margem:${new_margin:,.2f} Entry:${new_entry:,.4f}"
+                                                break
+
+                                        _save_port(port)
+                                        st.success("Posição atualizada com sucesso!")
+                                        st.session_state.editing_position_index = None
+                                        st.rerun()
+
         # ── Saldo dolarizado ──────────────────────────────────────────────────
         st.markdown("---")
         st.markdown("**💵 Saldo Dolarizado (caixa)**")
@@ -499,7 +670,7 @@ def render_portfolio_tab(macro_signal: str = None):
                 options = {f"{r['name']} ({r['symbol']}) — id: {r['id']}": r['id'] for r in results}
                 chosen  = st.selectbox("Selecione o ativo:", list(options.keys()), key="port_coin_sel")
                 coin_id = options[chosen]
-                cg_data = _fetch_price(coin_id)
+                cg_data = _fetch_price(coin_id, use_cache=True)
                 coin_name  = cg_data.get("name", coin_id)
                 coin_price = cg_data.get("price", 0)
                 ch24       = cg_data.get("change_24h", 0)
@@ -621,7 +792,7 @@ def render_portfolio_tab(macro_signal: str = None):
             # Grid de cards — 3 por linha
             _wcols = st.columns(min(len(watchlist), 3))
             for wi, witem in enumerate(watchlist):
-                wcg     = _fetch_price(witem["coin_id"])
+                wcg     = _fetch_price(witem["coin_id"], use_cache=True)
                 wpx     = wcg.get("price", 0)
                 wch24   = wcg.get("change_24h", 0)
                 wname   = wcg.get("name", witem["coin_id"])
@@ -687,10 +858,77 @@ def render_portfolio_tab(macro_signal: str = None):
                         f"Risco máx: <b style='color:#ffa657'>${w_risk_max:,.2f}</b></div>"
                         f"</div>",
                         unsafe_allow_html=True)
-                    if st.button("✕ Remover", key=f"del_w_{wi}", use_container_width=True):
-                        port["watchlist"] = [w for j,w in enumerate(watchlist) if j != wi]
-                        _save_port(port)
-                        st.rerun()
+
+                    # Botão "Abrir posição"
+                    col_abrir, col_remover = st.columns(2)
+                    with col_abrir:
+                        if st.button("➕ Abrir posição", key=f"open_watch_{witem['coin_id']}_{wi}", use_container_width=True):
+                            # Lógica de abertura
+                            cg_data = _fetch_price(witem["coin_id"], use_cache=True)
+                            price = cg_data.get("price", 0)
+                            if price <= 0:
+                                st.error(f"Preço não disponível para {witem['coin_id']}. Tente novamente.")
+                            else:
+                                # Verificar se já existe posição aberta para este ativo (opcional)
+                                port = _load_port()
+                                already_open = any(p["coin_id"] == witem["coin_id"] and p.get("status") == "OPEN" for p in port.get("positions", []))
+                                if already_open:
+                                    st.warning(f"Já existe uma posição aberta para {witem['coin_id'].upper()}.")
+                                else:
+                                    # Calcular posição
+                                    lev = float(witem["leverage"])
+                                    margin = float(witem["margin"])
+                                    pos_size = (margin * lev) / price
+                                    liq_price = _calc_liq_price(price, lev, "LONG")
+                                    # Criar novo objeto de posição
+                                    new_pos = {
+                                        "coin_id": witem["coin_id"],
+                                        "name": cg_data.get("name", witem["coin_id"]),
+                                        "direction": "LONG",
+                                        "leverage": lev,
+                                        "total_margin": margin,
+                                        "position_size": round(pos_size, 8),
+                                        "entry_avg": price,
+                                        "exchange": witem.get("exchange", ""),
+                                        "notes": f"Aberto via watchlist em {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')} | Sinal macro ativo",
+                                        "status": "OPEN",
+                                        "opened_at": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M"),
+                                        "entries": [{
+                                            "date": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M"),
+                                            "price": price,
+                                            "margin": margin,
+                                            "leverage": lev
+                                        }]
+                                    }
+                                    # Deduzir margem do caixa (se disponível)
+                                    cash_atual = float(port.get("cash_usd", 0))
+                                    if cash_atual < margin:
+                                        st.error(f"Saldo insuficiente! Disponível: ${cash_atual:.2f} | Necessário: ${margin:.2f}")
+                                    else:
+                                        port["cash_usd"] = round(cash_atual - margin, 2)
+                                        port["positions"].append(new_pos)
+                                        # Registrar no extrato
+                                        _log_tx(port, "ABERTURA", witem["coin_id"], margin, price, 0,
+                                                f"LONG {lev}x via watchlist")
+                                        # Remover da watchlist (opcional, comente se preferir manter)
+                                        port["watchlist"] = [w for w in port.get("watchlist", []) if w["coin_id"] != witem["coin_id"]]
+                                        _save_port(port)
+                                        # Enviar Telegram
+                                        msg = (f"📥 <b>POSIÇÃO ABERTA VIA WATCHLIST</b>\n"
+                                            f"<b>{witem['coin_id'].upper()}</b> — {lev}x LONG @ ${price:,.4f}\n"
+                                            f"Margem: ${margin:,.2f} | Posição: ${margin*lev:,.2f}\n"
+                                            f"Liq. est.: ${liq_price:,.4f}\n"
+                                            f"Corretora: {witem.get('exchange','')}\n"
+                                            f"Saldo restante: ${port['cash_usd']:,.2f}\n\n"
+                                            "Montrezor Portfolio")
+                                        _send_tg(msg)
+                                        st.success(f"✅ Posição {witem['coin_id'].upper()} aberta com sucesso!")
+                                        st.rerun()
+                    with col_remover:
+                        if st.button("✕ Remover", key=f"del_w_{wi}", use_container_width=True):
+                            port["watchlist"] = [w for j,w in enumerate(watchlist) if j != wi]
+                            _save_port(port)
+                            st.rerun()
 
     # ════════════════════════════════════════════════════════════════════════
     # TAB 3 — GRÁFICOS
