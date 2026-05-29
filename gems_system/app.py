@@ -121,6 +121,7 @@ with st.sidebar:
 
     # Botão para abrir automaticamente
     if st.button("🚀 Abrir Trading System", type="primary", width='stretch'):
+        trading_file = ""  # ← inicialização antes do try
         try:
             st.info("🔄 Iniciando Trading System...")
 
@@ -160,6 +161,7 @@ with st.sidebar:
 
     # Botão para abrir automaticamente
     if st.button("📈 Abrir Market Analysis", type="primary", width='stretch'):
+        market_file = ""  # ← inicialização antes do try
         try:
             st.info("🔄 Iniciando Market Analysis...")
 
@@ -255,29 +257,51 @@ def run_command_with_terminal(command, description="Executando comando..."):
             f.write(f"Comando: {' '.join(command) if isinstance(command, list) else command}\n")
             f.write("=" * 80 + "\n\n")
 
-        # Iniciar processo em background
+        # Abre o arquivo para append (saída do processo)
+        log_handle = open(log_file, 'a', encoding='utf-8')
+
+        # Inicia o processo em segundo plano
         process = subprocess.Popen(
             command if isinstance(command, list) else command.split(),
-            stdout=open(log_file, 'a', encoding='utf-8'),
+            stdout=log_handle,
             stderr=subprocess.STDOUT,
             text=True,
             bufsize=1,
             universal_newlines=True,
             encoding='utf-8',
             errors='replace'
-        )
+            )
 
-        # Salvar PID para controle
-        with open(f"data/terminal_logs/active_processes.json", 'a', encoding='utf-8') as f:
-            import json
-            json.dump({
-                "pid": process.pid,
-                "command": ' '.join(command) if isinstance(command, list) else command,
-                "log_file": log_file,
-                "timestamp": datetime.now().isoformat(),
-                "description": description
-            }, f)
-            f.write('\n')
+         # Fecha o descritor no processo pai – o filho continua escrevendo
+        log_handle.close()
+
+        # Salvar PID e informações como lista JSON válida
+        active_file = "data/terminal_logs/active_processes.json"
+
+        # Carrega lista existente ou cria nova
+        if os.path.exists(active_file):
+            try:
+                with open(active_file, 'r', encoding='utf-8') as f:
+                    processes = json.load(f)
+                    if not isinstance(processes, list):
+                        processes = []
+            except (json.JSONDecodeError, ValueError):
+                processes = []
+        else:
+            processes = []
+
+        # Adiciona novo processo
+        processes.append({
+            "pid": process.pid,
+            "command": ' '.join(command) if isinstance(command, list) else command,
+            "log_file": log_file,
+            "timestamp": datetime.now().isoformat(),
+            "description": description
+            })
+
+        # Reescreve o arquivo com a lista atualizada
+        with open(active_file, 'w', encoding='utf-8') as f:
+            json.dump(processes, f, indent=2)
 
         add_terminal_output(f"🔄 Processo iniciado em background (PID: {process.pid})", "success")
         add_terminal_output(f"⏱️ Use o refresh automático para acompanhar a execução", "info")

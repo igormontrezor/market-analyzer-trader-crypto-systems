@@ -87,11 +87,11 @@ def filter_early_stage_pairs(pairs: List[Dict]) -> List[Dict]:
 
             liquidity  = float(pair.get("liquidity", {}).get("usd", 0))
             volume_24h = float(pair.get("volume", {}).get("h24", 0))
-            mcap       = float(pair.get("marketCap") or pair.get("fdv") or 0)
+            mcap       = float(pair.get("marketCap", 0))   # ✅ Item 1 corrigido
 
             if liquidity  < MIN_LIQUIDITY_USD  or liquidity  > MAX_LIQUIDITY_USD:  continue
             if volume_24h < MIN_VOLUME_24H_USD or volume_24h > MAX_VOLUME_24H_USD: continue
-            if mcap > 0 and mcap > MAX_MCAP_USD: continue  # só checar se disponível
+            if mcap > 0 and mcap > MAX_MCAP_USD: continue
 
             txns      = pair.get("txns", {}).get("h24", {})
             buys_24h  = int(txns.get("buys",  0))
@@ -110,8 +110,9 @@ def filter_early_stage_pairs(pairs: List[Dict]) -> List[Dict]:
             age_hours = None
             if pair_created_at:
                 try:
-                    created = datetime.utcfromtimestamp(pair_created_at / 1000)
-                    age_hours = (datetime.utcnow() - created).total_seconds() / 3600
+                    from datetime import timezone
+                    created = datetime.fromtimestamp(pair_created_at / 1000, tz=timezone.utc)
+                    age_hours = (datetime.now(timezone.utc) - created).total_seconds() / 3600
                     if age_hours > MAX_AGE_HOURS: continue
                 except Exception:
                     pass
@@ -134,7 +135,9 @@ def filter_early_stage_pairs(pairs: List[Dict]) -> List[Dict]:
                 "last_updated":      datetime.now().isoformat(),
                 "source":            "dexscreener"
             })
-        except Exception:
+        except Exception as e:
+            # Log opcional (descomente se quiser debug)
+            # print(f"Erro ao filtrar par: {e}")
             continue
     return early
 
@@ -153,8 +156,20 @@ def get_early_stage_tokens(limit_per_chain: int = 20) -> pd.DataFrame:
     if not df.empty:
         # Remover duplicatas pelo token_address (pode aparecer em múltiplos pairs)
         df = df.drop_duplicates(subset=["token_address"], keep="first")
-        # Ordenar por score simples: volume + liquidez + buy_ratio
-        df["dex_score"] = (df["volume_24h_usd"] / 1000) + (df["liquidity_usd"] / 10000) + (df["buy_ratio"] * 100)
+
+        # --- Correção 6: Score normalizado ---
+        max_vol = MAX_VOLUME_24H_USD
+        max_liq = MAX_LIQUIDITY_USD
+        min_buy = MIN_BUY_RATIO
+        max_buy = 1.0
+
+        # Normalizar cada componente
+        vol_norm   = (df["volume_24h_usd"] / max_vol).clip(0, 1)
+        liq_norm   = (df["liquidity_usd"] / max_liq).clip(0, 1)
+        buy_norm   = ((df["buy_ratio"] - min_buy) / (max_buy - min_buy)).clip(0, 1)
+
+        # Pesos: volume 40%, liquidez 30%, buy_ratio 30%
+        df["dex_score"] = (0.4 * vol_norm + 0.3 * liq_norm + 0.3 * buy_norm) * 100
         df = df.sort_values("dex_score", ascending=False)
     return df
 

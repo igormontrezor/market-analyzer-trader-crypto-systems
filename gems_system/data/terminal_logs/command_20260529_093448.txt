@@ -1,0 +1,1128 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-05-29 09:34:48
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+⏰ Cache expirou em: 09:20:48
+🔄 Cache expirado ou inexistente - Buscando dados novos...
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+💎 GEMS FINDER - Busca inteligente...
+🎯 Alvo: MC $50,000,000-$100,000,000, Volume >$1,000,000
+⏰ Cache expirou em: 09:20:48
+🔍 Busca COMPLETA: 50M → 50,000,000 (até página 300)
+⚡ Continuar buscando até encontrar MCs próximos a $50,000,000 MESMO com 10+ gems
+📄 Página 1 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 1)
+📄 Página 1 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 1)
+📄 Página 1 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 1)
+📄 Página 1 (gems encontradas: 0)...
+ Página 1: continuando busca (sem gems na faixa)
+📄 Página 2 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 2)
+📄 Página 2 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 2)
+📄 Página 2 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 2)
+📄 Página 2 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 2)
+📄 Página 2 (gems encontradas: 0)...
+❌ muon: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ safe: Vol/MC=0.02 (< 0.2) - MORTO - dispensar
+❌ cow: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟡 grx: Vol/MC=0.23 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ grx: Vol/MC=0.23 (>= 0.5) - OK
+✅ grx: FDV=$97,201,837 (+5.1% vs MC) - INFLAÇÃO OK
+✅ grx: Supply seguro - sem risco de inflação excessiva
+📈 grx: Preço normal (sem pullback saudável)
+📊 grx: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ grx: MC=$92,480,362, Vol=$21,479,229
+ Novo menor MC: $92,480,362
+❌ qtum: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ 0g: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ linea: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ shx: Vol/MC=0.01 (< 0.2) - MORTO - dispensar
+❌ skr: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ arkm: Vol/MC=0.19 (< 0.2) - MORTO - dispensar
+🟡 bera: Vol/MC=0.24 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ bera: Vol/MC=0.24 (>= 0.5) - OK
+❌ bera: FDV=$180,858,328 (+106.4% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ tac: Vol/MC=0.01 (< 0.2) - MORTO - dispensar
+❌ kta: Vol/MC=0.01 (< 0.2) - MORTO - dispensar
+❌ melania: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ prespax: Vol/MC=0.02 (< 0.2) - MORTO - dispensar
+❌ beam: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ pros: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+❌ zrx: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ kmno: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ form: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ aioz: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ rvn: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+🟡 tria: Vol/MC=0.33 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ tria: Vol/MC=0.33 (>= 0.5) - OK
+❌ tria: FDV=$381,104,376 (+363.5% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 bsb: Vol/MC=0.29 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ bsb: Vol/MC=0.29 (>= 0.5) - OK
+❌ bsb: FDV=$368,916,585 (+349.1% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ nock: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ xp: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ drv: Vol/MC=0.02 (< 0.2) - MORTO - dispensar
+❌ ksm: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ meta: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ msusd: Vol/MC=0.01 (< 0.2) - MORTO - dispensar
+❌ yfi: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ umxm: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+🟡 zama: Vol/MC=0.20 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ zama: Vol/MC=0.20 (>= 0.5) - OK
+❌ zama: FDV=$390,831,543 (+400.0% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ chip: Vol/MC=0.16 (< 0.2) - MORTO - dispensar
+❌ dbr: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ orca: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ bas: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+❌ enj: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ mbg: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ troll: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+❌ rif: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ xpr: Vol/MC=0.02 (< 0.2) - MORTO - dispensar
+❌ zig: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ tfuel: Vol/MC=0.02 (< 0.2) - MORTO - dispensar
+❌ turbo: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+❌ arc: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+❌ oct: Vol/MC=0.01 (< 0.2) - MORTO - dispensar
+❌ asteroid: Vol/MC=0.15 (< 0.2) - MORTO - dispensar
+❌ zil: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+❌ velo: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ deep: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+❌ cys: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ xaum: Vol/MC=0.02 (< 0.2) - MORTO - dispensar
+❌ peaq: Vol/MC=0.15 (< 0.2) - MORTO - dispensar
+🟠 qait: Vol/MC=0.78 (0.5-1.0) - FORTE - OK
+✅ qait: Vol/MC=0.78 (>= 0.5) - OK
+❌ qait: FDV=$160,089,043 (+127.3% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ mina: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+🟡 ordi: Vol/MC=0.33 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ ordi: Vol/MC=0.33 (>= 0.5) - OK
+✅ ordi: FDV=$70,339,776 (+0.0% vs MC) - INFLAÇÃO OK
+✅ ordi: Supply seguro - sem risco de inflação excessiva
+📈 ordi: Preço normal (sem pullback saudável)
+📊 ordi: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ ordi: MC=$70,339,776, Vol=$23,388,348
+ Novo menor MC: $70,339,776
+❌ plume: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+❌ dusk: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ super: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+❌ aztec: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+❌ rose: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ babydoge: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+🔥 mega: Vol/MC=1.40 (>= 1.0) - BREAKOUT - PRIORIDADE MÁXIMA!
+🔥 mega: Vol/MC=1.40 (>= 1.0) - PRIORIDADE MÁXIMA!
+❌ mega: FDV=$612,469,870 (+785.1% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ ban: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ ivvon: Vol/MC=0.02 (< 0.2) - MORTO - dispensar
+❌ zeta: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ w: Vol/MC=0.20 (< 0.2) - MORTO - dispensar
+❌ q: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ useless: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ spk: Vol/MC=0.18 (< 0.2) - MORTO - dispensar
+❌ met: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+❌ qubic: Vol/MC=0.02 (< 0.2) - MORTO - dispensar
+❌ hot: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ brett: Vol/MC=0.18 (< 0.2) - MORTO - dispensar
+❌ gmx: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ amp: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ uai: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ dog: Vol/MC=0.02 (< 0.2) - MORTO - dispensar
+❌ astr: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+🔥 io: Vol/MC=2.42 (>= 1.0) - BREAKOUT - PRIORIDADE MÁXIMA!
+🔥 io: Vol/MC=2.42 (>= 1.0) - PRIORIDADE MÁXIMA!
+❌ io: FDV=$150,469,308 (+139.9% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 bio: Vol/MC=0.21 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ bio: Vol/MC=0.21 (>= 0.5) - OK
+⚠️ bio: FDV=$96,899,188 (+54.8% vs MC) - ATENÇÃO - continuar
+✅ bio: Supply seguro - sem risco de inflação excessiva
+📈 bio: Preço normal (sem pullback saudável)
+📊 bio: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ bio: MC=$62,605,896, Vol=$13,087,486
+ Novo menor MC: $62,605,896
+❌ axl: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+❌ toshi: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+❌ xusd: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+❌ polyx: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+🔥 allo: Vol/MC=8.09 (>= 1.0) - BREAKOUT - PRIORIDADE MÁXIMA!
+⚠️ allo: Vol/MC=8.09 (> 3.0) - VOLUME SUSPEITO - análise manual
+🔥 allo: Vol/MC=8.09 (>= 1.0) - PRIORIDADE MÁXIMA!
+❌ allo: FDV=$210,734,712 (+241.9% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🔥 usdon: Vol/MC=1.02 (>= 1.0) - BREAKOUT - PRIORIDADE MÁXIMA!
+🔥 usdon: Vol/MC=1.02 (>= 1.0) - PRIORIDADE MÁXIMA!
+✅ usdon: FDV=$61,406,284 (+0.0% vs MC) - INFLAÇÃO OK
+✅ usdon: Supply seguro - sem risco de inflação excessiva
+📈 usdon: Preço normal (sem pullback saudável)
+📊 usdon: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ usdon: MC=$61,406,284, Vol=$62,336,726
+ Novo menor MC: $61,406,284
+❌ tslax: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+❌ ckb: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ alch: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ bard: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ nvdaon: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ ron: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ xyo: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ kava: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ jellyjelly: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ dgb: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ nmr: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ euri: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ blur: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ purr: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ icnt: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+🟡 move: Vol/MC=0.20 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ move: Vol/MC=0.20 (>= 0.5) - OK
+❌ move: FDV=$142,847,029 (+160.6% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 crclx: Vol/MC=0.21 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ crclx: Vol/MC=0.21 (>= 0.5) - OK
+❌ crclx: FDV=$310,060,760 (+468.3% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ bnkr: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ soon: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ qqqon: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ kntq: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ ore: Vol/MC=0.02 (< 0.2) - MORTO - dispensar
+🔥 slx: Vol/MC=3.00 (>= 1.0) - BREAKOUT - PRIORIDADE MÁXIMA!
+🚨 slx: Volume alto (3.00x MC) + preço parado (-1.09%) - POSSÍVEL WASH TRADING - análise manual
+🔥 slx: Vol/MC=3.00 (>= 1.0) - PRIORIDADE MÁXIMA!
+❌ slx: FDV=$217,208,502 (+311.8% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ xvg: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ t: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+❌ coai: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+🟡 pnut: Vol/MC=0.20 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ pnut: Vol/MC=0.20 (>= 0.5) - OK
+✅ pnut: FDV=$52,126,479 (+0.0% vs MC) - INFLAÇÃO OK
+✅ pnut: Supply seguro - sem risco de inflação excessiva
+📈 pnut: Preço normal (sem pullback saudável)
+📊 pnut: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ pnut: MC=$52,126,479, Vol=$10,550,946
+ Novo menor MC: $52,126,479
+🎯 Atingimos MCs próximos a $50,000,000!
+ Página 2: 5 gems encontradas
+🎯 Total encontrado: 5 gems
+📍 Menor MC encontrado: $52,126,479
+🎯 Alvo atingido: SIM
+📊 Ordenado por: MAIOR ratio Volume/MC (ESSENCIAL) + menor MC
+  1. usdon: MC=$61,406,284, Vol=$62,336,726, Ratio=1.02
+  2. ordi: MC=$70,339,776, Vol=$23,388,348, Ratio=0.33
+  3. grx: MC=$92,480,362, Vol=$21,479,229, Ratio=0.23
+  4. bio: MC=$62,605,896, Vol=$13,087,486, Ratio=0.21
+  5. pnut: MC=$52,126,479, Vol=$10,550,946, Ratio=0.20
+🔄 API: 5 gems encontradas
+✅ 50m_range: 5 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+💎 GEMS FINDER - Busca inteligente...
+🎯 Alvo: MC $10,000,000-$49,000,000, Volume >$1,000,000
+⏰ Cache expirou em: 09:20:48
+🔍 Busca COMPLETA: 50M → 10,000,000 (até página 300)
+⚡ Continuar buscando até encontrar MCs próximos a $10,000,000 MESMO com 10+ gems
+📄 Página 1 (gems encontradas: 0)...
+ Página 1: continuando busca (sem gems na faixa)
+📄 Página 2 (gems encontradas: 0)...
+🟡 moodeng: Vol/MC=0.22 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ moodeng: Vol/MC=0.22 (>= 0.5) - OK
+✅ moodeng: FDV=$48,536,015 (+0.0% vs MC) - INFLAÇÃO OK
+✅ moodeng: Supply seguro - sem risco de inflação excessiva
+📈 moodeng: Preço normal (sem pullback saudável)
+📊 moodeng: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ moodeng: MC=$48,536,015, Vol=$10,807,422
+ Novo menor MC: $48,536,015
+❌ magma: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ cspr: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+🟡 holo: Vol/MC=0.43 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ holo: Vol/MC=0.43 (>= 0.5) - OK
+❌ holo: FDV=$149,772,182 (+219.7% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+ Página 2: 1 gems encontradas
+📄 Página 3 (gems encontradas: 1)...
+❌ jupusd: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ red: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+❌ npc: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ me: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+❌ serv: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ trb: Vol/MC=0.15 (< 0.2) - MORTO - dispensar
+❌ cards: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+🟡 huma: Vol/MC=0.24 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ huma: Vol/MC=0.24 (>= 0.5) - OK
+❌ huma: FDV=$263,325,608 (+476.9% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 jct: Vol/MC=0.21 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ jct: Vol/MC=0.21 (>= 0.5) - OK
+❌ jct: FDV=$198,150,347 (+335.0% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ ankr: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+❌ omi: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ sc: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ apex: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ googlon: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ celo: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ mew: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+🟡 avnt: Vol/MC=0.25 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ avnt: Vol/MC=0.25 (>= 0.5) - OK
+❌ avnt: FDV=$134,131,347 (+209.2% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ xch: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+❌ zora: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ xvs: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+🟡 not: Vol/MC=0.22 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ not: Vol/MC=0.22 (>= 0.5) - OK
+✅ not: FDV=$44,572,832 (+3.0% vs MC) - INFLAÇÃO OK
+✅ not: Supply seguro - sem risco de inflação excessiva
+📈 not: Preço normal (sem pullback saudável)
+📊 not: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ not: MC=$43,257,519, Vol=$9,633,804
+ Novo menor MC: $43,257,519
+❌ apr: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+🟡 alt: Vol/MC=0.33 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ alt: Vol/MC=0.33 (>= 0.5) - OK
+⚠️ alt: FDV=$67,386,456 (+56.2% vs MC) - ATENÇÃO - continuar
+✅ alt: Supply seguro - sem risco de inflação excessiva
+📈 alt: Preço normal (sem pullback saudável)
+📊 alt: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ alt: MC=$43,154,240, Vol=$14,139,312
+ Novo menor MC: $43,154,240
+❌ mask: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+❌ prove: Vol/MC=0.19 (< 0.2) - MORTO - dispensar
+❌ api3: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ spyon: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ safe: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+🟡 robo: Vol/MC=0.32 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ robo: Vol/MC=0.32 (>= 0.5) - OK
+❌ robo: FDV=$190,683,470 (+348.2% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ vana: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ luna: Vol/MC=0.18 (< 0.2) - MORTO - dispensar
+❌ fb: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ cross: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ mantra: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ osmo: Vol/MC=0.19 (< 0.2) - MORTO - dispensar
+🔥 ai: Vol/MC=2.30 (>= 1.0) - BREAKOUT - PRIORIDADE MÁXIMA!
+🔥 ai: Vol/MC=2.30 (>= 1.0) - PRIORIDADE MÁXIMA!
+❌ ai: FDV=$306,783,505 (+666.5% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ wmtx: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ nos: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ iotx: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟡 myx: Vol/MC=0.26 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ myx: Vol/MC=0.26 (>= 0.5) - OK
+❌ myx: FDV=$204,181,980 (+424.2% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ uma: Vol/MC=0.16 (< 0.2) - MORTO - dispensar
+❌ open: Vol/MC=0.15 (< 0.2) - MORTO - dispensar
+❌ sqd: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ ustc: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ orbs: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+🟠 manta: Vol/MC=0.56 (0.5-1.0) - FORTE - OK
+✅ manta: Vol/MC=0.56 (>= 0.5) - OK
+❌ manta: FDV=$78,623,154 (+111.7% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ spyx: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ dag: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ bora: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ play: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+🔥 pha: Vol/MC=1.03 (>= 1.0) - BREAKOUT - PRIORIDADE MÁXIMA!
+🔥 pha: Vol/MC=1.03 (>= 1.0) - PRIORIDADE MÁXIMA!
+✅ pha: FDV=$42,742,263 (+19.2% vs MC) - INFLAÇÃO OK
+✅ pha: Supply seguro - sem risco de inflação excessiva
+📈 pha: Preço normal (sem pullback saudável)
+📊 pha: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ pha: MC=$35,871,338, Vol=$36,951,385
+ Novo menor MC: $35,871,338
+❌ rpl: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ b3: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+🟠 opg: Vol/MC=0.96 (0.5-1.0) - FORTE - OK
+✅ opg: Vol/MC=0.96 (>= 0.5) - OK
+❌ opg: FDV=$184,791,766 (+426.3% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ elon: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+🟠 degen: Vol/MC=0.52 (0.5-1.0) - FORTE - OK
+✅ degen: Vol/MC=0.52 (>= 0.5) - OK
+✅ degen: FDV=$35,001,603 (+0.0% vs MC) - INFLAÇÃO OK
+✅ degen: Supply seguro - sem risco de inflação excessiva
+📈 degen: Preço normal (sem pullback saudável)
+📊 degen: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ degen: MC=$35,001,603, Vol=$18,353,708
+ Novo menor MC: $35,001,603
+❌ neet: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ nat: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ snek: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ srx: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ skl: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ rez: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ velvet: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+🟡 gua: Vol/MC=0.22 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ gua: Vol/MC=0.22 (>= 0.5) - OK
+❌ gua: FDV=$759,238,543 (+2122.2% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 ssv: Vol/MC=0.23 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ ssv: Vol/MC=0.23 (>= 0.5) - OK
+✅ ssv: FDV=$34,138,591 (+0.0% vs MC) - INFLAÇÃO OK
+✅ ssv: Supply seguro - sem risco de inflação excessiva
+📈 ssv: Preço normal (sem pullback saudável)
+📊 ssv: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ ssv: MC=$34,138,591, Vol=$8,000,122
+ Novo menor MC: $34,138,591
+❌ pundix: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+🟠 nil: Vol/MC=0.69 (0.5-1.0) - FORTE - OK
+✅ nil: Vol/MC=0.69 (>= 0.5) - OK
+❌ nil: FDV=$72,561,966 (+113.7% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ bp: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+🟠 sxt: Vol/MC=0.72 (0.5-1.0) - FORTE - OK
+✅ sxt: Vol/MC=0.72 (>= 0.5) - OK
+❌ sxt: FDV=$65,235,189 (+92.4% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 bome: Vol/MC=0.25 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ bome: Vol/MC=0.25 (>= 0.5) - OK
+✅ bome: FDV=$33,860,686 (+0.0% vs MC) - INFLAÇÃO OK
+✅ bome: Supply seguro - sem risco de inflação excessiva
+📈 bome: Preço normal (sem pullback saudável)
+📊 bome: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ bome: MC=$33,860,686, Vol=$8,629,567
+ Novo menor MC: $33,860,686
+❌ kgen: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+🟡 edu: Vol/MC=0.24 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ edu: Vol/MC=0.24 (>= 0.5) - OK
+⚠️ edu: FDV=$44,639,611 (+32.0% vs MC) - ATENÇÃO - continuar
+✅ edu: Supply seguro - sem risco de inflação excessiva
+📈 edu: Preço normal (sem pullback saudável)
+📊 edu: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ edu: MC=$33,809,700, Vol=$8,145,681
+ Novo menor MC: $33,809,700
+🟡 up: Vol/MC=0.37 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ up: Vol/MC=0.37 (>= 0.5) - OK
+❌ up: FDV=$268,198,037 (+693.7% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ band: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ rosa: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟡 nvdax: Vol/MC=0.34 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ nvdax: Vol/MC=0.34 (>= 0.5) - OK
+❌ nvdax: FDV=$190,684,793 (+466.6% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ esp: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ iost: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ rlc: Vol/MC=0.18 (< 0.2) - MORTO - dispensar
+❌ auction: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+❌ xtusd: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ ilv: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+🟡 in: Vol/MC=0.28 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ in: Vol/MC=0.28 (>= 0.5) - OK
+❌ in: FDV=$98,443,199 (+201.0% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 neiro: Vol/MC=0.29 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ neiro: Vol/MC=0.29 (>= 0.5) - OK
+✅ neiro: FDV=$32,698,055 (+0.0% vs MC) - INFLAÇÃO OK
+✅ neiro: Supply seguro - sem risco de inflação excessiva
+📈 neiro: Preço normal (sem pullback saudável)
+📊 neiro: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ neiro: MC=$32,698,055, Vol=$9,380,233
+ Novo menor MC: $32,698,055
+❌ coti: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+❌ ibs: Vol/MC=0.03 (< 0.2) - MORTO - dispensar
+❌ prl: Vol/MC=0.19 (< 0.2) - MORTO - dispensar
+🟠 usdp: Vol/MC=0.55 (0.5-1.0) - FORTE - OK
+✅ usdp: Vol/MC=0.55 (>= 0.5) - OK
+✅ usdp: FDV=$31,938,655 (+0.0% vs MC) - INFLAÇÃO OK
+✅ usdp: Supply seguro - sem risco de inflação excessiva
+📈 usdp: Preço normal (sem pullback saudável)
+📊 usdp: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ usdp: MC=$31,938,655, Vol=$17,539,665
+ Novo menor MC: $31,938,655
+❌ musd: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟡 gps: Vol/MC=0.28 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ gps: Vol/MC=0.28 (>= 0.5) - OK
+❌ gps: FDV=$72,001,679 (+126.8% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ hive: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ msusd: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+❌ people: Vol/MC=0.18 (< 0.2) - MORTO - dispensar
+❌ slvon: Vol/MC=0.16 (< 0.2) - MORTO - dispensar
+❌ powr: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ giga: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+🟠 meme: Vol/MC=0.62 (0.5-1.0) - FORTE - OK
+✅ meme: Vol/MC=0.62 (>= 0.5) - OK
+✅ meme: FDV=$33,789,200 (+8.6% vs MC) - INFLAÇÃO OK
+✅ meme: Supply seguro - sem risco de inflação excessiva
+📈 meme: Preço normal (sem pullback saudável)
+📊 meme: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ meme: MC=$31,103,883, Vol=$19,240,658
+ Novo menor MC: $31,103,883
+❌ core: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+🟡 deus: Vol/MC=0.27 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ deus: Vol/MC=0.27 (>= 0.5) - OK
+❌ deus: FDV=$61,904,108 (+99.8% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 zbt: Vol/MC=0.26 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ zbt: Vol/MC=0.26 (>= 0.5) - OK
+❌ zbt: FDV=$126,391,478 (+308.2% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 gmt: Vol/MC=0.33 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ gmt: Vol/MC=0.33 (>= 0.5) - OK
+⚠️ gmt: FDV=$49,886,351 (+63.1% vs MC) - ATENÇÃO - continuar
+✅ gmt: Supply seguro - sem risco de inflação excessiva
+📈 gmt: Preço normal (sem pullback saudável)
+📊 gmt: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ gmt: MC=$30,591,443, Vol=$10,031,856
+ Novo menor MC: $30,591,443
+❌ woo: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+❌ merl: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ ucn: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ cpool: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ acx: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ cyber: Vol/MC=0.15 (< 0.2) - MORTO - dispensar
+🟡 hyper: Vol/MC=0.48 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ hyper: Vol/MC=0.48 (>= 0.5) - OK
+❌ hyper: FDV=$70,141,893 (+138.7% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ tslaon: Vol/MC=0.17 (< 0.2) - MORTO - dispensar
+❌ carv: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+🟡 giggle: Vol/MC=0.25 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ giggle: Vol/MC=0.25 (>= 0.5) - OK
+✅ giggle: FDV=$29,041,079 (+0.0% vs MC) - INFLAÇÃO OK
+✅ giggle: Supply seguro - sem risco de inflação excessiva
+📈 giggle: Preço normal (sem pullback saudável)
+📊 giggle: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ giggle: MC=$29,041,079, Vol=$7,380,178
+ Novo menor MC: $29,041,079
+🟠 collect: Vol/MC=0.63 (0.5-1.0) - FORTE - OK
+✅ collect: Vol/MC=0.63 (>= 0.5) - OK
+❌ collect: FDV=$160,626,915 (+458.7% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 btw: Vol/MC=0.26 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ btw: Vol/MC=0.26 (>= 0.5) - OK
+❌ btw: FDV=$130,577,058 (+354.5% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ eul: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ at: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+❌ birb: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+❌ mstrx: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ ethw: Vol/MC=0.04 (< 0.2) - MORTO - dispensar
+❌ kaio: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ ong: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟡 aixbt: Vol/MC=0.41 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ aixbt: Vol/MC=0.41 (>= 0.5) - OK
+✅ aixbt: FDV=$27,799,016 (+0.5% vs MC) - INFLAÇÃO OK
+✅ aixbt: Supply seguro - sem risco de inflação excessiva
+📈 aixbt: Preço normal (sem pullback saudável)
+📊 aixbt: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ aixbt: MC=$27,650,525, Vol=$11,350,787
+ Novo menor MC: $27,650,525
+❌ steem: Vol/MC=0.15 (< 0.2) - MORTO - dispensar
+❌ flux: Vol/MC=0.15 (< 0.2) - MORTO - dispensar
+🟡 sign: Vol/MC=0.20 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ sign: Vol/MC=0.20 (>= 0.5) - OK
+❌ sign: FDV=$117,773,844 (+334.2% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟠 mmt: Vol/MC=0.76 (0.5-1.0) - FORTE - OK
+✅ mmt: Vol/MC=0.76 (>= 0.5) - OK
+❌ mmt: FDV=$132,382,069 (+390.0% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ audio: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ iq: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ star: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+🟡 fida: Vol/MC=0.49 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ fida: Vol/MC=0.49 (>= 0.5) - OK
+✅ fida: FDV=$26,592,265 (+0.0% vs MC) - INFLAÇÃO OK
+✅ fida: Supply seguro - sem risco de inflação excessiva
+📈 fida: Preço normal (sem pullback saudável)
+📊 fida: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ fida: MC=$26,592,265, Vol=$13,032,462
+ Novo menor MC: $26,592,265
+🟡 sapien: Vol/MC=0.30 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ sapien: Vol/MC=0.30 (>= 0.5) - OK
+❌ sapien: FDV=$105,638,592 (+300.0% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ one: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ dka: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+ Página 3: 14 gems encontradas
+📄 Página 4 (gems encontradas: 15)...
+❌ blast: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ mlk: Vol/MC=0.18 (< 0.2) - MORTO - dispensar
+❌ lsk: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ zerebro: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+❌ spell: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ ygg: Vol/MC=0.18 (< 0.2) - MORTO - dispensar
+❌ mtl: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+🟡 brev: Vol/MC=0.35 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ brev: Vol/MC=0.35 (>= 0.5) - OK
+❌ brev: FDV=$100,412,561 (+300.0% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟠 zest: Vol/MC=0.94 (0.5-1.0) - FORTE - OK
+✅ zest: Vol/MC=0.94 (>= 0.5) - OK
+❌ zest: FDV=$171,338,697 (+584.9% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ lista: Vol/MC=0.17 (< 0.2) - MORTO - dispensar
+❌ ctsi: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ qqqx: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟡 mrvlon: Vol/MC=0.26 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ mrvlon: Vol/MC=0.26 (>= 0.5) - OK
+✅ mrvlon: FDV=$24,626,257 (+0.0% vs MC) - INFLAÇÃO OK
+✅ mrvlon: Supply seguro - sem risco de inflação excessiva
+📈 mrvlon: Preço normal (sem pullback saudável)
+📊 mrvlon: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ mrvlon: MC=$24,626,257, Vol=$6,525,075
+ Novo menor MC: $24,626,257
+🟡 dogs: Vol/MC=0.30 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ dogs: Vol/MC=0.30 (>= 0.5) - OK
+✅ dogs: FDV=$25,849,964 (+6.4% vs MC) - INFLAÇÃO OK
+✅ dogs: Supply seguro - sem risco de inflação excessiva
+📈 dogs: Preço normal (sem pullback saudável)
+📊 dogs: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ dogs: MC=$24,287,217, Vol=$7,282,780
+ Novo menor MC: $24,287,217
+🔥 googlx: Vol/MC=1.03 (>= 1.0) - BREAKOUT - PRIORIDADE MÁXIMA!
+🔥 googlx: Vol/MC=1.03 (>= 1.0) - PRIORIDADE MÁXIMA!
+❌ googlx: FDV=$179,654,551 (+641.5% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 somi: Vol/MC=0.22 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ somi: Vol/MC=0.22 (>= 0.5) - OK
+❌ somi: FDV=$150,596,376 (+524.2% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 xt: Vol/MC=0.27 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ xt: Vol/MC=0.27 (>= 0.5) - OK
+❌ xt: FDV=$3,989,547,652 (+16440.4% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ soph: Vol/MC=0.18 (< 0.2) - MORTO - dispensar
+❌ g: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ xan: Vol/MC=0.17 (< 0.2) - MORTO - dispensar
+❌ mgo: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ acu: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+🟡 cati: Vol/MC=0.29 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ cati: Vol/MC=0.29 (>= 0.5) - OK
+❌ cati: FDV=$52,172,395 (+120.4% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ torn: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ lqty: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+❌ cbk: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ folks: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟡 intcon: Vol/MC=0.23 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ intcon: Vol/MC=0.23 (>= 0.5) - OK
+✅ intcon: FDV=$23,309,470 (+0.0% vs MC) - INFLAÇÃO OK
+✅ intcon: Supply seguro - sem risco de inflação excessiva
+📈 intcon: Preço normal (sem pullback saudável)
+📊 intcon: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ intcon: MC=$23,309,470, Vol=$5,477,083
+ Novo menor MC: $23,309,470
+❌ zent: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ knc: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+🟡 check: Vol/MC=0.40 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ check: Vol/MC=0.40 (>= 0.5) - OK
+❌ check: FDV=$57,381,053 (+147.3% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ sats: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ corn: Vol/MC=0.16 (< 0.2) - MORTO - dispensar
+🟡 mira: Vol/MC=0.22 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ mira: Vol/MC=0.22 (>= 0.5) - OK
+❌ mira: FDV=$80,719,420 (+253.9% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ truth: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ trillions: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+🔥 ctr: Vol/MC=1.45 (>= 1.0) - BREAKOUT - PRIORIDADE MÁXIMA!
+🔥 ctr: Vol/MC=1.45 (>= 1.0) - PRIORIDADE MÁXIMA!
+❌ ctr: FDV=$189,095,875 (+733.3% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 pokt: Vol/MC=0.33 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ pokt: Vol/MC=0.33 (>= 0.5) - OK
+✅ pokt: FDV=$26,250,834 (+16.9% vs MC) - INFLAÇÃO OK
+✅ pokt: Supply seguro - sem risco de inflação excessiva
+📈 pokt: Preço normal (sem pullback saudável)
+📊 pokt: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ pokt: MC=$22,458,655, Vol=$7,330,360
+ Novo menor MC: $22,458,655
+❌ metis: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ cvc: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟡 bob: Vol/MC=0.23 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ bob: Vol/MC=0.23 (>= 0.5) - OK
+❌ bob: FDV=$75,371,576 (+242.4% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ slp: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+❌ usual: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+❌ edge: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+🟡 anime: Vol/MC=0.20 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ anime: Vol/MC=0.20 (>= 0.5) - OK
+❌ anime: FDV=$38,759,455 (+80.6% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟠 usdh: Vol/MC=0.58 (0.5-1.0) - FORTE - OK
+✅ usdh: Vol/MC=0.58 (>= 0.5) - OK
+❌ usdh: FDV=$100,044,681,335 (+468358.0% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ utya: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟡 cgpt: Vol/MC=0.21 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ cgpt: Vol/MC=0.21 (>= 0.5) - OK
+✅ cgpt: FDV=$23,002,520 (+7.7% vs MC) - INFLAÇÃO OK
+✅ cgpt: Supply seguro - sem risco de inflação excessiva
+📈 cgpt: Preço normal (sem pullback saudável)
+📊 cgpt: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ cgpt: MC=$21,349,448, Vol=$4,472,278
+ Novo menor MC: $21,349,448
+🟡 era: Vol/MC=0.21 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ era: Vol/MC=0.21 (>= 0.5) - OK
+❌ era: FDV=$122,089,731 (+472.2% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ cetus: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+🟡 aevo: Vol/MC=0.23 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ aevo: Vol/MC=0.23 (>= 0.5) - OK
+✅ aevo: FDV=$23,115,593 (+9.0% vs MC) - INFLAÇÃO OK
+✅ aevo: Supply seguro - sem risco de inflação excessiva
+📈 aevo: Preço normal (sem pullback saudável)
+📊 aevo: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ aevo: MC=$21,199,664, Vol=$4,773,534
+ Novo menor MC: $21,199,664
+❌ flock: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+🟡 bigtime: Vol/MC=0.22 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ bigtime: Vol/MC=0.22 (>= 0.5) - OK
+❌ bigtime: FDV=$55,181,084 (+162.0% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ naoris: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+🟠 yb: Vol/MC=0.61 (0.5-1.0) - FORTE - OK
+✅ yb: Vol/MC=0.61 (>= 0.5) - OK
+❌ yb: FDV=$74,377,476 (+263.2% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 stg: Vol/MC=0.36 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ stg: Vol/MC=0.36 (>= 0.5) - OK
+✅ stg: FDV=$20,462,751 (+0.0% vs MC) - INFLAÇÃO OK
+✅ stg: Supply seguro - sem risco de inflação excessiva
+📈 stg: Preço normal (sem pullback saudável)
+📊 stg: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ stg: MC=$20,462,751, Vol=$7,328,093
+ Novo menor MC: $20,462,751
+🟡 la: Vol/MC=0.28 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ la: Vol/MC=0.28 (>= 0.5) - OK
+❌ la: FDV=$104,826,567 (+418.1% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ wojak: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+🟡 opn: Vol/MC=0.40 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ opn: Vol/MC=0.40 (>= 0.5) - OK
+❌ opn: FDV=$142,401,416 (+604.1% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ asset: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+🟡 b2: Vol/MC=0.33 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ b2: Vol/MC=0.33 (>= 0.5) - OK
+❌ b2: FDV=$101,382,803 (+405.5% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ es: Vol/MC=0.17 (< 0.2) - MORTO - dispensar
+❌ tlton: Vol/MC=0.17 (< 0.2) - MORTO - dispensar
+❌ movr: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+❌ dia: Vol/MC=0.15 (< 0.2) - MORTO - dispensar
+❌ f: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+❌ taiko: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟡 xai: Vol/MC=0.26 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ xai: Vol/MC=0.26 (>= 0.5) - OK
+✅ xai: FDV=$20,693,315 (+6.9% vs MC) - INFLAÇÃO OK
+✅ xai: Supply seguro - sem risco de inflação excessiva
+📈 xai: Preço normal (sem pullback saudável)
+📊 xai: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ xai: MC=$19,356,695, Vol=$4,989,350
+ Novo menor MC: $19,356,695
+❌ chr: Vol/MC=0.09 (< 0.2) - MORTO - dispensar
+❌ lrc: Vol/MC=0.05 (< 0.2) - MORTO - dispensar
+❌ win: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟡 sndkon: Vol/MC=0.27 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ sndkon: Vol/MC=0.27 (>= 0.5) - OK
+✅ sndkon: FDV=$19,132,937 (+0.0% vs MC) - INFLAÇÃO OK
+✅ sndkon: Supply seguro - sem risco de inflação excessiva
+📈 sndkon: Preço normal (sem pullback saudável)
+📊 sndkon: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ sndkon: MC=$19,132,937, Vol=$5,127,444
+ Novo menor MC: $19,132,937
+🟡 up: Vol/MC=0.21 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ up: Vol/MC=0.21 (>= 0.5) - OK
+❌ up: FDV=$99,331,233 (+421.2% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 pro: Vol/MC=0.29 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ pro: Vol/MC=0.29 (>= 0.5) - OK
+⚠️ pro: FDV=$32,739,093 (+72.7% vs MC) - ATENÇÃO - continuar
+✅ pro: Supply seguro - sem risco de inflação excessiva
+📈 pro: Preço normal (sem pullback saudável)
+📊 pro: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ pro: MC=$18,954,819, Vol=$5,432,411
+ Novo menor MC: $18,954,819
+❌ c98: Vol/MC=0.14 (< 0.2) - MORTO - dispensar
+❌ magic: Vol/MC=0.18 (< 0.2) - MORTO - dispensar
+🟠 layer: Vol/MC=0.87 (0.5-1.0) - FORTE - OK
+✅ layer: Vol/MC=0.87 (>= 0.5) - OK
+❌ layer: FDV=$90,089,779 (+376.2% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ agld: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+🟡 order: Vol/MC=0.20 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ order: Vol/MC=0.20 (>= 0.5) - OK
+❌ order: FDV=$47,950,175 (+157.8% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 pippin: Vol/MC=0.20 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ pippin: Vol/MC=0.20 (>= 0.5) - OK
+✅ pippin: FDV=$18,575,206 (+0.0% vs MC) - INFLAÇÃO OK
+✅ pippin: Supply seguro - sem risco de inflação excessiva
+📈 pippin: Preço normal (sem pullback saudável)
+📊 pippin: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ pippin: MC=$18,575,206, Vol=$3,723,572
+ Novo menor MC: $18,575,206
+❌ ponke: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+❌ well: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟠 blend: Vol/MC=0.69 (0.5-1.0) - FORTE - OK
+✅ blend: Vol/MC=0.69 (>= 0.5) - OK
+❌ blend: FDV=$92,383,221 (+400.0% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ prom: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+❌ velo: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+❌ xpin: Vol/MC=0.17 (< 0.2) - MORTO - dispensar
+❌ inx: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+🟡 zkc: Vol/MC=0.21 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ zkc: Vol/MC=0.21 (>= 0.5) - OK
+❌ zkc: FDV=$65,084,398 (+261.1% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ clanker: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+❌ dodo: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+❌ msfton: Vol/MC=0.15 (< 0.2) - MORTO - dispensar
+🟠 psg: Vol/MC=0.88 (0.5-1.0) - FORTE - OK
+✅ psg: Vol/MC=0.88 (>= 0.5) - OK
+✅ psg: FDV=$21,727,757 (+23.8% vs MC) - INFLAÇÃO OK
+✅ psg: Supply seguro - sem risco de inflação excessiva
+📈 psg: Preço normal (sem pullback saudável)
+📊 psg: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ psg: MC=$17,549,796, Vol=$15,386,602
+ Novo menor MC: $17,549,796
+🔥 reur: Vol/MC=3.46 (>= 1.0) - BREAKOUT - PRIORIDADE MÁXIMA!
+⚠️ reur: Vol/MC=3.46 (> 3.0) - VOLUME SUSPEITO - análise manual
+⚠️ reur: MC=$17,463,330 baixo + Vol/MC=3.46 alto - POSSÍVEL ARMADILHA
+🚨 reur: Volume alto (3.46x MC) + preço parado (0.10%) - POSSÍVEL WASH TRADING - análise manual
+🔥 reur: Vol/MC=3.46 (>= 1.0) - PRIORIDADE MÁXIMA!
+❌ reur: FDV=$5,821,109,903 (+33233.3% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 dood: Vol/MC=0.44 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ dood: Vol/MC=0.44 (>= 0.5) - OK
+✅ dood: FDV=$22,179,361 (+28.2% vs MC) - INFLAÇÃO OK
+✅ dood: Supply seguro - sem risco de inflação excessiva
+📈 dood: Preço normal (sem pullback saudável)
+📊 dood: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ dood: MC=$17,299,902, Vol=$7,657,742
+ Novo menor MC: $17,299,902
+🟡 wet: Vol/MC=0.23 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ wet: Vol/MC=0.23 (>= 0.5) - OK
+❌ wet: FDV=$74,809,411 (+334.8% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 kernel: Vol/MC=0.26 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ kernel: Vol/MC=0.26 (>= 0.5) - OK
+❌ kernel: FDV=$59,907,439 (+249.3% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🔥 id: Vol/MC=10.35 (>= 1.0) - BREAKOUT - PRIORIDADE MÁXIMA!
+⚠️ id: Vol/MC=10.35 (> 3.0) - VOLUME SUSPEITO - análise manual
+⚠️ id: MC=$16,883,237 baixo + Vol/MC=10.35 alto - POSSÍVEL ARMADILHA
+🔥 id: Vol/MC=10.35 (>= 1.0) - PRIORIDADE MÁXIMA!
+❌ id: FDV=$78,301,701 (+363.8% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ iefaon: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ sentis: Vol/MC=0.10 (< 0.2) - MORTO - dispensar
+🟡 drift: Vol/MC=0.41 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ drift: Vol/MC=0.41 (>= 0.5) - OK
+⚠️ drift: FDV=$27,296,440 (+63.5% vs MC) - ATENÇÃO - continuar
+✅ drift: Supply seguro - sem risco de inflação excessiva
+📈 drift: Preço normal (sem pullback saudável)
+📊 drift: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ drift: MC=$16,692,205, Vol=$6,925,202
+ Novo menor MC: $16,692,205
+🟡 kat: Vol/MC=0.24 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ kat: Vol/MC=0.24 (>= 0.5) - OK
+❌ kat: FDV=$70,743,832 (+327.0% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟠 gun: Vol/MC=0.59 (0.5-1.0) - FORTE - OK
+✅ gun: Vol/MC=0.59 (>= 0.5) - OK
+❌ gun: FDV=$75,326,436 (+357.7% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 tst: Vol/MC=0.34 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ tst: Vol/MC=0.34 (>= 0.5) - OK
+✅ tst: FDV=$16,439,730 (+0.0% vs MC) - INFLAÇÃO OK
+✅ tst: Supply seguro - sem risco de inflação excessiva
+📈 tst: Preço normal (sem pullback saudável)
+📊 tst: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ tst: MC=$16,439,730, Vol=$5,618,715
+ Novo menor MC: $16,439,730
+❌ power: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+❌ mbl: Vol/MC=0.12 (< 0.2) - MORTO - dispensar
+❌ usdr: Vol/MC=0.06 (< 0.2) - MORTO - dispensar
+❌ bico: Vol/MC=0.19 (< 0.2) - MORTO - dispensar
+🟡 vine: Vol/MC=0.28 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ vine: Vol/MC=0.28 (>= 0.5) - OK
+✅ vine: FDV=$15,942,505 (+0.0% vs MC) - INFLAÇÃO OK
+✅ vine: Supply seguro - sem risco de inflação excessiva
+📈 vine: Preço normal (sem pullback saudável)
+📊 vine: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ vine: MC=$15,942,505, Vol=$4,409,208
+ Novo menor MC: $15,942,505
+❌ goat: Vol/MC=0.19 (< 0.2) - MORTO - dispensar
+❌ egl1: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+🟡 ava: Vol/MC=0.28 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ ava: Vol/MC=0.28 (>= 0.5) - OK
+✅ ava: FDV=$15,703,582 (+0.0% vs MC) - INFLAÇÃO OK
+✅ ava: Supply seguro - sem risco de inflação excessiva
+📈 ava: Preço normal (sem pullback saudável)
+📊 ava: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ ava: MC=$15,703,582, Vol=$4,411,283
+ Novo menor MC: $15,703,582
+🟡 stbl: Vol/MC=0.33 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ stbl: Vol/MC=0.33 (>= 0.5) - OK
+❌ stbl: FDV=$310,709,098 (+1900.0% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ amiko: Vol/MC=0.08 (< 0.2) - MORTO - dispensar
+❌ joe: Vol/MC=0.15 (< 0.2) - MORTO - dispensar
+🟡 xny: Vol/MC=0.27 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ xny: Vol/MC=0.27 (>= 0.5) - OK
+❌ xny: FDV=$61,135,970 (+300.0% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ dolo: Vol/MC=0.16 (< 0.2) - MORTO - dispensar
+❌ on: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+ Página 4: 17 gems encontradas
+📄 Página 5 (gems encontradas: 32)...
+⏳ Rate limit... esperando 15s (página 5)
+📄 Página 5 (gems encontradas: 32)...
+⏳ Rate limit... esperando 15s (página 5)
+📄 Página 5 (gems encontradas: 32)...
+⏳ Rate limit... esperando 15s (página 5)
+📄 Página 5 (gems encontradas: 32)...
+⏳ Rate limit... esperando 15s (página 5)
+📄 Página 5 (gems encontradas: 32)...
+🟡 amdon: Vol/MC=0.47 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ amdon: Vol/MC=0.47 (>= 0.5) - OK
+✅ amdon: FDV=$15,044,400 (+0.0% vs MC) - INFLAÇÃO OK
+✅ amdon: Supply seguro - sem risco de inflação excessiva
+📈 amdon: Preço normal (sem pullback saudável)
+📊 amdon: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ amdon: MC=$15,044,400, Vol=$7,064,127
+ Novo menor MC: $15,044,400
+🟠 enso: Vol/MC=0.55 (0.5-1.0) - FORTE - OK
+✅ enso: Vol/MC=0.55 (>= 0.5) - OK
+❌ enso: FDV=$72,470,922 (+385.7% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ cmc20: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+🟡 roll: Vol/MC=0.22 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ roll: Vol/MC=0.22 (>= 0.5) - OK
+❌ roll: FDV=$95,498,758 (+545.2% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ ain: Vol/MC=0.13 (< 0.2) - MORTO - dispensar
+🟡 based: Vol/MC=0.46 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ based: Vol/MC=0.46 (>= 0.5) - OK
+❌ based: FDV=$62,190,274 (+325.5% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+🟡 newt: Vol/MC=0.36 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ newt: Vol/MC=0.36 (>= 0.5) - OK
+❌ newt: FDV=$67,777,589 (+365.1% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ 哈基米: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+🟡 elsa: Vol/MC=0.21 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ elsa: Vol/MC=0.21 (>= 0.5) - OK
+❌ elsa: FDV=$62,316,282 (+336.7% vs MC) - INFLAÇÃO MUITO ALTA - dispensar
+❌ aura: Vol/MC=0.11 (< 0.2) - MORTO - dispensar
+❌ acn: Vol/MC=0.18 (< 0.2) - MORTO - dispensar
+❌ bluai: Vol/MC=0.07 (< 0.2) - MORTO - dispensar
+🟡 orclon: Vol/MC=0.25 (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO
+✅ orclon: Vol/MC=0.25 (>= 0.5) - OK
+✅ orclon: FDV=$14,216,045 (+0.0% vs MC) - INFLAÇÃO OK
+✅ orclon: Supply seguro - sem risco de inflação excessiva
+📈 orclon: Preço normal (sem pullback saudável)
+📊 orclon: MOMENTUM BAIXO - 0.0% em 7d - mercado quieto
+ orclon: MC=$14,216,045, Vol=$3,574,653
+ Novo menor MC: $14,216,045
+🎯 Atingimos MCs próximos a $10,000,000!
+ Página 5: 2 gems encontradas
+🎯 Total encontrado: 34 gems
+📍 Menor MC encontrado: $14,216,045
+🎯 Alvo atingido: SIM
+📊 Ordenado por: MAIOR ratio Volume/MC (ESSENCIAL) + menor MC
+  1. pha: MC=$35,871,338, Vol=$36,951,385, Ratio=1.03
+  2. psg: MC=$17,549,796, Vol=$15,386,602, Ratio=0.88
+  3. meme: MC=$31,103,883, Vol=$19,240,658, Ratio=0.62
+  4. usdp: MC=$31,938,655, Vol=$17,539,665, Ratio=0.55
+  5. degen: MC=$35,001,603, Vol=$18,353,708, Ratio=0.52
+🔄 API: 34 gems encontradas
+✅ 10_49m_range: 34 gems
+🔄 Cache original: 39 gems
+✅ Cache deduplicado: 39 gems únicas
+💾 Cache salvo. Expira em: 21:38:04
+💾 Cache compartilhado salvo: 39 gems totais
+
+🧠 SISTEMA DE LÍDERES DE ALTSEASON - CONSOLIDADO
+==================================================
+🎯 OBJETIVO: Identificar protagonistas da bullrun (não fundo)
+📊 50m_range: 5 gems
+📊 usdon: EM MONITORAMENTO - aguardar sinais!
+📊 ordi: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para ordi
+📊 grx: EM MONITORAMENTO - aguardar sinais!
+📊 bio: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para bio
+📊 pnut: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para pnut
+📊 10_49m_range: 34 gems
+📊 pha: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para pha
+📊 psg: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para psg
+📊 meme: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para meme
+📊 usdp: EM MONITORAMENTO - aguardar sinais!
+📊 degen: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para degen
+📊 fida: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para fida
+📊 amdon: EM MONITORAMENTO - aguardar sinais!
+📊 dood: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para dood
+📊 drift: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para drift
+📊 aixbt: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para aixbt
+📊 stg: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para stg
+📊 tst: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para tst
+📊 gmt: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para gmt
+📊 alt: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para alt
+📊 pokt: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para pokt
+📊 dogs: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para dogs
+📊 neiro: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para neiro
+📊 pro: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para pro
+📊 ava: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para ava
+📊 vine: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para vine
+📊 sndkon: EM MONITORAMENTO - aguardar sinais!
+📊 mrvlon: EM MONITORAMENTO - aguardar sinais!
+📊 xai: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para xai
+📊 bome: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para bome
+📊 giggle: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para giggle
+📊 orclon: EM MONITORAMENTO - aguardar sinais!
+📊 edu: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para edu
+📊 intcon: EM MONITORAMENTO - aguardar sinais!
+📊 ssv: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para ssv
+📊 aevo: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para aevo
+📊 not: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para not
+📊 moodeng: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para moodeng
+📊 cgpt: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para cgpt
+📊 pippin: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para pippin
+
+🔄 ANÁLISE MULTI-TIMEFRAME:
+  🏆 LÍDERES CONFIRMADOS: 0 gems
+  🌟 LÍDERES EMERGENTES: 0 gems
+  💪 CANDIDATOS FORTES: 0 gems
+  🔍 CANDIDATOS INICIAIS: 0 gems
+  📊 EM MONITORAMENTO: 39 gems
+  ⚠️ DADOS INSUFICIENTES: 0 gems
+
+🧠 ANÁLISE SOCIAL (YouTube + Telegram):
+  🔥 EXPLOSÃO SOCIAL: 0 gems
+  💪 ATENÇÃO FORTE: 0 gems
+  📊 ATENÇÃO MODERADA: 0 gems
+  📈 ATENÇÃO BAIXA: 0 gems
+  ❌ ATENÇÃO FRACA: 0 gems
+  ⚠️ SEM DADOS: 0 gems
+  📊 NÃO APLICÁVEL: 39 gems
+
+📈 DETECÇÃO DE ACUMULAÇÃO SILENCIOSA
+============================================================
+
+🟢 CONFIRMADAS (2) — smart money provável:
+  💚 drift    | Score: 0.75 | Slope: +0.1865 | Acumulação silenciosa: slope=0.1865, consistência=80%
+  💚 usdp     | Score: 0.71 | Slope: +0.0364 | Acumulação silenciosa: slope=0.0364, consistência=58%
+
+🟡 MONITORAR (1) — possível acumulação:
+  📊 usdon    | Score: 0.52 | Possível acumulação: slope=0.0302
+
+🏭 ANÁLISE SETORIAL
+============================================================
+
+❄️ ALERTA GERAL: COLD
+
+📈 SETORES AQUECENDO (1):
+  🌡️  AI           | Slope: +0.0535 | Ratio atual: 0.468
+
+📊 TEMPERATURA ATUAL POR SETOR:
+  ❄️ AI           | Ratio médio: 0.468 | Gems quentes: 1 | COLD
+  🟡 Other        | Ratio médio: 0.384 | Gems quentes: 6 | WARMING
+  ❄️ Meme         | Ratio médio: 0.268 | Gems quentes: 0 | COLD
+  ❄️ Gaming       | Ratio médio: 0.250 | Gems quentes: 0 | COLD
+  ❄️ DeFi         | Ratio médio: 0.238 | Gems quentes: 0 | COLD
+💾 Snapshot diário CONSOLIDADO salvo: daily_20260529.json (39 gems)
+📊 Ordenado por: Market Cap crescente (menor → maior)
+🔍 Analisando PERSISTÊNCIA + ACELERAÇÃO vs histórico (5 dias, 42 gems ontem)
+🚀 POTENCIAL LÍDER: usdon - MAXIMA - ratio 1.02 (nova entrada)
+🚀 LÍDER ACELERADO: pha - MAXIMA - 32.5% crescimento (3 dias) - ACELERAÇÃO accelerating
+💎 Gems confirmadas atualizadas: 11 totais (ordenadas por MC crescente)
+
+🔥 1 LÍDERES DE ALTSEASON confirmados!
+  🚀 pha: MAXIMA - 32.5% crescimento (3 dias fortes)
+🚀 Novas candidatas fortes: 1 (total: 32)
+
+🚀 1 POTENCIAIS LÍDERES detectados!
+  ⭐ usdon: MAXIMA - ratio 1.02 (nova entrada)
+
+📊 ANÁLISE - 50M_RANGE:
+
+📊 ANÁLISE DAS 5 GEMS:
+================================================================================
+Market Cap - Médio: $67,791,759
+Market Cap - Min: $52,126,479, Max: $92,480,362
+Volume - Médio: $26,168,547
+Volume - Min: $10,550,946, Max: $62,336,726
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 4 gems
+  🟠 Strong (0.5-1.0): 0 gems
+  🔥 Breakout (>1.0): 1 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/5 (0.0%)
+  💪 Resiliência de Preço: 0/5 (0.0%)
+  👑 POTENCIAL OURO: 0/5 (0.0%)
+  🚨 WASH TRADING: 0/5 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 5 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. usdon    | MC: $  61,406,284 | Vol: $  62,336,726 | Ratio: 1.02 | B 📊📈    📊 | Ondo U.S. Dollar Token
+ 2. ordi     | MC: $  70,339,776 | Vol: $  23,388,348 | Ratio: 0.33 | E 📊📈    📊 | ORDI
+ 3. grx      | MC: $  92,480,362 | Vol: $  21,479,229 | Ratio: 0.23 | E 📊📈    📊 | GRX Chain
+ 4. bio      | MC: $  62,605,896 | Vol: $  13,087,486 | Ratio: 0.21 | E 📊📈    📊 | Bio Protocol
+ 5. pnut     | MC: $  52,126,479 | Vol: $  10,550,946 | Ratio: 0.20 | E 📊📈    📊 | Peanut the Squirrel
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 34 GEMS:
+================================================================================
+Market Cap - Médio: $25,877,849
+Market Cap - Min: $14,216,045, Max: $48,536,015
+Volume - Médio: $9,415,481
+Volume - Min: $3,574,653, Max: $36,951,385
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 29 gems
+  🟠 Strong (0.5-1.0): 4 gems
+  🔥 Breakout (>1.0): 1 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/34 (0.0%)
+  💪 Resiliência de Preço: 0/34 (0.0%)
+  👑 POTENCIAL OURO: 0/34 (0.0%)
+  🚨 WASH TRADING: 0/34 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 34 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. pha      | MC: $  35,871,338 | Vol: $  36,951,385 | Ratio: 1.03 | B 📊📈    📊 | PHALA
+ 2. psg      | MC: $  17,549,796 | Vol: $  15,386,602 | Ratio: 0.88 | S 📊📈    📊 | Paris Saint-Germain Fan Token
+ 3. meme     | MC: $  31,103,883 | Vol: $  19,240,658 | Ratio: 0.62 | S 📊📈    📊 | Memecoin
+ 4. usdp     | MC: $  31,938,655 | Vol: $  17,539,665 | Ratio: 0.55 | S 📊📈    📊 | Pax Dollar
+ 5. degen    | MC: $  35,001,603 | Vol: $  18,353,708 | Ratio: 0.52 | S 📊📈    📊 | Degen
+ 6. fida     | MC: $  26,592,265 | Vol: $  13,032,462 | Ratio: 0.49 | E 📊📈    📊 | Bonfida
+ 7. amdon    | MC: $  15,044,400 | Vol: $   7,064,127 | Ratio: 0.47 | E 📊📈    📊 | AMD (Ondo Tokenized Stock)
+ 8. dood     | MC: $  17,299,902 | Vol: $   7,657,742 | Ratio: 0.44 | E 📊📈    📊 | Doodles
+ 9. drift    | MC: $  16,692,205 | Vol: $   6,925,202 | Ratio: 0.41 | E 📊📈    📊 | Drift Protocol
+10. aixbt    | MC: $  27,650,525 | Vol: $  11,350,787 | Ratio: 0.41 | E 📊📈    📊 | aixbt
+✅ Usando cache (válido até: 21:38:04)
+
+💾 Salvando snapshots (usando data do cache): 20260529_093804
+  ✅ 50M: 39 gems únicas
+  📁 Arquivo: C:\market_montrezor_system\gems_system\data\snapshots\gems_50M_20260529_093804.csv
+  💾 Ranges presentes: 50M
+
+💾 Novos dados encontrados - Snapshot criado!
+
+🏆 Salvando snapshots com scores e ranking (data: 20260529_093804)...
+  🏆 50M enhanced: 39 gems com scores + eventos especiais
+  📁 Arquivo: C:\market_montrezor_system\gems_system\data\snapshots\gems_50M_enhanced_20260529_093804.csv
+  🗑️ Arquivo bruto deletado: C:\market_montrezor_system\gems_system\data\snapshots\gems_50M_20260529_093804.csv
+
+🏆 TOP 10 GEMS POR FINAL SCORE:
+------------------------------------------------------------------------------------------------------------------------
+ 1. pha      | MC: $  35,871,338 | Ratio: 1.03 | Final:  1.02 |  0d 💪     | PHALA
+ 2. usdon    | MC: $  61,406,284 | Ratio: 1.02 | Final:  0.90 |  0d        | Ondo U.S. Dollar Token
+ 3. psg      | MC: $  17,549,796 | Ratio: 0.88 | Final:  0.60 |  0d        | Paris Saint-Germain Fan Token
+ 4. meme     | MC: $  31,103,883 | Ratio: 0.62 | Final:  0.54 |  0d 💪     | Memecoin
+ 5. degen    | MC: $  35,001,603 | Ratio: 0.52 | Final:  0.54 |  0d 💪     | Degen
+ 6. usdp     | MC: $  31,938,655 | Ratio: 0.55 | Final:  0.30 |  0d        | Pax Dollar
+ 7. grx      | MC: $  92,480,362 | Ratio: 0.23 | Final:  0.24 |  0d 💪     | GRX Chain
+ 8. amdon    | MC: $  15,044,400 | Ratio: 0.47 | Final:  0.24 |  0d 💪     | AMD (Ondo Tokenized Stock)
+ 9. aixbt    | MC: $  27,650,525 | Ratio: 0.41 | Final:  0.24 |  0d 💪     | aixbt
+10. stg      | MC: $  20,462,751 | Ratio: 0.36 | Final:  0.24 |  0d 💪     | Stargate Finance
+
+📊 EVENTOS ESPECIAIS DETECTADOS:
+  👑 Líderes confirmados: 0
+  🔥 Explosões sociais: 0
+  💪 RS vs BTC forte: 16
+
+🏭 RESUMO SETORIAL: COLD | Setores quentes: nenhum | Aquecendo: AI
+❌ Erro: cannot access local variable 'json' where it is not associated with a value

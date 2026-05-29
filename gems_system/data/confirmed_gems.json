@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-28T07:22:25.583694",
+  "last_updated": "2026-05-29T09:38:44.013901",
   "total_confirmed": 11,
   "confirmed_gems": [
     {
@@ -124,19 +124,36 @@
     {
       "symbol": "usdp",
       "name": "Pax Dollar",
-      "confirmed_at": "2026-05-28T07:22:25.579644",
-      "ratio_now": 0.6790959379956151,
+      "confirmed_at": "2026-05-28T21:21:14.995050",
+      "ratio_now": 0.7216344579866507,
       "ratio_24h_ago": 0.5493956520416705,
-      "growth_percent": 23.60781077752452,
+      "growth_percent": 31.3505950228955,
       "strong_days": 3,
-      "acceleration_strength": 1.5467608068085312,
+      "acceleration_strength": 1.6436497908539636,
       "trend": "accelerating",
-      "market_cap": 31947676,
-      "volume": 21695537,
+      "market_cap": 31940717,
+      "volume": 23049522,
       "priority": "alta",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 67.91642884501894
+      "quality_score": 69.97831154540756
+    },
+    {
+      "symbol": "pha",
+      "name": "PHALA",
+      "confirmed_at": "2026-05-29T09:38:44.010195",
+      "ratio_now": 1.0301089131383947,
+      "ratio_24h_ago": 0.7772790212180478,
+      "growth_percent": 32.52755896127824,
+      "strong_days": 3,
+      "acceleration_strength": 3.851559851946915,
+      "trend": "accelerating",
+      "market_cap": 35871338,
+      "volume": 36951385,
+      "priority": "maxima",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 80.6021782627679
     },
     {
       "symbol": "neiro",
@@ -154,23 +171,6 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 78.96512269800351
-    },
-    {
-      "symbol": "pha",
-      "name": "PHALA",
-      "confirmed_at": "2026-05-26T07:34:44.974658",
-      "ratio_now": 2.969700271498978,
-      "ratio_24h_ago": 0.9412804748127417,
-      "growth_percent": 215.49579014584043,
-      "strong_days": 3,
-      "acceleration_strength": 3.5528228670890813,
-      "trend": "accelerating",
-      "market_cap": 41125385,
-      "volume": 122130067,
-      "priority": "extrema",
-      "status": "confirmed",
-      "type": "lider_altseason",
-      "quality_score": 100.0
     },
     {
       "symbol": "osmo",

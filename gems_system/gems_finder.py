@@ -1340,18 +1340,15 @@ class GemsFinder:
                         if self.social_analyzer and gem_ratio > 0.5 and persistence_days >= 1:
                             social_result = self.social_analyzer.check_social_validation(gem['symbol'], gem_ratio, persistence_days, gem.get('name', gem['symbol']))
                             # ✅ Converter dict para JSON string para evitar parse errors
-                            import json
                             gem['social_analysis'] = json.dumps(social_result)
                             self.social_analyzer.print_social_analysis(gem['symbol'], social_result)
                         else:
                             # ✅ Converter dict para JSON string para evitar parse errors
-                            import json
                             gem['social_analysis'] = json.dumps({'should_analyze': False, 'combined_validation': 'NOT_APPLICABLE'})
 
                     else:
                         gem['timeframe_classification'] = 'INSUFFICIENT_DATA'
                         # ✅ Converter dict para JSON string para evitar parse errors
-                        import json
                         gem['social_analysis'] = json.dumps({'should_analyze': False, 'combined_validation': 'INSUFFICIENT_DATA'})
                         print(f"📊 {gem['symbol']}: Dados insuficientes - primeira execução")
                 # --- SELLER EXHAUSTION INDEX (refinamento do drawdown) ---
@@ -1401,7 +1398,6 @@ class GemsFinder:
                 # ✅ Parse social_analysis se for string
                 social_analysis = gem.get('social_analysis', '{}')
                 if isinstance(social_analysis, str):
-                    import json
                     try:
                         social_analysis = json.loads(social_analysis)
                     except:
@@ -1436,7 +1432,6 @@ class GemsFinder:
                     # ✅ Parse timeframe_analysis se for string
                     timeframe_analysis = leader.get('timeframe_analysis', '{}')
                     if isinstance(timeframe_analysis, str):
-                        import json
                         try:
                             timeframe_analysis = json.loads(timeframe_analysis)
                         except:
@@ -1450,7 +1445,6 @@ class GemsFinder:
                     # ✅ Parse timeframe_analysis se for string
                     timeframe_analysis = leader.get('timeframe_analysis', '{}')
                     if isinstance(timeframe_analysis, str):
-                        import json
                         try:
                             timeframe_analysis = json.loads(timeframe_analysis)
                         except:
@@ -1650,7 +1644,6 @@ class GemsFinder:
                 social_analysis = gem.get('social_analysis', '{}')
                 if isinstance(social_analysis, str):
                     # ✅ Parse JSON string para dict
-                    import json
                     try:
                         social_analysis = json.loads(social_analysis)
                     except:
@@ -1845,7 +1838,6 @@ class GemsFinder:
             # Persistência (referência visual)
             timeframe_analysis = gem.get('timeframe_analysis', '{}')
             if isinstance(timeframe_analysis, str):
-                import json
                 try:
                     timeframe_analysis = json.loads(timeframe_analysis)
                 except:

@@ -1,0 +1,3 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+锄头,锄头,ohAmP55kr1M5h7EWNskQaBMV8FAPsvKRKbRmHfWpump,solana,0.0002793,724.0,279340.0,45284.61,1722050.05,22249,14835,0.6,7.4,https://dexscreener.com/solana/ham64lbyip6wuk3vu5ztbb9fzy1cdaxueasrxlewx8br,2026-05-29T08:59:44.235856,dexscreener,19.45566955
+MAMO,Mamo,0x7300B37DfdfAb110d83290A29DfB31B1740219fE,base,0.0102,-0.47,6043049.0,412421.76,12419.31,119,75,0.61,,https://dexscreener.com/base/0xe2b3aa806e56603a244bfc111c9474f7dedd03db,2026-05-29T08:59:52.335208,dexscreener,11.910680879999997

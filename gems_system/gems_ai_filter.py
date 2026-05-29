@@ -15,12 +15,10 @@
 
 import os
 import json
-import glob
 import time
 import requests
 import glob
 import random
-from datetime import timedelta
 import pandas as pd
 import math
 import numpy as np
@@ -71,7 +69,7 @@ _COIN_ID_CACHE = {}
 _PRICE_CACHE = {}
 
 def _get_coin_id(symbol: str) -> Optional[str]:
-    """Retorna o coin_id da CoinGecko para um símbolo (com cache)."""
+    """Retorna o coin_id da CoinGecko para um símbolo (com cache). Verifica correspondência exata do símbolo."""
     sym_up = symbol.upper()
     if sym_up in _COIN_ID_CACHE:
         return _COIN_ID_CACHE[sym_up]
@@ -81,10 +79,12 @@ def _get_coin_id(symbol: str) -> Optional[str]:
         if r.status_code == 200:
             data = r.json()
             coins = data.get('coins', [])
-            if coins:
-                coin_id = coins[0]['id']
-                _COIN_ID_CACHE[sym_up] = coin_id
-                return coin_id
+            # Procurar o primeiro resultado cujo símbolo corresponde exatamente (case-insensitive)
+            for coin in coins:
+                if coin.get('symbol', '').upper() == sym_up:
+                    coin_id = coin['id']
+                    _COIN_ID_CACHE[sym_up] = coin_id
+                    return coin_id
     except Exception:
         pass
     _COIN_ID_CACHE[sym_up] = None
@@ -1137,10 +1137,10 @@ Retorne APENAS este JSON:
                       "ciclo BTC em BUY_CONFIRMED. Potencial x10-x100 mas risco HIGH obrigatório.\n")
         user += dex_header + "\n".join(dex_rows) + dex_footer
         system = system.replace(
-            "Retorna APENAS JSON válido, sem texto extra.",
-            "Retorna APENAS JSON válido, sem texto extra.\n"
-            "- EARLY STAGE (DexScreener): tokens <48h, alta atividade compra, pré-listing. "
-            "Potencial x10-x100. Sempre marque como HIGH risk.")
+                "Retorne APENAS JSON válido, sem texto extra.\n",
+                "Retorne APENAS JSON válido, sem texto extra.\n"
+                "- EARLY STAGE ..."
+            )
 
     return system, user
 
@@ -1670,14 +1670,14 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
         result["macro_note"] = result_warning + " " + result.get("macro_note","")
 
     if result and "top_picks" in result:
-        for i, pick in enumerate(top_picks):
+        picks_list = result["top_picks"]
+        for i, pick in enumerate(picks_list):
             sym = pick.get("symbol")
             if sym:
-                price = _fetch_coingecko_price(sym)   # agora com retry robusto
+                price = _fetch_coingecko_price(sym)
                 pick["price_usd"] = price if price > 0 else None
                 pick["price_date"] = datetime.now().isoformat()
-                # Aguarda 3 segundos entre um pick e outro
-                if i < len(top_picks) - 1:
+                if i < len(picks_list) - 1:
                     time.sleep(3)
 
     # Salvar resultado

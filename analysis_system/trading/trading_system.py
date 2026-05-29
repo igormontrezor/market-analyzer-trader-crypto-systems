@@ -264,7 +264,7 @@ def send_telegram_alert(
         esc = html.escape
         ts = esc(pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-        verif_macro = f"🔍 <b>Verif. Macro</b>: {'Verifique divergencias no Market Analysis (D1 e W1)!'}\n"
+        verif_macro = "🔍 Verifique divergências no Market Analysis (D1 e W1)!\n"
 
         # TFs com toque
         tf_text = ""
@@ -326,14 +326,31 @@ def send_telegram_alert(
 
         err = _telegram_api_error(resp)
         # Fallback: texto simples (evita falhas de parse_mode / caracteres especiais)
-        tf_text_plain = f"Toques: {' | '.join(touch_tfs)}\n" if touch_tfs else ""
+        # Fallback: texto simples com todos os enriquecimentos
+        tf_text_plain = f"📊 Toques RSI: {' | '.join(touch_tfs)}\n" if touch_tfs else ""
         plain = (
             f"{direction_icon} SINAL {signal_type} {type_icon}\n"
             "-------------------\n"
             f"Par: {symbol}\nDireção: {direction}\nPreço: {price:.5f}\n"
             f"{tf_text_plain}"
-            f"Hora: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}\n\nMontrezor Trading System"
         )
+        # Adicionar campos opcionais se existirem
+        if adx_weak and adx_warning:
+            plain += f"⚠️ ADX fraco: {adx_warning}\n"
+        if stoch_div:
+            plain += f"⚠️ StochRSI: Contra o movimento\n"
+        if mn_ema_div:
+            plain += f"🚨 EMA Mensal: Divergente\n"
+        if div_grade:
+            plain += f"📊 Divergência RSI: {div_grade}\n"
+        if vol_ratio is not None:
+            vol_icon = "🔥" if vol_high else "·"
+            plain += f"📊 Volume 4H: {vol_icon} {vol_ratio:.1f}x média\n"
+        if atr_low and atr_ratio is not None:
+            plain += f"⚠️ ATR baixo ({atr_ratio:.2f}x) — mercado em range\n"
+        if elevated and elevation_reason:
+            plain += f"⬆️ Elevação: COMUM→SUPER ({elevation_reason})\n"
+        plain += f"Hora: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}\n\nMontrezor Trading System"
         resp2 = requests.post(
             url, json={"chat_id": chat_id, "text": plain}, timeout=15
         )
@@ -712,6 +729,38 @@ def calc_stoch_rsi(df, rsi_period=14, k_period=14, d_period=3, slowing=5):
     df['StochRSI_D'] = df['StochRSI_K'].rolling(d_period).mean()
     return df
 
+def calc_adx(df, period=14):
+    """
+    Calcula o ADX (Average Directional Index) de Wilder.
+    Retorna uma série com os valores de ADX.
+    """
+    high = df['High']
+    low = df['Low']
+    close = df['Close']
+
+    # True Range
+    tr1 = high - low
+    tr2 = (high - close.shift()).abs()
+    tr3 = (low - close.shift()).abs()
+    tr = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
+    atr = tr.ewm(alpha=1/period, adjust=False).mean()
+
+    # +DM e -DM (Wilder)
+    up_move = high - high.shift()
+    down_move = low.shift() - low
+    plus_dm = np.where((up_move > down_move) & (up_move > 0), up_move, 0)
+    minus_dm = np.where((down_move > up_move) & (down_move > 0), down_move, 0)
+
+    # Suavização exponencial (Wilder)
+    plus_di = pd.Series(plus_dm, index=df.index).ewm(alpha=1/period, adjust=False).mean() / atr * 100
+    minus_di = pd.Series(minus_dm, index=df.index).ewm(alpha=1/period, adjust=False).mean() / atr * 100
+
+    # DX = |+DI - -DI| / (+DI + -DI) * 100
+    dx = (plus_di - minus_di).abs() / (plus_di + minus_di) * 100
+    adx = dx.ewm(alpha=1/period, adjust=False).mean()
+
+    return adx
+
 # ============================================================
 # 4. DOWNLOAD MULTI-TIMEFRAME
 # ============================================================
@@ -898,6 +947,26 @@ def check_signals(data, symbol, athena_levels):
     if trend_mn == 0:
         return None   # mensal indefinido — sem sinal
 
+    # ── ADX nos TFs maiores (semanal e mensal) ──
+    mn_adx = None
+    w1_adx = None
+    adx_weak = False
+    adx_warning = None
+
+    if '1mo' in data and data['1mo'] is not None and len(data['1mo']) > 20:
+        mn_adx_series = calc_adx(data['1mo'], period=14)
+        mn_adx = mn_adx_series.iloc[-1]  # último valor (candle atual, pode estar em formação)
+        if not np.isnan(mn_adx) and mn_adx < 20:
+            adx_weak = True
+            adx_warning = f"ADX Mensal: {mn_adx:.1f} (<20) → Tendência fraca"
+
+    if not adx_weak and '1wk' in data and data['1wk'] is not None and len(data['1wk']) > 20:
+        w1_adx_series = calc_adx(data['1wk'], period=14)
+        w1_adx = w1_adx_series.iloc[-1]
+        if not np.isnan(w1_adx) and w1_adx < 20:
+            adx_weak = True
+            adx_warning = f"ADX Semanal: {w1_adx:.1f} (<20) → Mercado lateral"
+
     # ── Tendencia Semanal (so as 3 EMAs — preco nao importa) ──
     try:
         w1_buy_ema  = float(w1_trend['EMA_50']) > float(w1_trend['EMA_100']) > float(w1_trend['EMA_200'])
@@ -1076,6 +1145,10 @@ def check_signals(data, symbol, athena_levels):
         "stoch_div": stoch_div,    # Adicionado para a UI
         "stoch_warning": stoch_warning,
         "mn_ema_div": mn_ema_div,  # Adicionado para a UI
+        "adx_weak": adx_weak,
+        "adx_warning": adx_warning,
+        "mn_adx": round(mn_adx, 1) if mn_adx and not np.isnan(mn_adx) else None,
+        "w1_adx": round(w1_adx, 1) if w1_adx and not np.isnan(w1_adx) else None,
         # debug: quais condicoes passaram
         "_debug": {
             "hit_tfm": hit_tfm, "hit_w1": hit_w1, "hit_mn": hit_mn,
@@ -1126,47 +1199,66 @@ def _find_pivot_high(series, left=3, right=3):
 def _check_divergence(df, direction, lookback):
     """
     Divergência RSI vs Preço por PIVÔS — método técnico correto.
-
-    BULLISH (COMPRA): preço faz fundo mais baixo, RSI faz fundo mais alto.
-    BEARISH (VENDA):  preço faz topo mais alto,  RSI faz topo mais baixo.
-
-    Exige 2 pivôs separados por ENRICH_DIV_MIN_DIST candles na janela lookback.
+    Agora com validação robusta de dados faltantes.
     """
     try:
-        if df is None or len(df) < lookback + 6: return False
-        window = df.tail(lookback).copy()
-        if 'RSI' not in window.columns or window['RSI'].isna().sum() > lookback * 0.3:
+        if df is None or len(df) < lookback + 6:
             return False
-        rsi_s = window['RSI'].reset_index(drop=True)
+
+        window = df.tail(lookback).copy()
+
+        # Verificar se temos dados de preço e RSI suficientes
+        # Remove linhas com NaN em RSI (que podem ocorrer no início da série)
+        window = window.dropna(subset=['RSI', 'Low', 'High'])
+
+        # Se após remover NaNs a janela ficou muito pequena, abortar
+        if len(window) < 10:   # mínimo para ter chance de dois pivôs
+            return False
+
+        # Reindexar para índices contínuos (0..n-1) para simplificar busca
+        window = window.reset_index(drop=True)
+
+        rsi_s = window['RSI']
+
         if direction == "COMPRA":
-            price_s  = window['Low'].reset_index(drop=True)
+            price_s = window['Low']
             p_pivots = _find_pivot_low(price_s)
             r_pivots = _find_pivot_low(rsi_s)
-            if len(p_pivots) < 2 or len(r_pivots) < 2: return False
-            p1_idx, p2_idx = p_pivots[-2], p_pivots[-1]
-            if (p2_idx - p1_idx) < ENRICH_DIV_MIN_DIST: return False
-            p1_val = price_s.iloc[p1_idx]; p2_val = price_s.iloc[p2_idx]
-            r1_c = [i for i in r_pivots if abs(i - p1_idx) <= 4]
-            r2_c = [i for i in r_pivots if abs(i - p2_idx) <= 4]
-            if not r1_c or not r2_c: return False
-            r1_val = rsi_s.iloc[min(r1_c, key=lambda i: abs(i - p1_idx))]
-            r2_val = rsi_s.iloc[min(r2_c, key=lambda i: abs(i - p2_idx))]
-            return (p2_val < p1_val) and (r2_val > r1_val)
-        else:
-            price_s  = window['High'].reset_index(drop=True)
+        else:  # VENDA
+            price_s = window['High']
             p_pivots = _find_pivot_high(price_s)
             r_pivots = _find_pivot_high(rsi_s)
-            if len(p_pivots) < 2 or len(r_pivots) < 2: return False
-            p1_idx, p2_idx = p_pivots[-2], p_pivots[-1]
-            if (p2_idx - p1_idx) < ENRICH_DIV_MIN_DIST: return False
-            p1_val = price_s.iloc[p1_idx]; p2_val = price_s.iloc[p2_idx]
-            r1_c = [i for i in r_pivots if abs(i - p1_idx) <= 4]
-            r2_c = [i for i in r_pivots if abs(i - p2_idx) <= 4]
-            if not r1_c or not r2_c: return False
-            r1_val = rsi_s.iloc[min(r1_c, key=lambda i: abs(i - p1_idx))]
-            r2_val = rsi_s.iloc[min(r2_c, key=lambda i: abs(i - p2_idx))]
+
+        # Precisamos de pelo menos 2 pivôs em cada
+        if len(p_pivots) < 2 or len(r_pivots) < 2:
+            return False
+
+        # Pegar os 2 pivôs mais recentes de preço
+        p1_idx, p2_idx = p_pivots[-2], p_pivots[-1]
+        if (p2_idx - p1_idx) < ENRICH_DIV_MIN_DIST:
+            return False
+
+        p1_val = price_s.iloc[p1_idx]
+        p2_val = price_s.iloc[p2_idx]
+
+        # RSI: encontrar pivôs mais próximos dos pivôs de preço (tolerância 4 candles)
+        r1_candidates = [i for i in r_pivots if abs(i - p1_idx) <= 4]
+        r2_candidates = [i for i in r_pivots if abs(i - p2_idx) <= 4]
+
+        if not r1_candidates or not r2_candidates:
+            return False
+
+        r1_val = rsi_s.iloc[min(r1_candidates, key=lambda i: abs(i - p1_idx))]
+        r2_val = rsi_s.iloc[min(r2_candidates, key=lambda i: abs(i - p2_idx))]
+
+        if direction == "COMPRA":
+            # Bullish: preço faz fundo mais baixo, RSI faz fundo mais alto
+            return (p2_val < p1_val) and (r2_val > r1_val)
+        else:
+            # Bearish: preço faz topo mais alto, RSI faz topo mais baixo
             return (p2_val > p1_val) and (r2_val < r1_val)
-    except:
+
+    except Exception:
         return False
 
 def _check_volume_4h(df_4h, lookback=ENRICH_VOLUME_BARS, mult=ENRICH_VOLUME_MULT):
@@ -1789,33 +1881,53 @@ if __name__ == "__main__":
                 # Detalhes dos sinais
                 cols_sig = st.columns(min(len(signals_found), 3))
                 for idx, s in enumerate(signals_found):
+                    # ... dentro do loop for idx, s in enumerate(signals_found):
                     with cols_sig[idx % 3]:
                         css = "signal-card-buy" if s["direction"] == "COMPRA" else "signal-card-sell"
                         clr = "#1D9E75" if s["direction"] == "COMPRA" else "#E04C4C"
                         typ_cls = "bg-super" if s["type"] == "SUPER" else "bg-comum"
 
-                        # Badges de aviso adicionados aqui:
-                        stoch_warn = ""
-                        if s.get('stoch_div') and s.get('stoch_warning'):
-                            stoch_warn = f"<br><span style='background:#E0A905;color:#000;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;'>⚠️ {s['stoch_warning']}</span>"
+                        # --- Badges de aviso com escape HTML ---
+                        stoch_warning_esc = html.escape(s.get('stoch_warning', '')) if s.get('stoch_warning') else ''
+                        stoch_warn = f"<br><span style='background:#E0A905;color:#000;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;'>⚠️ {stoch_warning_esc}</span>" if s.get('stoch_div') and stoch_warning_esc else ""
+
                         mn_ema_warn = "<br><span style='background:#E04C4C;color:#FFF;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;'>🚨 EMA MENSAL DIV</span>" if s.get('mn_ema_div') else ""
 
-                        st.markdown(f"""
-                        <div class="{css}">
-                          <div class="signal-type {typ_cls}">SINAL {s['type']}</div>
-                          <div class="signal-title" style="color:{clr}">
-                            {"▲" if s["direction"]=="COMPRA" else "▼"} {s["direction"]} · {s["symbol"]}
-                          </div>
-                          <div style="color:#8b949e;font-size:13px">
-                            Preço: <b style="color:#c9d1d9">{s['price']:.5f}</b><br>
-                            TF ref: {s['tf_menor'].upper()}<br>
-                            TFs toque: <b style="color:#c9d1d9">{' | '.join(s.get('touch_tfs', []))}</b><br>
-                            Candle: <b style="color:#c9d1d9">{str(s.get('signal_ts', ''))[:16] if s.get('signal_ts') is not None else '—'}</b>
-                            {stoch_warn}
-                            {mn_ema_warn}
-                          </div>
-                        </div>
-                        """, unsafe_allow_html=True)
+                        adx_warning_esc = html.escape(s.get('adx_warning', '')) if s.get('adx_warning') else ''
+                        adx_warn_html = f"<br><span style='background:#E0A905;color:#000;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;'>⚠️ {adx_warning_esc}</span>" if s.get('adx_weak') and adx_warning_esc else ""
+
+                        # Escapar também símbolo e outras strings que vão para o HTML
+                        symbol_esc = html.escape(s["symbol"])
+                        direction_esc = html.escape(s["direction"])
+                        tf_menor_esc = html.escape(s["tf_menor"].upper())
+                        touch_tfs_esc = html.escape(' | '.join(s.get('touch_tfs', [])))
+                        signal_ts_esc = html.escape(str(s.get('signal_ts', ''))[:16]) if s.get('signal_ts') is not None else '—'
+
+                        html_content = (
+                        f'<div class="{css}">'
+                        f'<div class="signal-type {typ_cls}">SINAL {s["type"]}</div>'
+                        f'<div class="signal-title" style="color:{clr}">'
+                        f'{"▲" if s["direction"]=="COMPRA" else "▼"} {html.escape(s["direction"])} · {html.escape(s["symbol"])}'
+                        f'</div>'
+                        f'<div style="color:#8b949e;font-size:13px">'
+                        f'Preço: <b style="color:#c9d1d9">{s["price"]:.5f}</b><br>'
+                        f'TF ref: {html.escape(s["tf_menor"].upper())}<br>'
+                        f'TFs toque: <b style="color:#c9d1d9">{html.escape(" | ".join(s.get("touch_tfs", [])))}</b><br>'
+                        f'Candle: <b style="color:#c9d1d9">{html.escape(str(s.get("signal_ts", ""))[:16]) if s.get("signal_ts") else "—"}</b>'
+                    )
+
+                    if s.get('adx_weak') and s.get('adx_warning'):
+                        html_content += f'<br><span style="background:#E0A905;color:#000;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;">⚠️ {html.escape(s["adx_warning"])}</span>'
+
+                    if s.get('stoch_div') and s.get('stoch_warning'):
+                        html_content += f'<br><span style="background:#E0A905;color:#000;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;">⚠️ {html.escape(s["stoch_warning"])}</span>'
+
+                    if s.get('mn_ema_div'):
+                        html_content += '<br><span style="background:#E04C4C;color:#FFF;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;">🚨 EMA MENSAL DIV</span>'
+
+                    html_content += '</div></div>'
+
+                    st.markdown(html_content, unsafe_allow_html=True)
 
             st.markdown("---")
 

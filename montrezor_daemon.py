@@ -38,11 +38,11 @@ import html
 import logging
 import argparse
 import hashlib
-from datetime import datetime
-
+from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 import requests
+import threading
 
 # ════════════════════════════════════════════════════════════════════════
 # CONFIGURACAO
@@ -72,6 +72,20 @@ LOG_FILE    = os.path.join(PROJECT_DIR, "montrezor_daemon.log")
 
 # Intervalo para atualizar performance dos sinais (4 horas)
 PERFORMANCE_UPDATE_SEC = 4 * 3600   # 14400 segundos
+_performance_update_lock = threading.Lock()
+def _run_performance_update(ai, logger):
+    if not _performance_update_lock.acquire(blocking=False):
+        logger.debug("[AI] Atualização de performance já em andamento – ignorando.")
+        return
+    try:
+        updated = ai.auto_update_performance()
+        if updated > 0:
+            logger.info(f"[AI] ✅ {updated} nova(s) performance(s) registrada(s).")
+    except Exception as e:
+        logger.error(f"[AI] Erro na atualização de performance: {e}")
+    finally:
+        _performance_update_lock.release()
+
 
 _MA_DAEMON_STATE_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_ma_daemon_state.json")
 
@@ -142,6 +156,10 @@ def send_trading_tg(symbol, direction, sig_type, price, token, chat_id, signal_d
     e    = html.escape
     ts   = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    adx_text = ""
+    if enrich and enrich.get("adx_weak"):
+        adx_text = f"⚠️ <b>ADX fraco</b>: {enrich.get('adx_warning', '')}\n"
+
     # TFs tocados
     tf_text = f"<b>Toques RSI</b>: {e(' | '.join(touch_tfs))}\n" if touch_tfs else ""
 
@@ -201,28 +219,44 @@ def send_trading_tg(symbol, direction, sig_type, price, token, chat_id, signal_d
         f"{div_text}"
         f"{vol_text}"
         f"{atr_text}"
-        f"{stoch_text}"       # Inserir aqui
-        f"{verif_macro}"      # Inserir aqui
-        f"{ema_mn_text}"      # Inserir aqui
-        f"<b>Sinal gerado</b>: {signal_date}\n" if signal_date else ""
-        f"<b>Hora do envio</b>: {e(ts)}\n\n"
-        "Montrezor Trading [daemon]"
-    )
+        f"{stoch_text}"
+        f"{ema_mn_text}"
+        f"{adx_text}"
+        f"{verif_macro}"
+        + (f"<b>Sinal gerado</b>: {signal_date}\n" if signal_date else "")
+        + f"<b>Hora do envio</b>: {e(ts)}\n\n"
+        + "Montrezor Trading [daemon]"
+        )
     if _post(token, chat_id, msg): return True
 
-    # Fallback texto simples
-    tf_plain   = f"Toques: {' | '.join(touch_tfs)}\n" if touch_tfs else ""
-    div_plain  = f"Div RSI: {enrich.get('div_grade','—')}\n" if enrich and enrich.get('div_grade') else ""
-    vol_plain  = f"Volume: {enrich.get('vol_ratio',1.0):.1f}x\n" if enrich else ""
-    atr_plain  = "ATR: RANGE MORTO\n" if enrich and enrich.get('atr_low') else ""
-    elev_plain = f"Elevacao: COMUM->SUPER ({enrich.get('elevation_reason','')})\n" if enrich and enrich.get('elevated') else ""
-    stoch_plain = "StochRSI: DIVERGENTE" + (f" ({enrich.get('tf_menor', '?')})" if enrich and enrich.get('stoch_div') else "") + "\n" if enrich and enrich.get('stoch_div') else ""
-    ema_mn_plain = "EMA Mensal: DIVERGENTE\n" if enrich and enrich.get('mn_ema_div') else ""
-    verif_macro_plain = "🔍 Verif. Macro: Verifique divergencias no Market Analysis (D1 e W1)!\n"""
+    # Fallback texto simples (usado se o HTML falhar)
+    tf_plain   = f"📊 Toques RSI: {' | '.join(touch_tfs)}\n" if touch_tfs else ""
     plain = (
-        f"SINAL {sig_type}\nPar: {symbol}\nDirecao: {direction}\nPreco: {price:.5f}\n"
-        f"{tf_plain}{elev_plain}{div_plain}{vol_plain}{atr_plain}{stoch_plain}{ema_mn_plain}{verif_macro_plain}" +
-        (f"Sinal gerado: {signal_date}\n" if signal_date else "") + f"Hora do envio: {ts}\nMontrezor Trading [daemon]"
+        f"SINAL {sig_type}\n"
+        "-------------------\n"
+        f"Par: {symbol}\nDireção: {direction}\nPreço: {price:.5f}\n"
+        f"{tf_plain}"
+    )
+    if enrich:
+        if enrich.get('adx_weak'):
+            plain += f"⚠️ ADX fraco: {enrich.get('adx_warning', '')}\n"
+        if enrich.get('stoch_div'):
+            plain += f"⚠️ StochRSI: Contra o movimento\n"
+        if enrich.get('mn_ema_div'):
+            plain += f"🚨 EMA Mensal: Divergente\n"
+        if enrich.get('div_grade'):
+            plain += f"📊 Divergência RSI: {enrich.get('div_grade')}\n"
+        if enrich.get('vol_ratio'):
+            vol_icon = "🔥" if enrich.get('vol_high') else "·"
+            plain += f"📊 Volume 4H: {vol_icon} {enrich['vol_ratio']:.1f}x média\n"
+        if enrich.get('atr_low'):
+            plain += f"⚠️ ATR baixo ({enrich.get('atr_ratio', 1.0):.2f}x) — mercado em range\n"
+        if enrich.get('elevated'):
+            plain += f"⬆️ Elevação: COMUM→SUPER ({enrich.get('elevation_reason', '')})\n"
+    plain += (
+        f"🔍 Verifique divergências no Market Analysis (D1 e W1)!\n"
+        + (f"Sinal gerado: {signal_date}\n" if signal_date else "")
+        + f"Hora do envio: {ts}\nMontrezor Trading [daemon]"
     )
     return _post(token, chat_id, plain, "")
 
@@ -309,14 +343,20 @@ def gerar_csv_semanal(logger):
 # ════════════════════════════════════════════════════════════════════════
 # CONFIG LOADER
 # ════════════════════════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════════════════════
+# CONFIG LOADER (modificado)
+# ════════════════════════════════════════════════════════════════════════
 def load_config():
-    data = {"symbols": [], "athena": {}, "tg_token": "", "tg_chat_id": ""}
+    data = {"symbols": [], "athena": {}, "tg_token": "", "tg_chat_id": "",
+            "weekly_report_day": 6, "weekly_report_hour": 20}  # ← novos campos
     try:
         if os.path.exists(PERSIST_FILE):
             with open(PERSIST_FILE,"r",encoding="utf-8") as f:
                 raw = json.load(f)
                 data["symbols"] = raw.get("symbols", [])
-                data["athena"]  = raw.get("athena",  {})
+                data["athena"]  = raw.get("athena", {})
+                data["weekly_report_day"] = raw.get("weekly_report_day", 6)
+                data["weekly_report_hour"] = raw.get("weekly_report_hour", 20)
     except Exception: pass
     try:
         if os.path.exists(TELEGRAM_FILE):
@@ -450,6 +490,37 @@ def _calc_stoch_rsi(df, rsi_period=14, k_period=14, d_period=3, slowing=5):
     df['StochRSI_D'] = df['StochRSI_K'].rolling(d_period).mean()
     return df
 
+def _calc_adx(df, period=14):
+    """
+    Calcula o ADX (Average Directional Index) de Wilder.
+    Retorna uma série com os valores de ADX.
+    """
+    high = df['High']
+    low = df['Low']
+    close = df['Close']
+
+    # True Range
+    tr1 = high - low
+    tr2 = (high - close.shift()).abs()
+    tr3 = (low - close.shift()).abs()
+    tr = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
+    atr = tr.ewm(alpha=1/period, adjust=False).mean()
+
+    # +DM e -DM (Wilder)
+    up_move = high - high.shift()
+    down_move = low.shift() - low
+    plus_dm = np.where((up_move > down_move) & (up_move > 0), up_move, 0)
+    minus_dm = np.where((down_move > up_move) & (down_move > 0), down_move, 0)
+
+    # Suavização exponencial (Wilder)
+    plus_di = pd.Series(plus_dm, index=df.index).ewm(alpha=1/period, adjust=False).mean() / atr * 100
+    minus_di = pd.Series(minus_dm, index=df.index).ewm(alpha=1/period, adjust=False).mean() / atr * 100
+
+    dx = (plus_di - minus_di).abs() / (plus_di + minus_di) * 100
+    adx = dx.ewm(alpha=1/period, adjust=False).mean()
+
+    return adx
+
 def _build_indicators(raw):
     df=_supertrend(raw); df["EMA_50"]=_ema(df["Close"],50)
     df["EMA_100"]=_ema(df["Close"],100); df["EMA_200"]=_ema(df["Close"],200)
@@ -506,6 +577,26 @@ def check_signals_trading(data, symbol, athena_levels):
 
     trend_mn = int(mn_trend.get('ST_Trend', 0))
     if trend_mn == 0: return None
+
+        # ── ADX nos TFs maiores (semanal e mensal) ──
+    mn_adx = None
+    w1_adx = None
+    adx_weak = False
+    adx_warning = None
+
+    if '1mo' in data and data['1mo'] is not None and len(data['1mo']) > 20:
+        mn_adx_series = _calc_adx(data['1mo'], period=14)
+        mn_adx = mn_adx_series.iloc[-1]
+        if not np.isnan(mn_adx) and mn_adx < 20:
+            adx_weak = True
+            adx_warning = f"ADX Mensal: {mn_adx:.1f} (<20) → Tendência fraca"
+
+    if not adx_weak and '1wk' in data and data['1wk'] is not None and len(data['1wk']) > 20:
+        w1_adx_series = _calc_adx(data['1wk'], period=14)
+        w1_adx = w1_adx_series.iloc[-1]
+        if not np.isnan(w1_adx) and w1_adx < 20:
+            adx_weak = True
+            adx_warning = f"ADX Semanal: {w1_adx:.1f} (<20) → Mercado lateral"
 
     try:
         w1_buy_ema  = float(w1_trend['EMA_50']) > float(w1_trend['EMA_100']) > float(w1_trend['EMA_200'])
@@ -638,6 +729,10 @@ def check_signals_trading(data, symbol, athena_levels):
         "signal_ts": signal_ts,
         "touch_tfs": touch_tfs,
         "stoch_div": stoch_div,    # Repassando para o bot
+        "adx_weak": adx_weak,
+        "adx_warning": adx_warning,
+        "mn_adx": round(mn_adx, 1) if mn_adx and not np.isnan(mn_adx) else None,
+        "w1_adx": round(w1_adx, 1) if w1_adx and not np.isnan(w1_adx) else None,
         "stoch_warning": stoch_warning,
         "mn_ema_div": mn_ema_div,  # Repassando para o bot
         "_debug": {
@@ -709,87 +804,66 @@ def _find_pivot_high(series, left=3, right=3):
 def _check_divergence(df, direction, lookback):
     """
     Divergência RSI vs Preço por PIVÔS — método técnico correto.
-
-    BULLISH (COMPRA):
-      Preço faz mínimo mais baixo (P2_low < P1_low)
-      RSI    faz mínimo mais ALTO  (R2_low > R1_low)
-      → preço cai mas momentum sobe = reversão provável para cima
-
-    BEARISH (VENDA):
-      Preço faz máximo mais alto  (P2_high > P1_high)
-      RSI    faz máximo mais BAIXO (R2_high < R1_high)
-      → preço sobe mas momentum cai = reversão provável para baixo
-
-    Exige pelo menos 2 pivôs separados por ENRICH_DIV_MIN_DIST candles
-    dentro da janela `lookback`. Retorna True se confirmado.
+    Agora com validação robusta de dados faltantes.
     """
     try:
         if df is None or len(df) < lookback + 6:
             return False
+
         window = df.tail(lookback).copy()
-        if 'RSI' not in window.columns or window['RSI'].isna().sum() > lookback * 0.3:
+
+        # Verificar se temos dados de preço e RSI suficientes
+        # Remove linhas com NaN em RSI (que podem ocorrer no início da série)
+        window = window.dropna(subset=['RSI', 'Low', 'High'])
+
+        # Se após remover NaNs a janela ficou muito pequena, abortar
+        if len(window) < 10:   # mínimo para ter chance de dois pivôs
             return False
 
-        rsi_s = window['RSI'].reset_index(drop=True)
+        # Reindexar para índices contínuos (0..n-1) para simplificar busca
+        window = window.reset_index(drop=True)
+
+        rsi_s = window['RSI']
 
         if direction == "COMPRA":
-            price_s = window['Low'].reset_index(drop=True)
+            price_s = window['Low']
             p_pivots = _find_pivot_low(price_s)
             r_pivots = _find_pivot_low(rsi_s)
-
-            # Precisamos de pelo menos 2 pivôs em cada
-            if len(p_pivots) < 2 or len(r_pivots) < 2:
-                return False
-
-            # Pegar os 2 pivôs mais recentes de preço
-            p1_idx, p2_idx = p_pivots[-2], p_pivots[-1]
-            if (p2_idx - p1_idx) < ENRICH_DIV_MIN_DIST:
-                return False
-
-            p1_val = price_s.iloc[p1_idx]
-            p2_val = price_s.iloc[p2_idx]
-
-            # RSI: achar pivôs mais próximos dos pivôs de preço
-            r1_candidates = [i for i in r_pivots if abs(i - p1_idx) <= 4]
-            r2_candidates = [i for i in r_pivots if abs(i - p2_idx) <= 4]
-
-            if not r1_candidates or not r2_candidates:
-                return False
-
-            r1_val = rsi_s.iloc[min(r1_candidates, key=lambda i: abs(i - p1_idx))]
-            r2_val = rsi_s.iloc[min(r2_candidates, key=lambda i: abs(i - p2_idx))]
-
-            # BULLISH: preço faz fundo mais baixo, RSI faz fundo mais alto
-            return (p2_val < p1_val) and (r2_val > r1_val)
-
         else:  # VENDA
-            price_s = window['High'].reset_index(drop=True)
+            price_s = window['High']
             p_pivots = _find_pivot_high(price_s)
             r_pivots = _find_pivot_high(rsi_s)
 
-            if len(p_pivots) < 2 or len(r_pivots) < 2:
-                return False
+        # Precisamos de pelo menos 2 pivôs em cada
+        if len(p_pivots) < 2 or len(r_pivots) < 2:
+            return False
 
-            p1_idx, p2_idx = p_pivots[-2], p_pivots[-1]
-            if (p2_idx - p1_idx) < ENRICH_DIV_MIN_DIST:
-                return False
+        # Pegar os 2 pivôs mais recentes de preço
+        p1_idx, p2_idx = p_pivots[-2], p_pivots[-1]
+        if (p2_idx - p1_idx) < ENRICH_DIV_MIN_DIST:
+            return False
 
-            p1_val = price_s.iloc[p1_idx]
-            p2_val = price_s.iloc[p2_idx]
+        p1_val = price_s.iloc[p1_idx]
+        p2_val = price_s.iloc[p2_idx]
 
-            r1_candidates = [i for i in r_pivots if abs(i - p1_idx) <= 4]
-            r2_candidates = [i for i in r_pivots if abs(i - p2_idx) <= 4]
+        # RSI: encontrar pivôs mais próximos dos pivôs de preço (tolerância 4 candles)
+        r1_candidates = [i for i in r_pivots if abs(i - p1_idx) <= 4]
+        r2_candidates = [i for i in r_pivots if abs(i - p2_idx) <= 4]
 
-            if not r1_candidates or not r2_candidates:
-                return False
+        if not r1_candidates or not r2_candidates:
+            return False
 
-            r1_val = rsi_s.iloc[min(r1_candidates, key=lambda i: abs(i - p1_idx))]
-            r2_val = rsi_s.iloc[min(r2_candidates, key=lambda i: abs(i - p2_idx))]
+        r1_val = rsi_s.iloc[min(r1_candidates, key=lambda i: abs(i - p1_idx))]
+        r2_val = rsi_s.iloc[min(r2_candidates, key=lambda i: abs(i - p2_idx))]
 
-            # BEARISH: preço faz topo mais alto, RSI faz topo mais baixo
+        if direction == "COMPRA":
+            # Bullish: preço faz fundo mais baixo, RSI faz fundo mais alto
+            return (p2_val < p1_val) and (r2_val > r1_val)
+        else:
+            # Bearish: preço faz topo mais alto, RSI faz topo mais baixo
             return (p2_val > p1_val) and (r2_val < r1_val)
 
-    except:
+    except Exception:
         return False
 
 def _check_volume(df_4h, lookback=ENRICH_VOLUME_BARS, mult=ENRICH_VOLUME_MULT):
@@ -1078,6 +1152,104 @@ def update_pending_performance(logger):
         save_performance_data(perf)
         logger.info("[PERF] Arquivo de performance atualizado")
 
+
+# ════════════════════════════════════════════════════════════════════════
+# RELATÓRIO SEMANAL – ESTATÍSTICAS E GRÁFICO
+# ════════════════════════════════════════════════════════════════════════
+
+def gerar_estatisticas_semanais(logger):
+    """Retorna string com estatísticas resumidas dos sinais da última semana."""
+    perf_file = os.path.join(os.path.expanduser("~"), ".montrezor_performance.json")
+    if not os.path.exists(perf_file):
+        logger.warning("[REL] Arquivo de performance não encontrado para estatísticas.")
+        return None
+    try:
+        with open(perf_file, 'r', encoding='utf-8') as f:
+            perf = json.load(f)
+    except Exception as e:
+        logger.error(f"[REL] Erro ao ler performance para estatísticas: {e}")
+        return None
+    if not perf:
+        return None
+    df = pd.DataFrame(perf.values())
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    semana_atras = datetime.now() - timedelta(days=7)
+    df_semana = df[df['timestamp'] >= semana_atras].copy()
+    if df_semana.empty:
+        return "📊 Nenhum sinal na última semana."
+    # Usar result_30d como veredito final
+    df_semana = df_semana.dropna(subset=['result_30d'])
+    if df_semana.empty:
+        return "📊 Nenhum sinal com resultado 30d disponível na última semana."
+    n = len(df_semana)
+    wins = (df_semana['result_30d'] > 0).sum()
+    win_rate = wins / n
+    avg_return = df_semana['result_30d'].mean()
+    # Melhor sinal
+    best_idx = df_semana['result_30d'].idxmax()
+    best = df_semana.loc[best_idx]
+    best_str = f"{best['symbol']} {best['direction']} +{best['result_30d']:.2%}"
+    # Data início e fim
+    data_inicio = semana_atras.strftime('%Y-%m-%d')
+    data_fim = datetime.now().strftime('%Y-%m-%d')
+    msg = (
+        f"📊 *Relatório Semanal Montrezor*\n"
+        f"Período: {data_inicio} a {data_fim}\n\n"
+        f"📈 Sinais na semana: {n}\n"
+        f"✅ Acertos (30d): {wins} ({win_rate:.1%})\n"
+        f"💰 Retorno médio (30d): {avg_return:.2%}\n"
+        f"🏆 Melhor sinal: {best_str}\n\n"
+        f"Detalhes no CSV anexo."
+    )
+    return msg
+
+def gerar_grafico_equity_semanal(logger):
+    """Gera gráfico da equity curve dos sinais da última semana e retorna BytesIO do PNG."""
+    try:
+        import matplotlib.pyplot as plt
+    except ImportError:
+        logger.warning("[REL] matplotlib não instalado. Pulando gráfico.")
+        return None
+    perf_file = os.path.join(os.path.expanduser("~"), ".montrezor_performance.json")
+    if not os.path.exists(perf_file):
+        return None
+    try:
+        with open(perf_file, 'r', encoding='utf-8') as f:
+            perf = json.load(f)
+    except Exception:
+        return None
+    if not perf:
+        return None
+    df = pd.DataFrame(perf.values())
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    semana_atras = datetime.now() - timedelta(days=7)
+    df_semana = df[df['timestamp'] >= semana_atras].copy()
+    if df_semana.empty:
+        return None
+    df_semana = df_semana.dropna(subset=['result_30d'])
+    if df_semana.empty:
+        return None
+    df_semana = df_semana.sort_values('timestamp')
+    # Equity acumulada (capital inicial 10000)
+    equity = [10000.0]
+    for ret in df_semana['result_30d']:
+        equity.append(equity[-1] * (1 + ret))
+    # Plotar
+    plt.figure(figsize=(8, 4))
+    plt.plot(df_semana['timestamp'], equity[1:], marker='o', linestyle='-', color='#1D9E75', linewidth=2)
+    plt.title('Equity Curve - Última Semana (30d hold)')
+    plt.xlabel('Data do sinal')
+    plt.ylabel('Capital (R$)')
+    plt.grid(True, linestyle='--', alpha=0.5)
+    plt.tight_layout()
+    # Salvar em buffer
+    import io
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', dpi=100)
+    buf.seek(0)
+    plt.close()
+    return buf
+
 # ════════════════════════════════════════════════════════════════════════
 # LOOP PRINCIPAL
 # ════════════════════════════════════════════════════════════════════════
@@ -1249,22 +1421,45 @@ def run_daemon(logger, mode="all"):
         # ── RELATÓRIO SEMANAL (domingo às 20h) ──
         now = time.time()
         # Só executa se já passou 24h desde o último envio (para não enviar várias vezes no mesmo domingo)
-        if now - last_weekly_report >= 86400:   # 24h
-            # Verificar se é domingo (weekday 6) e hora >= 20
+        if now - last_weekly_report >= 86400:
+            cfg = load_config()
+            report_day = cfg.get("weekly_report_day", 6)
+            report_hour = cfg.get("weekly_report_hour", 20)
             dt = datetime.now()
-            if dt.weekday() == 6 and dt.hour >= 20:
+            if dt.weekday() == report_day and dt.hour >= report_hour:
                 logger.info("[REL] Gerando relatório semanal...")
+                # 1. Enviar estatísticas em texto (Markdown)
+                stats_msg = gerar_estatisticas_semanais(logger)
+                if stats_msg:
+                    ok = _post(cfg["tg_token"], cfg["tg_chat_id"], stats_msg, parse_mode="Markdown")
+                    if ok:
+                        logger.info("[REL] Estatísticas enviadas.")
+                    else:
+                        logger.error("[REL] Falha ao enviar estatísticas.")
+                # 2. Enviar gráfico (se disponível)
+                img_buf = gerar_grafico_equity_semanal(logger)
+                if img_buf:
+                    url = f"https://api.telegram.org/bot{cfg['tg_token']}/sendPhoto"
+                    files = {'photo': ('equity.png', img_buf, 'image/png')}
+                    try:
+                        r = requests.post(url, files=files, data={'chat_id': cfg['tg_chat_id']}, timeout=30)
+                        if r.status_code == 200 and r.json().get('ok', False):
+                            logger.info("[REL] Gráfico enviado.")
+                        else:
+                            logger.error(f"[REL] Falha ao enviar gráfico: {r.text}")
+                    except Exception as e:
+                        logger.error(f"[REL] Erro enviar gráfico: {e}")
+                # 3. Enviar CSV
                 csv_data = gerar_csv_semanal(logger)
                 if csv_data:
-                    cfg = load_config()
                     ok = send_csv_via_telegram(csv_data, cfg["tg_token"], cfg["tg_chat_id"])
                     if ok:
-                        logger.info("[REL] Relatório semanal enviado com sucesso.")
+                        logger.info("[REL] CSV enviado com sucesso.")
                         last_weekly_report = now
                     else:
-                        logger.error("[REL] Falha ao enviar relatório.")
+                        logger.error("[REL] Falha ao enviar CSV.")
                 else:
-                    logger.info("[REL] Nenhum dado para enviar.")
+                    logger.info("[REL] Nenhum dado CSV para enviar.")
 
         time.sleep(5)
 
@@ -1391,10 +1586,7 @@ def run_daemon(logger, mode="all"):
                         # ATUALIZAR PERFORMANCE DAS PICKS ANTIGAS E TREINAR ML
                         # ─────────────────────────────────────────────────────────
                         try:
-                            updated = ai.auto_update_performance()
-                            if updated > 0:
-                                logger.info(f"[AI] ✅ {updated} nova(s) performance(s) registrada(s).")
-
+                            threading.Thread(target=_run_performance_update, args=(ai, logger), daemon=True).start()
                             perf = ai._load_performance()
                             n_picks = len(perf)
                             logger.info(f"[AI] 📊 Total de picks avaliados no histórico: {n_picks}")

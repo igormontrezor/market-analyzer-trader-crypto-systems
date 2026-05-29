@@ -1,0 +1,3 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+WBULL,wrapped bulls,gAhvUSC7XamFqt6gr1JwHU2tEZFYQMEQYEsyKBSpump,solana,0.0001223,257.0,122339.0,30132.92,2129822.84,21369,16625,0.56,17.5,https://dexscreener.com/solana/c7f1fy8tucrwl5myh9peoupaw79efggu8t6ip6jezehx,2026-05-28T15:01:48.246693,dexscreener,2188.836132
+KNICKS,New York Knicks,A3F7JL4eEG9YvXkqfqvQimncGmGvArZgjVdHNqUrpump,solana,0.0001744,407.0,169999.0,33762.13,852538.47,7069,5732,0.55,20.9,https://dexscreener.com/solana/cmxvcvdglyxtjdfacwk4l4ktcnwosr4nwv6l1eqycsbz,2026-05-28T15:01:18.609025,dexscreener,910.914683
