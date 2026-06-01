@@ -35,7 +35,9 @@ def search_pairs_by_chain(chain: str) -> List[Dict]:
         url_boost = "https://api.dexscreener.com/token-boosts/latest/v1"
         r = requests.get(url_boost, timeout=12)
         if r.status_code == 200:
-            for item in r.json() if isinstance(r.json(), list) else []:
+            data = r.json()
+            items = data if isinstance(data, list) else []
+            for item in items:
                 if item.get("chainId","").lower() == chain.lower():
                     # Buscar dados do par pelo tokenAddress
                     addr = item.get("tokenAddress","")
@@ -43,6 +45,7 @@ def search_pairs_by_chain(chain: str) -> List[Dict]:
                         r2 = requests.get(f"{DEXSCREENER_API}/tokens/{addr}", timeout=8)
                         if r2.status_code == 200:
                             pairs.extend(r2.json().get("pairs",[]) or [])
+                        time.sleep(0.2)   # ← Delay entre requisições de tokens
     except Exception:
         pass
 

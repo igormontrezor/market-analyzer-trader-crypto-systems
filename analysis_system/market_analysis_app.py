@@ -1582,7 +1582,7 @@ if active_sigs:
             ok = _send_tg_ma(chart, direction, sig["indicators"], fx_sym, sig["date"])
             if ok:
                 _log_ma_signal(chart, direction, sig["indicators"])
-            _update_state(chart, direction)
+                _update_state(chart, direction)
 
     logs = _load_ma_signals()
     if logs:

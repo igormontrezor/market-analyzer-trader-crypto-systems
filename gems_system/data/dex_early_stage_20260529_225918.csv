@@ -1,0 +1,2 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+OCTOAI,Octopus,oCToFrqzfrsXQ2qEG3FF4wjR2pCm3HKC8ra81XYWyoz,solana,0.0001683,156.0,168305.0,42358.91,51169.53,3609,2239,0.62,3.7,https://dexscreener.com/solana/comqs8tpnmuat3cr5l6ograp3bknn6jreqmdxzrmeznw,2026-05-29T22:59:11.785458,dexscreener,7.294739889999999

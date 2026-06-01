@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-29T09:38:44.017164",
-  "total_candidates": 32,
+  "last_updated": "2026-06-01T08:03:58.288829",
+  "total_candidates": 34,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -412,6 +412,32 @@
       "ratio_now": 2.134844655763496,
       "market_cap": 20619690,
       "volume": 44019835,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "meme",
+      "name": "Memecoin",
+      "detected_at": "2026-05-29T22:36:43.408380",
+      "ratio_now": 1.6345451568319016,
+      "market_cap": 32215225,
+      "volume": 52657240,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 56.8575698033047
+    },
+    {
+      "symbol": "portal",
+      "name": "Portal",
+      "detected_at": "2026-06-01T08:03:58.283580",
+      "ratio_now": 13.549721630381306,
+      "market_cap": 30171396,
+      "volume": 408814017,
       "priority": "extrema",
       "status": "new_strong_candidate",
       "reason": "Nova entrada forte (> 0.8)",

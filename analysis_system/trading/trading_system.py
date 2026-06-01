@@ -1,3 +1,4 @@
+from __future__ import annotations
 import streamlit as st
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -9,6 +10,12 @@ import os
 import html
 import requests
 from io import StringIO
+# Tentar importar módulo de monitoramento (opcional)
+try:
+    from position_monitor import load_positions, run_monitoring_cycle
+    _MONITOR_AVAILABLE = True
+except ImportError:
+    _MONITOR_AVAILABLE = False
 
 # ============================================================
 # MT5 DATA PROVIDER  (fonte única — sem yfinance)
@@ -24,6 +31,7 @@ from io import StringIO
 #   Com MT5 os dados são idênticos ao terminal: mesmos candles,
 #   mesmo RSI, mesmos toques.
 # ============================================================
+
 try:
     from backtest_tab import render_backtest_tab
     _BT_AVAILABLE = True
@@ -53,6 +61,16 @@ MT5_BARS = {
     "4h":  1500,   # ~250 dias
 }
 
+
+DEAD_BAND = 0.002
+def filter_neutral(df, col):
+    """Retorna df onde |df[col]| > DEAD_BAND (remove neutros)"""
+    return df[abs(df[col]) > DEAD_BAND].copy()
+
+def neutral_count(df, col):
+    """Retorna número de registros neutros (|result| <= DEAD_BAND)"""
+    return (abs(df[col]) <= DEAD_BAND).sum()
+
 # ── Inicialização MT5 ─────────────────────────────────────────
 def _init_mt5() -> bool:
     """Inicializa e conecta ao terminal MT5. Retorna True se OK."""
@@ -65,6 +83,46 @@ def _init_mt5() -> bool:
         return mt5.initialize()
     except Exception:
         return False
+
+# Arquivo para travas persistentes de sinais (evita duplicatas após reinicialização)
+SIGNAL_LOCKS_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_signal_locks.json")
+LOCK_EXPIRY_HOURS = 24
+
+def _load_signal_locks() -> dict:
+    """Carrega locks persistentes: {lock_key: timestamp_utc_iso}"""
+    if os.path.exists(SIGNAL_LOCKS_FILE):
+        try:
+            with open(SIGNAL_LOCKS_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except:
+            pass
+    return {}
+
+def _save_signal_locks(locks: dict):
+    try:
+        with open(SIGNAL_LOCKS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(locks, f, indent=2)
+    except:
+        pass
+
+def _is_signal_locked(lock_key: str) -> bool:
+    """Retorna True se o sinal já foi registrado nas últimas LOCK_EXPIRY_HOURS."""
+    locks = _load_signal_locks()
+    if lock_key not in locks:
+        return False
+    lock_time_str = locks[lock_key]
+    try:
+        lock_time = pd.Timestamp(lock_time_str).tz_localize(None)
+        now = pd.Timestamp.now(tz=None)
+        return (now - lock_time).total_seconds() < LOCK_EXPIRY_HOURS * 3600
+    except:
+        return False
+
+def _lock_signal(lock_key: str):
+    """Marca o sinal como registrado agora."""
+    locks = _load_signal_locks()
+    locks[lock_key] = pd.Timestamp.now().isoformat()
+    _save_signal_locks(locks)
 
 # ── Download via MT5 ──────────────────────────────────────────
 def fetch_ohlcv(symbol: str, interval: str) -> pd.DataFrame | None:
@@ -250,7 +308,7 @@ def send_telegram_alert(
     touch_tfs: list = None, stoch_div: bool = False, mn_ema_div: bool = False,
     div_grade: str = None, vol_ratio: float = None, vol_high: bool = False,
     atr_low: bool = False, atr_ratio: float = None, elevated: bool = False,
-    elevation_reason: str = None
+    elevation_reason: str = None, adx_weak: bool = False, adx_warning: str = None
 ) -> tuple:
     """Envia alerta de sinal via Telegram. Retorna (sucesso, mensagem_erro)."""
     token = _normalize_telegram_token(token)
@@ -270,6 +328,10 @@ def send_telegram_alert(
         tf_text = ""
         if touch_tfs:
             tf_text = f"<b>Toques RSI</b>: {esc(' | '.join(touch_tfs))}\n"
+
+        adx_text = ""
+        if adx_weak and adx_warning:
+            adx_text = f"⚠️ <b>ADX fraco</b>: {esc(adx_warning)}\n"
 
         # Elevação COMUM → SUPER (por divergência/volume)
         elev_text = ""
@@ -307,6 +369,7 @@ def send_telegram_alert(
             f"<b>Direção</b>: {esc(direction)}\n"
             f"<b>Preço</b>: {price:.5f}\n"
             f"{tf_text}"
+            f"{adx_text}"
             f"{elev_text}"
             f"{div_text}"
             f"{vol_text}"
@@ -1310,7 +1373,8 @@ def enrich_signal(sig, data):
     """
     try:
         direction = sig["direction"]
-        sig_type  = sig["type"]
+        original_type = sig.get("type", "COMUM")   # ← guardar original
+        sig_type   = sig["type"]                   # cópia para trabalhar
 
         df_4h = data.get("4h")
         df_d1 = data.get("1d")
@@ -1342,7 +1406,7 @@ def enrich_signal(sig, data):
             sig_type = "SUPER"
 
         sig["type"]             = sig_type
-        sig["type_base"]        = "COMUM" if elevated else sig_type
+        sig["type_base"]        = original_type
         sig["elevated"]         = elevated
         sig["elevation_reason"] = elevation_reason
         sig["div_grade"]        = div_grade
@@ -1639,7 +1703,8 @@ if __name__ == "__main__":
         "🔬 Simulador",
         "📊 Backtest",
         "⚙️ Configurações",
-        "📈 Performance"
+        "📈 Performance",
+        "📌 Monitor de Posições"
     ])
 
     # ════════════════════════════════════════════════════════════
@@ -1817,6 +1882,8 @@ if __name__ == "__main__":
                                     atr_ratio=sig.get('atr_ratio'),
                                     elevated=sig.get('elevated', False),
                                     elevation_reason=sig.get('elevation_reason'),
+                                    adx_weak=sig.get('adx_weak', False),      # ← adicionar
+                                    adx_warning=sig.get('adx_warning')
                                 )
 
             # ── Adicionar novos sinais ao histórico e performance ──
@@ -1837,28 +1904,43 @@ if __name__ == "__main__":
                 # Usar o timestamp do candle que gerou o sinal (mais preciso)
                 candle_ts = sig.get('signal_ts')
                 if candle_ts is None:
-                    candle_ts = pd.Timestamp.now()
+                    # Fallback: arredondar para hora atual para evitar múltiplos registros
+                    candle_ts = pd.Timestamp.now().floor('H')
                 if hasattr(candle_ts, 'strftime'):
                     ts_str = candle_ts.strftime('%Y%m%d_%H%M%S')
                 else:
                     ts_str = pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')
+
                 signal_id = f"{sig['symbol']}_{sig['direction']}_{ts_str}"
+                lock_key = f"{sig['symbol']}_{sig['direction']}_{candle_ts}"
+
+                # Verifica se já existe no performance_data (evita duplicatas na mesma execução)
                 if signal_id not in st.session_state.performance_data:
-                    st.session_state.performance_data[signal_id] = {
-                        "timestamp": candle_ts.isoformat() if hasattr(candle_ts, 'isoformat') else pd.Timestamp.now().isoformat(),
-                        "symbol": sig['symbol'],
-                        "direction": sig['direction'],
-                        "signal_type": sig['type'],
-                        "entry_price": float(sig['price']),
-                        "price_24h": None,
-                        "price_7d": None,
-                        "price_30d": None,
-                        "result_24h": None,
-                        "result_7d": None,
-                        "result_30d": None,
-                        "closed": False
-                    }
-                    save_performance_data()   # salvar imediatamente
+                    # Verifica lock persistente (evita duplicatas após reinicialização)
+                    if not _is_signal_locked(lock_key):
+                        st.session_state.performance_data[signal_id] = {
+                            "timestamp": candle_ts.isoformat() if hasattr(candle_ts, 'isoformat') else pd.Timestamp.now().isoformat(),
+                            "symbol": sig['symbol'],
+                            "direction": sig['direction'],
+                            "signal_type": sig['type'],
+                            "entry_price": float(sig['price']),
+                            "price_24h": None,
+                            "price_7d": None,
+                            "price_30d": None,
+                            "result_24h": None,
+                            "result_7d": None,
+                            "result_30d": None,
+                            "closed": False,
+                            "div_grade": sig.get('div_grade'),
+                            "vol_high": sig.get('vol_high', False),
+                            "atr_low": sig.get('atr_low', False),
+                            "elevated": sig.get('elevated', False),
+                            "mn_ema_div": sig.get('mn_ema_div', False),
+                            "stoch_div": sig.get('stoch_div', False),
+                            "adx_weak": sig.get('adx_weak', False)
+                        }
+                        save_performance_data()
+                        _lock_signal(lock_key)   # marca como registrado nas próximas 24h
 
             progress_ph.empty()
 
@@ -1925,7 +2007,20 @@ if __name__ == "__main__":
                     if s.get('mn_ema_div'):
                         html_content += '<br><span style="background:#E04C4C;color:#FFF;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;">🚨 EMA MENSAL DIV</span>'
 
+                    if s.get('div_grade'):
+                            html_content += f"<br>📊 Divergência RSI: {s['div_grade']}"
+
+                    if s.get('vol_high'):
+                        html_content += f"<br>🔥 Volume 4H: {s.get('vol_ratio', 0):.1f}x média"
+
+                    if s.get('atr_low'):
+                        html_content += f"<br>⚠️ ATR baixo ({s.get('atr_ratio', 0):.2f}x média)"
+
+                    if s.get('elevated'):
+                        html_content += f"<br>⬆️ Elevado: COMUM→SUPER ({s.get('elevation_reason', '')})"
+
                     html_content += '</div></div>'
+
 
                     st.markdown(html_content, unsafe_allow_html=True)
 
@@ -2764,25 +2859,206 @@ if __name__ == "__main__":
                 # Preencher cada coluna
                 for nome, col_df, col_obj in horizontes:
                     df_h = df_filtrado.dropna(subset=[col_df])
+                    # Filtra resultados neutros
+                    df_h = df_h[abs(df_h[col_df]) > DEAD_BAND]
                     if not df_h.empty:
                         win_rate = (df_h[col_df] > 0).mean()
                         avg_return = df_h[col_df].mean()
                         total_return = df_h[col_df].sum()
+
+                        # Emoji e seta para o delta
+                        seta = "▲" if avg_return > 0 else "▼" if avg_return < 0 else "●"
+                        cor_emoji = "🟢" if avg_return > 0 else "🔴" if avg_return < 0 else "⚪"
+
                         col_obj.metric(
-                            f"🎯 Acerto {nome}",
+                            f"🎯 Acerto {nome} (filtrado)",
                             f"{win_rate:.1%}",
-                            delta=f"Retorno médio: {avg_return:.2%}"
+                            delta=f"{seta} {avg_return:.3%}",
+                            delta_color="normal"  # verde para positivo, vermelho para negativo
                         )
-                        col_obj.caption(f"Lucro acumulado: {total_return:.2%}")
+                        col_obj.caption(
+                            f"📊 Lucro acumulado: {total_return:.3%} | "
+                            f"Trades considerados: {len(df_h)}"
+                        )
                     else:
-                        col_obj.info(f"Nenhum sinal com resultado {nome}")
+                        col_obj.info(f"Nenhum sinal com resultado {nome} após filtro.")
+
+                            # ── NOVA MÉTRICA: Razão Lucro/Perda Médio (30d) ──
+                df_30d = df_filtrado.dropna(subset=['result_30d'])
+                # Filtra neutros
+                df_30d = df_30d[abs(df_30d['result_30d']) > DEAD_BAND]
+                if not df_30d.empty:
+                    wins = df_30d[df_30d['result_30d'] > 0]['result_30d']
+                    losses = df_30d[df_30d['result_30d'] < 0]['result_30d']
+                    avg_win = wins.mean() if not wins.empty else 0.0
+                    avg_loss = abs(losses.mean()) if not losses.empty else 0.0
+                    profit_ratio = avg_win / avg_loss if avg_loss != 0 else 0.0
+                    col_r1, col_r2, col_r3 = st.columns(3)
+                    col_r1.metric("📊 Lucro/Perda Médio (30d)", f"{profit_ratio:.2f}")
+                    col_r2.metric("🎯 Ganho Médio (30d)", f"{avg_win:.2%}")
+                    col_r3.metric("📉 Perda Média (30d)", f"{avg_loss:.2%}")
+                    st.caption(f"Baseado em {len(df_30d)} trades (excluídos aqueles com |retorno| ≤ {DEAD_BAND*100:.1f}%)")
+                else:
+                    st.info("Aguardando resultados de 30 dias após filtro de ruído.")
 
                 st.markdown("---")
+
+                # ── COMPARAÇÃO COMUM vs SUPER (30d) ──
+                st.markdown("### 📊 COMUM vs SUPER – Comparativo (30d)")
+                col_comp1, col_comp2 = st.columns(2)
+
+                for i, tipo in enumerate(["COMUM", "SUPER"]):
+                    df_tipo = df_filtrado[df_filtrado['signal_type'] == tipo].dropna(subset=['result_30d'])
+                    df_tipo = df_tipo[abs(df_tipo['result_30d']) > DEAD_BAND]
+                    if not df_tipo.empty:
+                        win_rate = (df_tipo['result_30d'] > 0).mean()
+                        avg_return = df_tipo['result_30d'].mean()
+                        wins = df_tipo[df_tipo['result_30d'] > 0]['result_30d']
+                        losses = df_tipo[df_tipo['result_30d'] < 0]['result_30d']
+                        avg_win = wins.mean() if not wins.empty else 0.0
+                        avg_loss = abs(losses.mean()) if not losses.empty else 0.0
+                        profit_ratio = avg_win / avg_loss if avg_loss != 0 else 0.0
+
+                        with (col_comp1 if i == 0 else col_comp2):
+                            st.markdown(f"""
+                            <div style='background:#161b22;border-radius:8px;padding:12px;margin-bottom:10px;
+                                        border-left:3px solid {"#1D9E75" if tipo=="COMUM" else "#E0A905"}'>
+                                <div style='font-size:14px;font-weight:bold;color:#c9d1d9'>{tipo}</div>
+                                <div style='display:flex;justify-content:space-between;margin-top:8px'>
+                                    <div><span style='color:#8b949e'>Win Rate</span><br>
+                                        <span style='font-size:16px;font-weight:bold;color:#5DCAA5'>{win_rate:.1%}</span></div>
+                                    <div><span style='color:#8b949e'>Retorno Médio</span><br>
+                                        <span style='font-size:16px;font-weight:bold;color:#c9d1d9'>{avg_return:.3%}</span></div>
+                                    <div><span style='color:#8b949e'>Lucro/Perda</span><br>
+                                        <span style='font-size:16px;font-weight:bold;color:#c9d1d9'>{profit_ratio:.2f}</span></div>
+                                </div>
+                            </div>
+                            """, unsafe_allow_html=True)
+                    else:
+                        with (col_comp1 if i == 0 else col_comp2):
+                            st.info(f"Sem sinais {tipo} com resultado 30d disponível.")
+
+                st.markdown("---")
+
+                # ── ANÁLISE DE CORRELAÇÃO: Variáveis do sinal vs Resultado ──
+                st.markdown("### 🔬 Correlação: Variáveis do Sinal vs Retorno (30d)")
+                st.markdown("""
+                <div style='background:#1c2128; border-left:4px solid #3B8BD4; padding:12px; border-radius:4px; margin-bottom:16px; font-size:13px'>
+                Análise do impacto de cada condição enriquecida sobre o retorno de 30 dias.
+                </div>
+                """, unsafe_allow_html=True)
+
+                # Filtrar sinais que têm resultado_30d e pelo menos uma das variáveis enriquecidas
+                df_ana = df_filtrado.dropna(subset=['result_30d']).copy()
+                df_ana = df_ana[abs(df_ana['result_30d']) > DEAD_BAND]   # ← filtra neutros
+                if not df_ana.empty:
+                    st.caption(f"📊 Considerados {len(df_ana)} trades com |retorno| > {DEAD_BAND*100:.1f}% (excluídos os neutros).")
+                    # Garantir que as colunas existam (para sinais antigos, preencher com False/None)
+                    for col in ['div_grade', 'vol_high', 'atr_low', 'elevated', 'mn_ema_div', 'stoch_div', 'adx_weak']:
+                        if col not in df_ana.columns:
+                            df_ana[col] = None
+
+                    # Função auxiliar para calcular métricas por grupo
+                    def calc_group_metrics(df, group_col, group_val):
+                        mask = df[group_col] == group_val if group_val is not None else df[group_col].isna()
+                        sub = df[mask]
+                        if sub.empty:
+                            return None, None, None
+                        return sub['result_30d'].mean(), (sub['result_30d'] > 0).mean(), len(sub)
+
+                    # 1. Divergência RSI (por grau)
+                    st.markdown("#### 📈 Divergência RSI")
+                    col_div1, col_div2, col_div3, col_div4 = st.columns(4)
+                    grades = ['W1', 'D1', '4H']
+                    for i, g in enumerate(grades):
+                        avg, wr, n = calc_group_metrics(df_ana, 'div_grade', g)
+                        with [col_div1, col_div2, col_div3, col_div4][i]:
+                            if avg is not None:
+                                st.metric(f"Divergência {g}", f"{avg:.2%}", delta=f"WR: {wr:.1%}")
+                                st.caption(f"N={n}")
+                            else:
+                                st.info(f"Sem sinais com div {g}")
+                    # Sem divergência
+                    avg0, wr0, n0 = calc_group_metrics(df_ana, 'div_grade', None)
+                    with col_div4:
+                        st.metric("Sem divergência", f"{avg0:.2%}" if avg0 is not None else "—", delta=f"WR: {wr0:.1%}" if wr0 else "")
+                        st.caption(f"N={n0}")
+
+                    st.markdown("---")
+
+                    # 2. Volume alto (4H)
+                    st.markdown("#### 🔊 Volume 4H")
+                    col_vol1, col_vol2 = st.columns(2)
+                    avg_high, wr_high, n_high = calc_group_metrics(df_ana, 'vol_high', True)
+                    avg_low,  wr_low,  n_low  = calc_group_metrics(df_ana, 'vol_high', False)
+                    with col_vol1:
+                        st.metric("Volume alto (🔥)", f"{avg_high:.2%}" if avg_high else "—", delta=f"WR: {wr_high:.1%}")
+                        st.caption(f"N={n_high}")
+                    with col_vol2:
+                        st.metric("Volume normal", f"{avg_low:.2%}" if avg_low else "—", delta=f"WR: {wr_low:.1%}")
+                        st.caption(f"N={n_low}")
+
+                    st.markdown("---")
+
+                    # 3. ATR baixo (range morto)
+                    st.markdown("#### ⚠️ ATR baixo (range morto)")
+                    col_atr1, col_atr2 = st.columns(2)
+                    avg_atr_true, wr_atr_true, n_atr_true = calc_group_metrics(df_ana, 'atr_low', True)
+                    avg_atr_false, wr_atr_false, n_atr_false = calc_group_metrics(df_ana, 'atr_low', False)
+                    with col_atr1:
+                        st.metric("ATR baixo (⚠️)", f"{avg_atr_true:.2%}" if avg_atr_true else "—", delta=f"WR: {wr_atr_true:.1%}")
+                        st.caption(f"N={n_atr_true}")
+                    with col_atr2:
+                        st.metric("ATR normal", f"{avg_atr_false:.2%}" if avg_atr_false else "—", delta=f"WR: {wr_atr_false:.1%}")
+                        st.caption(f"N={n_atr_false}")
+
+                    st.markdown("---")
+
+                    # 4. Elevação (COMUM → SUPER via enriquecimento)
+                    st.markdown("#### ⭐ Efeito da Elevação (enrich_signal)")
+                    col_el1, col_el2 = st.columns(2)
+                    avg_el, wr_el, n_el = calc_group_metrics(df_ana, 'elevated', True)
+                    avg_not_el, wr_not_el, n_not_el = calc_group_metrics(df_ana, 'elevated', False)
+                    with col_el1:
+                        st.metric("Elevado (COMUM→SUPER)", f"{avg_el:.2%}" if avg_el else "—", delta=f"WR: {wr_el:.1%}")
+                        st.caption(f"N={n_el}")
+                    with col_el2:
+                        st.metric("Não elevado", f"{avg_not_el:.2%}" if avg_not_el else "—", delta=f"WR: {wr_not_el:.1%}")
+                        st.caption(f"N={n_not_el}")
+
+                    st.markdown("---")
+
+                    # 5. Outros alertas (StochRSI, EMA mensal divergente, ADX fraco)
+                    st.markdown("#### 🚨 Outros Alertas")
+                    col_alert1, col_alert2, col_alert3 = st.columns(3)
+                    for col, label, col_obj in [('stoch_div', 'StochRSI contra-tendência', col_alert1),
+                                                ('mn_ema_div', 'EMA mensal divergente', col_alert2),
+                                                ('adx_weak', 'ADX fraco', col_alert3)]:
+                        avg_true, wr_true, n_true = calc_group_metrics(df_ana, col, True)
+                        avg_false, wr_false, n_false = calc_group_metrics(df_ana, col, False)
+                        with col_obj:
+                            st.markdown(f"**{label}**")
+                            col1, col2 = st.columns(2)
+                            col1.metric("Presente", f"{avg_true:.2%}" if avg_true else "—")
+                            col1.caption(f"WR: {wr_true:.1%} (n={n_true})")
+                            col2.metric("Ausente", f"{avg_false:.2%}" if avg_false else "—")
+                            col2.caption(f"WR: {wr_false:.1%} (n={n_false})")
+
+                    st.markdown("---")
+                    st.caption("ℹ️ Sinais antigos (sem os campos enriquecidos) são ignorados nas análises acima.")
+                else:
+                    st.info("Nenhum sinal com resultado 30d e variáveis enriquecidas disponível ainda.")
 
                 # Tabela de sinais com resultados (filtrada)
                 st.markdown("#### 📋 Detalhamento dos Sinais")
                 display_cols = ['timestamp', 'symbol', 'direction', 'signal_type', 'entry_price', 'result_24h', 'result_7d', 'result_30d']
-                st.dataframe(df_filtrado[display_cols].sort_values('timestamp', ascending=False).head(20))
+                df_display = df_filtrado[display_cols].sort_values('timestamp', ascending=False).head(20).copy()
+                # Formata as colunas de resultado como percentuais (2 casas decimais)
+                for col in ['result_24h', 'result_7d', 'result_30d']:
+                    if col in df_display.columns:
+                        df_display[col] = df_display[col].apply(lambda x: f"{x:.2%}" if pd.notna(x) else "")
+
+                st.dataframe(df_display, use_container_width=True)
 
                 # ── Gráfico de Equity Curve ─────────────────────────────────────────
                 st.markdown("### 📈 Equity Curve Simulada")
@@ -2864,12 +3140,15 @@ if __name__ == "__main__":
                 # Filtrar sinais com resultado disponível
                 df_heat = df_filtrado.dropna(subset=[heatmap_col]).copy()
                 if not df_heat.empty:
-                    # Criar coluna de ano-mês
-                    df_heat["year_month"] = df_heat["timestamp"].dt.strftime("%Y-%m")
-                    # Criar coluna de vitória (True/False)
+                    # ── APLICAR DEAD_BAND ANTES DE DEFINIR WIN ──
+                    # Remove trades com retorno absoluto <= DEAD_BAND
+                    df_heat = df_heat[abs(df_heat[heatmap_col]) > DEAD_BAND].copy()
+
+                    # Agora define vitória apenas para movimentos significativos
                     df_heat["win"] = df_heat[heatmap_col] > 0
 
-                    # Agrupar por símbolo e mês: calcular taxa de acerto e número de trades
+                    # Restante do código permanece igual...
+                    df_heat["year_month"] = df_heat["timestamp"].dt.strftime("%Y-%m")
                     heatmap_data = df_heat.groupby(["symbol", "year_month"]).agg(
                         win_rate=("win", "mean"),
                         count=("win", "count")
@@ -2959,6 +3238,132 @@ if __name__ == "__main__":
                     use_container_width=True
                 )
 
+    with tabs[8]:
+        st.markdown("### 📊 Monitor de Posições")
+        st.markdown("""
+        <div class='info-box'>
+        <b>🎯 Monitoramento de Posições Abertas</b><br>
+        Registre suas operações manuais e o sistema alertará automaticamente quando:
+        <ul>
+        <li>O preço se mover 3% contra a posição</li>
+        <li>RSI tocar o topo/fundo do canal (sinal de saída)</li>
+        <li>StochRSI entrar em sobrecompra/sobrevenda</li>
+        <li>Stop Loss ou Take Profit forem atingidos</li>
+        </ul>
+        Alertas via Telegram e notificações visuais.
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Importar módulo (se não estiver já importado)
+        try:
+            from position_monitor import (
+                load_positions, save_positions, add_position, remove_position,
+                run_monitoring_cycle, get_positions_summary, Position
+            )
+        except ImportError as e:
+            st.error(f"Erro ao carregar position_monitor.py: {e}")
+            st.stop()
+
+        # Carregar posições atuais
+        positions = load_positions()
+
+        # ── Formulário para adicionar nova posição ──
+        with st.expander("➕ Adicionar Nova Posição", expanded=False):
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                new_symbol = st.text_input("Ativo (ex: CHFJPY#)", key="new_pos_symbol")
+                new_direction = st.selectbox("Direção", ["COMPRA", "VENDA"], key="new_pos_dir")
+                new_entry_price = st.number_input("Preço de Entrada", value=0.0, format="%.5f", step=0.0001, key="new_pos_price")
+            with col2:
+                new_tf = st.selectbox("Timeframe de Referência", ["4h", "1d"], key="new_pos_tf")
+                new_stop = st.number_input("Stop Loss (opcional)", value=0.0, format="%.5f", step=0.0001, key="new_pos_stop")
+            with col3:
+                new_tp = st.number_input("Take Profit (opcional)", value=0.0, format="%.5f", step=0.0001, key="new_pos_tp")
+            if st.button("✅ Registrar Entrada", use_container_width=True):
+                if new_symbol and new_entry_price > 0:
+                    ok = add_position(new_symbol, new_direction, new_entry_price, new_tf,
+                                      new_stop if new_stop > 0 else None,
+                                      new_tp if new_tp > 0 else None)
+                    if ok:
+                        st.success(f"Posição {new_symbol} {new_direction} @ {new_entry_price:.5f} registrada!")
+                        st.rerun()
+                    else:
+                        st.warning("Posição já existe para hoje ou erro no registro.")
+                else:
+                    st.error("Preencha ativo e preço de entrada.")
+
+        # ── Lista de posições abertas ──
+        st.markdown("### 📋 Posições Abertas")
+        if not positions:
+            st.info("Nenhuma posição aberta. Registre uma acima.")
+        else:
+            for idx, pos in enumerate(positions):
+                col1, col2, col3, col4, col5 = st.columns([3, 2, 2, 2, 1])
+                icon = "▲" if pos.direction == "COMPRA" else "▼"
+                color = "#1D9E75" if pos.direction == "COMPRA" else "#E04C4C"
+                with col1:
+                    st.markdown(f"<span style='color:{color};font-weight:bold'>{icon} {pos.symbol}</span>", unsafe_allow_html=True)
+                with col2:
+                    st.write(f"{pos.direction}")
+                with col3:
+                    st.write(f"@{pos.entry_price:.5f}")
+                with col4:
+                    st.write(f"TF: {pos.tf_reference.upper()}")
+                with col5:
+                    if st.button("❌", key=f"del_pos_{idx}"):
+                        remove_position(idx)
+                        st.rerun()
+                # Detalhes adicionais (stop/tp)
+                if pos.stop_loss or pos.take_profit:
+                    st.caption(f"SL: {pos.stop_loss:.5f if pos.stop_loss else '-'} | TP: {pos.take_profit:.5f if pos.take_profit else '-'}")
+
+        # ── Botão de verificação manual ──
+        if st.button("🔍 Verificar Condições Agora", use_container_width=True):
+            with st.spinner("Verificando posições..."):
+                # Precisamos passar as funções necessárias
+                run_monitoring_cycle(
+                    positions,
+                    fetch_multi_tf_data,  # função já existente
+                    send_telegram_alert,   # função já existente
+                    play_alert_sound        # função já existente
+                )
+            st.success("Verificação concluída!")
+            st.rerun()
+
+        # ── Auto-monitoramento (opcional) ──
+        auto_monitor = st.checkbox("🔄 Monitoramento Automático (a cada 5 min)", value=False, key="auto_monitor")
+        if auto_monitor:
+            last_check = st.session_state.get("last_monitor_check", 0)
+            now = time.time()
+            if now - last_check >= 300:  # 5 minutos
+                st.session_state.last_monitor_check = now
+                run_monitoring_cycle(
+                    positions,
+                    fetch_multi_tf_data,
+                    send_telegram_alert,
+                    play_alert_sound
+                )
+                st.caption("✅ Ciclo de monitoramento executado.")
+            else:
+                remaining = int(300 - (now - last_check))
+                st.caption(f"⏱ Próxima verificação em {remaining//60}m {remaining%60}s")
+
+        # ── Histórico de alertas ──
+        st.markdown("---")
+        st.markdown("### 📜 Histórico de Alertas")
+        try:
+            from position_monitor import load_alerts_log
+            alerts_log = load_alerts_log()
+            if alerts_log:
+                df_alerts = pd.DataFrame(alerts_log)
+                # Formatar para exibição
+                df_alerts['timestamp'] = pd.to_datetime(df_alerts['timestamp']).dt.strftime("%d/%m %H:%M")
+                df_alerts = df_alerts[['timestamp', 'symbol', 'direction', 'alert_type', 'message', 'price', 'entry_price']]
+                st.dataframe(df_alerts, use_container_width=True)
+            else:
+                st.info("Nenhum alerta registrado ainda.")
+        except Exception as e:
+            st.warning(f"Não foi possível carregar histórico: {e}")
 
 
 # ════════════════════════════════════════════════════════════

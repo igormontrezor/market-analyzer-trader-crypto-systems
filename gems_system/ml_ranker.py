@@ -7,8 +7,7 @@ import pandas as pd
 import numpy as np
 import joblib
 from datetime import datetime, timedelta
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 import xgboost as xgb
 
 # Caminhos relativos (ajuste conforme seu projeto)
@@ -72,6 +71,24 @@ def load_training_data():
     with open(PERF_FILE, "r") as f:
         perf = json.load(f)
 
+    # Coletar todos os retornos percentuais dos picks
+    all_returns = []
+    for entry in perf:
+        pct = entry.get("pct_change", 0)
+        if pct is not None:
+            all_returns.append(pct)
+
+    # Se tivermos pelo menos 10 retornos positivos, calcular o percentil 70
+    pos_returns = [r for r in all_returns if r > 0]
+    if len(pos_returns) >= 10:
+        dynamic_threshold = np.percentile(pos_returns, 70)   # 70º percentil (top 30%)
+    else:
+        # Fallback: usar 10% se dados insuficientes
+        dynamic_threshold = 10.0
+
+    print(f"🔧 Limiar dinâmico para target: {dynamic_threshold:.2f}% (baseado em {len(pos_returns)} retornos positivos)")
+
+
     if len(perf) < 30:
         print(f"Apenas {len(perf)} registros, mínimo 30 para treinar.")
         return None, None
@@ -110,6 +127,7 @@ def load_training_data():
 
     X_list = []
     y_list = []
+    date_list = []
 
     for entry in perf:
         # A data do pick é a chave para carregar o snapshot correspondente
@@ -167,9 +185,16 @@ def load_training_data():
         features.append(seller_interaction)
 
         # Target: 1 se ganhou mais de 10%
-        target = 1 if entry.get("pct_change", 0) > 10 else 0
+        target = 1 if entry.get("pct_change", 0) >= dynamic_threshold else 0
         X_list.append(features)
         y_list.append(target)
+        date_list.append(pick_date)
+
+    if X_list:
+        combined = sorted(zip(date_list, X_list, y_list), key=lambda x: x[0])
+        _, X_list, y_list = zip(*combined)
+        X_list = list(X_list)
+        y_list = list(y_list)
 
     if len(X_list) < 20:
         print(f"Apenas {len(X_list)} amostras com features, treino cancelado.")
@@ -183,22 +208,31 @@ def load_training_data():
 def find_snapshot_near_date(date_str):
     """Encontra o snapshot mais próximo da data (até 2 dias antes)."""
     target_date = datetime.strptime(date_str, "%Y-%m-%d").date()
-    # Listar todos os snapshots (arquivos CSV em data/snapshots)
     if not os.path.exists(HISTORICAL_SNAPSHOTS_DIR):
         return None
     files = [f for f in os.listdir(HISTORICAL_SNAPSHOTS_DIR) if f.endswith(".csv")]
-    # Ordenar por data decrescente
     files.sort(reverse=True)
     for f in files:
-        # Extrair data do nome do arquivo (ex: gems_10M_to_50M_20250315_143022_enhanced.csv)
+        # Extrair data do nome do arquivo
         parts = f.split("_")
-        # Procurar parte que parece data YYYYMMDD
+        file_date = None
         for part in parts:
             if len(part) == 8 and part.isdigit():
                 file_date = datetime.strptime(part, "%Y%m%d").date()
-                if file_date <= target_date and (target_date - file_date).days <= 2:
-                    df = pd.read_csv(os.path.join(HISTORICAL_SNAPSHOTS_DIR, f))
+                break
+        if file_date is None:
+            continue
+        if file_date <= target_date and (target_date - file_date).days <= 2:
+            try:
+                df = pd.read_csv(os.path.join(HISTORICAL_SNAPSHOTS_DIR, f))
+                # Verificar se o DataFrame tem a coluna 'symbol' (opcional)
+                if df is not None and 'symbol' in df.columns:
                     return df
+                else:
+                    print(f"⚠️ Snapshot {f} sem coluna 'symbol', ignorado.")
+            except Exception as e:
+                print(f"⚠️ Erro ao ler snapshot {f}: {e}, ignorando.")
+                continue
     return None
 
 def train_model():
@@ -208,26 +242,59 @@ def train_model():
         print("Dados insuficientes para treinar.")
         return
 
-    # Dividir treino/validação
-    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
-    # Modelo simples (pode ser XGBoost, mas evita dependência extra)
+    # Garantir que os dados estão ordenados cronologicamente
+    # (assumindo que load_training_data já retorna na ordem dos picks)
+    # Se não estiver, ordenar antes – mas load_training_data percorre perf em ordem arbitrária.
+    # Para segurança, vamos reordenar os pares (X, y) pela data do pick.
+    # Como a função load_training_data não retorna as datas, precisamos modificá-la para retornar também uma lista de datas.
+    # Melhor: modificar load_training_data para retornar X, y, dates.
+    # Vamos fazer a correção completa.
+
+    # Dividir cronologicamente: 80% primeiros para treino, 20% últimos para validação
+    split_idx = int(len(X) * 0.8)
+    X_train, X_val = X[:split_idx], X[split_idx:]
+    y_train, y_val = y[:split_idx], y[split_idx:]
+
+    # ... após o split ...
+    pos_train = np.sum(y_train == 1)
+    neg_train = np.sum(y_train == 0)
+    if pos_train > 0:
+        scale_pos_weight = neg_train / pos_train
+    else:
+        scale_pos_weight = 1.0
+    print(f"📊 Classe positiva: {pos_train} amostras, negativa: {neg_train} → scale_pos_weight = {scale_pos_weight:.2f}")
+
     model = xgb.XGBClassifier(
-    n_estimators=100,
-    max_depth=5,
-    learning_rate=0.1,
-    subsample=0.8,
-    random_state=42,
-    use_label_encoder=False,
-    eval_metric='logloss'
+        n_estimators=100,
+        max_depth=5,
+        learning_rate=0.1,
+        subsample=0.8,
+        random_state=42,
+        use_label_encoder=False,
+        eval_metric='logloss',
+        scale_pos_weight=scale_pos_weight   # ← adicionar
     )
     model.fit(X_train, y_train)
     y_pred = model.predict(X_val)
-    acc = accuracy_score(y_val, y_pred)
-    print(f"Acurácia na validação: {acc:.2f}")
+    y_proba = model.predict_proba(X_val)[:, 1]   # probabilidade da classe positiva
 
-    # Salvar versão com timestamp e metadados
-    n_samples = X.shape[0]          # número total de amostras usadas no treino
-    n_features = X.shape[1]         # número de features
+    acc  = accuracy_score(y_val, y_pred)
+    prec = precision_score(y_val, y_pred, zero_division=0)
+    rec  = recall_score(y_val, y_pred)
+    f1   = f1_score(y_val, y_pred)
+    auc  = roc_auc_score(y_val, y_proba)
+
+    print("=" * 60)
+    print("📊 MÉTRICAS DE VALIDAÇÃO (cronológica):")
+    print(f"  Acurácia   : {acc:.3f}")
+    print(f"  Precisão   : {prec:.3f}")
+    print(f"  Recall     : {rec:.3f}")
+    print(f"  F1‑score   : {f1:.3f}")
+    print(f"  ROC‑AUC    : {auc:.3f}")
+    print("=" * 60)
+
+    n_samples = X.shape[0]
+    n_features = X.shape[1]
     _save_model_version(model, acc, n_samples, n_features)
 
 def _save_model_version(model, accuracy: float, n_samples: int, n_features: int):
@@ -304,7 +371,12 @@ def _get_best_model():
 
     # Encontra a versão com maior acurácia
     best_version = max(versions, key=lambda v: v.get("accuracy", 0))
-    best_path = os.path.join(MODELS_DIR, best_version["filename"])
+    best_path = os.path.join(MODELS_DIR, best_version.get("filename"))
+    if best_version.get("filename") is None or not os.path.exists(best_path):
+        print("[ML] Melhor versão sem nome de arquivo. Usando modelo padrão.")
+        if os.path.exists(MODEL_FILE):
+            return joblib.load(MODEL_FILE)
+        return None
 
     if not os.path.exists(best_path):
         print(f"[ML] Arquivo da melhor versão ({best_version['filename']}) não encontrado. Usando modelo padrão.")
@@ -316,15 +388,8 @@ def _get_best_model():
     return joblib.load(best_path)
 
 def get_current_model_info():
-    """
-    Retorna informações da melhor versão do modelo disponível.
-    Retorna dict com: version, accuracy, n_samples, n_features, date
-    Se nenhum modelo existir, retorna None.
-    """
     if not os.path.exists(VERSIONS_FILE):
-        # Se não houver versões salvas, tenta carregar o modelo padrão e extrair info?
         if os.path.exists(MODEL_FILE):
-            # Modelo padrão existe mas não temos metadados
             return {"version": "legacy", "accuracy": None, "n_samples": None, "n_features": None, "date": None}
         return None
 
@@ -334,14 +399,18 @@ def get_current_model_info():
     if not versions:
         return None
 
-    # Retorna a versão com maior acurácia (ou a mais recente se preferir)
-    best = max(versions, key=lambda v: v["accuracy"])
+    # Encontra a versão com maior acurácia (usa .get para evitar KeyError)
+    best = max(versions, key=lambda v: v.get("accuracy", 0))
+    # Se a melhor tiver acurácia 0 e não tiver a chave, pode ser qualquer uma; pega a primeira
+    if best.get("accuracy") is None:
+        best = versions[0]
+
     return {
-        "version": best["version"],
-        "accuracy": best["accuracy"],
-        "n_samples": best["n_samples"],
-        "n_features": best["n_features"],
-        "date": best["date"]
+        "version": best.get("version", "unknown"),
+        "accuracy": best.get("accuracy"),
+        "n_samples": best.get("n_samples"),
+        "n_features": best.get("n_features"),
+        "date": best.get("date")
     }
 
 def ml_predict_picks(claude_result, df_agg):
@@ -370,9 +439,6 @@ def ml_predict_picks(claude_result, df_agg):
     ]
     # Número de features macro adicionadas: 1 (winrate) + len(one_hot)
     # Precisamos saber quantas são – podemos usar a mesma lista de regimes definida em _one_hot_regime
-    # Aqui usaremos um valor fixo baseado na função (9 regimes)
-    NUM_MACRO_FEATURES = 1 + 9 + 4  # winrate + 9 one-hot (ajuste conforme lista)
-
     for pick in claude_result.get("top_picks", []):
         sym = pick["symbol"]
         row = df_agg[df_agg["symbol"] == sym]
@@ -418,3 +484,9 @@ def ml_predict_picks(claude_result, df_agg):
         proba = model.predict_proba([X])[0, 1]
         pick["ml_score"] = round(proba, 3)
     return claude_result
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Treina o modelo ML do Gems AI Filter")
+    parser.add_argument("--force", action="store_true", help="Força re-treino mesmo se o modelo existir")
+    args = parser.parse_args()
+    train_model()

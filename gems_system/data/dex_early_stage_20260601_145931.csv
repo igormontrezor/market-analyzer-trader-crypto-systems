@@ -1,0 +1,4 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+USDOGE,USDOGE,36gYBqLuhWLbGBhU9TCLNSrKg2WmS4dUeyrXnGVFpump,solana,0.0001782,436.0,178209.0,35007.86,1056407.14,25098,9831,0.72,5.1,https://dexscreener.com/solana/8rwomsv4ndpd3wdh9yejet1eknha9u92xvztuibsn4gw,2026-06-01T14:59:26.266013,dexscreener,21.476375019999995
+MAMO,Mamo,0x7300B37DfdfAb110d83290A29DfB31B1740219fE,base,0.01028,1.47,6096111.0,409347.21,17725.6,166,105,0.61,,https://dexscreener.com/base/0xe2b3aa806e56603a244bfc111c9474f7dedd03db,2026-06-01T14:59:28.499300,dexscreener,11.907012949999999
+USDP,Usdp Base,0x06EEa61a627cB7cAa7F7E45b2024F54Aff155BA3,base,7.048e-07,192.0,70483.0,57811.92,264813.16,930,662,0.58,0.4,https://dexscreener.com/base/0xa67d7b330f1e3e32809e1f9d90ce6f175385d76aa0687f97f097e7fa89b4c935,2026-06-01T14:59:28.499265,dexscreener,6.735684079999996

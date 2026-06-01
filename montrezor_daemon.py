@@ -29,7 +29,7 @@
 ║  NAO MODIFICA nenhum dos 3 arquivos originais.                      ║
 ╚══════════════════════════════════════════════════════════════════════╝
 """
-
+from __future__ import annotations
 import sys
 import os
 import time
@@ -43,6 +43,7 @@ import numpy as np
 import pandas as pd
 import requests
 import threading
+from typing import Optional
 
 # ════════════════════════════════════════════════════════════════════════
 # CONFIGURACAO
@@ -73,6 +74,16 @@ LOG_FILE    = os.path.join(PROJECT_DIR, "montrezor_daemon.log")
 # Intervalo para atualizar performance dos sinais (4 horas)
 PERFORMANCE_UPDATE_SEC = 4 * 3600   # 14400 segundos
 _performance_update_lock = threading.Lock()
+
+DEAD_BAND = 0.002
+def filter_non_neutral(df, col_result):
+    """Retorna df onde |result| > DEAD_BAND (neutros removidos)"""
+    return df[abs(df[col_result]) > DEAD_BAND].copy()
+
+def get_neutral_mask(df, col_result):
+    """Máscara booleana para resultados neutros (dentro da banda)"""
+    return abs(df[col_result]) <= DEAD_BAND
+
 def _run_performance_update(ai, logger):
     if not _performance_update_lock.acquire(blocking=False):
         logger.debug("[AI] Atualização de performance já em andamento – ignorando.")
@@ -87,28 +98,35 @@ def _run_performance_update(ai, logger):
         _performance_update_lock.release()
 
 
-_MA_DAEMON_STATE_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_ma_daemon_state.json")
 
-def _load_daemon_ma_state():
+# ========== ESTADO PERSISTENTE PARA MARKET ANALYSIS (unificado com app) ==========
+_MA_STATE_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_ma_last_state.json")
+
+def _load_last_state() -> dict:
     try:
-        if os.path.exists(_MA_DAEMON_STATE_FILE):
-            with open(_MA_DAEMON_STATE_FILE, "r", encoding="utf-8") as f:
+        if os.path.exists(_MA_STATE_FILE):
+            with open(_MA_STATE_FILE, "r", encoding="utf-8") as f:
                 return json.load(f)
-    except:
+    except Exception:
         pass
     return {}
 
-def _save_daemon_ma_state(state):
+def _save_last_state(state: dict):
     try:
-        with open(_MA_DAEMON_STATE_FILE, "w", encoding="utf-8") as f:
+        with open(_MA_STATE_FILE, "w", encoding="utf-8") as f:
             json.dump(state, f, indent=2)
-    except:
+    except Exception:
         pass
 
-def _ma_signal_changed(chart, direction, last_state):
-    """Verifica se o sinal mudou em relação ao estado salvo."""
-    last = last_state.get(chart)
-    return last != direction
+def _has_changed(chart: str, current_direction: str) -> bool:
+    state = _load_last_state()
+    last = state.get(chart)
+    return last != current_direction
+
+def _update_state(chart: str, current_direction: str):
+    state = _load_last_state()
+    state[chart] = current_direction
+    _save_last_state(state)
 
 # ════════════════════════════════════════════════════════════════════════
 # LOGGING
@@ -336,6 +354,10 @@ def gerar_csv_semanal(logger):
         if c not in df_semana.columns:
             df_semana[c] = None
     df_out = df_semana[colunas]
+    # Formatar colunas de resultado como percentuais com 2 casas decimais
+    for col in ['result_24h', 'result_7d', 'result_30d']:
+        if col in df_out.columns:
+            df_out[col] = df_out[col].apply(lambda x: f"{x:.2%}" if pd.notna(x) else "")
 
     # Converter para CSV string
     return df_out.to_csv(index=False)
@@ -926,7 +948,8 @@ def enrich_signal(sig, data):
     """
     try:
         direction  = sig["direction"]
-        sig_type   = sig["type"]        # tipo original da lógica base
+        original_type = sig["type"]          # ← guarda o tipo original
+        sig_type = original_type              # ← trabalha com uma cópia
 
         df_4h = data.get("4h")
         df_d1 = data.get("1d")
@@ -970,7 +993,7 @@ def enrich_signal(sig, data):
 
         # ── Adicionar campos ao dict ─────────────────────────────────
         sig["type"]             = sig_type          # pode ter sido elevado
-        sig["type_base"]        = sig["type"] if not elevated else "COMUM"  # tipo original
+        sig["type_base"]        = original_type
         sig["elevated"]         = elevated
         sig["elevation_reason"] = elevation_reason
         sig["div_grade"]        = div_grade         # None | "4H" | "D1" | "W1"
@@ -1077,7 +1100,7 @@ def save_performance_data(perf):
     except:
         pass
 
-def fetch_price_at_date(symbol: str, target_date: pd.Timestamp) -> float | None:
+def fetch_price_at_date(symbol: str, target_date: pd.Timestamp) -> Optional[float]:
     """
     Retorna o preço de fechamento do candle diário que cobre a target_date.
     target_date deve ser tz‑naive UTC.
@@ -1158,7 +1181,7 @@ def update_pending_performance(logger):
 # ════════════════════════════════════════════════════════════════════════
 
 def gerar_estatisticas_semanais(logger):
-    """Retorna string com estatísticas resumidas dos sinais da última semana."""
+    """Retorna string com estatísticas resumidas dos sinais da última semana em HTML."""
     perf_file = os.path.join(os.path.expanduser("~"), ".montrezor_performance.json")
     if not os.path.exists(perf_file):
         logger.warning("[REL] Arquivo de performance não encontrado para estatísticas.")
@@ -1177,29 +1200,37 @@ def gerar_estatisticas_semanais(logger):
     df_semana = df[df['timestamp'] >= semana_atras].copy()
     if df_semana.empty:
         return "📊 Nenhum sinal na última semana."
-    # Usar result_30d como veredito final
     df_semana = df_semana.dropna(subset=['result_30d'])
+    # Filtra neutros
+    df_semana = df_semana[abs(df_semana['result_30d']) > DEAD_BAND]
     if df_semana.empty:
-        return "📊 Nenhum sinal com resultado 30d disponível na última semana."
+        return "📊 Nenhum sinal com resultado 30d relevante (após filtrar movimentos muito pequenos)."
     n = len(df_semana)
     wins = (df_semana['result_30d'] > 0).sum()
     win_rate = wins / n
     avg_return = df_semana['result_30d'].mean()
-    # Melhor sinal
     best_idx = df_semana['result_30d'].idxmax()
     best = df_semana.loc[best_idx]
     best_str = f"{best['symbol']} {best['direction']} +{best['result_30d']:.2%}"
-    # Data início e fim
+
+    wins_series = df_semana[df_semana['result_30d'] > 0]['result_30d']
+    losses_series = df_semana[df_semana['result_30d'] < 0]['result_30d']
+    avg_win = wins_series.mean() if not wins_series.empty else 0.0
+    avg_loss = abs(losses_series.mean()) if not losses_series.empty else 0.0
+    profit_ratio = avg_win / avg_loss if avg_loss != 0 else 0.0
+
     data_inicio = semana_atras.strftime('%Y-%m-%d')
     data_fim = datetime.now().strftime('%Y-%m-%d')
+    # HTML formatado
     msg = (
-        f"📊 *Relatório Semanal Montrezor*\n"
-        f"Período: {data_inicio} a {data_fim}\n\n"
-        f"📈 Sinais na semana: {n}\n"
-        f"✅ Acertos (30d): {wins} ({win_rate:.1%})\n"
-        f"💰 Retorno médio (30d): {avg_return:.2%}\n"
-        f"🏆 Melhor sinal: {best_str}\n\n"
-        f"Detalhes no CSV anexo."
+    f"<b>📊 Relatório Semanal Montrezor</b>\n"
+    f"<i>Período: {data_inicio} a {data_fim}</i>\n\n"
+    f"📈 Sinais na semana: <b>{n}</b>\n"
+    f"✅ Acertos (30d): <b>{wins} ({win_rate:.1%})</b>\n"
+    f"💰 Retorno médio (30d): <b>{avg_return:.3%}</b>\n"
+    f"📊 Lucro/Perda médio: <b>{profit_ratio:.2f}</b> (ganho médio {avg_win:.3%} / perda média {avg_loss:.3%})\n"
+    f"🏆 Melhor sinal: <b>{best_str}</b>\n\n"
+    f"Detalhes no CSV anexo."
     )
     return msg
 
@@ -1302,8 +1333,8 @@ def run_daemon(logger, mode="all"):
     last_ma_scan   = 0.0
     last_ai_check  = 0.0
     last_dex_scan  = 0.0
-    ma_state       = AlertState(MA_COOLDOWN_MIN)
     do_ma          = mode in ("all",)
+    ma_state       = {}
 
     while True:
         now = time.time()
@@ -1420,46 +1451,54 @@ def run_daemon(logger, mode="all"):
 
         # ── RELATÓRIO SEMANAL (domingo às 20h) ──
         now = time.time()
-        # Só executa se já passou 24h desde o último envio (para não enviar várias vezes no mesmo domingo)
         if now - last_weekly_report >= 86400:
-            cfg = load_config()
-            report_day = cfg.get("weekly_report_day", 6)
-            report_hour = cfg.get("weekly_report_hour", 20)
-            dt = datetime.now()
-            if dt.weekday() == report_day and dt.hour >= report_hour:
-                logger.info("[REL] Gerando relatório semanal...")
-                # 1. Enviar estatísticas em texto (Markdown)
-                stats_msg = gerar_estatisticas_semanais(logger)
-                if stats_msg:
-                    ok = _post(cfg["tg_token"], cfg["tg_chat_id"], stats_msg, parse_mode="Markdown")
-                    if ok:
-                        logger.info("[REL] Estatísticas enviadas.")
-                    else:
-                        logger.error("[REL] Falha ao enviar estatísticas.")
-                # 2. Enviar gráfico (se disponível)
-                img_buf = gerar_grafico_equity_semanal(logger)
-                if img_buf:
-                    url = f"https://api.telegram.org/bot{cfg['tg_token']}/sendPhoto"
-                    files = {'photo': ('equity.png', img_buf, 'image/png')}
-                    try:
-                        r = requests.post(url, files=files, data={'chat_id': cfg['tg_chat_id']}, timeout=30)
-                        if r.status_code == 200 and r.json().get('ok', False):
-                            logger.info("[REL] Gráfico enviado.")
+            try:
+                cfg = load_config()
+                report_day = cfg.get("weekly_report_day", 6)
+                report_hour = cfg.get("weekly_report_hour", 20)
+                dt = datetime.now()
+                if dt.weekday() == report_day and dt.hour >= report_hour:
+                    logger.info("[REL] Gerando relatório semanal...")
+                    any_sent = False
+                    stats_msg = gerar_estatisticas_semanais(logger)
+                    if stats_msg:
+                        ok = _post(cfg["tg_token"], cfg["tg_chat_id"], stats_msg, parse_mode="HTML")
+                        if ok:
+                            logger.info("[REL] Estatísticas enviadas.")
+                            any_sent = True
                         else:
-                            logger.error(f"[REL] Falha ao enviar gráfico: {r.text}")
-                    except Exception as e:
-                        logger.error(f"[REL] Erro enviar gráfico: {e}")
-                # 3. Enviar CSV
-                csv_data = gerar_csv_semanal(logger)
-                if csv_data:
-                    ok = send_csv_via_telegram(csv_data, cfg["tg_token"], cfg["tg_chat_id"])
-                    if ok:
-                        logger.info("[REL] CSV enviado com sucesso.")
-                        last_weekly_report = now
+                            logger.error("[REL] Falha ao enviar estatísticas.")
+                    img_buf = gerar_grafico_equity_semanal(logger)
+                    if img_buf:
+                        url = f"https://api.telegram.org/bot{cfg['tg_token']}/sendPhoto"
+                        files = {'photo': ('equity.png', img_buf, 'image/png')}
+                        try:
+                            r = requests.post(url, files=files, data={'chat_id': cfg['tg_chat_id']}, timeout=30)
+                            if r.status_code == 200 and r.json().get('ok', False):
+                                logger.info("[REL] Gráfico enviado.")
+                                any_sent = True
+                            else:
+                                logger.error(f"[REL] Falha ao enviar gráfico: {r.text}")
+                        except Exception as e:
+                            logger.error(f"[REL] Erro enviar gráfico: {e}")
+
+                    csv_data = gerar_csv_semanal(logger)
+                    if csv_data:
+                        ok = send_csv_via_telegram(csv_data, cfg["tg_token"], cfg["tg_chat_id"])
+                        if ok:
+                            logger.info("[REL] CSV enviado com sucesso.")
+                            any_sent = True
+                        else:
+                            logger.error("[REL] Falha ao enviar CSV.")
                     else:
-                        logger.error("[REL] Falha ao enviar CSV.")
-                else:
-                    logger.info("[REL] Nenhum dado CSV para enviar.")
+                        logger.info("[REL] Nenhum dado CSV para enviar.")
+
+                    # Se qualquer parte foi enviada, marcamos como feito para este dia
+                    if any_sent:
+                        last_weekly_report = now
+
+            except Exception as e:
+                logger.error(f"[REL] Erro geral no relatório semanal: {e}", exc_info=True)
 
         time.sleep(5)
 
@@ -1470,15 +1509,12 @@ def run_daemon(logger, mode="all"):
             fx_sym = cfg.get("ma_fx_sym", "EURUSD=X")
             active_ma = _scan_market_analysis(logger, cfg, ma_state, prev_ma_sigs)
 
-            # Carregar estado persistente de mudanças
-            ma_last_state = _load_daemon_ma_state()
-
             for chart, signal_data in active_ma.items():
                 direction = signal_data["direction"]
                 signal_date_ma = signal_data["date"]
 
-                # Só envia se mudou em relação ao último estado salvo
-                if _ma_signal_changed(chart, direction, ma_last_state):
+                # Verifica se o sinal mudou usando o estado unificado
+                if _has_changed(chart, direction):
                     icon = "📈" if direction == "BUY" else "📉"
                     dir_lbl = "COMPRA" if direction == "BUY" else "VENDA"
                     star = "⭐ " if "Macro" in chart or "Monthly" in chart else ""
@@ -1508,22 +1544,13 @@ def run_daemon(logger, mode="all"):
                     ok = _post(cfg["tg_token"], cfg["tg_chat_id"], msg_html, parse_mode="HTML")
                     if ok:
                         logger.info(f"  ✅ [MA] Telegram -> {chart_lbl} {dir_lbl}")
-                        # Atualiza estado persistente
-                        ma_last_state[chart] = direction
-                        _save_daemon_ma_state(ma_last_state)
+                        _update_state(chart, direction)
                     else:
                         logger.error(f"  ❌ [MA] Telegram falhou -> {chart_lbl}")
                 else:
                     logger.debug(f"  ⏳ [MA] Sem mudança: {chart} {direction}")
 
-            # Limpeza de sinais que sumiram — remove do estado persistente
-            for chart, direction in list(prev_ma_sigs.items()):
-                if chart not in active_ma:
-                    logger.info(f"[MA] ↩ Encerrado: {chart} {direction}")
-                    ma_last_state = _load_daemon_ma_state()
-                    if chart in ma_last_state:
-                        del ma_last_state[chart]
-                        _save_daemon_ma_state(ma_last_state)
+            # Atualiza apenas para logging (não interfere mais no estado)
             prev_ma_sigs = active_ma
 
         # ── DEX SCANNER — early stage tokens a cada 2h ─────────────────

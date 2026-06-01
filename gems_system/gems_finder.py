@@ -37,7 +37,6 @@ def _get_project_data_dir() -> str:
 
 class GemsFinder:
 
-    CACHE_FILE = "gems_cache.json"
     CACHE_DURATION = timedelta(hours=12)  # Cache de 12 horas
 
     def __init__(self):
@@ -342,12 +341,16 @@ class GemsFinder:
             try:
                 with open(self.macro_timing_path, 'w', encoding='utf-8') as f:
                     json.dump(payload, f, ensure_ascii=False, indent=2)
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"⚠️ Erro ao salvar macro_timing.json: {e}")
+                # Não levantamos exceção para não interromper o fluxo, mas logamos
 
             return payload
 
-        except Exception:
+        except Exception as e:
+            import traceback
+            print(f"❌ build_macro_timing falhou: {e}")
+            traceback.print_exc()
             return None
 
     def load_cache(self) -> Optional[Dict[str, Any]]:
@@ -359,7 +362,7 @@ class GemsFinder:
             with open(self.cache_path, 'r', encoding='utf-8') as f:
                 cache_data = json.load(f)
 
-            # ✅ CORREÇÃO: Validar timestamps antes de converter
+            # Validar timestamps antes de converter
             timestamp_str = cache_data.get('timestamp', '')
             expires_at_str = cache_data.get('expires_at', '')
 
@@ -380,7 +383,22 @@ class GemsFinder:
             else:
                 print(f"✅ Usando cache (válido até: {expires_at.strftime('%H:%M:%S')})")
 
-            # ✅ CORREÇÃO: Retornar cache completo para ter acesso ao cached_time
+            # ✅ CORREÇÃO: Validar e normalizar cached_time (pode ser string ou datetime)
+            raw_cached_time = cache_data.get('cached_time')
+            if raw_cached_time is None:
+                # Fallback: usar timestamp como cached_time (consistência)
+                cache_data['cached_time'] = cache_time
+            elif isinstance(raw_cached_time, str):
+                try:
+                    cache_data['cached_time'] = datetime.fromisoformat(raw_cached_time)
+                except ValueError:
+                    cache_data['cached_time'] = cache_time
+            elif isinstance(raw_cached_time, datetime):
+                pass  # já é datetime, manter
+            else:
+                # Tipo inesperado: usar cache_time como fallback
+                cache_data['cached_time'] = cache_time
+
             return cache_data
 
         except Exception as e:
@@ -505,152 +523,21 @@ class GemsFinder:
                             continue  # Volume baixo demais
 
                         # 📊 FILTRA RATIO VOLUME/MC (ESSENCIAL) - 3 ZONAS INTELIGENTES
-                        volume_mc_ratio = volume / market_cap
+                        # Prepara contexto BTC
+                        btc_context = {
+                            'btc_change_24h': btc_change_24h,
+                            'btc_change_7d': btc_change_7d
+                        }
 
-                        # 🔴 ZONA 1: Descartar (ratio < 0.2)
-                        if volume_mc_ratio < 0.2:
-                            print(f"❌ {coin['symbol']}: Vol/MC={volume_mc_ratio:.2f} (< 0.2) - MORTO - dispensar")
+                        # Aplica todos os filtros de qualidade
+                        if not self._apply_quality_filters(coin, btc_context, from_cache=False):
                             continue
 
-                        # 🟡 ZONA 2: Early Accumulation (0.2 <= ratio < 0.5)
-                        if 0.2 <= volume_mc_ratio < 0.5:
-                            coin['zone'] = 'early_accumulation'  # Fundo real
-                            print(f"🟡 {coin['symbol']}: Vol/MC={volume_mc_ratio:.2f} (0.2-0.5) - ACUMULAÇÃO INICIAL - POTENCIAL FUNDO")
-
-                        # 🟠 ZONA 3: Strong (0.5 <= ratio < 1.0)
-                        elif 0.5 <= volume_mc_ratio < 1.0:
-                            coin['zone'] = 'strong'
-                            print(f"🟠 {coin['symbol']}: Vol/MC={volume_mc_ratio:.2f} (0.5-1.0) - FORTE - OK")
-
-                        # 🔥 ZONA 4: Breakout (ratio >= 1.0)
-                        else:  # ratio >= 1.0
-                            coin['zone'] = 'breakout'
-                            print(f"🔥 {coin['symbol']}: Vol/MC={volume_mc_ratio:.2f} (>= 1.0) - BREAKOUT - PRIORIDADE MÁXIMA!")
-
-                        # 🛡️ FILTROS DE QUALIDADE DE VOLUME (NÍVEL INSTITUCIONAL)
-                        # A) Verificar se volume não é suspeito (muito alto vs MC sem lógica)
-                        if volume_mc_ratio > 3.0:  # Ratio > 3 é extremamente suspeito
-                            print(f"⚠️ {coin['symbol']}: Vol/MC={volume_mc_ratio:.2f} (> 3.0) - VOLUME SUSPEITO - análise manual")
-                            # Não descarta, mas marca para atenção
-
-                        # B) Verificar liquidez mínima (evitar armadilhas)
-                        # Usamos market_cap como proxy de liquidez (MC baixo + volume alto = suspeito)
-                        if market_cap < 20_000_000 and volume_mc_ratio > 1.5:
-                            print(f"⚠️ {coin['symbol']}: MC=${market_cap:,} baixo + Vol/MC={volume_mc_ratio:.2f} alto - POSSÍVEL ARMADILHA")
-                            # Não descarta, mas alerta
-
-                        # C) Verificar distribuição de volume (via market cap como proxy)
-                        # Se MC é muito baixo mas volume é altíssimo, pode ser manipulado
-                        if market_cap < 15_000_000 and volume > market_cap * 2:
-                            print(f"⚠️ {coin['symbol']}: Volume 2x MC - POSSÍVEL MANIPULAÇÃO - atenção")
-
-                        # Cálculo do drawdown desde o ATH
-                        ath = coin.get('ath', 0)
-                        current_price = coin.get('current_price', 0)
-                        if ath and current_price and ath > 0:
-                            drawdown_pct = (ath - current_price) / ath
-                        else:
-                            drawdown_pct = 0.0
-                        coin['drawdown_pct'] = round(drawdown_pct, 4)
-
-                        # 🚨 D) FILTRO ANTI-WASH TRADING - Volume alto sem movimento de preço
-                        price_change_24h = coin.get('price_change_percentage_24h', 0)
-                        if volume_mc_ratio > 1.5 and abs(price_change_24h) < 2:
-                            print(f"🚨 {coin['symbol']}: Volume alto ({volume_mc_ratio:.2f}x MC) + preço parado ({price_change_24h:.2f}%) - POSSÍVEL WASH TRADING - análise manual")
-                            # Não descarta, mas marca como suspeito para atenção manual
-                            coin['suspected_wash_trading'] = True
-                        else:
-                            coin['suspected_wash_trading'] = False
-
-                        if volume_mc_ratio >= 1.0:
-                            print(f"🔥 {coin['symbol']}: Vol/MC={volume_mc_ratio:.2f} (>= 1.0) - PRIORIDADE MÁXIMA!")
-                        else:
-                            print(f"✅ {coin['symbol']}: Vol/MC={volume_mc_ratio:.2f} (>= 0.5) - OK")
-
-                        # 🛡️ FILTRA FDV - Fully Diluted Valuation (AJUSTADO)
-                        fdv = coin.get('fully_diluted_valuation')
-                        if fdv is not None and fdv > 0 and market_cap > 0:
-                            # ✅ CORREÇÃO: Proteger contra divisão por zero
-                            fdv_diff_percent = ((fdv - market_cap) / market_cap) * 100
-                            if fdv_diff_percent > 80:  # FDV mais de 80% maior que MC (inflação muito alta)
-                                print(f"❌ {coin['symbol']}: FDV=${fdv:,} (+{fdv_diff_percent:.1f}% vs MC) - INFLAÇÃO MUITO ALTA - dispensar")
-                                continue
-                            elif fdv_diff_percent > 30:  # FDV entre 30-80% (atenção)
-                                print(f"⚠️ {coin['symbol']}: FDV=${fdv:,} (+{fdv_diff_percent:.1f}% vs MC) - ATENÇÃO - continuar")
-                            else:
-                                print(f"✅ {coin['symbol']}: FDV=${fdv:,} (+{fdv_diff_percent:.1f}% vs MC) - INFLAÇÃO OK")
-                        else:
-                            print(f"⚠️ {coin['symbol']}: Sem dados FDV - continuar análise")
-
-                        # �️ FILTRO CRÍTICO: SUPPLY UNLOCK RISK
-                        supply_safe = self.check_supply_unlock_risk(coin)
-                        if not supply_safe:
-                            print(f"� {coin['symbol']}: ALTO RISCO DE INFLAÇÃO - Supply unlock perigoso - dispensar")
-                            continue
-                        else:
-                            print(f"✅ {coin['symbol']}: Supply seguro - sem risco de inflação excessiva")
-
-                        # 🔥 FILTRO 2: RESILIÊNCIA DE PREÇO (pullback saudável refinado)
-                        price_resilience = self.check_price_resilience(coin)
-                        price_change_30d = coin.get('price_change_percentage_30d', 0)
-                        price_change_7d = coin.get('price_change_percentage_7d', 0)
-
-                        if price_resilience:
-                            print(f"💪 {coin['symbol']}: PULLBACK FORTE - 30d: +{price_change_30d:.1f}% (>15%), 7d: {price_change_7d:.1f}% (saudável)!")
-                        elif price_change_30d > 0 and price_change_7d < 0:
-                            print(f"📊 {coin['symbol']}: Pullback fraco - 30d: +{price_change_30d:.1f}% (<15%), 7d: {price_change_7d:.1f}%")
-                        else:
-                            print(f"📈 {coin['symbol']}: Preço normal (sem pullback saudável)")
-
-                        # 🚀 FILTRO DE INTERESSE REAL (MOMENTUM/ENGAGEMENT)
-                        price_change_7d = coin.get('price_change_percentage_7d', 0)
-                        if price_change_7d > 20:
-                            coin['momentum'] = 'high'
-                            print(f"🚀 {coin['symbol']}: MOMENTUM ALTO - +{price_change_7d:.1f}% em 7d - MERCADO ATENTO!")
-                        elif price_change_7d > 10:
-                            coin['momentum'] = 'medium'
-                            print(f"📈 {coin['symbol']}: MOMENTUM MÉDIO - +{price_change_7d:.1f}% em 7d - atenção crescente")
-                        else:
-                            coin['momentum'] = 'low'
-                            print(f"📊 {coin['symbol']}: MOMENTUM BAIXO - {price_change_7d:.1f}% em 7d - mercado quieto")
-
-                        # 🎯 BÔNUS ESPECIAL: OURO PURO - Pullback + Volume Real
-                        if price_resilience and volume_mc_ratio > 0.7:
-                            print(f"👑 {coin['symbol']}: OURO PURO - Pullback saudável + Volume real ({volume_mc_ratio:.2f}x MC)!")
-                            coin['is_gold'] = True
-                        elif price_resilience:
-                            print(f"💎 {coin['symbol']}: Pullback saudável mas volume baixo ({volume_mc_ratio:.2f}x MC) - potencial")
-                            coin['is_gold'] = False
-                        else:
-                            coin['is_gold'] = False
-
-                        # GEM ENCONTRADA!
-                        gem_change_24h = coin.get('price_change_percentage_24h')
-                        gem_change_7d = coin.get('price_change_percentage_7d')
-                        btc_24h = btc_change_24h if isinstance(btc_change_24h, (int, float)) else None
-                        btc_7d = btc_change_7d if isinstance(btc_change_7d, (int, float)) else None
-
-                        rs_24h = (gem_change_24h - btc_24h) if isinstance(gem_change_24h, (int, float)) and isinstance(btc_24h, (int, float)) else None
-                        rs_7d = (gem_change_7d - btc_7d) if isinstance(gem_change_7d, (int, float)) and isinstance(btc_7d, (int, float)) else None
-
-                        coin['btc_change_24h'] = btc_24h
-                        coin['btc_change_7d'] = btc_7d
-                        coin['rs_24h'] = rs_24h
-                        coin['rs_7d'] = rs_7d
-                        coin['rs_available'] = (rs_24h is not None or rs_7d is not None)
-
-                        coin['rs_strong_24h'] = (
-                            isinstance(rs_24h, (int, float)) and isinstance(btc_24h, (int, float)) and
-                            btc_24h < 0 and rs_24h >= 2.0
-                        )
-                        coin['rs_leader_24h'] = (
-                            isinstance(gem_change_24h, (int, float)) and isinstance(btc_24h, (int, float)) and
-                            btc_24h < 0 and gem_change_24h > 0
-                        )
-
+                        # Se chegou aqui, a moeda passou nos filtros
                         gems.append(coin)
                         page_gems_found += 1
-                        print(f" {coin['symbol']}: MC=${market_cap:,}, Vol=${volume:,}")
+                        print(f" ✅ {coin['symbol']}: MC=${market_cap:,}, Vol=${volume:,}, Ratio={volume/market_cap:.2f}")
+
 
                         # Atualizar menor MC encontrado
                         if market_cap < min_mc_found:
@@ -981,8 +868,9 @@ class GemsFinder:
             yesterday_data = historical_data[yesterday]
 
             if symbol in today_data and symbol in yesterday_data:
-                vol_today = today_data[symbol].get('total_volume', 0)
-                vol_yesterday = yesterday_data[symbol].get('total_volume', 0)
+                # ✅ CORREÇÃO: usar 'volume' em vez de 'total_volume'
+                vol_today = today_data[symbol].get('volume', 0)
+                vol_yesterday = yesterday_data[symbol].get('volume', 0)
 
                 # 🧠 Dinheiro entrando: volume hoje > 30% acima de ontem
                 return vol_today > vol_yesterday * 1.3
@@ -1516,17 +1404,137 @@ class GemsFinder:
         return all_gems, new_data_found
 
     def _filter_gems_by_range(self, gems: List[Dict[str, Any]], range_config: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """Filtra gems do cache pela faixa específica"""
+        """
+        Filtra gems do cache pela faixa de market cap e volume, E reaplica os filtros de qualidade.
+        """
         filtered = []
         for gem in gems:
             mc = gem.get('market_cap', 0)
             vol = gem.get('total_volume', 0) or 0
 
-            if (range_config['min_mc'] <= mc <= range_config['max_mc'] and
-                vol >= range_config['min_volume']):
-                filtered.append(gem)
+            # Primeiro, filtrar por faixa de MC e volume mínimo
+            if not (range_config['min_mc'] <= mc <= range_config['max_mc'] and vol >= range_config['min_volume']):
+                continue
+
+            # Reaplicar filtros de qualidade (sem contexto BTC, pois os dados são do cache)
+            gem_copy = gem.copy()
+            if not self._apply_quality_filters(gem_copy, btc_context=None, from_cache=True):
+                continue
+
+            # Se passou, adicionar a gem original (a cópia é descartada)
+            filtered.append(gem)
 
         return filtered[:range_config['max_results']]
+
+    def _apply_quality_filters(self, coin: dict, btc_context: dict = None, from_cache: bool = False) -> bool:
+        """
+        Aplica todos os filtros de qualidade (ratio, FDV, supply, wash trading, etc.)
+        Retorna True se a moeda passar em todos os filtros obrigatórios.
+
+        Parâmetros:
+            coin: dicionário da moeda (da API ou do cache)
+            btc_context: opcional, contém btc_change_24h/7d para cálculos de RS (ignorado se from_cache=True)
+            from_cache: se True, ignora filtros que dependem de dados em tempo real (RS, btc_context)
+        """
+        symbol = coin.get('symbol', '')
+        if not symbol:
+            return False
+
+        # --- 1. Ratio Volume/MC (obrigatório: >= 0.2) ---
+        volume = coin.get('total_volume', 0) or 0
+        market_cap = coin.get('market_cap', 0)
+        if market_cap <= 0:
+            return False
+        ratio = volume / market_cap
+        if ratio < 0.2:
+            # print(f"❌ {symbol}: ratio {ratio:.2f} < 0.2 - descartado")
+            return False
+
+        # Classificação de zona (opcional, apenas para debug/log)
+        if ratio < 0.5:
+            zone = 'early_accumulation'
+        elif ratio < 1.0:
+            zone = 'strong'
+        else:
+            zone = 'breakout'
+        coin['zone'] = zone
+
+        # --- 2. FDV (Fully Diluted Valuation) - obrigatório: não pode estar >80% maior que MC ---
+        fdv = coin.get('fully_diluted_valuation')
+        if fdv is not None and fdv > 0:
+            fdv_diff = ((fdv - market_cap) / market_cap) * 100
+            if fdv_diff > 80:
+                # print(f"❌ {symbol}: FDV {fdv_diff:.1f}% > 80% - descartado")
+                return False
+            elif fdv_diff > 30:
+                coin['fdv_warning'] = True  # apenas marca, não descarta
+
+        # --- 3. Supply unlock risk (obrigatório: circulating/total >= 0.3) ---
+        circulating = coin.get('circulating_supply', 0)
+        total = coin.get('total_supply', 0)
+        if total and total > 0 and circulating:
+            if circulating / total < 0.3:
+                # print(f"❌ {symbol}: apenas {circulating/total:.0%} em circulação - descartado")
+                return False
+
+        # --- 4. Preço mínimo (evitar moedas quebradas) ---
+        current_price = coin.get('current_price', 0)
+        if current_price <= 0:
+            return False
+
+        # --- 5. Drawdown desde ATH (opcional, apenas para logging) ---
+        ath = coin.get('ath', 0)
+        if ath and ath > 0:
+            drawdown = (ath - current_price) / ath
+            coin['drawdown_pct'] = round(drawdown, 4)
+
+        # --- 6. Price resilience (pullback saudável) - opcional, não bloqueia ---
+        price_change_30d = coin.get('price_change_percentage_30d', 0)
+        price_change_7d = coin.get('price_change_percentage_7d', 0)
+        if price_change_30d > 15 and -15 < price_change_7d < 0:
+            coin['price_resilience'] = True
+            # print(f"💪 {symbol}: pullback saudável")
+        else:
+            coin['price_resilience'] = False
+
+        # --- 7. Gold (pullback + ratio alto) - opcional ---
+        coin['is_gold'] = (coin['price_resilience'] and ratio > 0.7)
+
+        # --- 8. Wash trading suspeito (volume alto + preço parado) - opcional, apenas marca ---
+        price_change_24h = coin.get('price_change_percentage_24h', 0)
+        if ratio > 1.5 and abs(price_change_24h) < 2:
+            coin['suspected_wash_trading'] = True
+            # print(f"🚨 {symbol}: possível wash trading")
+        else:
+            coin['suspected_wash_trading'] = False
+
+        # --- 9. Momentum (interesse real) - opcional ---
+        if price_change_7d > 20:
+            coin['momentum'] = 'high'
+        elif price_change_7d > 10:
+            coin['momentum'] = 'medium'
+        else:
+            coin['momentum'] = 'low'
+
+        # --- 10. RS vs BTC (apenas se não for from_cache e tiver contexto BTC) ---
+        if not from_cache and btc_context:
+            btc_24h = btc_context.get('btc_change_24h')
+            btc_7d = btc_context.get('btc_change_7d')
+            rs_24h = (price_change_24h - btc_24h) if (price_change_24h is not None and btc_24h is not None) else None
+            rs_7d = (price_change_7d - btc_7d) if (price_change_7d is not None and btc_7d is not None) else None
+            coin['rs_24h'] = rs_24h
+            coin['rs_7d'] = rs_7d
+            coin['rs_strong_24h'] = (btc_24h is not None and btc_24h < 0 and rs_24h is not None and rs_24h >= 2.0)
+            coin['rs_leader_24h'] = (btc_24h is not None and btc_24h < 0 and price_change_24h is not None and price_change_24h > 0)
+        else:
+            # Quando vindo do cache, não calculamos RS (campos podem não existir)
+            coin['rs_24h'] = None
+            coin['rs_7d'] = None
+            coin['rs_strong_24h'] = False
+            coin['rs_leader_24h'] = False
+
+        # Passou em todos os filtros obrigatórios
+        return True
 
     def save_early_stage_snapshot(self):
         try:
@@ -1907,20 +1915,19 @@ class GemsFinder:
         print(f"  💪 RS vs BTC forte: {rs_count}")
 
         # ── Resumo setorial no terminal ───────────────────────────────────────
-        sector_result = getattr(self, '_last_sector_result', None)
-        if sector_result:
-            hot  = sector_result.get('hot_sectors', [])
-            warm = sector_result.get('warming_sectors', [])
-            alert= sector_result.get('current_alert', 'COLD')
-            print(f"\n🏭 RESUMO SETORIAL: {alert} | "
-                    f"Setores quentes: {', '.join(hot) if hot else 'nenhum'} | "
-                    f"Aquecendo: {', '.join(s['sector'] for s in warm[:3])}")
         # Salvar setores quentes para uso posterior
         hot_file = os.path.join(self.cache_dir, 'hot_sectors.json')
         with open(hot_file, 'w', encoding='utf-8') as f:
+            if sector_result:
+                hot = sector_result.get('hot_sectors', [])
+                warm = sector_result.get('warming_sectors', [])
+            else:
+                hot = []
+                warm = []
+                print("⚠️ sector_result é None, salvando setores vazios")
             json.dump({
-                'hot': sector_result.get('hot_sectors', []),
-                'warming': sector_result.get('warming_sectors', []),
+                'hot': hot,
+                'warming': warm,
                 'timestamp': datetime.now().isoformat()
             }, f)
 

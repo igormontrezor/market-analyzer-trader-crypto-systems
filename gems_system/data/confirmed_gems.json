@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-29T09:38:44.013901",
+  "last_updated": "2026-05-29T22:36:43.411880",
   "total_confirmed": 11,
   "confirmed_gems": [
     {
@@ -141,19 +141,19 @@
     {
       "symbol": "pha",
       "name": "PHALA",
-      "confirmed_at": "2026-05-29T09:38:44.010195",
-      "ratio_now": 1.0301089131383947,
+      "confirmed_at": "2026-05-29T22:36:43.408798",
+      "ratio_now": 1.0884943239865086,
       "ratio_24h_ago": 0.7772790212180478,
-      "growth_percent": 32.52755896127824,
+      "growth_percent": 40.039071462493055,
       "strong_days": 3,
-      "acceleration_strength": 3.851559851946915,
+      "acceleration_strength": 4.069861918353567,
       "trend": "accelerating",
-      "market_cap": 35871338,
-      "volume": 36951385,
+      "market_cap": 34797486,
+      "volume": 37876866,
       "priority": "maxima",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 80.6021782627679
+      "quality_score": 81.76988647973018
     },
     {
       "symbol": "neiro",

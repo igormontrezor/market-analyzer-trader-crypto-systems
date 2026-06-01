@@ -1,0 +1,5 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-05-31 12:21:15
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+

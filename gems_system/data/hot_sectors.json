@@ -1,52 +1,47 @@
 {
-  "timestamp": "2026-05-29T09:51:24.056387",
+  "timestamp": "2026-06-01T15:53:47.906284",
   "hot": [
     "AI",
     "Other",
     "Meme",
-    "DeFi",
-    "Gaming"
+    "Gaming",
+    "DeFi"
   ],
   "all_sectors": {
     "AI": {
-      "avg_score": 36.8,
+      "avg_score": 32.0,
       "count": 2,
       "appearances": 10
     },
     "Other": {
-      "avg_score": 30.8,
-      "count": 89,
-      "appearances": 308
+      "avg_score": 29.4,
+      "count": 88,
+      "appearances": 291
     },
     "Meme": {
-      "avg_score": 28.0,
+      "avg_score": 26.9,
       "count": 9,
-      "appearances": 47
-    },
-    "DeFi": {
-      "avg_score": 25.0,
-      "count": 5,
-      "appearances": 10
+      "appearances": 48
     },
     "Gaming": {
-      "avg_score": 21.1,
-      "count": 2,
+      "avg_score": 25.4,
+      "count": 3,
       "appearances": 6
     },
     "Social": {
-      "avg_score": 15.5,
+      "avg_score": 25.4,
       "count": 1,
       "appearances": 2
     },
-    "Infra": {
-      "avg_score": 14.1,
+    "RWA": {
+      "avg_score": 23.6,
       "count": 1,
       "appearances": 1
     },
-    "L1": {
-      "avg_score": 4.2,
-      "count": 1,
-      "appearances": 1
+    "DeFi": {
+      "avg_score": 23.3,
+      "count": 6,
+      "appearances": 11
     }
   }
 }
