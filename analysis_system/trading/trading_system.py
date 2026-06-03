@@ -308,7 +308,8 @@ def send_telegram_alert(
     touch_tfs: list = None, stoch_div: bool = False, mn_ema_div: bool = False,
     div_grade: str = None, vol_ratio: float = None, vol_high: bool = False,
     atr_low: bool = False, atr_ratio: float = None, elevated: bool = False,
-    elevation_reason: str = None, adx_weak: bool = False, adx_warning: str = None
+    elevation_reason: str = None, adx_weak: bool = False, adx_warning: str = None,
+    rsi_extreme_bonus: bool = False, rsi_extreme_text: str = None
 ) -> tuple:
     """Envia alerta de sinal via Telegram. Retorna (sucesso, mensagem_erro)."""
     token = _normalize_telegram_token(token)
@@ -332,6 +333,10 @@ def send_telegram_alert(
         adx_text = ""
         if adx_weak and adx_warning:
             adx_text = f"⚠️ <b>ADX fraco</b>: {esc(adx_warning)}\n"
+
+        rsi_extreme_html = ""
+        if rsi_extreme_bonus and rsi_extreme_text:
+            rsi_extreme_html = f"<b>🔆 {esc(rsi_extreme_text)}</b>\n"
 
         # Elevação COMUM → SUPER (por divergência/volume)
         elev_text = ""
@@ -370,6 +375,7 @@ def send_telegram_alert(
             f"<b>Preço</b>: {price:.5f}\n"
             f"{tf_text}"
             f"{adx_text}"
+            f"{rsi_extreme_html}"
             f"{elev_text}"
             f"{div_text}"
             f"{vol_text}"
@@ -413,6 +419,10 @@ def send_telegram_alert(
             plain += f"⚠️ ATR baixo ({atr_ratio:.2f}x) — mercado em range\n"
         if elevated and elevation_reason:
             plain += f"⬆️ Elevação: COMUM→SUPER ({elevation_reason})\n"
+        # ⭐ NOVO: Adicionar alerta de RSI extremo no plain text
+        if rsi_extreme_bonus and rsi_extreme_text:
+            plain += f"🔆 {rsi_extreme_text}\n"
+
         plain += f"Hora: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}\n\nMontrezor Trading System"
         resp2 = requests.post(
             url, json={"chat_id": chat_id, "text": plain}, timeout=15
@@ -1196,6 +1206,39 @@ def check_signals(data, symbol, athena_levels):
     #     return None
     # =========================================================
 
+    # ============================================================
+# ALERTA DE RSI EXTREMO (BOM) - MODIFICAÇÃO
+# ============================================================
+# Adicionar dentro de check_signals(), após definir 'direction' e antes de retornar o dicionário
+
+    # ── Alerta de RSI extremo (bom) ──
+    rsi_extreme_bonus = False
+    rsi_extreme_text = None
+    try:
+        # Para compra: buscar RSI < 30 em 4H, 1D ou 1W
+        if direction == "COMPRA":
+            for tf_key in ['4h', '1d', '1wk']:
+                df_tf = data.get(tf_key)
+                if df_tf is not None and not df_tf.empty:
+                    # usar candle atual (em formação OK, pois RSI é estável)
+                    rsi_val = float(df_tf['RSI'].iloc[-1])
+                    if rsi_val < 30:
+                        rsi_extreme_bonus = True
+                        rsi_extreme_text = f"🔥 RSI extremo ({tf_key.upper()}): {rsi_val:.1f} < 30"
+                        break
+        # Para venda: buscar RSI > 70 em 4H, 1D ou 1W
+        else:
+            for tf_key in ['4h', '1d', '1wk']:
+                df_tf = data.get(tf_key)
+                if df_tf is not None and not df_tf.empty:
+                    rsi_val = float(df_tf['RSI'].iloc[-1])
+                    if rsi_val > 70:
+                        rsi_extreme_bonus = True
+                        rsi_extreme_text = f"⚠️ RSI sobrecompra ({tf_key.upper()}): {rsi_val:.1f} > 70"
+                        break
+    except Exception:
+        pass
+
     return {
         "symbol":    symbol,
         "direction": direction,
@@ -1206,6 +1249,8 @@ def check_signals(data, symbol, athena_levels):
         "signal_ts": signal_ts,
         "touch_tfs": touch_tfs,  # TFs onde houve toque/near no canal RSI
         "stoch_div": stoch_div,    # Adicionado para a UI
+        "rsi_extreme_bonus": rsi_extreme_bonus,
+        "rsi_extreme_text": rsi_extreme_text,
         "stoch_warning": stoch_warning,
         "mn_ema_div": mn_ema_div,  # Adicionado para a UI
         "adx_weak": adx_weak,
@@ -1873,6 +1918,8 @@ if __name__ == "__main__":
                                     st.session_state.tg_token, st.session_state.tg_chat_id,
                                     touch_tfs=sig.get('touch_tfs', []),
                                     stoch_div=sig.get('stoch_div', False),
+                                    rsi_extreme_bonus=sig.get('rsi_extreme_bonus', False),
+                                    rsi_extreme_text=sig.get('rsi_extreme_text'),
                                     #stoch_tf=sig.get('tf_menor'),
                                     mn_ema_div=sig.get('mn_ema_div', False),
                                     div_grade=sig.get('div_grade'),
@@ -1937,7 +1984,9 @@ if __name__ == "__main__":
                             "elevated": sig.get('elevated', False),
                             "mn_ema_div": sig.get('mn_ema_div', False),
                             "stoch_div": sig.get('stoch_div', False),
-                            "adx_weak": sig.get('adx_weak', False)
+                            "adx_weak": sig.get('adx_weak', False),
+                            "rsi_extreme_bonus": sig.get('rsi_extreme_bonus', False),
+                            "rsi_extreme_text": sig.get('rsi_extreme_text')
                         }
                         save_performance_data()
                         _lock_signal(lock_key)   # marca como registrado nas próximas 24h
@@ -2003,6 +2052,10 @@ if __name__ == "__main__":
 
                     if s.get('stoch_div') and s.get('stoch_warning'):
                         html_content += f'<br><span style="background:#E0A905;color:#000;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;">⚠️ {html.escape(s["stoch_warning"])}</span>'
+
+                     # Alerta RSI extremo (bom)
+                    if s.get('rsi_extreme_bonus') and s.get('rsi_extreme_text'):
+                        html_content += f"<br><span style='background:#2d6a4f;color:#FFF;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:bold;'>🔆 {html.escape(s['rsi_extreme_text'])}</span>"
 
                     if s.get('mn_ema_div'):
                         html_content += '<br><span style="background:#E04C4C;color:#FFF;padding:2px 4px;border-radius:3px;font-size:10px;font-weight:bold;">🚨 EMA MENSAL DIV</span>'

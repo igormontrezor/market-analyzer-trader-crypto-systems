@@ -172,8 +172,12 @@ def _load_port() -> dict:
 
 def _save_port(data: dict):
     try:
-        json.dump(data, open(_PORT_FILE,"w",encoding="utf-8"), indent=2, default=str)
-    except Exception: pass
+        with open(_PORT_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, default=str)
+    except Exception as e:
+        st.error(f"ERRO AO SALVAR PORTFÓLIO: {e}")
+        import traceback
+        traceback.print_exc()
 
 def _log_tx(port: dict, tx_type: str, coin_id: str, amount: float,
             price: float = 0, pnl: float = 0, notes: str = ""):
@@ -301,12 +305,15 @@ def render_portfolio_tab(macro_signal: str = None):
         "💼 PORTFÓLIO DE FUTUROS</div>",
         unsafe_allow_html=True)
 
-    # Calcular totais com preços atuais
+    # Calcular totais — usa o cache em disco já populado pelo batch acima (zero requests extras)
+    _mem_cache = _load_price_cache()
+
     total_invested = 0.0
     positions_enriched = []
     for pos in positions:
         if pos.get("status") != "OPEN": continue
-        cg    = _fetch_price(pos["coin_id"], use_cache=True)
+        _cd   = _mem_cache.get(pos["coin_id"], {}).get("data", {})
+        cg    = _cd if _cd else {}
         price = cg.get("price", pos.get("entry_avg", 0))
         pos_size = float(pos.get("position_size", 0))
         entry    = float(pos.get("entry_avg", 0))
@@ -557,12 +564,15 @@ def render_portfolio_tab(macro_signal: str = None):
                         # ── Deletar posição ──
                         col_e, col_d = st.columns(2)
                         with col_d:
-                            if st.button("🗑 Deletar", key=f"del_{pos['coin_id']}_{i}"):
-                                port["positions"] = [
-                                    p for p in port["positions"]
-                                    if not (p["coin_id"] == pos["coin_id"] and p["status"] == "OPEN")
+                             if st.button("🗑 Deletar", key=f"del_{pos['coin_id']}_{i}"):
+                                # Carrega o portfólio mais recente do arquivo
+                                fresh_port = _load_port()
+                                fresh_port["positions"] = [
+                                    p for p in fresh_port["positions"]
+                                    if not (p["coin_id"] == pos["coin_id"] and p.get("status") == "OPEN")
                                 ]
-                                _save_port(port)
+                                _save_port(fresh_port)
+                                st.success(f"Posição {pos['coin_id'].upper()} removida!")
                                 st.rerun()
 
                         # Botão para editar
@@ -926,8 +936,17 @@ def render_portfolio_tab(macro_signal: str = None):
                                         st.rerun()
                     with col_remover:
                         if st.button("✕ Remover", key=f"del_w_{wi}", use_container_width=True):
-                            port["watchlist"] = [w for j,w in enumerate(watchlist) if j != wi]
-                            _save_port(port)
+                            # Lê o arquivo diretamente
+                            with open(_PORT_FILE, "r", encoding="utf-8") as f:
+                                data = json.load(f)
+                            # Remove o item pelo índice real (wi)
+                            if 0 <= wi < len(data.get("watchlist", [])):
+                                data["watchlist"].pop(wi)
+                            # Salva
+                            with open(_PORT_FILE, "w", encoding="utf-8") as f:
+                                json.dump(data, f, indent=2, default=str)
+                            # Força recarga completa
+                            st.success("Item removido da watchlist!")
                             st.rerun()
 
     # ════════════════════════════════════════════════════════════════════════
@@ -1129,6 +1148,10 @@ def render_portfolio_tab(macro_signal: str = None):
                 _save_port(port)
                 st.rerun()
 
-    # Salvar equity history atualizado
-    port["equity_history"] = eq_hist
-    _save_port(port)
+    # Salvar equity history — APENAS se mudou hoje (evita rerun infinito)
+    # _save_port a cada rerun causaria loop: salva → mtime muda → rerun → salva → ...
+    today = str(pd.Timestamp.now())[:10]
+    last_eq_date = eq_hist[-1].get("date","") if eq_hist else ""
+    if last_eq_date == today and port.get("equity_history") != eq_hist:
+        port["equity_history"] = eq_hist
+        _save_port(port)

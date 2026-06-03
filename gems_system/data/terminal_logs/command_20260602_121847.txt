@@ -1,0 +1,105 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-06-02 12:18:47
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+✅ Usando cache (válido até: 00:03:14)
+✅ Usando cache existente: 51 gems
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+📋 Cache: 9 gems encontradas
+✅ 50m_range: 9 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+📋 Cache: 15 gems encontradas
+✅ 10_49m_range: 15 gems
+📋 Cache válido - Nenhum cache atualizado
+
+📊 ANÁLISE - 50M_RANGE:
+
+📊 ANÁLISE DAS 9 GEMS:
+================================================================================
+Market Cap - Médio: $76,283,139
+Market Cap - Min: $54,094,995, Max: $97,855,808
+Volume - Médio: $31,308,022
+Volume - Min: $13,482,787, Max: $60,967,164
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 7 gems
+  🟠 Strong (0.5-1.0): 2 gems
+  🔥 Breakout (>1.0): 0 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/9 (0.0%)
+  💪 Resiliência de Preço: 0/9 (0.0%)
+  👑 POTENCIAL OURO: 0/9 (0.0%)
+  🚨 WASH TRADING: 0/9 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 9 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. bio      | MC: $  74,502,221 | Vol: $  60,967,164 | Ratio: 0.82 | S 📊📈    📊 | Bio Protocol
+ 2. ordi     | MC: $  76,612,834 | Vol: $  59,543,871 | Ratio: 0.78 | S 📊📈    📊 | ORDI
+ 3. nvdaon   | MC: $  62,023,449 | Vol: $  25,854,369 | Ratio: 0.42 | E 📊📈    📊 | NVIDIA (Ondo Tokenized Stock)
+ 4. w        | MC: $  74,259,902 | Vol: $  27,906,607 | Ratio: 0.38 | E 📊📈    📊 | Wormhole
+ 5. grx      | MC: $  92,408,758 | Vol: $  29,023,822 | Ratio: 0.31 | E 📊📈    📊 | GRX Chain
+ 6. brett    | MC: $  63,888,396 | Vol: $  18,506,585 | Ratio: 0.29 | E 📊📈    📊 | Brett
+ 7. useless  | MC: $  97,855,808 | Vol: $  25,498,669 | Ratio: 0.26 | E 📊📈    📊 | Useless Coin
+ 8. sushi    | MC: $  54,094,995 | Vol: $  13,482,787 | Ratio: 0.25 | E 📊📈    📊 | Sushi
+ 9. arkm     | MC: $  90,901,890 | Vol: $  20,988,328 | Ratio: 0.23 | E 📊📈    📊 | Arkham
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 15 GEMS:
+================================================================================
+Market Cap - Médio: $28,019,651
+Market Cap - Min: $15,388,375, Max: $45,184,442
+Volume - Médio: $34,293,452
+Volume - Min: $8,168,814, Max: $148,861,457
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 3 gems
+  🟠 Strong (0.5-1.0): 8 gems
+  🔥 Breakout (>1.0): 4 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/15 (0.0%)
+  💪 Resiliência de Preço: 0/15 (0.0%)
+  👑 POTENCIAL OURO: 0/15 (0.0%)
+  🚨 WASH TRADING: 0/15 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 15 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. portal   | MC: $  15,388,375 | Vol: $ 148,861,457 | Ratio: 9.67 | B 📊📈    📊 | Portal
+ 2. meme     | MC: $  32,314,325 | Vol: $  87,750,162 | Ratio: 2.72 | B 📊📈    📊 | Memecoin
+ 3. stg      | MC: $  40,431,266 | Vol: $  56,660,401 | Ratio: 1.40 | B 📊📈    📊 | Stargate Finance
+ 4. ardr     | MC: $  38,485,918 | Vol: $  48,574,489 | Ratio: 1.26 | B 📊📈    📊 | Ardor
+ 5. agld     | MC: $  18,700,765 | Vol: $  16,459,101 | Ratio: 0.88 | S 📊📈    📊 | Adventure Gold
+ 6. strax    | MC: $  26,802,250 | Vol: $  22,624,501 | Ratio: 0.84 | S 📊📈    📊 | Xertra
+ 7. dogs     | MC: $  24,609,665 | Vol: $  18,586,800 | Ratio: 0.76 | S 📊📈    📊 | Dogs
+ 8. pha      | MC: $  30,746,290 | Vol: $  22,860,320 | Ratio: 0.74 | S 📊📈    📊 | PHALA
+ 9. googlon  | MC: $  26,125,803 | Vol: $  16,169,583 | Ratio: 0.62 | S 📊📈    📊 | Alphabet Class A (Ondo Tokenized Stock)
+10. msfton   | MC: $  19,494,433 | Vol: $  10,322,137 | Ratio: 0.53 | S 📊📈    📊 | Microsoft (Ondo Tokenized Stock)
+
+📋 Usando dados existentes - Nenhum snapshot criado
+
+🎉 GEMS FINDER CONCLUÍDO!
+📊 Total de gems: 24
+📁 Arquivos salvos para análise histórica:
+   - snapshots/gems_*.csv (por faixa)
+   - snapshots/gems_consolidated_*.csv (completo)
+   - Cache válido por 12 horas (evita requisições excessivas)
+   - Snapshots criados apenas com dados novos

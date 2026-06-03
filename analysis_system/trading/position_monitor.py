@@ -14,7 +14,7 @@ import json
 import time
 import threading
 from datetime import datetime
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 import pandas as pd
 import streamlit as st
 
@@ -111,6 +111,33 @@ def save_alert_log(alert: Dict):
     except Exception:
         pass
 
+def _check_rsi_extreme(data: Dict[str, pd.DataFrame], direction: str) -> tuple:
+    """
+    Verifica se o RSI está em extremo contrário à posição em qualquer TF.
+    Retorna (alert_type, message, price, tf) ou (None, None, None, None)
+    """
+    tfs_order = ['4h', '1d', '1wk', '1mo']  # ordem do menor para o maior TF
+    for tf in tfs_order:
+        df = data.get(tf)
+        if df is None or df.empty:
+            continue
+        try:
+            last = df.iloc[-1]
+            rsi = float(last['RSI'])
+            close = float(last['Close'])
+            if direction == "COMPRA" and rsi > 70:
+                return ("rsi_sobrecompra",
+                        f"RSI sobrecompra ({tf.upper()}): {rsi:.1f} > 70",
+                        close,
+                        tf)
+            elif direction == "VENDA" and rsi < 30:
+                return ("rsi_sobrevenda",
+                        f"RSI sobrevenda ({tf.upper()}): {rsi:.1f} < 30",
+                        close,
+                        tf)
+        except:
+            continue
+    return (None, None, None, None)
 
 def check_exit_conditions(position: Position, data: Dict[str, pd.DataFrame]) -> List[tuple]:
     """
@@ -173,7 +200,12 @@ def check_exit_conditions(position: Position, data: Dict[str, pd.DataFrame]) -> 
             if d <= 20:
                 alerts.append(("stoch_sobrevenda", f"StochRSI entrou em sobrevenda ({d:.1f} <= 20)", current_price))
 
+    # 6. NOVO: RSI extremo (sobrecompra/sobrevenda) em qualquer TF
+    alert_type, msg, price, _ = _check_rsi_extreme(data, position.direction)
+    if alert_type:
+        alerts.append((alert_type, msg, price))
     return alerts
+
 
 
 def run_monitoring_cycle(positions: List[Position], fetch_data_func, send_alert_func, play_sound_func, logger=None):

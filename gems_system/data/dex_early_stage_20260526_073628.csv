@@ -1,2 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-WMV,Woke Mind Virus,9fyNPievvYvvPWBLaQPYHzVnqnKhXuD8U55T6Ehppump,solana,0.0002114,510.0,211414.0,35787.15,43463.27,796,352,0.69,6.4,https://dexscreener.com/solana/9b88k8ne6z9gwwo8jhbjdbquglhwvsbhbratrxue2nz3,2026-05-26T07:36:23.507518,dexscreener,116.041985

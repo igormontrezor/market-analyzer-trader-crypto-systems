@@ -699,16 +699,22 @@ if st.session_state.port_widget_open:
     try:
         import json, os
         _PF = os.path.join(os.path.expanduser("~"), ".montrezor_portfolio.json")
-        _port_data = json.load(open(_PF, encoding="utf-8")) if os.path.exists(_PF) else {}
+        with open(_PF, encoding="utf-8") as _f:
+            _port_data = json.load(_f) if os.path.exists(_PF) else {}
+        if not os.path.exists(_PF): _port_data = {}
         _positions  = [p for p in _port_data.get("positions",[]) if p.get("status")=="OPEN"]
         _cash       = float(_port_data.get("cash_usd", 0.0))
 
-        # Buscar preços atuais (cache de 60s já está no portfolio_tab)
+        # Buscar preços em LOTE — uma única chamada para todos os ativos
         try:
-            from portfolio_tab import _fetch_price, _calc_roe, _calc_pnl, _calc_liq_price, LIQ_WARN_PCT
+            from portfolio_tab import _fetch_many_prices, _calc_roe, _calc_pnl, _calc_liq_price, LIQ_WARN_PCT
             _enrich = True
         except ImportError:
             _enrich = False
+
+        # Batch fetch: 1 chamada HTTP para N ativos (evita N chamadas sequenciais)
+        _all_ids    = [_p["coin_id"] for _p in _positions]
+        _batch_px   = _fetch_many_prices(_all_ids) if (_enrich and _all_ids) else {}
 
         _total_margin = 0.0
         _total_pnl    = 0.0
@@ -717,12 +723,12 @@ if st.session_state.port_widget_open:
             _margin = float(_p.get("total_margin", 0))
             _total_margin += _margin
             if _enrich:
-                _cg    = _fetch_price(_p["coin_id"])
-                _px    = _cg.get("price", float(_p.get("entry_avg",0)))
-                _roe   = _calc_roe(float(_p["entry_avg"]), _px, float(_p["leverage"]), _p.get("direction","LONG"))
-                _pnl   = _calc_pnl(float(_p["entry_avg"]), _px, float(_p["position_size"]), _p.get("direction","LONG"))
-                _liq   = _calc_liq_price(float(_p["entry_avg"]), float(_p["leverage"]), _p.get("direction","LONG"))
-                _near  = (abs(_px - _liq) / _px) < LIQ_WARN_PCT if _px > 0 else False
+                _bd   = _batch_px.get(_p["coin_id"], {})
+                _px   = float(_bd.get("price", 0)) or float(_p.get("entry_avg", 0))
+                _roe  = _calc_roe(float(_p["entry_avg"]), _px, float(_p["leverage"]), _p.get("direction","LONG"))
+                _pnl  = _calc_pnl(float(_p["entry_avg"]), _px, float(_p["position_size"]), _p.get("direction","LONG"))
+                _liq  = _calc_liq_price(float(_p["entry_avg"]), float(_p["leverage"]), _p.get("direction","LONG"))
+                _near = (abs(_px - _liq) / _px) < LIQ_WARN_PCT if _px > 0 else False
                 _total_pnl += _pnl
             else:
                 _px = float(_p.get("entry_avg",0)); _roe = 0; _pnl = 0; _liq = 0; _near = False
@@ -782,7 +788,7 @@ st.markdown("<div style='margin-bottom:8px'></div>", unsafe_allow_html=True)
 # Terminal logo abaixo do título
 with st.expander("🖥️ Terminal (Assíncrono - Auto Refresh)", expanded=True):
     # Configurar refresh automático a cada 1 minuto
-    st_autorefresh(interval=120000, limit=None, key="terminal_refresh")
+    st_autorefresh(interval=240000, limit=None, key="terminal_refresh")
 
     # Aba para selecionar visualização
     tab1, tab2 = st.tabs(["📋 Logs Ativos", "🖥️ Terminal Principal"])

@@ -1,4 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-HOPPY,HOPPY,2RWndXkxWkaKhGjE7dZivVbK5qXtpwnCZJ1jpnxapump,solana,0.001191,-11.54,1191604.0,102064.33,1986199.08,10708,8638,0.55,34.5,https://dexscreener.com/solana/9o9hstqrd8yv7b3nwd742smre9ad6ddhewxzwu466qjn,2026-05-26T21:55:20.101078,dexscreener,2051.405513
-CDOF,Chinese Digital Oil Fund,CDoFug7K6gYgiotXw1vcyfc9p4rdAxnbbj2DcH5AE4az,solana,0.005468,6612.0,5468588.0,214276.16,105418.67,27,6,0.82,9.0,https://dexscreener.com/solana/2j8va5luscsdjq8gt4huz2cukttbrfpdswhvouqfrh5v,2026-05-26T21:55:20.102703,dexscreener,208.846286
-MAMO,Mamo,0x7300B37DfdfAb110d83290A29DfB31B1740219fE,base,0.01129,-1.06,6688422.0,441726.52,40723.14,247,195,0.56,,https://dexscreener.com/base/0xe2b3aa806e56603a244bfc111c9474f7dedd03db,2026-05-26T21:55:22.370092,dexscreener,140.895792

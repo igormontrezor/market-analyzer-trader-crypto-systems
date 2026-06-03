@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-06-01T08:03:58.288829",
-  "total_candidates": 34,
+  "last_updated": "2026-06-03T07:16:12.534230",
+  "total_candidates": 36,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -438,6 +438,32 @@
       "ratio_now": 13.549721630381306,
       "market_cap": 30171396,
       "volume": 408814017,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "amp",
+      "name": "Amp",
+      "detected_at": "2026-06-03T07:16:12.513250",
+      "ratio_now": 61.05789035719445,
+      "market_cap": 56329934,
+      "volume": 3439386934,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "epic",
+      "name": "Epic Chain",
+      "detected_at": "2026-06-03T07:16:12.514567",
+      "ratio_now": 3.3346583674343795,
+      "market_cap": 15996821,
+      "volume": 53343933,
       "priority": "extrema",
       "status": "new_strong_candidate",
       "reason": "Nova entrada forte (> 0.8)",
