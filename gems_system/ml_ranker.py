@@ -130,6 +130,9 @@ def load_training_data():
     date_list = []
 
     for entry in perf:
+        # Ignorar picks ainda pendentes (pct_change None) — não têm resultado ainda
+        if entry.get("pct_change") is None or entry.get("status") == "pending":
+            continue
         # A data do pick é a chave para carregar o snapshot correspondente
         pick_date = entry.get("analysis_date") or entry.get("date")  # analysis_date é mais preciso
         if not pick_date:
@@ -280,9 +283,14 @@ def train_model():
 
     acc  = accuracy_score(y_val, y_pred)
     prec = precision_score(y_val, y_pred, zero_division=0)
-    rec  = recall_score(y_val, y_pred)
-    f1   = f1_score(y_val, y_pred)
-    auc  = roc_auc_score(y_val, y_proba)
+    rec  = recall_score(y_val, y_pred, zero_division=0)
+    f1   = f1_score(y_val, y_pred, zero_division=0)
+    # roc_auc_score exige as 2 classes no conjunto de validação
+    if len(np.unique(y_val)) < 2:
+        print("⚠️  Validação com apenas 1 classe — ROC-AUC não calculado (picks insuficientes para diversificar)")
+        auc = 0.0
+    else:
+        auc = roc_auc_score(y_val, y_proba)
 
     print("=" * 60)
     print("📊 MÉTRICAS DE VALIDAÇÃO (cronológica):")

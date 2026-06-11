@@ -1,3 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-TOFULING,Tofu the Golden Retriever,3BmfmP7UY6LxoW7ibkDCXhzkzkARpCgr3Sk6KHc9pump,solana,0.000196,500.0,196076.0,39200.3,1839066.69,35629,15052,0.7,4.4,https://dexscreener.com/solana/epgtn6zai72nug4fa2jufagsfnoyopk5rca6oukp2i5n,2026-05-29T12:56:12.110555,dexscreener,26.550538019999998
-KNICKS,New York Knicks,A3F7JL4eEG9YvXkqfqvQimncGmGvArZgjVdHNqUrpump,solana,0.0001329,-23.11,129476.0,30038.46,293061.3,2522,2117,0.54,42.8,https://dexscreener.com/solana/cmxvcvdglyxtjdfacwk4l4ktcnwosr4nwv6l1eqycsbz,2026-05-29T12:55:43.197846,dexscreener,4.045067300000001

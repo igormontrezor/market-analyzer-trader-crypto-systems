@@ -1,4 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-DOGE,DOGE,4Syf8qQ54TV88dc1hT2iohSTx64cZv5E8UPMuDBBpump,solana,0.0003576,1121.0,357597.0,48073.72,1052527.1,9561,6598,0.59,9.4,https://dexscreener.com/solana/2jmfmqo443luhljqza13sku1bfwycuazuvtvhcq9x1zw,2026-05-28T11:00:16.285505,dexscreener,1116.334472
-HOPPY,HOPPY,2RWndXkxWkaKhGjE7dZivVbK5qXtpwnCZJ1jpnxapump,solana,0.001077,-23.48,1074546.0,98328.66,680636.99,5572,4852,0.53,71.6,https://dexscreener.com/solana/9o9hstqrd8yv7b3nwd742smre9ad6ddhewxzwu466qjn,2026-05-28T11:00:16.285644,dexscreener,743.4698559999999
-SHROOMIE,SHROOMIE,CCfA8jAccN53wNYpYZDK3s9UpeWBoP1qnew19Hhupump,solana,0.0001876,420.0,187618.0,34120.02,617070.21,8247,5216,0.61,3.1,https://dexscreener.com/solana/ez8g8oaqtwr7ybsodyad4gwa5yuvokg82v6ylgyptopr,2026-05-28T10:59:52.159835,dexscreener,681.482212

@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-06-03T07:16:12.520351",
-  "total_confirmed": 12,
+  "last_updated": "2026-06-10T06:41:47.402423",
+  "total_confirmed": 17,
   "confirmed_gems": [
     {
       "symbol": "tst",
@@ -54,6 +54,23 @@
       "quality_score": 74.33110173361624
     },
     {
+      "symbol": "agld",
+      "name": "Adventure Gold",
+      "confirmed_at": "2026-06-09T08:19:30.686494",
+      "ratio_now": 0.7400188719362737,
+      "ratio_24h_ago": 0.5198829387638041,
+      "growth_percent": 42.34336554608169,
+      "strong_days": 2,
+      "acceleration_strength": 1.3276987217505922,
+      "trend": "accelerating",
+      "market_cap": 16282378,
+      "volume": 12049267,
+      "priority": "alta",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 54.72994479394121
+    },
+    {
       "symbol": "psg",
       "name": "Paris Saint-Germain Fan Token",
       "confirmed_at": "2026-05-16T08:11:55.853604",
@@ -69,6 +86,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 82.69577464860268
+    },
+    {
+      "symbol": "strax",
+      "name": "Xertra",
+      "confirmed_at": "2026-06-09T08:19:30.685654",
+      "ratio_now": 4.942451713062747,
+      "ratio_24h_ago": 0.9211573376246847,
+      "growth_percent": 436.54804789456006,
+      "strong_days": 2,
+      "acceleration_strength": 2.2200805596688857,
+      "trend": "accelerating",
+      "market_cap": 17677607,
+      "volume": 87370719,
+      "priority": "extrema",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 88.33333333333333
     },
     {
       "symbol": "broccoli",
@@ -88,21 +122,38 @@
       "quality_score": 72.1954519941354
     },
     {
-      "symbol": "strax",
-      "name": "Xertra",
-      "confirmed_at": "2026-06-03T07:16:12.514853",
-      "ratio_now": 2.3497181639799583,
-      "ratio_24h_ago": 0.8441269296421009,
-      "growth_percent": 178.36076322979162,
+      "symbol": "msusd",
+      "name": "Metronome Synth USD",
+      "confirmed_at": "2026-06-06T10:58:41.990269",
+      "ratio_now": 1.5614455506946052,
+      "ratio_24h_ago": 0.5286495242878936,
+      "growth_percent": 195.36497792141554,
       "strong_days": 3,
-      "acceleration_strength": 1.9465357948112234,
+      "acceleration_strength": 3.3744821500738844,
       "trend": "accelerating",
-      "market_cap": 25851025,
-      "volume": 60742623,
+      "market_cap": 25999946,
+      "volume": 40597500,
       "priority": "extrema",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 99.33169743514028
+      "quality_score": 91.2289110138921
+    },
+    {
+      "symbol": "neiro",
+      "name": "Neiro",
+      "confirmed_at": "2026-06-06T10:58:41.990766",
+      "ratio_now": 0.6111329808491075,
+      "ratio_24h_ago": 0.5005970286811072,
+      "growth_percent": 22.08082466234822,
+      "strong_days": 3,
+      "acceleration_strength": 1.3721678909533406,
+      "trend": "accelerating",
+      "market_cap": 26769614,
+      "volume": 16359794,
+      "priority": "alta",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 64.3747582538989
     },
     {
       "symbol": "dogs",
@@ -120,6 +171,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 79.76967823823468
+    },
+    {
+      "symbol": "pha",
+      "name": "PHALA",
+      "confirmed_at": "2026-06-04T09:46:02.179784",
+      "ratio_now": 1.0110409496360826,
+      "ratio_24h_ago": 0.7876867474083741,
+      "growth_percent": 28.35571411637716,
+      "strong_days": 3,
+      "acceleration_strength": 1.2115776543625913,
+      "trend": "accelerating",
+      "market_cap": 28947510,
+      "volume": 29267118,
+      "priority": "maxima",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 70.36553967225404
     },
     {
       "symbol": "cgpt",
@@ -156,38 +224,38 @@
       "quality_score": 69.97831154540756
     },
     {
-      "symbol": "pha",
-      "name": "PHALA",
-      "confirmed_at": "2026-05-29T22:36:43.408798",
-      "ratio_now": 1.0884943239865086,
-      "ratio_24h_ago": 0.7772790212180478,
-      "growth_percent": 40.039071462493055,
+      "symbol": "meme",
+      "name": "Memecoin",
+      "confirmed_at": "2026-06-05T08:50:15.944398",
+      "ratio_now": 6.507267151007586,
+      "ratio_24h_ago": 2.1108747778951558,
+      "growth_percent": 208.27348069866383,
       "strong_days": 3,
-      "acceleration_strength": 4.069861918353567,
+      "acceleration_strength": 1.4378787047528014,
       "trend": "accelerating",
-      "market_cap": 34797486,
-      "volume": 37876866,
-      "priority": "maxima",
+      "market_cap": 39269034,
+      "volume": 255534095,
+      "priority": "extrema",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 81.76988647973018
+      "quality_score": 92.97348380941003
     },
     {
-      "symbol": "neiro",
-      "name": "Neiro",
-      "confirmed_at": "2026-05-07T23:41:31.824421",
-      "ratio_now": 0.9482561349001758,
-      "ratio_24h_ago": 0.7386171967629066,
-      "growth_percent": 28.382623509991546,
+      "symbol": "stg",
+      "name": "Stargate Finance",
+      "confirmed_at": "2026-06-10T06:41:47.399875",
+      "ratio_now": 1.7964519086781847,
+      "ratio_24h_ago": 0.9677962676587479,
+      "growth_percent": 85.62294242197129,
       "strong_days": 3,
-      "acceleration_strength": 2.088358160302164,
+      "acceleration_strength": 2.277884860011672,
       "trend": "accelerating",
-      "market_cap": 41077604,
-      "volume": 38952090,
-      "priority": "alta",
+      "market_cap": 48401009,
+      "volume": 86950085,
+      "priority": "extrema",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 78.96512269800351
+      "quality_score": 95.9290381735637
     },
     {
       "symbol": "osmo",
@@ -205,6 +273,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 86.97976357321721
+    },
+    {
+      "symbol": "usdon",
+      "name": "Ondo U.S. Dollar Token",
+      "confirmed_at": "2026-06-10T06:41:47.399317",
+      "ratio_now": 0.7161523439467903,
+      "ratio_24h_ago": 0.5648367777787655,
+      "growth_percent": 26.789255254071275,
+      "strong_days": 3,
+      "acceleration_strength": 1.5320018616472852,
+      "trend": "accelerating",
+      "market_cap": 60244179,
+      "volume": 43144010,
+      "priority": "alta",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 68.47307014952688
     }
   ]
 }

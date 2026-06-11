@@ -1,0 +1,3 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+STEPPA,STEPPA,8HjpMRNqjZWWhw3S3sksr9f8K1ExKW2G6qoaiMPfpump,solana,0.0004098,1347.0,409854.0,46241.41,1003215.65,9159,5572,0.62,1.8,https://dexscreener.com/solana/6nc9bhumveig4scxgf62uzhm8h2xasl4zj2svk9fc5a2,2026-06-09T14:51:28.283663,dexscreener,14.969346349999999
+BILLY,Billy,3ne9QxYRHybHK1LVmtEG8rH7L6nJ56W8KVWeB8ZGpump,solana,0.0004634,685.0,463436.0,73677.32,836148.44,8455,5949,0.59,2.6,https://dexscreener.com/solana/9q5ubkhudazhytvkmn2u25vs5vzbcftx4mpkcrxyj71i,2026-06-09T14:51:28.284068,dexscreener,12.169347319999996

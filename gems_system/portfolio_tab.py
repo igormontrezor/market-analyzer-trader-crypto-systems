@@ -872,7 +872,7 @@ def render_portfolio_tab(macro_signal: str = None):
                     # Botão "Abrir posição"
                     col_abrir, col_remover = st.columns(2)
                     with col_abrir:
-                        if st.button("➕ Abrir posição", key=f"open_watch_{witem['coin_id']}_{wi}", use_container_width=True):
+                        if st.button("➕ Abrir posição", key=f"open_watch_{witem['coin_id']}_{wi}", width='stretch'):
                             # Lógica de abertura
                             cg_data = _fetch_price(witem["coin_id"], use_cache=True)
                             price = cg_data.get("price", 0)
@@ -935,7 +935,7 @@ def render_portfolio_tab(macro_signal: str = None):
                                         st.success(f"✅ Posição {witem['coin_id'].upper()} aberta com sucesso!")
                                         st.rerun()
                     with col_remover:
-                        if st.button("✕ Remover", key=f"del_w_{wi}", use_container_width=True):
+                        if st.button("✕ Remover", key=f"del_w_{wi}", width='stretch'):
                             # Lê o arquivo diretamente
                             with open(_PORT_FILE, "r", encoding="utf-8") as f:
                                 data = json.load(f)
@@ -987,7 +987,7 @@ def render_portfolio_tab(macro_signal: str = None):
                         margin=dict(l=0,r=0,t=36,b=0),
                         showlegend=False,
                     )
-                    st.plotly_chart(fig_pie, use_container_width=True)
+                    st.plotly_chart(fig_pie, width='stretch')
 
             # ── Linha: evolução do patrimônio ─────────────────────────────────
             with g2:
@@ -1012,7 +1012,7 @@ def render_portfolio_tab(macro_signal: str = None):
                     )
                     fig_eq.update_xaxes(gridcolor='#21262d')
                     fig_eq.update_yaxes(gridcolor='#21262d')
-                    st.plotly_chart(fig_eq, use_container_width=True)
+                    st.plotly_chart(fig_eq, width='stretch')
                 else:
                     st.info("Histórico insuficiente para o gráfico de evolução (mín. 2 dias).")
 
@@ -1039,7 +1039,7 @@ def render_portfolio_tab(macro_signal: str = None):
                     xaxis=dict(gridcolor="#21262d"),
                     yaxis=dict(gridcolor="#21262d"),
                 )
-                st.plotly_chart(fig_pnl, use_container_width=True)
+                st.plotly_chart(fig_pnl, width='stretch')
 
             # ── Tabela ROE por posição ────────────────────────────────────────
             if positions_enriched:
@@ -1058,7 +1058,7 @@ def render_portfolio_tab(macro_signal: str = None):
                         "⚠️":         "🚨" if pos["near_liq"] else "✅",
                         "Corretora":  pos.get("exchange",""),
                     })
-                st.dataframe(rows, use_container_width=True, hide_index=True)
+                st.dataframe(rows, width='stretch', hide_index=True)
 
             # ── Histórico de posições fechadas ────────────────────────────────
             closed = [p for p in port.get("positions",[]) if p.get("status")=="CLOSED"]
@@ -1072,7 +1072,7 @@ def render_portfolio_tab(macro_signal: str = None):
                         "Margem":   f"${p.get('total_margin',0):,.2f}",
                         "Fechado":  p.get("closed_at",""),
                     } for p in closed]
-                    st.dataframe(crows, use_container_width=True, hide_index=True)
+                    st.dataframe(crows, width='stretch', hide_index=True)
 
     # ════════════════════════════════════════════════════════════════════════
     # TAB 4 — EXTRATO / LINHA DO TEMPO
@@ -1125,7 +1125,7 @@ def render_portfolio_tab(macro_signal: str = None):
                     "Notas":   t.get("notes",""),
                 })
 
-            st.dataframe(rows_ext, use_container_width=True, hide_index=True)
+            st.dataframe(rows_ext, width='stretch', hide_index=True)
 
             # Resumo de P&L realizado total
             clr_sum = "#3fb950" if total_pnl_realizado >= 0 else "#f85149"

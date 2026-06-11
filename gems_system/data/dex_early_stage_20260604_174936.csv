@@ -1,0 +1,4 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+ALBINO,ALBINO 007,CvpAXdwSgczsESbkvDZULmAfysdcBQ7TpESfxrRNpump,solana,0.0003746,1202.0,374664.0,46312.66,1518729.73,8700,6653,0.57,1.9,https://dexscreener.com/solana/4exk1wly5xbc1cyvlfeyxwi7d5chxdz87kbzwyfhnkpn,2026-06-04T17:49:31.153390,dexscreener,15.969527739999995
+MAMO,Mamo,0x7300B37DfdfAb110d83290A29DfB31B1740219fE,base,0.008749,-4.17,5187543.0,355503.29,21675.41,294,181,0.62,,https://dexscreener.com/base/0xe2b3aa806e56603a244bfc111c9474f7dedd03db,2026-06-04T17:49:33.618044,dexscreener,11.755952629999998
+RPGKITTY,HelloKittyRPGKickflip360,5GbhDpdSdE693wi3huTbjc9TtSXoKKQgezAt3e24pump,solana,0.0001806,179.0,180657.0,30978.31,423268.76,6068,4697,0.56,61.0,https://dexscreener.com/solana/fbk3nyt237aoqsdvnvz3jxjhjvibhqtyqibo8fetux7e,2026-06-04T17:49:31.153592,dexscreener,6.350824730000001

@@ -1,0 +1,4 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+BOUNTYHOUSE,BOUNTYHOUSE,8pNiw1yRRvTLQ3uSgdKVwtXgq4TBvzsRvJncW1JHpump,solana,0.0002355,223.0,235504.0,37463.07,2463382.47,28998,17015,0.63,7.1,https://dexscreener.com/solana/gwoj89j58vm69jajjhsawstsbfeduw8mls47pmaxdqzv,2026-06-07T21:44:10.680749,dexscreener,27.14400581
+CBMEGA,Coinbase Wrapped MEGA,0xcb111E6A2a3bde90856D299d61341ac302167D23,base,0.04854,8.27,1838710.0,1327195.86,818800.27,1712,1545,0.53,,https://dexscreener.com/base/0x0150e3d89e161518c044ad191c4bdf6b40df6e83,2026-06-07T21:44:12.803172,dexscreener,27.083340060000005
+MAMO,Mamo,0x7300B37DfdfAb110d83290A29DfB31B1740219fE,base,0.008682,14.28,5147737.0,354273.36,32927.25,261,212,0.55,,https://dexscreener.com/base/0xe2b3aa806e56603a244bfc111c9474f7dedd03db,2026-06-07T21:44:12.803189,dexscreener,7.452518400000002

@@ -1,3 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-FROG,Frog Knight,59yckzUPxqTfRX1PrxXYKUSRN3q9BnpA1M52hy5apump,solana,0.0004878,1318.0,487814.0,63472.77,3573851.7,13423,11977,0.53,4.4,https://dexscreener.com/solana/8jemd5dsac3mxqtrywearypj6pw1caqhj2tcxzwbtb12,2026-06-01T10:10:12.386164,dexscreener,30.167905150000006
-MCDOGE,MCDOGE,9fQdMbjsYg7vNjnXULwzdmoCS4napNoWya5Zf7YAfhaa,solana,0.0002259,571.0,225941.0,38394.23,1212289.49,12903,8695,0.6,7.4,https://dexscreener.com/solana/9zmuy8rslo4pjtcmnvccag5m2adfnnwlsgaqzkvqhpdz,2026-06-01T10:10:12.386329,dexscreener,15.274229369999997

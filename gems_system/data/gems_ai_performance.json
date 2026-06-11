@@ -114,12 +114,14 @@
     "symbol": "FIDA",
     "rank": 4,
     "price_at_pick": 0.03225178,
-    "price_now": 0.03225178,
-    "pct_change": 0.0,
+    "price_now": 0.02174054,
+    "pct_change": -32.59,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "LOSS",
     "ml_score": null,
-    "analysis_date": "2026-05-26"
+    "analysis_date": "2026-05-26",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -127,12 +129,14 @@
     "symbol": "GMT",
     "rank": 5,
     "price_at_pick": 0.01065036,
-    "price_now": 0.01065036,
-    "pct_change": 0.0,
+    "price_now": 0.00791782,
+    "pct_change": -25.66,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "LOSS",
     "ml_score": null,
-    "analysis_date": "2026-05-26"
+    "analysis_date": "2026-05-26",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -140,12 +144,14 @@
     "symbol": "BICO",
     "rank": 6,
     "price_at_pick": 0.02482689,
-    "price_now": 0.02482689,
-    "pct_change": 0.0,
+    "price_now": 0.01825355,
+    "pct_change": -26.48,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "LOSS",
     "ml_score": null,
-    "analysis_date": "2026-05-26"
+    "analysis_date": "2026-05-26",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -153,12 +159,14 @@
     "symbol": "DOGS",
     "rank": 7,
     "price_at_pick": 0.00052846,
-    "price_now": 0.00052846,
-    "pct_change": 0.0,
+    "price_now": 0.00035179,
+    "pct_change": -33.43,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "LOSS",
     "ml_score": null,
-    "analysis_date": "2026-05-26"
+    "analysis_date": "2026-05-26",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -166,12 +174,14 @@
     "symbol": "MTL",
     "rank": 8,
     "price_at_pick": 0.287448,
-    "price_now": 0.287448,
-    "pct_change": 0.0,
+    "price_now": 0.249408,
+    "pct_change": -13.23,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "LOSS",
     "ml_score": null,
-    "analysis_date": "2026-05-26"
+    "analysis_date": "2026-05-26",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -184,7 +194,9 @@
     "market_regime": "BUY_MACRO",
     "result": "NEUTRAL",
     "ml_score": null,
-    "analysis_date": "2026-05-26"
+    "analysis_date": "2026-05-26",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -192,12 +204,14 @@
     "symbol": "TST",
     "rank": 10,
     "price_at_pick": 0.05689,
-    "price_now": 0.05689,
-    "pct_change": 0.0,
+    "price_now": 0.058818,
+    "pct_change": 3.39,
     "market_regime": "BUY_MACRO",
     "result": "NEUTRAL",
     "ml_score": null,
-    "analysis_date": "2026-05-26"
+    "analysis_date": "2026-05-26",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -205,12 +219,14 @@
     "symbol": "STRAX",
     "rank": 1,
     "price_at_pick": 0.01216091,
-    "price_now": 0.01216091,
-    "pct_change": 0.0,
+    "price_now": 0.010678,
+    "pct_change": -12.19,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "LOSS",
     "ml_score": null,
-    "analysis_date": "2026-06-02"
+    "analysis_date": "2026-06-02",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -223,7 +239,9 @@
     "market_regime": "BUY_MACRO",
     "result": "NEUTRAL",
     "ml_score": null,
-    "analysis_date": "2026-06-02"
+    "analysis_date": "2026-06-02",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -231,12 +249,14 @@
     "symbol": "MEME",
     "rank": 3,
     "price_at_pick": 3.29,
-    "price_now": 3.29,
-    "pct_change": 0.0,
+    "price_now": 2.91,
+    "pct_change": -11.55,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "LOSS",
     "ml_score": null,
-    "analysis_date": "2026-06-02"
+    "analysis_date": "2026-06-02",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -244,12 +264,14 @@
     "symbol": "STG",
     "rank": 4,
     "price_at_pick": 0.303903,
-    "price_now": 0.303903,
-    "pct_change": 0.0,
+    "price_now": 0.472267,
+    "pct_change": 55.4,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "WIN",
     "ml_score": null,
-    "analysis_date": "2026-06-02"
+    "analysis_date": "2026-06-02",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -257,12 +279,14 @@
     "symbol": "PORTAL",
     "rank": 5,
     "price_at_pick": 0.02582348,
-    "price_now": 0.02582348,
-    "pct_change": 0.0,
+    "price_now": 0.01536072,
+    "pct_change": -40.52,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "LOSS",
     "ml_score": null,
-    "analysis_date": "2026-06-02"
+    "analysis_date": "2026-06-02",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -270,12 +294,14 @@
     "symbol": "PSG",
     "rank": 6,
     "price_at_pick": 0.72742,
-    "price_now": 0.72742,
-    "pct_change": 0.0,
+    "price_now": 0.551765,
+    "pct_change": -24.15,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "LOSS",
     "ml_score": null,
-    "analysis_date": "2026-06-02"
+    "analysis_date": "2026-06-02",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -283,12 +309,14 @@
     "symbol": "LQTY",
     "rank": 7,
     "price_at_pick": 0.273298,
-    "price_now": 0.273298,
-    "pct_change": 0.0,
+    "price_now": 0.196737,
+    "pct_change": -28.01,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "LOSS",
     "ml_score": null,
-    "analysis_date": "2026-06-02"
+    "analysis_date": "2026-06-02",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -296,12 +324,14 @@
     "symbol": "BIO",
     "rank": 8,
     "price_at_pick": 0.03264134,
-    "price_now": 0.03264134,
-    "pct_change": 0.0,
+    "price_now": 0.02916267,
+    "pct_change": -10.66,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "LOSS",
     "ml_score": null,
-    "analysis_date": "2026-06-02"
+    "analysis_date": "2026-06-02",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -309,12 +339,14 @@
     "symbol": "DRIFT",
     "rank": 9,
     "price_at_pick": 0.01867028,
-    "price_now": 0.01867028,
-    "pct_change": 0.0,
+    "price_now": 0.01550151,
+    "pct_change": -16.97,
     "market_regime": "BUY_MACRO",
-    "result": "NEUTRAL",
+    "result": "LOSS",
     "ml_score": null,
-    "analysis_date": "2026-06-02"
+    "analysis_date": "2026-06-02",
+    "status": "done",
+    "date_close": "2026-06-11"
   },
   {
     "cycle": "weekly",
@@ -322,11 +354,143 @@
     "symbol": "ORDI",
     "rank": 10,
     "price_at_pick": 3.45,
-    "price_now": 3.45,
-    "pct_change": 0.0,
+    "price_now": 3.16,
+    "pct_change": -8.41,
     "market_regime": "BUY_MACRO",
     "result": "NEUTRAL",
     "ml_score": null,
-    "analysis_date": "2026-06-02"
+    "analysis_date": "2026-06-02",
+    "status": "done",
+    "date_close": "2026-06-11"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-06-10",
+    "symbol": "STG",
+    "rank": 1,
+    "price_at_pick": 0.421335,
+    "price_now": 0.421335,
+    "pct_change": 0.0,
+    "market_regime": "SUPER_BUY",
+    "result": "NEUTRAL",
+    "ml_score": null,
+    "analysis_date": "2026-06-10"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-06-10",
+    "symbol": "FIDA",
+    "rank": 2,
+    "price_at_pick": 0.02169158,
+    "price_now": 0.02169158,
+    "pct_change": 0.0,
+    "market_regime": "SUPER_BUY",
+    "result": "NEUTRAL",
+    "ml_score": null,
+    "analysis_date": "2026-06-10"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-06-10",
+    "symbol": "STRAX",
+    "rank": 3,
+    "price_at_pick": 0.01302568,
+    "price_now": 0.01302568,
+    "pct_change": 0.0,
+    "market_regime": "SUPER_BUY",
+    "result": "NEUTRAL",
+    "ml_score": null,
+    "analysis_date": "2026-06-10"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-06-10",
+    "symbol": "AMP",
+    "rank": 4,
+    "price_at_pick": 0.00051703,
+    "price_now": 0.00051703,
+    "pct_change": 0.0,
+    "market_regime": "SUPER_BUY",
+    "result": "NEUTRAL",
+    "ml_score": null,
+    "analysis_date": "2026-06-10"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-06-10",
+    "symbol": "AGLD",
+    "rank": 5,
+    "price_at_pick": 0.176223,
+    "price_now": 0.176223,
+    "pct_change": 0.0,
+    "market_regime": "SUPER_BUY",
+    "result": "NEUTRAL",
+    "ml_score": null,
+    "analysis_date": "2026-06-10"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-06-10",
+    "symbol": "BIO",
+    "rank": 6,
+    "price_at_pick": 0.02916267,
+    "price_now": 0.02916267,
+    "pct_change": 0.0,
+    "market_regime": "SUPER_BUY",
+    "result": "NEUTRAL",
+    "ml_score": null,
+    "analysis_date": "2026-06-10"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-06-10",
+    "symbol": "EPIC",
+    "rank": 7,
+    "price_at_pick": 0.507673,
+    "price_now": 0.507673,
+    "pct_change": 0.0,
+    "market_regime": "SUPER_BUY",
+    "result": "NEUTRAL",
+    "ml_score": null,
+    "analysis_date": "2026-06-10"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-06-10",
+    "symbol": "MSUSD",
+    "rank": 8,
+    "price_at_pick": 0.999074,
+    "price_now": 0.999074,
+    "pct_change": 0.0,
+    "market_regime": "SUPER_BUY",
+    "result": "NEUTRAL",
+    "ml_score": null,
+    "analysis_date": "2026-06-10"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-06-10",
+    "symbol": "MINA",
+    "rank": 9,
+    "price_at_pick": 0.04158902,
+    "price_now": 0.04158902,
+    "pct_change": 0.0,
+    "market_regime": "SUPER_BUY",
+    "result": "NEUTRAL",
+    "ml_score": null,
+    "analysis_date": "2026-06-10"
+  },
+  {
+    "cycle": "weekly",
+    "date": "2026-06-10",
+    "symbol": "MEME",
+    "rank": 10,
+    "price_at_pick": 2.85,
+    "price_now": 2.85,
+    "pct_change": 0.0,
+    "market_regime": "SUPER_BUY",
+    "result": "NEUTRAL",
+    "ml_score": null,
+    "analysis_date": "2026-06-10"
   }
 ]

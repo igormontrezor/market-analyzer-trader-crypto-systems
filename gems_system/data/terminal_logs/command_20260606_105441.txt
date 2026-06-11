@@ -1,0 +1,627 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-06-06 10:54:41
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+⏰ Cache expirou em: 20:49:12
+🔄 Cache expirado ou inexistente - Buscando dados novos...
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+💎 GEMS FINDER - Busca inteligente...
+🎯 Alvo: MC $50,000,000-$100,000,000, Volume >$1,000,000
+⏰ Cache expirou em: 20:49:12
+🔍 Busca COMPLETA: 50M → 50,000,000 (até página 300)
+⚡ Continuar buscando até encontrar MCs próximos a $50,000,000 MESMO com 10+ gems
+📄 Página 1 (gems encontradas: 0)...
+ Página 1: continuando busca (sem gems na faixa)
+📄 Página 2 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 2)
+📄 Página 2 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 2)
+📄 Página 2 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 2)
+📄 Página 2 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 2)
+📄 Página 2 (gems encontradas: 0)...
+ ✅ zen: MC=$73,731,623, Vol=$17,950,503, Ratio=0.24
+ Novo menor MC: $73,731,623
+ ✅ arkm: MC=$72,701,554, Vol=$15,288,165, Ratio=0.21
+ Novo menor MC: $72,701,554
+ ✅ melania: MC=$67,878,444, Vol=$14,055,958, Ratio=0.21
+ Novo menor MC: $67,878,444
+ ✅ ksm: MC=$65,919,867, Vol=$13,657,269, Ratio=0.21
+ Novo menor MC: $65,919,867
+ ✅ useless: MC=$65,421,327, Vol=$14,432,234, Ratio=0.22
+ Novo menor MC: $65,421,327
+ ✅ plume: MC=$64,784,498, Vol=$13,332,713, Ratio=0.21
+ Novo menor MC: $64,784,498
+ ✅ yfi: MC=$63,505,693, Vol=$13,297,306, Ratio=0.21
+ Novo menor MC: $63,505,693
+ ✅ ordi: MC=$62,732,035, Vol=$26,451,947, Ratio=0.42
+ Novo menor MC: $62,732,035
+ ✅ usdon: MC=$62,550,905, Vol=$41,159,768, Ratio=0.66
+ Novo menor MC: $62,550,905
+ ✅ orca: MC=$61,762,130, Vol=$18,430,855, Ratio=0.30
+ Novo menor MC: $61,762,130
+ ✅ ban: MC=$60,904,689, Vol=$21,794,962, Ratio=0.36
+ Novo menor MC: $60,904,689
+ ✅ zil: MC=$59,201,722, Vol=$13,269,303, Ratio=0.22
+ Novo menor MC: $59,201,722
+ ✅ degen: MC=$58,880,774, Vol=$20,151,620, Ratio=0.34
+ Novo menor MC: $58,880,774
+ ✅ turbo: MC=$58,108,669, Vol=$15,554,994, Ratio=0.27
+ Novo menor MC: $58,108,669
+ ✅ euri: MC=$57,111,681, Vol=$27,287,489, Ratio=0.48
+ Novo menor MC: $57,111,681
+ ✅ w: MC=$56,780,760, Vol=$22,503,917, Ratio=0.40
+ Novo menor MC: $56,780,760
+ ✅ bio: MC=$55,909,559, Vol=$24,173,520, Ratio=0.43
+ Novo menor MC: $55,909,559
+ ✅ brett: MC=$51,088,458, Vol=$19,455,212, Ratio=0.38
+ Novo menor MC: $51,088,458
+🎯 Atingimos MCs próximos a $50,000,000!
+ Página 2: 18 gems encontradas
+🎯 Total encontrado: 18 gems
+📍 Menor MC encontrado: $51,088,458
+🎯 Alvo atingido: SIM
+📊 Ordenado por: MAIOR ratio Volume/MC (ESSENCIAL) + menor MC
+  1. usdon: MC=$62,550,905, Vol=$41,159,768, Ratio=0.66
+  2. euri: MC=$57,111,681, Vol=$27,287,489, Ratio=0.48
+  3. bio: MC=$55,909,559, Vol=$24,173,520, Ratio=0.43
+  4. ordi: MC=$62,732,035, Vol=$26,451,947, Ratio=0.42
+  5. w: MC=$56,780,760, Vol=$22,503,917, Ratio=0.40
+🔄 API: 18 gems encontradas
+✅ 50m_range: 18 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+💎 GEMS FINDER - Busca inteligente...
+🎯 Alvo: MC $10,000,000-$49,000,000, Volume >$1,000,000
+⏰ Cache expirou em: 20:49:12
+🔍 Busca COMPLETA: 50M → 10,000,000 (até página 300)
+⚡ Continuar buscando até encontrar MCs próximos a $10,000,000 MESMO com 10+ gems
+📄 Página 1 (gems encontradas: 0)...
+ Página 1: continuando busca (sem gems na faixa)
+📄 Página 2 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 2)
+📄 Página 2 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 2)
+📄 Página 2 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 2)
+📄 Página 2 (gems encontradas: 0)...
+⏳ Rate limit... esperando 15s (página 2)
+📄 Página 2 (gems encontradas: 0)...
+ ✅ xyo: MC=$48,029,504, Vol=$11,563,562, Ratio=0.24
+ Novo menor MC: $48,029,504
+ ✅ fidd: MC=$47,748,064, Vol=$19,199,325, Ratio=0.40
+ Novo menor MC: $47,748,064
+ ✅ blur: MC=$46,814,066, Vol=$11,111,222, Ratio=0.24
+ Novo menor MC: $46,814,066
+ ✅ sushi: MC=$46,562,249, Vol=$13,826,576, Ratio=0.30
+ Novo menor MC: $46,562,249
+ ✅ fxusd: MC=$46,339,075, Vol=$10,043,308, Ratio=0.22
+ Novo menor MC: $46,339,075
+ ✅ ont: MC=$46,156,090, Vol=$9,416,928, Ratio=0.20
+ Novo menor MC: $46,156,090
+ ✅ kava: MC=$45,611,284, Vol=$9,521,620, Ratio=0.21
+ Novo menor MC: $45,611,284
+ ✅ pnut: MC=$40,589,817, Vol=$17,158,273, Ratio=0.42
+ Novo menor MC: $40,589,817
+ ✅ mog: MC=$40,180,615, Vol=$11,226,715, Ratio=0.28
+ Novo menor MC: $40,180,615
+ Página 2: 9 gems encontradas
+📄 Página 3 (gems encontradas: 9)...
+ ✅ popcat: MC=$38,553,648, Vol=$15,311,965, Ratio=0.40
+ Novo menor MC: $38,553,648
+ ✅ ankr: MC=$37,815,741, Vol=$9,156,612, Ratio=0.24
+ Novo menor MC: $37,815,741
+ ✅ not: MC=$37,289,887, Vol=$12,504,421, Ratio=0.34
+ Novo menor MC: $37,289,887
+ ✅ moodeng: MC=$36,861,878, Vol=$13,295,699, Ratio=0.36
+ Novo menor MC: $36,861,878
+ ✅ trb: MC=$36,261,843, Vol=$23,849,808, Ratio=0.66
+ Novo menor MC: $36,261,843
+ ✅ alt: MC=$36,234,670, Vol=$8,288,722, Ratio=0.23
+ Novo menor MC: $36,234,670
+ ✅ api3: MC=$36,010,794, Vol=$11,131,894, Ratio=0.31
+ Novo menor MC: $36,010,794
+ ✅ meme: MC=$35,765,966, Vol=$37,230,929, Ratio=1.04
+ Novo menor MC: $35,765,966
+ ✅ mask: MC=$35,250,638, Vol=$14,936,770, Ratio=0.42
+ Novo menor MC: $35,250,638
+ ✅ luna: MC=$35,179,598, Vol=$11,186,672, Ratio=0.32
+ Novo menor MC: $35,179,598
+ ✅ me: MC=$34,306,349, Vol=$10,036,866, Ratio=0.29
+ Novo menor MC: $34,306,349
+ ✅ uma: MC=$33,750,613, Vol=$7,516,940, Ratio=0.22
+ Novo menor MC: $33,750,613
+ ✅ core: MC=$32,459,251, Vol=$10,186,236, Ratio=0.31
+ Novo menor MC: $32,459,251
+ ✅ usdp: MC=$31,939,048, Vol=$17,722,316, Ratio=0.55
+ Novo menor MC: $31,939,048
+ ✅ band: MC=$30,289,933, Vol=$9,535,072, Ratio=0.31
+ Novo menor MC: $30,289,933
+ ✅ osmo: MC=$28,694,582, Vol=$8,905,878, Ratio=0.31
+ Novo menor MC: $28,694,582
+ ✅ ssv: MC=$28,645,204, Vol=$7,015,668, Ratio=0.24
+ Novo menor MC: $28,645,204
+ ✅ acx: MC=$28,521,088, Vol=$12,818,519, Ratio=0.45
+ Novo menor MC: $28,521,088
+ ✅ snt: MC=$28,398,772, Vol=$7,992,395, Ratio=0.28
+ Novo menor MC: $28,398,772
+ ✅ bome: MC=$28,137,168, Vol=$11,058,550, Ratio=0.39
+ Novo menor MC: $28,137,168
+ ✅ auction: MC=$27,845,854, Vol=$7,912,846, Ratio=0.28
+ Novo menor MC: $27,845,854
+ ✅ coti: MC=$27,610,723, Vol=$6,010,285, Ratio=0.22
+ Novo menor MC: $27,610,723
+ ✅ rez: MC=$27,567,951, Vol=$6,834,421, Ratio=0.25
+ Novo menor MC: $27,567,951
+ ✅ elon: MC=$27,509,748, Vol=$7,979,376, Ratio=0.29
+ Novo menor MC: $27,509,748
+ ✅ iost: MC=$27,178,489, Vol=$8,414,441, Ratio=0.31
+ Novo menor MC: $27,178,489
+ ✅ neiro: MC=$26,769,614, Vol=$16,359,794, Ratio=0.61
+ Novo menor MC: $26,769,614
+ ✅ people: MC=$26,669,384, Vol=$10,695,897, Ratio=0.40
+ Novo menor MC: $26,669,384
+ ✅ giggle: MC=$26,428,174, Vol=$12,518,103, Ratio=0.47
+ Novo menor MC: $26,428,174
+ ✅ skl: MC=$26,318,450, Vol=$9,474,329, Ratio=0.36
+ Novo menor MC: $26,318,450
+ ✅ pha: MC=$26,152,723, Vol=$20,077,685, Ratio=0.77
+ Novo menor MC: $26,152,723
+ ✅ msusd: MC=$25,999,946, Vol=$40,597,500, Ratio=1.56
+ Novo menor MC: $25,999,946
+ ✅ gmt: MC=$24,858,137, Vol=$7,348,641, Ratio=0.30
+ Novo menor MC: $24,858,137
+ ✅ rlc: MC=$24,782,136, Vol=$5,372,881, Ratio=0.22
+ Novo menor MC: $24,782,136
+ ✅ stg: MC=$23,804,260, Vol=$16,496,098, Ratio=0.69
+ Novo menor MC: $23,804,260
+ ✅ edu: MC=$23,786,161, Vol=$7,742,629, Ratio=0.33
+ Novo menor MC: $23,786,161
+ ✅ cyber: MC=$23,731,869, Vol=$15,574,662, Ratio=0.66
+ Novo menor MC: $23,731,869
+ ✅ carv: MC=$22,496,987, Vol=$6,915,061, Ratio=0.31
+ Novo menor MC: $22,496,987
+ Página 3: 37 gems encontradas
+📄 Página 4 (gems encontradas: 46)...
+ ✅ giga: MC=$21,970,694, Vol=$6,665,410, Ratio=0.30
+ Novo menor MC: $21,970,694
+ ✅ zerebro: MC=$21,735,943, Vol=$7,757,759, Ratio=0.36
+ Novo menor MC: $21,735,943
+ ✅ epic: MC=$21,421,584, Vol=$31,661,127, Ratio=1.48
+ Novo menor MC: $21,421,584
+ ✅ flux: MC=$20,897,041, Vol=$7,479,788, Ratio=0.36
+ Novo menor MC: $20,897,041
+ ✅ aixbt: MC=$20,586,198, Vol=$11,294,427, Ratio=0.55
+ Novo menor MC: $20,586,198
+ ✅ scrt: MC=$20,560,374, Vol=$6,875,181, Ratio=0.33
+ Novo menor MC: $20,560,374
+ ✅ mlk: MC=$20,523,271, Vol=$9,562,960, Ratio=0.47
+ Novo menor MC: $20,523,271
+ ✅ dogs: MC=$20,210,722, Vol=$9,575,232, Ratio=0.47
+ Novo menor MC: $20,210,722
+ ✅ knc: MC=$19,925,620, Vol=$10,396,907, Ratio=0.52
+ Novo menor MC: $19,925,620
+ ✅ lqty: MC=$19,875,252, Vol=$9,026,964, Ratio=0.45
+ Novo menor MC: $19,875,252
+ ✅ g: MC=$19,596,285, Vol=$4,002,907, Ratio=0.20
+ Novo menor MC: $19,596,285
+ ✅ strax: MC=$18,951,879, Vol=$51,501,899, Ratio=2.72
+ Novo menor MC: $18,951,879
+ ✅ ygg: MC=$18,849,683, Vol=$8,584,538, Ratio=0.46
+ Novo menor MC: $18,849,683
+ ✅ metis: MC=$18,451,976, Vol=$4,347,044, Ratio=0.24
+ Novo menor MC: $18,451,976
+ ✅ cgpt: MC=$18,316,248, Vol=$4,266,687, Ratio=0.23
+ Novo menor MC: $18,316,248
+ ✅ fida: MC=$17,869,850, Vol=$6,376,158, Ratio=0.36
+ Novo menor MC: $17,869,850
+ ✅ aevo: MC=$17,509,660, Vol=$8,263,451, Ratio=0.47
+ Novo menor MC: $17,509,660
+ ✅ agld: MC=$17,241,300, Vol=$13,337,140, Ratio=0.77
+ Novo menor MC: $17,241,300
+ ✅ win: MC=$16,781,215, Vol=$9,094,434, Ratio=0.54
+ Novo menor MC: $16,781,215
+ ✅ usual: MC=$16,693,164, Vol=$7,086,884, Ratio=0.42
+ Novo menor MC: $16,693,164
+ ✅ xai: MC=$16,043,541, Vol=$6,606,267, Ratio=0.41
+ Novo menor MC: $16,043,541
+ ✅ magic: MC=$15,378,606, Vol=$6,319,305, Ratio=0.41
+ Novo menor MC: $15,378,606
+ ✅ dia: MC=$15,082,978, Vol=$5,057,319, Ratio=0.34
+ Novo menor MC: $15,082,978
+ ✅ pond: MC=$15,040,082, Vol=$17,420,556, Ratio=1.16
+ Novo menor MC: $15,040,082
+ ✅ dodo: MC=$15,025,591, Vol=$11,816,178, Ratio=0.79
+ Novo menor MC: $15,025,591
+ ✅ movr: MC=$14,551,768, Vol=$3,963,452, Ratio=0.27
+ Novo menor MC: $14,551,768
+🎯 Atingimos MCs próximos a $10,000,000!
+ Página 4: 26 gems encontradas
+🎯 Total encontrado: 72 gems
+📍 Menor MC encontrado: $14,551,768
+🎯 Alvo atingido: SIM
+📊 Ordenado por: MAIOR ratio Volume/MC (ESSENCIAL) + menor MC
+  1. strax: MC=$18,951,879, Vol=$51,501,899, Ratio=2.72
+  2. msusd: MC=$25,999,946, Vol=$40,597,500, Ratio=1.56
+  3. epic: MC=$21,421,584, Vol=$31,661,127, Ratio=1.48
+  4. pond: MC=$15,040,082, Vol=$17,420,556, Ratio=1.16
+  5. meme: MC=$35,765,966, Vol=$37,230,929, Ratio=1.04
+🔄 API: 72 gems encontradas
+✅ 10_49m_range: 72 gems
+🔄 Cache original: 90 gems
+✅ Cache deduplicado: 90 gems únicas
+💾 Cache salvo. Expira em: 22:57:11
+💾 Cache compartilhado salvo: 90 gems totais
+
+🧠 SISTEMA DE LÍDERES DE ALTSEASON - CONSOLIDADO
+==================================================
+🎯 OBJETIVO: Identificar protagonistas da bullrun (não fundo)
+📊 50m_range: 18 gems
+📊 usdon: EM MONITORAMENTO - aguardar sinais!
+📊 euri: EM MONITORAMENTO - aguardar sinais!
+📊 bio: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para bio
+📊 ordi: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para ordi
+📊 w: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para w
+📊 brett: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para brett
+📊 ban: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para ban
+📊 degen: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para degen
+📊 orca: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para orca
+📊 turbo: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para turbo
+📊 zen: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para zen
+📊 zil: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para zil
+📊 useless: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para useless
+📊 arkm: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para arkm
+📊 yfi: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para yfi
+📊 ksm: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para ksm
+📊 melania: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para melania
+📊 plume: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para plume
+📊 10_49m_range: 72 gems
+📊 strax: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para strax
+📊 msusd: EM MONITORAMENTO - aguardar sinais!
+📊 epic: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para epic
+📊 pond: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para pond
+📊 meme: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para meme
+📊 dodo: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para dodo
+📊 agld: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para agld
+📊 pha: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para pha
+📊 stg: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para stg
+📊 trb: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para trb
+📊 cyber: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para cyber
+📊 neiro: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para neiro
+📊 usdp: EM MONITORAMENTO - aguardar sinais!
+📊 aixbt: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para aixbt
+📊 win: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para win
+📊 knc: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para knc
+📊 dogs: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para dogs
+📊 giggle: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para giggle
+📊 aevo: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para aevo
+📊 mlk: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para mlk
+📊 ygg: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para ygg
+📊 lqty: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para lqty
+📊 acx: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para acx
+📊 usual: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para usual
+📊 mask: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para mask
+📊 pnut: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para pnut
+📊 xai: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para xai
+📊 magic: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para magic
+📊 fidd: EM MONITORAMENTO - aguardar sinais!
+📊 people: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para people
+📊 popcat: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para popcat
+📊 bome: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para bome
+📊 moodeng: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para moodeng
+📊 skl: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para skl
+📊 flux: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para flux
+📊 zerebro: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para zerebro
+📊 fida: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para fida
+📊 not: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para not
+📊 dia: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para dia
+📊 scrt: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para scrt
+📊 edu: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para edu
+📊 luna: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para luna
+📊 band: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para band
+📊 core: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para core
+📊 osmo: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para osmo
+📊 iost: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para iost
+📊 api3: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para api3
+📊 carv: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para carv
+📊 giga: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para giga
+📊 sushi: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para sushi
+📊 gmt: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para gmt
+📊 me: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para me
+📊 elon: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para elon
+📊 auction: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para auction
+📊 snt: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para snt
+📊 mog: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para mog
+📊 movr: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para movr
+📊 rez: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para rez
+📊 ssv: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para ssv
+📊 ankr: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para ankr
+📊 xyo: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para xyo
+📊 blur: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para blur
+📊 metis: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para metis
+📊 cgpt: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para cgpt
+📊 alt: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para alt
+📊 uma: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para uma
+📊 coti: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para coti
+📊 rlc: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para rlc
+📊 fxusd: EM MONITORAMENTO - aguardar sinais!
+📊 kava: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para kava
+📊 g: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para g
+📊 ont: EM MONITORAMENTO - aguardar sinais!
+⚠️ Volatility: dados insuficientes para ont
+
+🔄 ANÁLISE MULTI-TIMEFRAME:
+  🏆 LÍDERES CONFIRMADOS: 0 gems
+  🌟 LÍDERES EMERGENTES: 0 gems
+  💪 CANDIDATOS FORTES: 0 gems
+  🔍 CANDIDATOS INICIAIS: 0 gems
+  📊 EM MONITORAMENTO: 90 gems
+  ⚠️ DADOS INSUFICIENTES: 0 gems
+
+🧠 ANÁLISE SOCIAL (YouTube + Telegram):
+  🔥 EXPLOSÃO SOCIAL: 0 gems
+  💪 ATENÇÃO FORTE: 0 gems
+  📊 ATENÇÃO MODERADA: 0 gems
+  📈 ATENÇÃO BAIXA: 0 gems
+  ❌ ATENÇÃO FRACA: 0 gems
+  ⚠️ SEM DADOS: 0 gems
+  📊 NÃO APLICÁVEL: 90 gems
+
+📈 DETECÇÃO DE ACUMULAÇÃO SILENCIOSA
+============================================================
+
+🟢 CONFIRMADAS (5) — smart money provável:
+  💚 lqty     | Score: 0.79 | Slope: +0.0514 | Acumulação silenciosa: slope=0.0514, consistência=57%
+  💚 mlk      | Score: 0.71 | Slope: +0.0720 | Acumulação silenciosa: slope=0.0720, consistência=25%
+  💚 skl      | Score: 0.65 | Slope: +0.0563 | Acumulação silenciosa: slope=0.0563, consistência=100%
+  💚 agld     | Score: 0.65 | Slope: +0.0306 | Acumulação silenciosa: slope=0.0306, consistência=46%
+  💚 brett    | Score: 0.60 | Slope: +0.0237 | Acumulação silenciosa: slope=0.0237, consistência=44%
+
+🟡 MONITORAR (12) — possível acumulação:
+  📊 cyber    | Score: 0.58 | Possível acumulação: slope=0.0139
+  📊 ordi     | Score: 0.57 | Possível acumulação: slope=0.0156
+  📊 ygg      | Score: 0.54 | Possível acumulação: slope=0.0150
+  📊 trb      | Score: 0.54 | Possível acumulação: slope=0.0148
+  📊 elon     | Score: 0.53 | Possível acumulação: slope=0.3311
+  📊 usdp     | Score: 0.49 | Possível acumulação: slope=0.0173
+  📊 dia      | Score: 0.46 | Possível acumulação: slope=0.0314
+  📊 luna     | Score: 0.45 | Possível acumulação: slope=0.0116
+  📊 popcat   | Score: 0.45 | Possível acumulação: slope=0.0051
+  📊 w        | Score: 0.44 | Possível acumulação: slope=0.0015
+  📊 moodeng  | Score: 0.43 | Possível acumulação: slope=0.0038
+  📊 g        | Score: 0.40 | Possível acumulação: slope=0.0161
+
+🏭 ANÁLISE SETORIAL
+============================================================
+
+❄️ ALERTA GERAL: COLD
+
+📈 SETORES AQUECENDO (2):
+  🌡️  Other        | Slope: +0.1773 | Ratio atual: 0.476
+  🌡️  DeFi         | Slope: +0.0305 | Ratio atual: 0.254
+
+📉 SETORES ESFRIANDO (1):
+  🧊 Infra        | Slope: -5.7550 | Ratio atual: 0.312
+
+📊 TEMPERATURA ATUAL POR SETOR:
+  🟡 Other        | Ratio médio: 0.476 | Gems quentes: 15 | WARMING
+  ❄️ Gaming       | Ratio médio: 0.433 | Gems quentes: 0 | COLD
+  ❄️ Meme         | Ratio médio: 0.382 | Gems quentes: 1 | COLD
+  ❄️ AI           | Ratio médio: 0.379 | Gems quentes: 1 | COLD
+  ❄️ Infra        | Ratio médio: 0.312 | Gems quentes: 0 | COLD
+  ❄️ L2           | Ratio médio: 0.298 | Gems quentes: 0 | COLD
+  ❄️ DeFi         | Ratio médio: 0.254 | Gems quentes: 0 | COLD
+💾 Snapshot diário CONSOLIDADO salvo: daily_20260606.json (90 gems)
+📊 Ordenado por: Market Cap crescente (menor → maior)
+🔍 Analisando PERSISTÊNCIA + ACELERAÇÃO vs histórico (5 dias, 84 gems ontem)
+🚀 LÍDER ACELERADO: usdon - ALTA - 21.5% crescimento (3 dias) - ACELERAÇÃO accelerating
+🚀 LÍDER ACELERADO: strax - EXTREMA - 321.4% crescimento (3 dias) - ACELERAÇÃO accelerating
+🚀 LÍDER ACELERADO: msusd - EXTREMA - 195.4% crescimento (3 dias) - ACELERAÇÃO accelerating
+🚀 LÍDER ACELERADO: neiro - ALTA - 22.1% crescimento (3 dias) - ACELERAÇÃO accelerating
+💎 Gems confirmadas atualizadas: 15 totais (ordenadas por MC crescente)
+
+🔥 4 LÍDERES DE ALTSEASON confirmados!
+  🚀 usdon: ALTA - 21.5% crescimento (3 dias fortes)
+  🚀 strax: EXTREMA - 321.4% crescimento (3 dias fortes)
+  🚀 msusd: EXTREMA - 195.4% crescimento (3 dias fortes)
+  🚀 neiro: ALTA - 22.1% crescimento (3 dias fortes)
+
+📊 Nenhum potencial líder detectado hoje
+
+📊 ANÁLISE - 50M_RANGE:
+
+📊 ANÁLISE DAS 18 GEMS:
+================================================================================
+Market Cap - Médio: $62,165,244
+Market Cap - Min: $51,088,458, Max: $73,731,623
+Volume - Médio: $19,569,319
+Volume - Min: $13,269,303, Max: $41,159,768
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 17 gems
+  🟠 Strong (0.5-1.0): 1 gems
+  🔥 Breakout (>1.0): 0 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/18 (0.0%)
+  💪 Resiliência de Preço: 0/18 (0.0%)
+  👑 POTENCIAL OURO: 0/18 (0.0%)
+  🚨 WASH TRADING: 0/18 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 18 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. usdon    | MC: $  62,550,905 | Vol: $  41,159,768 | Ratio: 0.66 | S 📊📈    📊 | Ondo U.S. Dollar Token
+ 2. euri     | MC: $  57,111,681 | Vol: $  27,287,489 | Ratio: 0.48 | E 📊📈    📊 | Eurite
+ 3. bio      | MC: $  55,909,559 | Vol: $  24,173,520 | Ratio: 0.43 | E 📊📈    📊 | Bio Protocol
+ 4. ordi     | MC: $  62,732,035 | Vol: $  26,451,947 | Ratio: 0.42 | E 📊📈    📊 | ORDI
+ 5. w        | MC: $  56,780,760 | Vol: $  22,503,917 | Ratio: 0.40 | E 📊📈    📊 | Wormhole
+ 6. brett    | MC: $  51,088,458 | Vol: $  19,455,212 | Ratio: 0.38 | E 📊📈    📊 | Brett
+ 7. ban      | MC: $  60,904,689 | Vol: $  21,794,962 | Ratio: 0.36 | E 📊📈    📊 | Comedian
+ 8. degen    | MC: $  58,880,774 | Vol: $  20,151,620 | Ratio: 0.34 | E 📊📈    📊 | Degen
+ 9. orca     | MC: $  61,762,130 | Vol: $  18,430,855 | Ratio: 0.30 | E 📊📈    📊 | Orca
+10. turbo    | MC: $  58,108,669 | Vol: $  15,554,994 | Ratio: 0.27 | E 📊📈    📊 | Turbo
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 72 GEMS:
+================================================================================
+Market Cap - Médio: $27,736,091
+Market Cap - Min: $14,551,768, Max: $48,029,504
+Volume - Médio: $11,908,529
+Volume - Min: $3,963,452, Max: $51,501,899
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 56 gems
+  🟠 Strong (0.5-1.0): 11 gems
+  🔥 Breakout (>1.0): 5 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/72 (0.0%)
+  💪 Resiliência de Preço: 0/72 (0.0%)
+  👑 POTENCIAL OURO: 0/72 (0.0%)
+  🚨 WASH TRADING: 1/72 (1.4%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 72 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. strax    | MC: $  18,951,879 | Vol: $  51,501,899 | Ratio: 2.72 | B 📊📈    📊 | Xertra
+ 2. msusd    | MC: $  25,999,946 | Vol: $  40,597,500 | Ratio: 1.56 | B 📊📈  🚨📊 | Metronome Synth USD
+ 3. epic     | MC: $  21,421,584 | Vol: $  31,661,127 | Ratio: 1.48 | B 📊📈    📊 | Epic Chain
+ 4. pond     | MC: $  15,040,082 | Vol: $  17,420,556 | Ratio: 1.16 | B 📊📈    📊 | Marlin
+ 5. meme     | MC: $  35,765,966 | Vol: $  37,230,929 | Ratio: 1.04 | B 📊📈    📊 | Memecoin
+ 6. dodo     | MC: $  15,025,591 | Vol: $  11,816,178 | Ratio: 0.79 | S 📊📈    📊 | DODO
+ 7. agld     | MC: $  17,241,300 | Vol: $  13,337,140 | Ratio: 0.77 | S 📊📈    📊 | Adventure Gold
+ 8. pha      | MC: $  26,152,723 | Vol: $  20,077,685 | Ratio: 0.77 | S 📊📈    📊 | PHALA
+ 9. stg      | MC: $  23,804,260 | Vol: $  16,496,098 | Ratio: 0.69 | S 📊📈    📊 | Stargate Finance
+10. trb      | MC: $  36,261,843 | Vol: $  23,849,808 | Ratio: 0.66 | S 📊📈    📊 | Tellor Tributes
+✅ Usando cache (válido até: 22:57:11)
+
+💾 Salvando snapshots (usando data do cache): 20260606_105711
+  ✅ 50M: 90 gems únicas
+  📁 Arquivo: C:\market_montrezor_system\gems_system\data\snapshots\gems_50M_20260606_105711.csv
+  💾 Ranges presentes: 50M
+
+💾 Novos dados encontrados - Snapshot criado!
+
+🏆 Salvando snapshots com scores e ranking (data: 20260606_105711)...
+  🏆 50M enhanced: 90 gems com scores + eventos especiais
+  📁 Arquivo: C:\market_montrezor_system\gems_system\data\snapshots\gems_50M_enhanced_20260606_105711.csv
+  🗑️ Arquivo bruto deletado: C:\market_montrezor_system\gems_system\data\snapshots\gems_50M_20260606_105711.csv
+
+🏆 TOP 10 GEMS POR FINAL SCORE:
+------------------------------------------------------------------------------------------------------------------------
+ 1. strax    | MC: $  18,951,879 | Ratio: 2.72 | Final:  0.90 |  0d        | Xertra
+ 2. epic     | MC: $  21,421,584 | Ratio: 1.48 | Final:  0.90 |  0d        | Epic Chain
+ 3. pond     | MC: $  15,040,082 | Ratio: 1.16 | Final:  0.90 |  0d        | Marlin
+ 4. meme     | MC: $  35,765,966 | Ratio: 1.04 | Final:  0.90 |  0d        | Memecoin
+ 5. msusd    | MC: $  25,999,946 | Ratio: 1.56 | Final:  0.72 |  0d        | Metronome Synth USD
+ 6. dodo     | MC: $  15,025,591 | Ratio: 0.79 | Final:  0.60 |  0d        | DODO
+ 7. agld     | MC: $  17,241,300 | Ratio: 0.77 | Final:  0.60 |  0d        | Adventure Gold
+ 8. pha      | MC: $  26,152,723 | Ratio: 0.77 | Final:  0.60 |  0d        | PHALA
+ 9. usdon    | MC: $  62,550,905 | Ratio: 0.66 | Final:  0.30 |  0d        | Ondo U.S. Dollar Token
+10. stg      | MC: $  23,804,260 | Ratio: 0.69 | Final:  0.30 |  0d        | Stargate Finance
+
+📊 EVENTOS ESPECIAIS DETECTADOS:
+  👑 Líderes confirmados: 0
+  🔥 Explosões sociais: 0
+  💪 RS vs BTC forte: 1
+❌ Erro: name 'sector_result' is not defined

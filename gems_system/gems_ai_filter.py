@@ -1854,50 +1854,38 @@ def update_all_pending_performances() -> int:
 
 def auto_update_performance() -> int:
     """
-    Busca preços atuais via CoinGecko para todas as picks ainda não registradas.
-    Chamado automaticamente ao abrir a aba AI Filter.
-    Retorna número de entradas atualizadas.
+    Registra picks NOVAS como "pending" (sem buscar preço ainda).
+    O preço final é preenchido depois pelo update_pending_picks(),
+    que roda periodicamente no daemon, após o prazo correto (7d/30d).
+    Retorna número de novas picks registradas.
     """
-    results = _load_results()
-    perf    = _load_performance()
-    updated = 0
+    results   = _load_results()
+    perf      = _load_performance()
+    updated   = 0
     perf_keys = {(p["symbol"], p.get("analysis_date", p["date"])) for p in perf}
 
     for cycle in ("weekly", "monthly"):
         result = results.get(cycle)
         if not result:
             continue
-        regime = result.get("market_regime", "UNKNOWN")
+        regime    = result.get("market_regime", "UNKNOWN")
         pick_date = result.get("generated_at", "")[:10]
         top_picks = result.get("top_picks", [])
-        total_picks = len(top_picks)
 
-        for idx, pick in enumerate(top_picks):
-            sym = pick.get("symbol", "")
+        for pick in top_picks:
+            sym           = pick.get("symbol", "")
             price_at_pick = pick.get("price_usd")
             if not sym or not price_at_pick or price_at_pick <= 0:
                 continue
             if (sym, pick_date) in perf_keys:
-                continue
+                continue  # já registrada (pending ou completa)
 
-            # 🔁 Busca preço atual com timeout de 240 segundos (4 minutos)
-            price_now = _fetch_coingecko_price(sym, max_total_seconds=240)
-
-            if price_now > 0:
-                register_performance(cycle, sym, pick.get("rank", 0), price_at_pick, price_now,
-                                     market_regime=regime, analysis_date=pick_date)
-                perf_keys.add((sym, pick_date))
-                updated += 1
-                print(f"[PERF] ✅ {sym} atualizado: {price_now:.4f} (variação {((price_now-price_at_pick)/price_at_pick*100):+.2f}%)")
-            else:
-                print(f"[PERF] ❌ Falha ao obter preço para {sym}")
-
-            # ⏱️ Delay de 3 segundos entre picks (exceto após o último)
-            if idx < total_picks - 1:
-                time.sleep(3)
-
-        # ⏱️ Delay de 5 segundos entre ciclos (weekly → monthly)
-        time.sleep(5)
+            # Registra como pendente — sem buscar preço ainda
+            _register_pick_pending(cycle, sym, pick.get("rank", 0),
+                                   price_at_pick, regime, pick_date)
+            perf_keys.add((sym, pick_date))
+            updated += 1
+            print(f"[PERF] 📋 Pick registrada (pending): {sym} @ {price_at_pick:.4f} ({cycle} {pick_date})")
 
     try:
         evaluate_pending_macro_signals()
@@ -1905,6 +1893,90 @@ def auto_update_performance() -> int:
         evaluate_macro_regime_cycles()
     except Exception:
         pass
+
+    return updated
+
+
+def _register_pick_pending(cycle: str, symbol: str, rank: int,
+                            price_at_pick: float, market_regime: str,
+                            analysis_date: str):
+    """Registra uma pick nova como pendente — price_now será preenchido depois."""
+    try:
+        ml_score = _get_ml_score_for_pick(cycle, symbol, analysis_date)
+        perf = _load_performance()
+        perf.append({
+            "cycle":         cycle,
+            "date":          datetime.now().strftime("%Y-%m-%d"),
+            "analysis_date": analysis_date,
+            "symbol":        symbol,
+            "rank":          rank,
+            "price_at_pick": price_at_pick,
+            "price_now":     None,
+            "pct_change":    None,
+            "market_regime": market_regime,
+            "result":        "PENDING",
+            "ml_score":      ml_score,
+            "status":        "pending",
+        })
+        _save_performance(perf[-500:])
+    except Exception as e:
+        print(f"[PERF] Erro ao registrar pick pendente: {e}")
+
+
+def update_pending_picks() -> int:
+    """
+    Chamado periodicamente pelo daemon (a cada 4h).
+    Para cada pick com status "pending", verifica se já passou o prazo
+    (7 dias para weekly, 30 dias para monthly) e busca o preço final.
+    Retorna número de picks completadas.
+    """
+    perf    = _load_performance()
+    updated = 0
+    now     = datetime.now()
+    PRAZO   = {"weekly": 7, "monthly": 30}
+
+    for entry in perf:
+        if entry.get("status") != "pending":
+            continue
+        if entry.get("price_at_pick", 0) <= 0:
+            continue
+
+        cycle        = entry.get("cycle", "weekly")
+        analysis_str = entry.get("analysis_date") or entry.get("date", "")
+        try:
+            analysis_dt = datetime.strptime(analysis_str, "%Y-%m-%d")
+        except Exception:
+            continue
+
+        prazo_dias = PRAZO.get(cycle, 7)
+        dias_passados = (now - analysis_dt).days
+
+        if dias_passados < prazo_dias:
+            continue  # ainda não chegou o prazo
+
+        # Prazo atingido — buscar preço atual
+        sym           = entry["symbol"]
+        price_at_pick = entry["price_at_pick"]
+        price_now     = _fetch_coingecko_price(sym, max_total_seconds=60)
+
+        if price_now <= 0:
+            print(f"[PERF] ⚠️ Não foi possível obter preço para {sym} — tentará depois")
+            continue
+
+        pct = (price_now - price_at_pick) / price_at_pick * 100
+        entry["price_now"]  = price_now
+        entry["pct_change"] = round(pct, 2)
+        entry["result"]     = "WIN" if pct > 10 else ("LOSS" if pct < -10 else "NEUTRAL")
+        entry["status"]     = "done"
+        entry["date_close"] = now.strftime("%Y-%m-%d")
+        updated += 1
+        print(f"[PERF] ✅ {sym} ({cycle}) fechado após {dias_passados}d: {price_at_pick:.4f} → {price_now:.4f} ({pct:+.2f}%)")
+
+        time.sleep(2)  # delay entre chamadas CoinGecko
+
+    if updated > 0:
+        _save_performance(perf[-500:])
+        print(f"[PERF] {updated} pick(s) atualizadas.")
 
     return updated
 
@@ -1943,6 +2015,56 @@ def register_performance(cycle: str, symbol: str, rank: int,
         _save_performance(perf[-500:])
     except Exception:
         pass
+
+def migrate_zero_pct_picks() -> int:
+    """
+    Utilitário: reprocessa picks antigas que foram registradas com pct_change=0
+    (bug do sistema anterior). Reseta status para "pending" para que
+    update_pending_picks() possa buscar o preço correto.
+    Retorna número de picks resetadas.
+    """
+    perf    = _load_performance()
+    now     = datetime.now()
+    PRAZO   = {"weekly": 7, "monthly": 30}
+    reset   = 0
+
+    for entry in perf:
+        # Só reprocesa se: pct_change é 0 (ou None), status não é "pending" ainda
+        if entry.get("status") == "pending":
+            continue
+        if entry.get("price_at_pick", 0) <= 0:
+            continue
+
+        pct = entry.get("pct_change")
+        if pct is not None and abs(pct) > 0.5:
+            continue  # variação real, não reprocessar
+
+        # Verifica se o prazo já passou — só reprocessa se faz sentido buscar
+        cycle        = entry.get("cycle", "weekly")
+        analysis_str = entry.get("analysis_date") or entry.get("date", "")
+        try:
+            analysis_dt = datetime.strptime(analysis_str, "%Y-%m-%d")
+        except Exception:
+            continue
+
+        prazo_dias    = PRAZO.get(cycle, 7)
+        dias_passados = (now - analysis_dt).days
+        if dias_passados < prazo_dias:
+            continue  # prazo não chegou ainda, manter como pending
+
+        # Resetar para pending
+        entry["status"]     = "pending"
+        entry["price_now"]  = None
+        entry["pct_change"] = None
+        entry["result"]     = "PENDING"
+        reset += 1
+
+    if reset > 0:
+        _save_performance(perf[-500:])
+        print(f"[PERF] {reset} pick(s) com 0% resetadas para 'pending' — serão reavaliadas.")
+
+    return reset
+
 
 def get_performance_dashboard(lookback_picks: int = 60) -> dict:
     """

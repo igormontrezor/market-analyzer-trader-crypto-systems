@@ -89,9 +89,18 @@ def _run_performance_update(ai, logger):
         logger.debug("[AI] Atualização de performance já em andamento – ignorando.")
         return
     try:
-        updated = ai.auto_update_performance()
-        if updated > 0:
-            logger.info(f"[AI] ✅ {updated} nova(s) performance(s) registrada(s).")
+        # 1. Registra picks novas como "pending" (sem buscar preço ainda)
+        new_picks = ai.auto_update_performance()
+        if new_picks > 0:
+            logger.info(f"[AI] 📋 {new_picks} nova(s) pick(s) registrada(s) como pendente.")
+
+        # 2. Fecha picks pendentes que já atingiram o prazo (7d/30d)
+        if hasattr(ai, "update_pending_picks"):
+            closed = ai.update_pending_picks()
+            if closed > 0:
+                logger.info(f"[AI] ✅ {closed} pick(s) avaliada(s) com preço final.")
+        else:
+            logger.warning("[AI] update_pending_picks não encontrado no módulo — atualize o gems_ai_filter.py")
     except Exception as e:
         logger.error(f"[AI] Erro na atualização de performance: {e}")
     finally:
@@ -1613,6 +1622,12 @@ def run_daemon(logger, mode="all"):
                         # ATUALIZAR PERFORMANCE DAS PICKS ANTIGAS E TREINAR ML
                         # ─────────────────────────────────────────────────────────
                         try:
+                            # Migrar picks antigas com 0% (bug do sistema anterior)
+                            if hasattr(ai, "migrate_zero_pct_picks"):
+                                n_mig = ai.migrate_zero_pct_picks()
+                                if n_mig > 0:
+                                    logger.info(f"[AI] 🔧 {n_mig} pick(s) com 0% migradas para reavaliação.")
+
                             threading.Thread(target=_run_performance_update, args=(ai, logger), daemon=True).start()
                             perf = ai._load_performance()
                             n_picks = len(perf)

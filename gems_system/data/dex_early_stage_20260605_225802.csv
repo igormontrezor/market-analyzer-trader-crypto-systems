@@ -1,0 +1,4 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+$TUPID,$tupid money,3G8zFxHAnuWXiiC9MobE9EUUqV6m6MjL51YnN6tGpump,solana,0.0001975,666.0,197567.0,33790.58,1901758.41,21664,18393,0.54,6.5,https://dexscreener.com/solana/cssmwhnhtxh3skz5ihbaykhcfiawfjbdeq6nepg1oubr,2026-06-05T22:57:56.072860,dexscreener,16.97092598
+HONTER,honter,GFjDh5ULNahwG13TBEsxrszxCKByTv6SCzfdLgWteXqk,solana,0.0002219,1271.0,221931.0,36487.5,1039145.24,9578,7650,0.56,32.7,https://dexscreener.com/solana/dbzhvfutb5tdc9jbkacffxh5k6pwbq69prfpdp1mnnwb,2026-06-05T22:57:56.072733,dexscreener,11.360474420000003
+OPENVERSE,Openverse,78B31QV1rtyoe2EYvVNjBVjeowyrtcH5FPTE4tCypump,solana,0.0002866,50.49,286586.0,40377.33,290943.67,2692,1906,0.59,60.5,https://dexscreener.com/solana/9vp5t5xv8tsakg9esdqfby2mttbemtncpedpvznhar2q,2026-06-05T22:57:56.072634,dexscreener,7.308209309999997

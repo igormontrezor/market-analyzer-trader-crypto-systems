@@ -1,0 +1,4 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+CAINYABEL,Cain y Abel,8HzRWh3zdW7ewhjE16sCowoxeKZZ9hF3TjhCwqVMpump,solana,0.0007713,657.0,771358.0,66396.11,3958819.59,39203,16699,0.7,9.5,https://dexscreener.com/solana/gdrrybimbfo81ahgthtbrsbchvomdwbhr6upxerjhjx6,2026-06-10T06:44:53.246837,dexscreener,43.91649837
+ABEL,Abel,EaAAwVnGWn7d3QUfT8qToKyxebs1qKEPjdqfCxQZpump,solana,0.0004365,1536.0,436529.0,48441.28,1811289.75,15567,8929,0.64,5.7,https://dexscreener.com/solana/9wr8ikcm5y6jsu6zwkyjrdlheofaezcw3kqbid4hgbug,2026-06-10T06:44:53.245831,dexscreener,22.716937199999997
+清正,Kiyomasa,ANP1wJHYWYQPfrZvg8FnjduwfBVJhRV3xqKcs3yapump,solana,0.001072,113.0,1070278.0,50882.72,61946.07,473,423,0.53,13.5,https://dexscreener.com/solana/2mhma8rrxwupxb4aoxgebje88phvagg1nsbqsvc5dcr7,2026-06-10T06:44:53.246755,dexscreener,1.8838093600000005

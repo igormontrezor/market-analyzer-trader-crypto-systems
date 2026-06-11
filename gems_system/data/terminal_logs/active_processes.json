@@ -75,5 +75,12 @@
     "log_file": "data/terminal_logs/command_20260603_081226.txt",
     "timestamp": "2026-06-03T08:12:26.863933",
     "description": "Executando busca de gems no mercado..."
+  },
+  {
+    "pid": 11128,
+    "command": "C:\\market_montrezor_system\\.venv\\Scripts\\python.exe gems_finder.py",
+    "log_file": "data/terminal_logs/command_20260606_105441.txt",
+    "timestamp": "2026-06-06T10:54:41.495118",
+    "description": "Executando busca de gems no mercado..."
   }
 ]

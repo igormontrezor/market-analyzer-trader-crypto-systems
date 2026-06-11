@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-06-03T11:29:21.660859+00:00",
+  "generated_at": "2026-06-11T11:24:34.447351+00:00",
   "weekly": {
-    "date": "2026-05-31",
-    "others_bbp": 0.8151876800589063,
-    "usdt_d_bbp": 0.8068066361558714,
+    "date": "2026-06-07",
+    "others_bbp": 0.343086890682767,
+    "usdt_d_bbp": 1.0336396061833402,
     "others_touch_low": false,
-    "usdt_touch_high": false,
+    "usdt_touch_high": true,
     "usdt_touch_low": false
   },
   "monthly": {
-    "usdt_d_bbp": 0.9251877145980876
+    "usdt_d_bbp": 0.998651920606443
   },
   "regime": {
     "buy_mode": true,
@@ -17,10 +17,10 @@
     "capitulation_lock": false
   },
   "signal": {
-    "weekly_buy_trigger": false,
+    "weekly_buy_trigger": true,
     "tactical_rebound": false,
     "tactical_rebound_super": false,
     "weekly_sell_trigger": false
   },
-  "funding_rate": 0.003581
+  "funding_rate": 0.004678
 }

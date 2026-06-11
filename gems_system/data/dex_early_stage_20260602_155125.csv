@@ -1,2 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-TREND,Trend Bot,D2WtV5Jpb1yVcDfJLAhUaS5DLN1J3Rb3LDFYrRBrpump,solana,0.0005786,880.0,578631.0,61081.97,1586880.18,25781,12918,0.67,5.9,https://dexscreener.com/solana/cxx9yodvkkudykdvs1ptq3gwzgbuc9pgtvm4rxttjmt3,2026-06-02T15:51:19.689934,dexscreener,22.98627099
