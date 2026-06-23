@@ -1,0 +1,106 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-06-12 09:11:11
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+✅ Usando cache (válido até: 09:30:28)
+✅ Usando cache existente: 59 gems
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+📋 Cache: 10 gems encontradas
+✅ 50m_range: 10 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+📋 Cache: 15 gems encontradas
+✅ 10_49m_range: 15 gems
+📋 Cache válido - Nenhum cache atualizado
+
+📊 ANÁLISE - 50M_RANGE:
+
+📊 ANÁLISE DAS 10 GEMS:
+================================================================================
+Market Cap - Médio: $66,040,268
+Market Cap - Min: $54,260,505, Max: $88,604,084
+Volume - Médio: $41,638,774
+Volume - Min: $14,377,626, Max: $151,523,316
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 7 gems
+  🟠 Strong (0.5-1.0): 1 gems
+  🔥 Breakout (>1.0): 2 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/10 (0.0%)
+  💪 Resiliência de Preço: 0/10 (0.0%)
+  👑 POTENCIAL OURO: 0/10 (0.0%)
+  🚨 WASH TRADING: 0/10 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 10 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. stg      | MC: $  74,306,199 | Vol: $ 151,523,316 | Ratio: 2.04 | B 📊📈    📊 | Stargate Finance
+ 2. astr     | MC: $  56,872,504 | Vol: $  67,194,585 | Ratio: 1.18 | B 📊📈    📊 | Astar
+ 3. usdon    | MC: $  79,895,593 | Vol: $  42,943,287 | Ratio: 0.54 | S 📊📈    📊 | Ondo U.S. Dollar Token
+ 4. bio      | MC: $  68,109,269 | Vol: $  31,816,418 | Ratio: 0.47 | E 📊📈    📊 | Bio Protocol
+ 5. brett    | MC: $  55,441,511 | Vol: $  25,343,861 | Ratio: 0.46 | E 📊📈    📊 | Brett
+ 6. ordi     | MC: $  67,853,190 | Vol: $  27,934,050 | Ratio: 0.41 | E 📊📈    📊 | ORDI
+ 7. zeta     | MC: $  57,703,812 | Vol: $  16,226,141 | Ratio: 0.28 | E 📊📈    📊 | ZetaChain
+ 8. euri     | MC: $  57,356,016 | Vol: $  15,950,772 | Ratio: 0.28 | E 📊📈    📊 | Eurite
+ 9. ctc      | MC: $  54,260,505 | Vol: $  14,377,626 | Ratio: 0.26 | E 📊📈    📊 | Creditcoin
+10. bananas31 | MC: $  88,604,084 | Vol: $  23,077,681 | Ratio: 0.26 | E 📊📈    📊 | Banana For Scale
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 15 GEMS:
+================================================================================
+Market Cap - Médio: $21,918,482
+Market Cap - Min: $14,880,128, Max: $31,921,683
+Volume - Médio: $25,578,661
+Volume - Min: $6,233,168, Max: $123,691,689
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 5 gems
+  🟠 Strong (0.5-1.0): 4 gems
+  🔥 Breakout (>1.0): 6 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/15 (0.0%)
+  💪 Resiliência de Preço: 0/15 (0.0%)
+  👑 POTENCIAL OURO: 0/15 (0.0%)
+  🚨 WASH TRADING: 1/15 (6.7%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 15 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. hmstr    | MC: $  16,750,269 | Vol: $ 123,691,689 | Ratio: 7.38 | B 📊📈  🚨📊 | Hamster Kombat
+ 2. fida     | MC: $  23,780,065 | Vol: $  39,614,071 | Ratio: 1.67 | B 📊📈    📊 | Bonfida
+ 3. epic     | MC: $  21,267,769 | Vol: $  32,649,659 | Ratio: 1.54 | B 📊📈    📊 | Epic Chain
+ 4. lumia    | MC: $  15,151,443 | Vol: $  19,915,151 | Ratio: 1.31 | B 📊📈    📊 | Lumia
+ 5. strax    | MC: $  22,163,538 | Vol: $  24,099,679 | Ratio: 1.09 | B 📊📈    📊 | Xertra
+ 6. bank     | MC: $  19,290,075 | Vol: $  20,062,307 | Ratio: 1.04 | B 📊📈    📊 | Lorenzo Protocol
+ 7. usdp     | MC: $  31,921,683 | Vol: $  31,201,595 | Ratio: 0.98 | S 📊📈    📊 | Pax Dollar
+ 8. blast    | MC: $  22,293,220 | Vol: $  19,998,290 | Ratio: 0.90 | S 📊📈    📊 | Blast
+ 9. dogs     | MC: $  22,279,595 | Vol: $  13,774,170 | Ratio: 0.62 | S 📊📈    📊 | Dogs
+10. agld     | MC: $  14,880,128 | Vol: $   8,200,245 | Ratio: 0.55 | S 📊📈    📊 | Adventure Gold
+
+📋 Usando dados existentes - Nenhum snapshot criado
+
+🎉 GEMS FINDER CONCLUÍDO!
+📊 Total de gems: 25
+📁 Arquivos salvos para análise histórica:
+   - snapshots/gems_*.csv (por faixa)
+   - snapshots/gems_consolidated_*.csv (completo)
+   - Cache válido por 12 horas (evita requisições excessivas)
+   - Snapshots criados apenas com dados novos

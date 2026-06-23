@@ -1,0 +1,4 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+CAMBRIA,Cambria,Gbnz9DsVWM7hCNv2PWD8SHZpaDPjNhwkWTNtXTrjpump,solana,0.000255,251.0,255059.0,37956.28,773180.06,11934,3594,0.77,4.5,https://dexscreener.com/solana/dptn7yq3xwjzefhppzsrc7bctdyxyaz6kwgexzkwkjcf,2026-06-20T21:07:01.328498,dexscreener,22.37978468
+QAI,Qai,37Bk2fdJ4gNGXrYTjMdriaZUbBbhmoQGeQjHyih3pump,solana,0.001039,1024.0,1039225.0,77136.04,1193656.31,17025,8009,0.68,2.3,https://dexscreener.com/solana/curyxkdy33bux5hkl8distfwboru7mp72v84fb1pri8y,2026-06-20T21:07:01.328319,dexscreener,20.70629108
+CHIKI,CHIKI MONSTERS,CPYrgdAYWFQD74ZtsR8mEBWW7qnrXnegcn7gDMobpump,solana,8.267e-05,-37.94,82615.0,30154.63,207107.4,1621,1138,0.59,33.6,https://dexscreener.com/solana/acvda6hu6zcqdu7rabhu5t8vhh5hwufjgh6rxya8wgq,2026-06-20T21:07:01.328556,dexscreener,6.484178649999997

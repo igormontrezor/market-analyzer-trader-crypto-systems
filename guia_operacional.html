@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia Operacional — Montrezor System</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1c2230;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e6edf3;
+    --muted: #7d8590;
+    --accent-blue: #58a6ff;
+    --accent-green: #3fb950;
+    --accent-amber: #e3b341;
+    --accent-red: #f85149;
+    --accent-cyan: #79c0ff;
+    --accent-purple: #d2a8ff;
+    --accent-teal: #1d9e75;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.65;
+    font-size: 15px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 2.5rem 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+
+  .logo-area h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .logo-area p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .header-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .badge-green  { background: rgba(63,185,80,0.12);  color: var(--accent-green);  border: 1px solid rgba(63,185,80,0.25); }
+  .badge-amber  { background: rgba(227,179,65,0.12); color: var(--accent-amber);  border: 1px solid rgba(227,179,65,0.25); }
+  .badge-blue   { background: rgba(88,166,255,0.12); color: var(--accent-blue);   border: 1px solid rgba(88,166,255,0.25); }
+  .badge-red    { background: rgba(248,81,73,0.12);  color: var(--accent-red);    border: 1px solid rgba(248,81,73,0.25); }
+  .badge-purple { background: rgba(210,168,255,0.12);color: var(--accent-purple); border: 1px solid rgba(210,168,255,0.25); }
+
+  nav {
+    border-bottom: 1px solid var(--border);
+    padding: 0 2.5rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .nav-btn {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+    padding: 0.85rem 1.1rem;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--accent-blue); border-bottom-color: var(--accent-blue); }
+
+  main { max-width: 960px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  h2::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 1.1rem;
+    border-radius: 2px;
+  }
+
+  h2.blue::before   { background: var(--accent-blue); }
+  h2.green::before  { background: var(--accent-green); }
+  h2.amber::before  { background: var(--accent-amber); }
+  h2.red::before    { background: var(--accent-red); }
+  h2.purple::before { background: var(--accent-purple); }
+  h2.cyan::before   { background: var(--accent-cyan); }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: var(--border2); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .icon-blue   { background: rgba(88,166,255,0.12); }
+  .icon-green  { background: rgba(63,185,80,0.12); }
+  .icon-amber  { background: rgba(227,179,65,0.12); }
+  .icon-red    { background: rgba(248,81,73,0.12); }
+  .icon-purple { background: rgba(210,168,255,0.12); }
+  .icon-cyan   { background: rgba(121,192,255,0.12); }
+  .icon-teal   { background: rgba(29,158,117,0.12); }
+
+  .card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .card-subtitle {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .card p, .card li {
+    font-size: 0.9rem;
+    color: #b1bac4;
+    line-height: 1.7;
+  }
+
+  .card ul { padding-left: 1.2rem; }
+  .card li { margin-bottom: 0.4rem; }
+
+  .highlight {
+    display: inline;
+    background: rgba(88,166,255,0.1);
+    color: var(--accent-blue);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: 'Menlo', 'Consolas', monospace;
+    font-size: 0.85em;
+  }
+
+  .highlight.green  { background: rgba(63,185,80,0.1);  color: var(--accent-green); }
+  .highlight.amber  { background: rgba(227,179,65,0.1); color: var(--accent-amber); }
+  .highlight.red    { background: rgba(248,81,73,0.1);  color: var(--accent-red); }
+  .highlight.purple { background: rgba(210,168,255,0.1);color: var(--accent-purple); }
+  .highlight.cyan   { background: rgba(121,192,255,0.1);color: var(--accent-cyan); }
+
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    margin-top: 0.5rem;
+  }
+
+  .ref-table th {
+    text-align: left;
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ref-table td {
+    padding: 0.7rem 0.75rem;
+    color: #b1bac4;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .ref-table tr:last-child td { border-bottom: none; }
+
+  .ref-table td:first-child { color: var(--text); font-weight: 500; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  @media (max-width: 620px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .metric-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+  }
+
+  .metric-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .metric-value { font-size: 1.5rem; font-weight: 600; margin-top: 4px; }
+
+  .metric-sub { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+  .step-list { counter-reset: steps; list-style: none; padding: 0; }
+
+  .step-list li {
+    counter-increment: steps;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: #b1bac4;
+    line-height: 1.6;
+  }
+
+  .step-list li:last-child { border-bottom: none; }
+
+  .step-list li::before {
+    content: counter(steps);
+    min-width: 26px; height: 26px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .alert-box {
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .alert-icon { font-size: 1rem; margin-top: 1px; flex-shrink: 0; }
+
+  .alert-amber { background: rgba(227,179,65,0.08); border: 1px solid rgba(227,179,65,0.2); color: #d4a843; }
+  .alert-green { background: rgba(63,185,80,0.08);  border: 1px solid rgba(63,185,80,0.2);  color: #3fb950; }
+  .alert-red   { background: rgba(248,81,73,0.08);  border: 1px solid rgba(248,81,73,0.2);  color: #f08080; }
+  .alert-blue  { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.2); color: #79aff0; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.75rem 0; }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.75rem; }
+
+  .tag {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .changelog-item {
+    display: flex;
+    gap: 14px;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+    font-size: 0.88rem;
+  }
+
+  .changelog-item:last-child { border-bottom: none; }
+
+  .changelog-date {
+    font-size: 0.75rem;
+    color: var(--muted);
+    min-width: 90px;
+    padding-top: 2px;
+    font-family: monospace;
+  }
+
+  .changelog-type {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    min-width: 60px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .type-novo    { background: rgba(63,185,80,0.12);  color: var(--accent-green); }
+  .type-aviso   { background: rgba(227,179,65,0.12); color: var(--accent-amber); }
+  .type-critico { background: rgba(248,81,73,0.12);  color: var(--accent-red); }
+  .type-info    { background: rgba(88,166,255,0.12); color: var(--accent-blue); }
+
+  .search-bar {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.7rem 1rem;
+    color: var(--text);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .search-bar:focus { border-color: var(--accent-blue); }
+  .search-bar::placeholder { color: var(--muted); }
+
+  .expandable-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.25rem 0;
+    user-select: none;
+  }
+
+  .expandable-header:hover .expand-icon { color: var(--text); }
+
+  .expand-icon {
+    font-size: 0.8rem;
+    color: var(--muted);
+    transition: transform 0.2s;
+  }
+
+  .expandable-body {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease, padding 0.2s;
+  }
+
+  .expandable-body.open { max-height: 600px; padding-top: 1rem; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--muted);
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 3rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <h1>Guia Operacional — Montrezor System</h1>
+    <p>Referência técnica para operadores do sistema de sinais</p>
+  </div>
+  <div class="header-badges">
+    <span class="badge badge-green">Ativo</span>
+    <span class="badge badge-blue">v2.6 · Jun 2026</span>
+    <span class="badge badge-amber">Bull Run</span>
+  </div>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showTab('visao-geral')">Visão geral</button>
+  <button class="nav-btn" onclick="showTab('indicadores')">Indicadores</button>
+  <button class="nav-btn" onclick="showTab('padroes')">Padrões gráficos</button>
+  <button class="nav-btn" onclick="showTab('avisos')">Avisos</button>
+</nav>
+
+<main>
+
+<!-- ─── VISÃO GERAL ─────────────────────────────────────────────────────────── -->
+<section id="visao-geral" class="section active">
+
+  <h2 class="blue">Princípios operacionais</h2>
+
+  <div class="alert-box alert-amber">
+    <span class="alert-icon">⚠</span>
+    <div>
+      Todo sinal do sistema deve ser contextualizado com o regime macro do USDT.D e o ciclo de mercado vigente. Sinais isolados sem confluência estrutural têm probabilidade reduzida de êxito.
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="metric-card">
+      <div class="metric-label">Margem do fundo ao sinal sell</div>
+      <div class="metric-value" style="color: var(--accent-green)">~10%</div>
+      <div class="metric-sub">Média histórica (2022–2026)</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Referência 2022</div>
+      <div class="metric-value" style="color: var(--accent-cyan)">$13.5k → $15k</div>
+      <div class="metric-sub">Neuro Athena sell · fundo real</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-blue">📋</div>
+      <div>
+        <div class="card-title">Hierarquia de confluência</div>
+        <div class="card-subtitle">Peso dos fatores na tomada de decisão</div>
+      </div>
+    </div>
+    <ol class="step-list">
+      <li>Regime macro confirmado via USDT.D mensal — buy mode ou sell mode ativo</li>
+      <li>Gatilho semanal presente: OTHERS ou USDT.D semanal em confluência</li>
+      <li>Funding rate com direção correta: negativo para compra, acima de 0.08% para venda</li>
+      <li>Confirmação de padrão gráfico: topo ou fundo duplo no semanal</li>
+      <li>Divergência RSI validada no MT5 (topos/fundos) e TradingView (tendência)</li>
+      <li>Saída refinada pelo OTHERS semanal — redução de exposição quando o BB%B do OTHERS no semanal recua abaixo de 1 vindo do topo da banda, indicando exaustão do movimento de alta das altcoins</li>
+      <li><strong>SELL RISK</strong> — saída final de ciclo quando o SELL semanal está ativo e o BB%B do OTHERS no mensal está abaixo de 0.8: divergência estrutural entre timeframes confirmando exaustão do ciclo de alta. Após este sinal, esperar capitulation_lock e bloqueio dos sinais de repique</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-amber">📍</div>
+      <div>
+        <div class="card-title">Localização histórica de preços — BTC</div>
+        <div class="card-subtitle">Padrão observado entre sinal do sistema e fundo/topo real</div>
+      </div>
+    </div>
+    <table class="ref-table">
+      <thead>
+        <tr>
+          <th>Ciclo</th>
+          <th>Sinal Neuro Athena (sell)</th>
+          <th>Fundo real estimado</th>
+          <th>Margem</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2022</td>
+          <td>$13.500</td>
+          <td>$15.000</td>
+          <td><span class="highlight green">+10.3%</span></td>
+        </tr>
+        <tr>
+          <td>2026</td>
+          <td>$53.000</td>
+          <td>a definir</td>
+          <td><span class="highlight amber">~10% esperado</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top: 0.9rem; font-size: 0.82rem; color: var(--muted)">
+      O topo histórico ficou ligeiramente acima do Take Profit 2 do sistema — usar esse nível como referência de saída escalonada, não como alvo único.
+    </p>
+  </div>
+
+</section>
+
+<!-- ─── INDICADORES ─────────────────────────────────────────────────────────── -->
+<section id="indicadores" class="section">
+
+  <h2 class="purple">Indicadores ativos no sistema</h2>
+
+  <div class="card">
+    <div class="expandable-header" onclick="toggleExpand(this)">
+      <div class="card-header" style="margin-bottom:0">
+        <div class="card-icon icon-blue">📈</div>
+        <div>
+          <div class="card-title">Médias móveis — MA 20 / 50 / 100 / 200</div>
+          <div class="card-subtitle">Plotadas em OTHERS e USDT.D (semanal)</div>
+        </div>
+      </div>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-body">
+      <div class="tag-row">
+        <span class="tag badge-blue">MA 20 — branca</span>
+        <span class="tag badge-blue">MA 50 — aqua</span>
+        <span class="tag badge-blue">MA 100 — magenta</span>
+        <span class="tag badge-amber">MA 200 — amarela</span>
+      </div>
+      <p style="margin-top:1rem">
+        O rompimento da <span class="highlight amber">MA 200</span> no gráfico do OTHERS no semanal é o sinal estrutural mais relevante do ciclo. Historicamente, esse rompimento antecede altas expressivas do mercado de altcoins. Deve ser monitorado em conjunto com o regime macro — rompimento sem buy mode ativo tem menor confiabilidade.
+      </p>
+      <div class="alert-box alert-green" style="margin-top:0.75rem">
+        <span class="alert-icon">●</span>
+        Rompimento da MA 200 no OTHERS semanal = sinal de alta estrutural de altcoins. Prioridade máxima de atenção.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="expandable-header" onclick="toggleExpand(this)">
+      <div class="card-header" style="margin-bottom:0">
+        <div class="card-icon icon-green">📊</div>
+        <div>
+          <div class="card-title">Sharpe e Sortino — uso operacional</div>
+          <div class="card-subtitle">Refinamento de entrada e saída local</div>
+        </div>
+      </div>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-body">
+      <table class="ref-table" style="margin-top:0">
+        <thead>
+          <tr>
+            <th>Timeframe</th>
+            <th>Indicador</th>
+            <th>Sinal visual</th>
+            <th>Uso operacional</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Diário</td>
+            <td>Sharpe + Sortino</td>
+            <td><span class="highlight green">Bolas verdes</span></td>
+            <td>Fundo local em momentum de alta — refina entrada em sinal de repique</td>
+          </tr>
+          <tr>
+            <td>Semanal</td>
+            <td>Sharpe + Sortino</td>
+            <td><span class="highlight red">Setas vermelhas</span></td>
+            <td>Saída local — sinaliza exaustão de movimento e redução de posição</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="alert-box alert-blue" style="margin-top:0.75rem">
+        <span class="alert-icon">ℹ</span>
+        Sharpe e Sortino não geram sinal de entrada isolado. Funcionam como filtro de confirmação sobre sinais já emitidos pelo sistema de gems e trading.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="expandable-header" onclick="toggleExpand(this)">
+      <div class="card-header" style="margin-bottom:0">
+        <div class="card-icon icon-teal">⚡</div>
+        <div>
+          <div class="card-title">SuperTrend ATR (10 · 3)</div>
+          <div class="card-subtitle">Direção de tendência — OTHERS e USDT.D semanal</div>
+        </div>
+      </div>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-body">
+      <p>
+        Linha <span class="highlight green">verde</span> abaixo do preço indica tendência de alta ativa. Linha <span class="highlight red">vermelha</span> acima do preço indica tendência de baixa. A inversão da linha, especialmente quando confluente com a posição da MA 200, é um sinal de alta relevância para o posicionamento.
+      </p>
+      <p style="margin-top:0.75rem">Parâmetros padrão do sistema: ATR período 10 · fator multiplicador 3.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="expandable-header" onclick="toggleExpand(this)">
+      <div class="card-header" style="margin-bottom:0">
+        <div class="card-icon icon-cyan">〰</div>
+        <div>
+          <div class="card-title">BB%B — Bollinger Bands Percent</div>
+          <div class="card-subtitle">Contexto estatístico do preço dentro das bandas</div>
+        </div>
+      </div>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-body">
+      <table class="ref-table" style="margin-top:0">
+        <thead><tr><th>Zona</th><th>Valor BB%B</th><th>Leitura</th></tr></thead>
+        <tbody>
+          <tr><td>Sobrevendido</td><td><span class="highlight green">&lt; 0</span></td><td>Preço abaixo da banda inferior — compressão extrema</td></tr>
+          <tr><td>Neutro inferior</td><td>0 a 0.5</td><td>Abaixo da média — pressão vendedora predomina</td></tr>
+          <tr><td>Neutro superior</td><td>0.5 a 1</td><td>Acima da média — pressão compradora predomina</td></tr>
+          <tr><td>Sobrecomprado</td><td><span class="highlight red">&gt; 1</span></td><td>Preço acima da banda superior — extensão extrema</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="expandable-header" onclick="toggleExpand(this)">
+      <div class="card-header" style="margin-bottom:0">
+        <div class="card-icon icon-purple">〜</div>
+        <div>
+          <div class="card-title">Estocástico (14 · 3 · 3)</div>
+          <div class="card-subtitle">%K e %D — momentum oscilador</div>
+        </div>
+      </div>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-body">
+      <p>
+        <span class="highlight cyan">%K</span> cruza acima de <span class="highlight">20</span> a partir da zona de sobrevenda — sinal de reversão local. <span class="highlight amber">%D</span> é o suavizador de %K: cruzamentos entre as duas linhas na zona de sobrevenda são pontos de entrada de alta probabilidade, especialmente em confluência com o sinal de repique do sistema.
+      </p>
+      <div class="alert-box alert-amber" style="margin-top:0.75rem">
+        <span class="alert-icon">⚠</span>
+        Cruzamentos na zona de sobrecompra (%K abaixo de 80 vindo de acima) são sinais de saída parcial local no contexto semanal.
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ─── PADRÕES ──────────────────────────────────────────────────────────────── -->
+<section id="padroes" class="section">
+
+  <h2 class="amber">Padrões gráficos e confirmação</h2>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-green">W</div>
+      <div>
+        <div class="card-title">Fundo duplo — confirmação de reversão de baixa</div>
+        <div class="card-subtitle">USDT.D semanal · divergência RSI obrigatória</div>
+      </div>
+    </div>
+    <ol class="step-list">
+      <li>Identificar dois fundos consecutivos em nível próximo no USDT.D semanal</li>
+      <li>Confirmar que o segundo fundo apresenta RSI mais alto que o primeiro — divergência de alta</li>
+      <li>Validar no MT5 usando a ferramenta de topos e fundos</li>
+      <li>Confirmar tendência no TradingView (SuperTrend + MA 200)</li>
+      <li>Aguardar rompimento da linha de pescoço como gatilho de entrada</li>
+    </ol>
+    <div class="alert-box alert-green" style="margin-top:0.5rem">
+      <span class="alert-icon">●</span>
+      Fundo duplo no USDT.D semanal sinaliza fim de dominância do dólar estável — capital migrando para altcoins. Alta probabilidade de bull run em OTHERS.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-red">M</div>
+      <div>
+        <div class="card-title">Topo duplo — confirmação de reversão de alta</div>
+        <div class="card-subtitle">USDT.D semanal · divergência RSI obrigatória</div>
+      </div>
+    </div>
+    <ol class="step-list">
+      <li>Identificar dois topos consecutivos em nível próximo no USDT.D semanal</li>
+      <li>Confirmar que o segundo topo apresenta RSI mais baixo que o primeiro — divergência de baixa</li>
+      <li>Validar no MT5: marcação de topo duplo e confirmação de pullback</li>
+      <li>Confirmar no TradingView: SuperTrend virando vermelho, preço abaixo das MAs</li>
+      <li>Posição de venda ou redução de exposição ao receber sinal SELL do sistema</li>
+    </ol>
+    <div class="alert-box alert-amber" style="margin-top:0.5rem">
+      <span class="alert-icon">⚠</span>
+      O topo real de mercado historicamente ocorreu um pouco acima do Take Profit 2 do Neuro Athena. Não aguardar o sinal para a saída total — saída escalonada na região do TP2 é recomendada.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-purple">≠</div>
+      <div>
+        <div class="card-title">Divergência RSI — uso como confirmador</div>
+        <div class="card-subtitle">Não usar como sinal primário</div>
+      </div>
+    </div>
+    <p>A divergência RSI deve sempre ser usada em conjunto com o padrão gráfico e o regime macro, nunca isoladamente. Divergência de alta sem fundo duplo visível tem menor confiabilidade. A combinação padrão gráfico + divergência RSI + regime macro correto é a configuração de maior probabilidade do sistema.</p>
+    <div class="tag-row" style="margin-top:0.9rem">
+      <span class="badge badge-blue">MT5 — topos e fundos</span>
+      <span class="badge badge-purple">TradingView — tendência</span>
+      <span class="badge badge-green">Confluência obrigatória</span>
+    </div>
+  </div>
+
+</section>
+
+<!-- ─── AVISOS ───────────────────────────────────────────────────────────────── -->
+<section id="avisos" class="section">
+
+  <h2 class="red">Registro de avisos e atualizações</h2>
+
+  <input type="text" class="search-bar" placeholder="Buscar avisos..." oninput="filterChangelog(this.value)">
+
+  <div id="changelog">
+
+    <div class="changelog-item" data-text="ma 200 others alta altcoins rompimento estrutural">
+      <span class="changelog-date">Jun 2026</span>
+      <span class="changelog-type type-critico">Crítico</span>
+      <div>
+        <strong style="color:var(--text)">Rompimento da MA 200 no OTHERS semanal</strong>
+        <p style="color:var(--muted); font-size:0.85rem; margin-top:4px">
+          Quando o OTHERS rompe e fecha a semana acima da MA 200 no semanal, historicamente antecede movimentos expressivos no mercado de altcoins. Monitorar com prioridade máxima em conjunto com o regime macro.
+        </p>
+      </div>
+    </div>
+
+    <div class="changelog-item" data-text="topo fundo duplo semanal usdt.d confirmação">
+      <span class="changelog-date">Jun 2026</span>
+      <span class="changelog-type type-aviso">Aviso</span>
+      <div>
+        <strong style="color:var(--text)">Topo e fundo duplo no USDT.D semanal como confirmadores</strong>
+        <p style="color:var(--muted); font-size:0.85rem; margin-top:4px">
+          Padrões de topo duplo e fundo duplo no USDT.D semanal devem ser confirmados com divergência RSI. MT5 para marcação de topos e fundos, TradingView para leitura de tendência. Nunca usar isoladamente.
+        </p>
+      </div>
+    </div>
+
+    <div class="changelog-item" data-text="neuro athena fundo 10% sinal sell btc 2022 2026 53000">
+      <span class="changelog-date">Jun 2026</span>
+      <span class="changelog-type type-info">Info</span>
+      <div>
+        <strong style="color:var(--text)">Margem histórica entre sinal sell e fundo real — ~10%</strong>
+        <p style="color:var(--muted); font-size:0.85rem; margin-top:4px">
+          Em 2022 o fundo real ficou ~10% acima da marcação de sell do Neuro Athena ($13.500 sinal · $15.000 fundo). Para 2026, o sinal está em $53.000. O fundo real estimado estará em torno de 10% acima desse nível. A definir com confirmação gráfica.
+        </p>
+      </div>
+    </div>
+
+    <div class="changelog-item" data-text="topo takeprofit tp2 neuro saída escalonada">
+      <span class="changelog-date">Jun 2026</span>
+      <span class="changelog-type type-aviso">Aviso</span>
+      <div>
+        <strong style="color:var(--text)">Topo ligeiramente acima do Take Profit 2 — saída escalonada</strong>
+        <p style="color:var(--muted); font-size:0.85rem; margin-top:4px">
+          Historicamente, o topo de mercado ocorreu um pouco acima do TP2 do Neuro Athena. Recomenda-se saída escalonada a partir do TP2, e não aguardar o sinal de sell para sair totalmente da posição.
+        </p>
+      </div>
+    </div>
+
+    <div class="changelog-item" data-text="sharpe sortino diario semanal bolas verdes setas vermelhas repique entrada saída">
+      <span class="changelog-date">Jun 2026</span>
+      <span class="changelog-type type-novo">Novo</span>
+      <div>
+        <strong style="color:var(--text)">Sharpe e Sortino como refinadores de entrada e saída local</strong>
+        <p style="color:var(--muted); font-size:0.85rem; margin-top:4px">
+          No timeframe diário, bolas verdes de Sharpe e Sortino indicam fundo local em momentum de alta do BTC — excelente para afinar entradas em sinais de repique do sistema. No semanal, setas vermelhas refinam a saída local. Usar sempre em confluência com o sinal principal, nunca isoladamente.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <span>Montrezor System · Guia Operacional v2.6</span>
+  <span>Atualizado em junho de 2026 · Uso interno</span>
+</footer>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function toggleExpand(header) {
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.expand-icon');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  icon.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+function filterChangelog(query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('.changelog-item').forEach(item => {
+    const text = (item.dataset.text + ' ' + item.textContent).toLowerCase();
+    item.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+</script>
+
+</body>
+</html>

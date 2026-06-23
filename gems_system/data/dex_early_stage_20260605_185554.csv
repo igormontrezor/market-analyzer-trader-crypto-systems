@@ -1,4 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-HUNTERBANK,Hunter Biden Bank,Amv9XYhuoYWXPC1vFqy5wnBjEYzHVdYgVZQ8swhcpump,solana,0.0002061,294.0,206138.0,32236.06,596758.01,9143,4336,0.68,3.2,https://dexscreener.com/solana/8bp68dscyfsqldzbzgpvfzmrmg3hfu5umda3pav6feha,2026-06-05T18:55:47.905885,dexscreener,15.257604980000004
-$TUPID,$tupid money,3G8zFxHAnuWXiiC9MobE9EUUqV6m6MjL51YnN6tGpump,solana,0.0002633,922.0,263384.0,38498.43,1559258.34,17125,15651,0.52,2.4,https://dexscreener.com/solana/cssmwhnhtxh3skz5ihbaykhcfiawfjbdeq6nepg1oubr,2026-06-05T18:55:47.905787,dexscreener,13.051543170000002
-MAMO,Mamo,0x7300B37DfdfAb110d83290A29DfB31B1740219fE,base,0.00775,-10.49,4595426.0,330733.37,31153.91,350,199,0.64,,https://dexscreener.com/base/0xe2b3aa806e56603a244bfc111c9474f7dedd03db,2026-06-05T18:55:50.459047,dexscreener,12.71023183

@@ -1,24 +1,7 @@
 {
-  "last_updated": "2026-06-10T06:41:47.402423",
-  "total_confirmed": 17,
+  "last_updated": "2026-06-23T08:42:50.568532",
+  "total_confirmed": 18,
   "confirmed_gems": [
-    {
-      "symbol": "tst",
-      "name": "Test",
-      "confirmed_at": "2026-05-20T09:05:42.338853",
-      "ratio_now": 1.194539303278718,
-      "ratio_24h_ago": 0.5103123722634947,
-      "growth_percent": 134.08002004347438,
-      "strong_days": 3,
-      "acceleration_strength": 4.541372393432366,
-      "trend": "accelerating",
-      "market_cap": 15383971,
-      "volume": 18376758,
-      "priority": "maxima",
-      "status": "confirmed",
-      "type": "lider_altseason",
-      "quality_score": 83.89078606557436
-    },
     {
       "symbol": "act",
       "name": "Act I The AI Prophecy",
@@ -35,6 +18,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 72.85318613575755
+    },
+    {
+      "symbol": "tst",
+      "name": "Test",
+      "confirmed_at": "2026-06-13T10:04:50.057607",
+      "ratio_now": 0.9979902798793989,
+      "ratio_24h_ago": 0.5963415926242893,
+      "growth_percent": 67.35211701192856,
+      "strong_days": 2,
+      "acceleration_strength": 1.162271853728005,
+      "trend": "accelerating",
+      "market_cap": 15653921,
+      "volume": 15622461,
+      "priority": "alta",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 57.821537102521376
     },
     {
       "symbol": "mubarak",
@@ -120,6 +120,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 72.1954519941354
+    },
+    {
+      "symbol": "stg",
+      "name": "Stargate Finance",
+      "confirmed_at": "2026-06-23T08:42:50.566296",
+      "ratio_now": 1.0313905514628134,
+      "ratio_24h_ago": 0.656573355962729,
+      "growth_percent": 57.08687263900505,
+      "strong_days": 3,
+      "acceleration_strength": 1.5950292487151643,
+      "trend": "accelerating",
+      "market_cap": 25899099,
+      "volume": 26712086,
+      "priority": "maxima",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 75.56567663819581
     },
     {
       "symbol": "msusd",
@@ -209,19 +226,19 @@
     {
       "symbol": "usdp",
       "name": "Pax Dollar",
-      "confirmed_at": "2026-05-28T21:21:14.995050",
-      "ratio_now": 0.7216344579866507,
-      "ratio_24h_ago": 0.5493956520416705,
-      "growth_percent": 31.3505950228955,
+      "confirmed_at": "2026-06-11T21:31:43.062728",
+      "ratio_now": 0.9774420415114078,
+      "ratio_24h_ago": 0.6936965652104935,
+      "growth_percent": 40.90339934360425,
       "strong_days": 3,
-      "acceleration_strength": 1.6436497908539636,
+      "acceleration_strength": 1.5253966073551573,
       "trend": "accelerating",
-      "market_cap": 31940717,
-      "volume": 23049522,
+      "market_cap": 31921683,
+      "volume": 31201595,
       "priority": "alta",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 69.97831154540756
+      "quality_score": 73.61629842216763
     },
     {
       "symbol": "meme",
@@ -241,23 +258,6 @@
       "quality_score": 92.97348380941003
     },
     {
-      "symbol": "stg",
-      "name": "Stargate Finance",
-      "confirmed_at": "2026-06-10T06:41:47.399875",
-      "ratio_now": 1.7964519086781847,
-      "ratio_24h_ago": 0.9677962676587479,
-      "growth_percent": 85.62294242197129,
-      "strong_days": 3,
-      "acceleration_strength": 2.277884860011672,
-      "trend": "accelerating",
-      "market_cap": 48401009,
-      "volume": 86950085,
-      "priority": "extrema",
-      "status": "confirmed",
-      "type": "lider_altseason",
-      "quality_score": 95.9290381735637
-    },
-    {
       "symbol": "osmo",
       "name": "Osmosis",
       "confirmed_at": "2026-05-14T19:49:51.446387",
@@ -273,6 +273,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 86.97976357321721
+    },
+    {
+      "symbol": "syn",
+      "name": "Synapse",
+      "confirmed_at": "2026-06-22T06:37:41.590744",
+      "ratio_now": 1.9335031389161723,
+      "ratio_24h_ago": 1.4346963481035933,
+      "growth_percent": 34.76741203613647,
+      "strong_days": 3,
+      "acceleration_strength": 1.5917407911207753,
+      "trend": "accelerating",
+      "market_cap": 60109920,
+      "volume": 116222719,
+      "priority": "extrema",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 93.56682266733314
     },
     {
       "symbol": "usdon",

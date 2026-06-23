@@ -1,0 +1,3 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+IO,IO,3ZNf2wrms62SXmh88nHyyAivzAoKoKRwsAGGbyUNpump,solana,0.000208,936.0,207795.0,34209.42,681645.15,4681,4045,0.54,24.8,https://dexscreener.com/solana/48ray4eebb293mwx3kotcv567sbfxahndgdt1fb47vap,2026-06-20T17:06:51.273971,dexscreener,7.216302500000002
+TCG,TCG Arena,BAMGUGnziBb57SVRjmrFwg23Rsi7mx4JwkXUzoSYJsR7,solana,0.0001501,125.0,150100.0,39287.64,431419.49,2142,1908,0.53,4.3,https://dexscreener.com/solana/4uknawhig7nqyrcilvbccfqbzebnfdaabgmfnw5zcybz,2026-06-20T17:06:51.274032,dexscreener,4.665670520000001

@@ -20,7 +20,7 @@ HISTORICAL_SNAPSHOTS_DIR = os.path.join(DATA_DIR, "snapshots")  # para buscar fe
 MODELS_DIR = os.path.join(DATA_DIR, "models")
 os.makedirs(MODELS_DIR, exist_ok=True)
 VERSIONS_FILE = os.path.join(MODELS_DIR, "ml_model_versions.json")
-MAX_VERSIONS = 10  # manter apenas as 10 versões mais recentes
+MAX_VERSIONS = 10  # manter apenas as 10 versoes mais recentes
 
 def _load_macro_signals():
     macro_path = os.path.join(DATA_DIR, "macro_signals.json")
@@ -36,14 +36,14 @@ def _regime_winrate_upto_date(regime, target_date, macro_signals):
     """
     Calcula o winrate do regime especificado (ex: 'BUY_MACRO') para todos os sinais
     que ocorreram antes da target_date (inclusive). Ignora sinais futuros.
-    Retorna float entre 0 e 1, ou 0.5 se não houver histórico suficiente.
+    Retorna float entre 0 e 1, ou 0.5 se nao houver histórico suficiente.
     """
     relevant = []
     for sig in macro_signals:
         sig_date = sig.get("date")
         if sig_date and sig_date <= target_date:
             if sig.get("regime") == regime:
-                # Usa outcome_7d se disponível, senão tenta outcome_30d
+                # Usa outcome_7d se disponivel, senao tenta outcome_30d
                 outcome = sig.get("outcome_7d")
                 if outcome is None:
                     outcome = sig.get("outcome_30d")
@@ -86,18 +86,18 @@ def load_training_data():
         # Fallback: usar 10% se dados insuficientes
         dynamic_threshold = 10.0
 
-    print(f"🔧 Limiar dinâmico para target: {dynamic_threshold:.2f}% (baseado em {len(pos_returns)} retornos positivos)")
+    print(f"[ML] Limiar dinamico para target: {dynamic_threshold:.2f}% (baseado em {len(pos_returns)} retornos positivos)")
 
 
     if len(perf) < 30:
-        print(f"Apenas {len(perf)} registros, mínimo 30 para treinar.")
+        print(f"Apenas {len(perf)} registros, minimo 30 para treinar.")
         return None, None
 
     # Carregar sinais macro
     macro_signals = _load_macro_signals()
     # Ordenar por data para facilitar busca do regime mais recente
     macro_signals_sorted = sorted(macro_signals, key=lambda x: x.get("date", ""))
-    # Construir dicionário data -> regime (último regime conhecido até aquela data)
+    # Construir dicionário data -> regime (último regime conhecido ate aquela data)
     regime_by_date = {}
     last_regime = "NEUTRO"
     for sig in macro_signals_sorted:
@@ -105,7 +105,7 @@ def load_training_data():
         if date:
             last_regime = sig.get("regime", last_regime)
             regime_by_date[date] = last_regime
-    # Função para obter regime em uma data específica (última data <= data)
+    # Funcao para obter regime em uma data específica (última data <= data)
     def get_regime_for_date(target_date):
         # Pega a última data que é <= target_date
         last_date = None
@@ -130,14 +130,14 @@ def load_training_data():
     date_list = []
 
     for entry in perf:
-        # Ignorar picks ainda pendentes (pct_change None) — não têm resultado ainda
+        # Ignorar picks ainda pendentes (pct_change None) — nao têm resultado ainda
         if entry.get("pct_change") is None or entry.get("status") == "pending":
             continue
         # A data do pick é a chave para carregar o snapshot correspondente
         pick_date = entry.get("analysis_date") or entry.get("date")  # analysis_date é mais preciso
         if not pick_date:
             continue
-        # Procurar o snapshot mais próximo (até 2 dias antes)
+        # Procurar o snapshot mais próximo (ate 2 dias antes)
         snapshot_df = find_snapshot_near_date(pick_date)
         if snapshot_df is None:
             continue
@@ -160,13 +160,13 @@ def load_training_data():
         # --- Adicionar features macro ---
         # Obter regime na data da pick
         regime = get_regime_for_date(pick_date)
-        # Calcular winrate histórico desse regime até a data da pick
+        # Calcular winrate histórico desse regime ate a data da pick
         regime_winrate = _regime_winrate_upto_date(regime, pick_date, macro_signals)
         features.append(regime_winrate)
         # Adicionar one-hot do regime (opcional, mas recomendado)
         features.extend(_one_hot_regime(regime))
 
-        # --- Adicionar features derivadas (interações) ---
+        # --- Adicionar features derivadas (interacoes) ---
         # 1. ratio * regime_winrate
         ratio_val = features[feature_cols.index("ratio")] if "ratio" in feature_cols else 0
         ratio_interaction = ratio_val * regime_winrate
@@ -206,10 +206,18 @@ def load_training_data():
     # Converter para arrays numpy
     X = np.array(X_list, dtype=np.float32)
     y = np.array(y_list, dtype=np.int32)
+
+    # Sanitizar inf/-inf (pode ocorrer se algum snapshot tiver ratio = valor/0)
+    # pd.isna() nao pega inf, então isso passava direto e quebrava o XGBoost
+    n_bad = np.sum(~np.isfinite(X))
+    if n_bad > 0:
+        print(f"[ML] AVISO: {n_bad} valor(es) inf/-inf/NaN encontrados nas features — substituindo por 0.")
+        X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
+
     return X, y
 
 def find_snapshot_near_date(date_str):
-    """Encontra o snapshot mais próximo da data (até 2 dias antes)."""
+    """Encontra o snapshot mais próximo da data (ate 2 dias antes)."""
     target_date = datetime.strptime(date_str, "%Y-%m-%d").date()
     if not os.path.exists(HISTORICAL_SNAPSHOTS_DIR):
         return None
@@ -232,9 +240,9 @@ def find_snapshot_near_date(date_str):
                 if df is not None and 'symbol' in df.columns:
                     return df
                 else:
-                    print(f"⚠️ Snapshot {f} sem coluna 'symbol', ignorado.")
+                    print(f"[ML] AVISO: Snapshot {f} sem coluna 'symbol', ignorado.")
             except Exception as e:
-                print(f"⚠️ Erro ao ler snapshot {f}: {e}, ignorando.")
+                print(f"[ML] AVISO: Erro ao ler snapshot {f}: {e}, ignorando.")
                 continue
     return None
 
@@ -247,13 +255,13 @@ def train_model():
 
     # Garantir que os dados estão ordenados cronologicamente
     # (assumindo que load_training_data já retorna na ordem dos picks)
-    # Se não estiver, ordenar antes – mas load_training_data percorre perf em ordem arbitrária.
+    # Se nao estiver, ordenar antes – mas load_training_data percorre perf em ordem arbitrária.
     # Para segurança, vamos reordenar os pares (X, y) pela data do pick.
-    # Como a função load_training_data não retorna as datas, precisamos modificá-la para retornar também uma lista de datas.
+    # Como a funcao load_training_data nao retorna as datas, precisamos modificá-la para retornar tambem uma lista de datas.
     # Melhor: modificar load_training_data para retornar X, y, dates.
-    # Vamos fazer a correção completa.
+    # Vamos fazer a correcao completa.
 
-    # Dividir cronologicamente: 80% primeiros para treino, 20% últimos para validação
+    # Dividir cronologicamente: 80% primeiros para treino, 20% últimos para validacao
     split_idx = int(len(X) * 0.8)
     X_train, X_val = X[:split_idx], X[split_idx:]
     y_train, y_val = y[:split_idx], y[split_idx:]
@@ -265,7 +273,14 @@ def train_model():
         scale_pos_weight = neg_train / pos_train
     else:
         scale_pos_weight = 1.0
-    print(f"📊 Classe positiva: {pos_train} amostras, negativa: {neg_train} → scale_pos_weight = {scale_pos_weight:.2f}")
+    print(f"[ML] Classe positiva: {pos_train} amostras, negativa: {neg_train} -> scale_pos_weight = {scale_pos_weight:.2f}")
+
+    # Verificar se y_train tem as 2 classes — sem isso XGBoost nao treina corretamente
+    if len(np.unique(y_train)) < 2:
+        print(f"[ML] AVISO: y_train tem so 1 classe (todos os targets sao iguais).")
+        print(f"    Isso indica que pct_change de todas as picks e 0 (dados ainda sem resultado real).")
+        print(f"    Treino cancelado - aguardar picks com variacao real (7/30 dias).")
+        return
 
     model = xgb.XGBClassifier(
         n_estimators=100,
@@ -273,32 +288,36 @@ def train_model():
         learning_rate=0.1,
         subsample=0.8,
         random_state=42,
-        use_label_encoder=False,
         eval_metric='logloss',
-        scale_pos_weight=scale_pos_weight   # ← adicionar
+        scale_pos_weight=scale_pos_weight
     )
     model.fit(X_train, y_train)
     y_pred = model.predict(X_val)
-    y_proba = model.predict_proba(X_val)[:, 1]   # probabilidade da classe positiva
+    # predict_proba retorna 1 coluna se treinou com 1 classe — verificar antes de indexar
+    proba_raw = model.predict_proba(X_val)
+    if proba_raw.shape[1] < 2:
+        print("[ML] AVISO: predict_proba retornou 1 coluna - modelo sem variacao suficiente nos targets.")
+        return
+    y_proba = proba_raw[:, 1]
 
     acc  = accuracy_score(y_val, y_pred)
     prec = precision_score(y_val, y_pred, zero_division=0)
     rec  = recall_score(y_val, y_pred, zero_division=0)
     f1   = f1_score(y_val, y_pred, zero_division=0)
-    # roc_auc_score exige as 2 classes no conjunto de validação
+    # roc_auc_score exige as 2 classes no conjunto de validacao
     if len(np.unique(y_val)) < 2:
-        print("⚠️  Validação com apenas 1 classe — ROC-AUC não calculado (picks insuficientes para diversificar)")
+        print("[ML] AVISO: Validacao com apenas 1 classe - ROC-AUC nao calculado (picks insuficientes para diversificar)")
         auc = 0.0
     else:
         auc = roc_auc_score(y_val, y_proba)
 
     print("=" * 60)
-    print("📊 MÉTRICAS DE VALIDAÇÃO (cronológica):")
-    print(f"  Acurácia   : {acc:.3f}")
-    print(f"  Precisão   : {prec:.3f}")
+    print("[ML] METRICAS DE VALIDACAO (cronologica):")
+    print(f"  Acuracia   : {acc:.3f}")
+    print(f"  Precisao   : {prec:.3f}")
     print(f"  Recall     : {rec:.3f}")
-    print(f"  F1‑score   : {f1:.3f}")
-    print(f"  ROC‑AUC    : {auc:.3f}")
+    print(f"  F1-score   : {f1:.3f}")
+    print(f"  ROC-AUC    : {auc:.3f}")
     print("=" * 60)
 
     n_samples = X.shape[0]
@@ -314,13 +333,17 @@ def _save_model_version(model, accuracy: float, n_samples: int, n_features: int)
     # Salvar modelo
     joblib.dump(model, filepath)
 
-    # Carregar versões existentes
+    # Carregar versoes existentes (protegido contra JSON corrompido/vazio)
     versions = []
     if os.path.exists(VERSIONS_FILE):
-        with open(VERSIONS_FILE, "r") as f:
-            versions = json.load(f)
+        try:
+            with open(VERSIONS_FILE, "r") as f:
+                versions = json.load(f)
+        except Exception as e:
+            print(f"[ML] AVISO: {VERSIONS_FILE} corrompido/vazio ({e}) — iniciando lista nova.")
+            versions = []
 
-    # Adicionar nova versão
+    # Adicionar nova versao
     versions.append({
         "version": timestamp,
         "filename": filename,
@@ -337,28 +360,28 @@ def _save_model_version(model, accuracy: float, n_samples: int, n_features: int)
     with open(VERSIONS_FILE, "w") as f:
         json.dump(versions, f, indent=2)
 
-    # Opcional: excluir arquivos de versões antigas que não estão na lista
+    # Opcional: excluir arquivos de versoes antigas que nao estão na lista
     keep_filenames = {v["filename"] for v in versions}
     for f in os.listdir(MODELS_DIR):
         if f.startswith("ml_ranker_") and f.endswith(".pkl") and f not in keep_filenames:
             os.remove(os.path.join(MODELS_DIR, f))
 
-    # Também sobrescrever o modelo padrão (para compatibilidade)
+    # Também sobrescrever o modelo padrao (para compatibilidade)
     joblib.dump(model, MODEL_FILE)
 
-    print(f"✅ Modelo versão {timestamp} salvo (acurácia {accuracy:.2f}, {n_samples} amostras)")
+    print(f"[ML] OK: Modelo versao {timestamp} salvo (acuracia {accuracy:.2f}, {n_samples} amostras)")
 
 def _get_best_model():
     """
-    Carrega a versão do modelo com maior acurácia registrada no arquivo de versões.
-    Se não encontrar, tenta carregar o modelo padrão (ml_ranker.pkl).
+    Carrega a versao do modelo com maior acuracia registrada no arquivo de versoes.
+    Se nao encontrar, tenta carregar o modelo padrao (ml_ranker.pkl).
     Retorna o modelo carregado ou None se nenhum for encontrado.
     """
-    # Tenta carregar a lista de versões
+    # Tenta carregar a lista de versoes
     if not os.path.exists(VERSIONS_FILE):
-        # Fallback: modelo padrão
+        # Fallback: modelo padrao
         if os.path.exists(MODEL_FILE):
-            print("[ML] Nenhum registro de versões encontrado. Usando modelo padrão.")
+            print("[ML] Nenhum registro de versoes encontrado. Usando modelo padrao.")
             return joblib.load(MODEL_FILE)
         return None
 
@@ -366,33 +389,33 @@ def _get_best_model():
         with open(VERSIONS_FILE, "r") as f:
             versions = json.load(f)
     except Exception as e:
-        print(f"[ML] Erro ao ler versões: {e}. Usando modelo padrão.")
+        print(f"[ML] Erro ao ler versoes: {e}. Usando modelo padrao.")
         if os.path.exists(MODEL_FILE):
             return joblib.load(MODEL_FILE)
         return None
 
     if not versions:
-        print("[ML] Nenhuma versão registrada. Usando modelo padrão.")
+        print("[ML] Nenhuma versao registrada. Usando modelo padrao.")
         if os.path.exists(MODEL_FILE):
             return joblib.load(MODEL_FILE)
         return None
 
-    # Encontra a versão com maior acurácia
+    # Encontra a versao com maior acuracia
     best_version = max(versions, key=lambda v: v.get("accuracy", 0))
     best_path = os.path.join(MODELS_DIR, best_version.get("filename"))
     if best_version.get("filename") is None or not os.path.exists(best_path):
-        print("[ML] Melhor versão sem nome de arquivo. Usando modelo padrão.")
+        print("[ML] Melhor versao sem nome de arquivo. Usando modelo padrao.")
         if os.path.exists(MODEL_FILE):
             return joblib.load(MODEL_FILE)
         return None
 
     if not os.path.exists(best_path):
-        print(f"[ML] Arquivo da melhor versão ({best_version['filename']}) não encontrado. Usando modelo padrão.")
+        print(f"[ML] Arquivo da melhor versao ({best_version['filename']}) nao encontrado. Usando modelo padrao.")
         if os.path.exists(MODEL_FILE):
             return joblib.load(MODEL_FILE)
         return None
 
-    print(f"[ML] ✅ Usando melhor modelo: versão {best_version['version']} (acurácia {best_version['accuracy']:.2f}, {best_version['n_samples']} amostras)")
+    print(f"[ML] OK: Usando melhor modelo: versao {best_version['version']} (acuracia {best_version['accuracy']:.2f}, {best_version['n_samples']} amostras)")
     return joblib.load(best_path)
 
 def get_current_model_info():
@@ -407,9 +430,9 @@ def get_current_model_info():
     if not versions:
         return None
 
-    # Encontra a versão com maior acurácia (usa .get para evitar KeyError)
+    # Encontra a versao com maior acuracia (usa .get para evitar KeyError)
     best = max(versions, key=lambda v: v.get("accuracy", 0))
-    # Se a melhor tiver acurácia 0 e não tiver a chave, pode ser qualquer uma; pega a primeira
+    # Se a melhor tiver acuracia 0 e nao tiver a chave, pode ser qualquer uma; pega a primeira
     if best.get("accuracy") is None:
         best = versions[0]
 
@@ -426,12 +449,12 @@ def ml_predict_picks(claude_result, df_agg):
         return claude_result
     model = _get_best_model()
     if model is None:
-        print("[ML] Nenhum modelo disponível para predição.")
+        print("[ML] Nenhum modelo disponivel para predicao.")
         return claude_result
     # Carregar macro signals para calcular winrate atual
     macro_signals = _load_macro_signals()
     current_date = datetime.now().strftime("%Y-%m-%d")
-    # Obter regime atual – precisamos importar a função do gems_ai_filter
+    # Obter regime atual – precisamos importar a funcao do gems_ai_filter
     try:
         from gems_ai_filter import _get_current_macro_regime
         current_regime = _get_current_macro_regime()
@@ -445,8 +468,8 @@ def ml_predict_picks(claude_result, df_agg):
         "rank_up", "vol_up", "smart_money_div", "seller_exhaustion",
         "composite_score"
     ]
-    # Número de features macro adicionadas: 1 (winrate) + len(one_hot)
-    # Precisamos saber quantas são – podemos usar a mesma lista de regimes definida em _one_hot_regime
+    # Numero de features macro adicionadas: 1 (winrate) + len(one_hot)
+    # Precisamos saber quantas sao – podemos usar a mesma lista de regimes definida em _one_hot_regime
     for pick in claude_result.get("top_picks", []):
         sym = pick["symbol"]
         row = df_agg[df_agg["symbol"] == sym]
@@ -483,9 +506,9 @@ def ml_predict_picks(claude_result, df_agg):
         seller_val = X[feature_cols.index("seller_exhaustion")] if "seller_exhaustion" in feature_cols else 0
         X.append(float(seller_val) * regime_winrate)
 
-        # Garantir que o número de features bate com o modelo
+        # Garantir que o numero de features bate com o modelo
         if len(X) != model.n_features_in_:
-            print(f"⚠️ Número de features incompatível: modelo espera {model.n_features_in_}, temos {len(X)}")
+            print(f"[ML] AVISO: Numero de features incompativel: modelo espera {model.n_features_in_}, temos {len(X)}")
             # Tentar truncar ou completar com zeros? Melhor pular.
             pick["ml_score"] = None
             continue
@@ -497,4 +520,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Treina o modelo ML do Gems AI Filter")
     parser.add_argument("--force", action="store_true", help="Força re-treino mesmo se o modelo existir")
     args = parser.parse_args()
-    train_model()
+    try:
+        train_model()
+    except Exception:
+        import traceback
+        traceback.print_exc()  # traceback completo no stderr — daemon agora loga e salva isso por completo
+        sys.exit(1)

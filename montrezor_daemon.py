@@ -291,7 +291,8 @@ def send_gems_tg(symbol, sig_type, funding, token, chat_id):
     token = _norm(token); chat_id = _norm(chat_id)
     if not token or not chat_id: return False
     icons = {"SUPER_BUY":"⚡🟢","SUPER_SELL":"🚨🔴","SUPER_REPIQUE":"⚡🔵",
-             "REPIQUE":"🔵","BUY":"🟢","SELL":"🔴"}
+             "REPIQUE":"🔵","BUY":"🟢","SELL":"🔴",
+             "HIPER_BUY":"🔱🟢","HIPER_SELL":"🔱🔴"}
     icon = icons.get(sig_type, "•")
     e    = html.escape
     ts   = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -1088,9 +1089,30 @@ def _gems_signal_type(macro):
         if rebound and not cap_lock:       return "REPIQUE"
     return None
 
-# ════════════════════════════════════════════════════════════════════════
-# ATUALIZAÇÃO DE PERFORMANCE (24h/7d/30d)
-# ════════════════════════════════════════════════════════════════════════
+def _hiper_signal_type(macro):
+    """
+    HIPER_BUY  = SUPER_BUY  + Fear&Greed < 10
+    HIPER_SELL = SUPER_SELL + (Altcoin Season > 79  OU  Fear&Greed > 79)
+    Só é chamado SE _gems_signal_type retornar SUPER_BUY ou SUPER_SELL.
+    Retorna "HIPER_BUY", "HIPER_SELL" ou None.
+    """
+    fear_greed    = macro.get("fear_greed")       # int ou None
+    altcoin_season = macro.get("altcoin_season")  # int ou None
+    super_sig = _gems_signal_type(macro)
+
+    if super_sig == "SUPER_BUY":
+        if fear_greed is not None and int(fear_greed) < 10:
+            return "HIPER_BUY"
+
+    if super_sig == "SUPER_SELL":
+        alt_ok = (altcoin_season is not None and int(altcoin_season) > 79)
+        fg_ok  = (fear_greed is not None and int(fear_greed) > 79)
+        if alt_ok or fg_ok:
+            return "HIPER_SELL"
+
+    return None
+
+
 PERFORMANCE_FILE = os.path.join(os.path.expanduser("~"), ".montrezor_performance.json")
 
 def load_performance_data():
@@ -1453,6 +1475,26 @@ def run_daemon(logger, mode="all"):
                         logger.debug(f"  ⏳ Cooldown: BTC {sig_type}")
                     prev_gems_sig = sig_type
 
+                # ── HIPER: verifica em cima do SUPER sem alterar estado dele ──
+                hiper_type = _hiper_signal_type(macro)
+                fg_val  = macro.get("fear_greed")
+                alt_val = macro.get("altcoin_season")
+                if hiper_type is not None:
+                    logger.info(f"[GEMS] {hiper_type:<15} BTC  F&G={fg_val}  AltSzn={alt_val}")
+                    if g_state.ok("BTC", hiper_type):
+                        ok = send_gems_tg("BTC", hiper_type, funding,
+                                         cfg["tg_token"], cfg["tg_chat_id"])
+                        if ok:
+                            logger.info(f"  ✅ Telegram -> BTC {hiper_type}")
+                            g_state.mark("BTC", hiper_type)
+                        else:
+                            logger.error(f"  ❌ Telegram falhou -> BTC {hiper_type}")
+                    else:
+                        logger.debug(f"  ⏳ Cooldown: BTC {hiper_type}")
+                else:
+                    g_state.clear("BTC", "HIPER_BUY")
+                    g_state.clear("BTC", "HIPER_SELL")
+
         # ── Atualização de performance (24h/7d/30d) a cada 4 horas ──
         if now - last_perf_update >= PERFORMANCE_UPDATE_SEC:
             last_perf_update = now
@@ -1640,7 +1682,9 @@ def run_daemon(logger, mode="all"):
                                 if os.path.exists(ml_script):
                                     result = subprocess.run(
                                         [sys.executable, ml_script],
-                                        capture_output=True, text=True, timeout=120
+                                        capture_output=True, text=True, timeout=120,
+                                        encoding="utf-8", errors="replace",
+                                        env={**os.environ, "PYTHONIOENCODING": "utf-8"}
                                     )
                                     if result.returncode == 0:
                                         logger.info("[AI] ✅ Modelo ML treinado com sucesso.")
@@ -1648,7 +1692,20 @@ def run_daemon(logger, mode="all"):
                                             if line:
                                                 logger.info(f"     {line}")
                                     else:
-                                        logger.warning(f"[AI] ❌ Falha no treinamento: {result.stderr[:200]}")
+                                        # Logar erro completo (sem truncar) + salvar em arquivo dedicado
+                                        logger.warning(f"[AI] ❌ Falha no treinamento (returncode={result.returncode}):")
+                                        for line in result.stderr.strip().split('\n'):
+                                            if line:
+                                                logger.warning(f"     {line}")
+                                        try:
+                                            err_path = os.path.join(PROJECT_DIR, "gems_system", "data", "ml_ranker_last_error.txt")
+                                            with open(err_path, "w", encoding="utf-8") as ef:
+                                                ef.write(f"[{datetime.now().isoformat()}] returncode={result.returncode}\n\n")
+                                                ef.write("--- STDOUT ---\n" + result.stdout + "\n\n")
+                                                ef.write("--- STDERR ---\n" + result.stderr)
+                                            logger.warning(f"[AI] Traceback completo salvo em: {err_path}")
+                                        except Exception as _e_log:
+                                            logger.warning(f"[AI] Não foi possível salvar log de erro: {_e_log}")
                                 else:
                                     logger.warning("[AI] ml_ranker.py não encontrado – pulando treinamento.")
                             else:

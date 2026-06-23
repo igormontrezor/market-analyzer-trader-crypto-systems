@@ -1,0 +1,102 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-06-21 10:56:35
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+✅ Usando cache (válido até: 22:47:04)
+✅ Usando cache existente: 48 gems
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+📋 Cache: 6 gems encontradas
+✅ 50m_range: 6 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+📋 Cache: 15 gems encontradas
+✅ 10_49m_range: 15 gems
+📋 Cache válido - Nenhum cache atualizado
+
+📊 ANÁLISE - 50M_RANGE:
+
+📊 ANÁLISE DAS 6 GEMS:
+================================================================================
+Market Cap - Médio: $66,186,722
+Market Cap - Min: $52,097,889, Max: $74,315,622
+Volume - Médio: $21,477,674
+Volume - Min: $14,049,728, Max: $41,051,230
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 5 gems
+  🟠 Strong (0.5-1.0): 1 gems
+  🔥 Breakout (>1.0): 0 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/6 (0.0%)
+  💪 Resiliência de Preço: 0/6 (0.0%)
+  👑 POTENCIAL OURO: 0/6 (0.0%)
+  🚨 WASH TRADING: 0/6 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 6 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. w        | MC: $  68,008,299 | Vol: $  41,051,230 | Ratio: 0.60 | S 📊📈    📊 | Wormhole
+ 2. ordi     | MC: $  70,193,141 | Vol: $  22,912,016 | Ratio: 0.33 | E 📊📈    📊 | ORDI
+ 3. bio      | MC: $  68,844,604 | Vol: $  21,187,800 | Ratio: 0.31 | E 📊📈    📊 | Bio Protocol
+ 4. kava     | MC: $  52,097,889 | Vol: $  14,049,728 | Ratio: 0.27 | E 📊📈    📊 | Kava
+ 5. super    | MC: $  63,660,777 | Vol: $  14,760,021 | Ratio: 0.23 | E 📊📈    📊 | SuperVerse
+ 6. orca     | MC: $  74,315,622 | Vol: $  14,905,250 | Ratio: 0.20 | E 📊📈    📊 | Orca
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 15 GEMS:
+================================================================================
+Market Cap - Médio: $25,711,756
+Market Cap - Min: $14,725,075, Max: $47,663,878
+Volume - Médio: $32,757,936
+Volume - Min: $5,763,289, Max: $225,963,736
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 4 gems
+  🟠 Strong (0.5-1.0): 8 gems
+  🔥 Breakout (>1.0): 3 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/15 (0.0%)
+  💪 Resiliência de Preço: 0/15 (0.0%)
+  👑 POTENCIAL OURO: 0/15 (0.0%)
+  🚨 WASH TRADING: 0/15 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 15 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. bico     | MC: $  36,832,247 | Vol: $ 225,963,736 | Ratio: 6.13 | B 📊📈    📊 | Biconomy
+ 2. strax    | MC: $  25,900,921 | Vol: $  40,993,892 | Ratio: 1.58 | B 📊📈    📊 | Xertra
+ 3. syn      | MC: $  31,465,323 | Vol: $  45,143,184 | Ratio: 1.43 | B 📊📈    📊 | Synapse
+ 4. epic     | MC: $  16,108,669 | Vol: $  15,012,009 | Ratio: 0.93 | S 📊📈    📊 | Epic Chain
+ 5. waves    | MC: $  30,772,356 | Vol: $  27,148,112 | Ratio: 0.88 | S 📊📈    📊 | Waves
+ 6. xai      | MC: $  17,656,963 | Vol: $  14,702,154 | Ratio: 0.83 | S 📊📈    📊 | Xai
+ 7. musd     | MC: $  36,173,508 | Vol: $  28,225,251 | Ratio: 0.78 | S 📊📈    📊 | MetaMask USD
+ 8. kins     | MC: $  16,252,700 | Vol: $  10,995,113 | Ratio: 0.68 | S 📊📈    📊 | Kintara
+ 9. stg      | MC: $  28,274,901 | Vol: $  18,850,076 | Ratio: 0.67 | S 📊📈    📊 | Stargate Finance
+10. magic    | MC: $  15,666,820 | Vol: $  10,389,117 | Ratio: 0.66 | S 📊📈    📊 | Treasure
+
+📋 Usando dados existentes - Nenhum snapshot criado
+
+🎉 GEMS FINDER CONCLUÍDO!
+📊 Total de gems: 21
+📁 Arquivos salvos para análise histórica:
+   - snapshots/gems_*.csv (por faixa)
+   - snapshots/gems_consolidated_*.csv (completo)
+   - Cache válido por 12 horas (evita requisições excessivas)
+   - Snapshots criados apenas com dados novos

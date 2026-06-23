@@ -897,18 +897,18 @@ def _build_performance_summary(perf: list, lookback_runs: int = 6) -> str:
         return "Sem histórico de performance anterior."
 
     recent = perf[-(lookback_runs * 10):]
-    wins   = [p for p in recent if p.get("pct_change", 0) > 10]
-    losses = [p for p in recent if p.get("pct_change", 0) < -10]
+    wins   = [p for p in recent if (p.get("pct_change") or 0) > 10]
+    losses = [p for p in recent if (p.get("pct_change") or 0) < -10]
     wr     = len(wins) / len(recent) * 100 if recent else 0
     lines  = [f"PERFORMANCE HISTÓRICA ({len(recent)} picks | win rate {wr:.0f}%):"]
 
     if wins:
-        top = sorted(wins, key=lambda x: x.get("pct_change",0), reverse=True)[:5]
+        top = sorted(wins, key=lambda x: (x.get("pct_change") or 0), reverse=True)[:5]
         lines.append("MELHORES PICKS: " + " | ".join(
             f"{p['symbol']} +{p['pct_change']:.0f}% (rank#{p.get('rank','?')})"
             for p in top))
     if losses:
-        bot = sorted(losses, key=lambda x: x.get("pct_change",0))[:3]
+        bot = sorted(losses, key=lambda x: (x.get("pct_change") or 0))[:3]
         lines.append("PIORES PICKS: " + " | ".join(
             f"{p['symbol']} {p['pct_change']:.0f}%" for p in bot))
 
@@ -917,7 +917,7 @@ def _build_performance_summary(perf: list, lookback_runs: int = 6) -> str:
     for p in recent:
         r = str(p.get("rank","?"))
         rank_total[r] = rank_total.get(r, 0) + 1
-        if p.get("pct_change", 0) > 10:
+        if (p.get("pct_change") or 0) > 10:
             rank_wins[r] = rank_wins.get(r, 0) + 1
     rank_patterns = [
         f"rank#{r}={rank_wins.get(r,0)/tot*100:.0f}%wr({tot}picks)"
@@ -929,7 +929,7 @@ def _build_performance_summary(perf: list, lookback_runs: int = 6) -> str:
     # Padrão por ciclo
     for cyc in ("weekly", "monthly"):
         cp = [p for p in recent if p.get("cycle") == cyc]
-        cw = [p for p in cp if p.get("pct_change",0) > 10]
+        cw = [p for p in cp if (p.get("pct_change") or 0) > 10]
         if cp:
             lines.append(f"CICLO {cyc.upper()}: {len(cw)}/{len(cp)} wins "
                          f"({len(cw)/len(cp)*100:.0f}%)")
@@ -1480,6 +1480,281 @@ def aggregate_dex_data(days: int = 7) -> pd.DataFrame:
     # Limitar a top 30
     return agg.head(30)
 
+def _load_weekly_history() -> list:
+    """Carrega histórico das últimas semanas salvo em gems_ai_results.json."""
+    return _load_results().get("weekly_history", [])
+
+
+def _build_monthly_candidates(agg_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Fase 1 — Candidatas ao Top 3 mensal.
+
+    Estratégia em camadas:
+      1. Moedas que apareceram no top 10 semanal nas últimas 4 semanas (frequência histórica)
+      2. Complementa com top 15 do agg_df mensal se histórico insuficiente
+    Retorna DataFrame com coluna extra `weekly_freq` (0.0–1.0).
+    """
+    history = _load_weekly_history()
+
+    # Contar frequência de aparição nas últimas 4 semanas
+    freq: dict[str, dict] = {}
+    recent_4 = history[-4:] if len(history) >= 4 else history
+    total_weeks = max(len(recent_4), 1)
+
+    for week in recent_4:
+        for pick in week.get("top_picks", []):
+            sym = pick["symbol"]
+            if sym not in freq:
+                freq[sym] = {"weeks": 0, "best_rank": 10, "avg_confidence": [],
+                             "flags_seen": set(), "potentials": []}
+            freq[sym]["weeks"] += 1
+            freq[sym]["best_rank"] = min(freq[sym]["best_rank"], pick.get("rank", 10))
+            freq[sym]["avg_confidence"].append(pick.get("confidence", 50))
+            freq[sym]["flags_seen"].update(pick.get("key_flags", []))
+            freq[sym]["potentials"].append(pick.get("potential", "x2-x5"))
+
+    # Enriquecer agg_df com dados de frequência
+    def _freq_score(sym):
+        if sym not in freq:
+            return 0.0
+        return freq[sym]["weeks"] / total_weeks
+
+    def _best_rank(sym):
+        return freq[sym]["best_rank"] if sym in freq else 10
+
+    def _avg_conf(sym):
+        confs = freq[sym]["avg_confidence"] if sym in freq else []
+        return sum(confs) / len(confs) if confs else 0.0
+
+    def _top_potential(sym):
+        pots = freq[sym]["potentials"] if sym in freq else []
+        order = {"x10+": 3, "x5-x10": 2, "x2-x5": 1}
+        return max((order.get(p, 0) for p in pots), default=0)
+
+    def _recurring_flags(sym):
+        return list(freq[sym]["flags_seen"]) if sym in freq else []
+
+    agg_df = agg_df.copy()
+    agg_df["weekly_freq"]      = agg_df["symbol"].apply(_freq_score)
+    agg_df["weekly_best_rank"] = agg_df["symbol"].apply(_best_rank)
+    agg_df["weekly_avg_conf"]  = agg_df["symbol"].apply(_avg_conf)
+    agg_df["weekly_top_pot"]   = agg_df["symbol"].apply(_top_potential)
+    agg_df["recurring_flags"]  = agg_df["symbol"].apply(_recurring_flags)
+
+    # Candidatas: apareceram pelo menos 1x no semanal OU estão no top 15 do mensal
+    appeared = agg_df[agg_df["weekly_freq"] > 0]
+    top_mensal = agg_df.nlargest(15, "composite_score")
+    candidates = pd.concat([appeared, top_mensal]).drop_duplicates(subset="symbol")
+
+    return candidates
+
+
+def _build_monthly_conviction_score(candidates: pd.DataFrame) -> pd.DataFrame:
+    """
+    Fase 2 — Score de convicção mensal (0–100).
+
+    Componentes:
+      - Frequência semanal (30%): quantas das últimas semanas apareceu
+      - Fundamentos médio prazo (25%): drawdown recovery + rank_up + smart_money_div
+      - Acumulação silenciosa (20%): ratio + accumulation_score + vol_up
+      - Consistência e tendência (15%): consistency_score + weekly_trend
+      - Confiança histórica do AI (10%): média de confidence nas semanas anteriores
+    """
+    df = candidates.copy()
+    max_ratio = df["ratio"].max() if "ratio" in df.columns and df["ratio"].max() > 0 else 1
+    max_acum  = df["accumulation_score"].max() if "accumulation_score" in df.columns and df["accumulation_score"].max() > 0 else 1
+
+    # Componente 1: frequência semanal (30%)
+    df["_c_freq"] = df["weekly_freq"] * 30
+
+    # Componente 2: fundamentos de médio prazo (25%)
+    drawdown_bonus = df.get("drawdown_pct", pd.Series(0, index=df.index)).clip(0.5, 1.0)
+    drawdown_norm  = (drawdown_bonus - 0.5) / 0.5  # 0.5→0, 1.0→1
+    smart_div      = df.get("smart_money_div", pd.Series(False, index=df.index)).astype(float)
+    rank_up        = df.get("rank_up", pd.Series(False, index=df.index)).astype(float)
+    df["_c_fund"]  = (drawdown_norm * 0.5 + smart_div * 0.3 + rank_up * 0.2) * 25
+
+    # Componente 3: acumulação silenciosa (20%)
+    ratio_norm = (df.get("ratio", pd.Series(0, index=df.index)) / max_ratio).clip(0, 1)
+    acum_norm  = (df.get("accumulation_score", pd.Series(0, index=df.index)) / max_acum).clip(0, 1)
+    vol_up     = df.get("vol_up", pd.Series(False, index=df.index)).astype(float)
+    df["_c_acum"] = (ratio_norm * 0.5 + acum_norm * 0.3 + vol_up * 0.2) * 20
+
+    # Componente 4: consistência e tendência (15%)
+    consist    = df.get("consistency_score", pd.Series(0, index=df.index)).clip(0, 1)
+    trend      = df.get("weekly_trend", pd.Series(0, index=df.index)).clip(-1, 2) / 2.0
+    top_pot    = df.get("weekly_top_pot", pd.Series(0, index=df.index)) / 3.0
+    df["_c_consist"] = (consist * 0.4 + trend * 0.3 + top_pot * 0.3) * 15
+
+    # Componente 5: confiança histórica do AI (10%)
+    max_conf = 100.0
+    df["_c_aiconf"] = (df.get("weekly_avg_conf", pd.Series(0, index=df.index)) / max_conf).clip(0, 1) * 10
+
+    # Score final
+    df["monthly_conviction"] = (
+        df["_c_freq"] + df["_c_fund"] + df["_c_acum"] + df["_c_consist"] + df["_c_aiconf"]
+    ).clip(0, 100).round(2)
+
+    # Bônus especiais (médio/longo prazo)
+    # HOT_NARRATIVE + SMART_MONEY_DIV = narrativa quente com acumulação silenciosa
+    df.loc[df.get("hot_narrative", pd.Series(False, index=df.index)).astype(bool) &
+           df.get("smart_money_div", pd.Series(False, index=df.index)).astype(bool),
+           "monthly_conviction"] = (df["monthly_conviction"] + 5).clip(0, 100)
+
+    # SELLER_EXHAUSTION = fundo real com potencial explosivo
+    if "seller_exhaustion" in df.columns:
+        df.loc[df["seller_exhaustion"].astype(bool),
+               "monthly_conviction"] = (df["monthly_conviction"] + 4).clip(0, 100)
+
+    # Frequência máxima (apareceu todas as semanas) = bônus extra
+    df.loc[df["weekly_freq"] >= 1.0,
+           "monthly_conviction"] = (df["monthly_conviction"] + 5).clip(0, 100)
+
+    # Limpar colunas internas
+    df = df.drop(columns=[c for c in df.columns if c.startswith("_c_")])
+    return df.sort_values("monthly_conviction", ascending=False).reset_index(drop=True)
+
+
+def _build_monthly_prompt(df_top: pd.DataFrame, macro: dict, btc_ctx: dict,
+                           perf_txt: str, prev_monthly: list) -> tuple:
+    """
+    Fase 3 — Prompt cirúrgico para o Top 3 mensal.
+    Focado em médio/longo prazo, convicção máxima, não overlap com semanal.
+    """
+    regime  = macro.get("regime", macro)
+    buy_mode   = bool(regime.get("buy_mode", False))
+    sell_mode  = bool(regime.get("sell_mode", False))
+    cap_lock   = bool(macro.get("capitulation_lock", regime.get("capitulation_lock", False)))
+    funding    = float(macro.get("funding_rate", 0))
+    weekly_buy = bool(macro.get("signal", {}).get("weekly_buy_trigger", False))
+    regime_txt = "COMPRA ATIVA" if buy_mode else ("VENDA" if sell_mode else "NEUTRO")
+    if cap_lock:
+        regime_txt += " + CAPITULATION LOCK"
+
+    btc       = btc_ctx or {}
+    btc_price = float(btc.get("btc_price", 0))
+    btc_24h   = float(btc.get("btc_24h", 0))
+    btc_dom   = float(btc.get("btc_dom", 0))
+    cycle_pos = btc.get("cycle_pos", "desconhecido")
+    btc_line  = (f"BTC ${btc_price:,.0f} ({btc_24h:+.1f}% 24h) | Dom {btc_dom:.1f}%"
+                 if btc_price > 0 else "dados indisponíveis")
+
+    rows = []
+    for _, row in df_top.head(20).iterrows():
+        flags = list(row.get("recurring_flags", []))
+        if row.get("smart_money_div"):   flags.append("SMART_MONEY_DIV")
+        if row.get("rank_up"):           flags.append("RANK_UP")
+        if row.get("vol_up"):            flags.append("VOL_UP")
+        if row.get("hot_narrative"):     flags.append("HOT_NARRATIVE")
+        if row.get("seller_exhaustion"): flags.append("SELLER_EXHAUSTION")
+        if row.get("funding_squeeze"):   flags.append("FUNDING_SQUEEZE")
+        freq_weeks = int(round(row.get("weekly_freq", 0) * 4))
+        rows.append(
+            f"- {row['symbol']:<12}"
+            f" conviction={row.get('monthly_conviction', 0):.1f}"
+            f" composite={row.get('composite_score', 0):.1f}"
+            f" freq={freq_weeks}/4sem"
+            f" best_rank=#{int(row.get('weekly_best_rank', 10))}"
+            f" ai_conf={row.get('weekly_avg_conf', 0):.0f}%"
+            f" drawdown={row.get('drawdown_pct', 0):.2f}"
+            f" ratio={row.get('ratio', 0):.2f}"
+            f" acum={row.get('accumulation_score', 0):.1f}"
+            f" mc=${row.get('market_cap', 0) / 1e6:.1f}M"
+            f" sector={row.get('sector', '?')}"
+            f" pot_hist={['x2-x5','x5-x10','x10+'][min(int(row.get('weekly_top_pot',0)),2)]}"
+            f" {'[' + ' '.join(set(flags)) + ']' if flags else ''}"
+        )
+
+    prev_txt = ", ".join(prev_monthly) if prev_monthly else "nenhuma"
+    data_str = "\n".join(rows)
+
+    system = (
+        "Você é o Montrezor AI — especialista em selecionar as 3 criptomoedas "
+        "com maior probabilidade de explosão em 30-90 dias.\n\n"
+        "Seu foco é médio e longo prazo: acumulação silenciosa, fundamentos sólidos, "
+        "narrativas emergentes e moedas que o mercado ainda não precificou.\n\n"
+        "Retorne APENAS JSON válido, sem texto extra, sem markdown.\n"
+        "**Formatação da rationale:** use quebras de linha e bullet points para clareza."
+    )
+
+    user = f"""=== CONTEXTO MACRO ===
+{btc_line}
+Ciclo: {cycle_pos}
+Regime: {regime_txt} | Funding: {funding:.4f}% | Weekly Buy: {weekly_buy}
+{"⚠️ CAPITULATION LOCK — preferir moedas LOW RISK com fundamentos sólidos" if cap_lock else ""}
+
+=== LEGENDA DOS CAMPOS ===
+conviction    = score de convicção mensal do sistema (0-100) — combina frequência, fundamentos e AI
+composite     = score geral dos scans de mercado
+freq          = aparições no top 10 semanal nas últimas 4 semanas (ex: 3/4sem = 3 das 4 últimas)
+best_rank     = melhor posição que atingiu no ranking semanal
+ai_conf       = confiança média do AI nas semanas anteriores
+drawdown      = queda desde o ATH (0.7 = 70% abaixo = alto potencial de recuperação)
+ratio         = volume/mcap — acumulação silenciosa (alto = compra institucional)
+acum          = score de acumulação dos scans
+pot_hist      = maior potencial estimado pelo AI nas últimas semanas
+SMART_MONEY_DIV = score alto + social baixo = acumulação antes do hype
+SELLER_EXHAUSTION = drawdown > 80% + volatilidade baixa + ratio alto = fundo real
+HOT_NARRATIVE = setor em narrativa quente (AI, DePIN, RWA, GameFi...)
+RANK_UP       = subiu >10 posições no ranking de market cap em 7 dias
+
+=== CANDIDATAS — RANKEADAS POR CONVICÇÃO MENSAL ===
+{data_str}
+
+=== ANÁLISE ANTERIOR ===
+Top 3 do mês passado: {prev_txt}
+
+=== FEEDBACK DE PERFORMANCE ===
+{perf_txt}
+
+=== MISSÃO: TOP 3 DE CONVICÇÃO MÁXIMA (30-90 dias) ===
+Selecione as 3 moedas com MAIOR probabilidade de move expressivo em médio/longo prazo.
+
+CRITÉRIOS DE PRIORIDADE (nesta ordem):
+1. freq alta (3-4/4sem) + smart_money_div = acumulação real e consistente
+2. drawdown > 0.70 + ratio alto + seller_exhaustion = fundo real antes da explosão
+3. hot_narrative + acumulação silenciosa = narrativa emergente ainda não precificada
+4. rank_up consistente + vol_up = entrada de capital institucional
+5. ai_conf alta em múltiplas semanas = convicção crescente do sistema
+
+EVITAR:
+- Moedas que só apareceram 1x (freq=1/4sem) sem outros fundamentos fortes
+- Market cap > $500M sem flags excepcionais (difícil de 10x)
+- Moedas com social alto + score médio (hype sem fundamento)
+{"- Em CAPITULATION LOCK: focar apenas em projetos com fundamentos excepcionais\n" if cap_lock else ""}
+
+Retorne APENAS este JSON:
+{{
+  "cycle": "monthly",
+  "generated_at": "{datetime.now().strftime('%Y-%m-%d %H:%M')}",
+  "regime": "{regime_txt}",
+  "btc_context": "{btc_line[:80]}",
+  "top_picks": [
+    {{
+      "rank": 1,
+      "symbol": "SYMBOL",
+      "composite_score": 0.0,
+      "monthly_conviction": 0.0,
+      "weekly_frequency": "X/4 semanas",
+      "key_flags": ["FLAG1", "FLAG2"],
+      "rationale": "Por que esta moeda vai explodir em 30-90 dias: fundamentos, acumulação, narrativa, contexto de ciclo.",
+      "entry_note": "entrada ideal e condição de confirmação",
+      "risk": "LOW|MEDIUM|HIGH",
+      "potential": "x2-x5|x5-x10|x10+",
+      "timeframe": "30d|60d|90d",
+      "confidence": 0
+    }}
+  ],
+  "top3_comparison": "Análise comparativa das 3 picks: diferenças de risco, potencial, timeframe e convicção. Qual tem melhor risco/retorno para o mês.",
+  "macro_note": "como o ciclo atual afeta o timing das 3 picks",
+  "monthly_thesis": "tese central do mês: qual narrativa ou padrão une as 3 escolhas",
+  "sectors_in_focus": ["setor1"],
+  "avoid": ["motivo"]
+}}"""
+
+    return system, user
+
+
 def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
     """
     Roda a análise completa para o ciclo especificado.
@@ -1532,58 +1807,6 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
         agg_df['composite_score'] += agg_df['smart_money_div'] * 3
         agg_df['composite_score'] = agg_df['composite_score'].clip(0, 100)
 
-    # Para análise mensal, usar top 10 semanal como candidatas
-    _monthly_filtered = False
-    if cycle == "monthly" and results.get("weekly"):
-        weekly_syms = [p["symbol"] for p in results["weekly"].get("top_picks", [])]
-        if weekly_syms:
-            agg_df = agg_df[agg_df["symbol"].isin(weekly_syms)]
-            _monthly_filtered = True
-    if cycle == "monthly" and not _monthly_filtered:
-        # Sinaliza no resultado que não havia semanal para refinar
-        result_warning = "⚠️ Análise mensal sem refinamento semanal — rode a semanal primeiro para resultado mais preciso."
-    else:
-        result_warning = ""
-
-    # Top 10 da análise anterior (para contexto)
-    prev_key   = "weekly" if cycle == "weekly" else "monthly"
-    prev_entry = results.get(prev_key)
-    prev_top   = [p["symbol"] for p in prev_entry.get("top_picks",[])] if prev_entry else []
-
-    # Feedback loop: carregar performance histórica
-    perf     = _load_performance()
-    perf_txt = _build_performance_summary(perf)
-
-    # Adicionar performance histórica dos sinais macro
-    macro_perf = get_macro_signal_performance(days_window=7)
-    macro_lines = []
-    for regime, data in macro_perf.items():
-        if data["total"] >= 3:
-            macro_lines.append(f"{regime}: {data['winrate']:.0f}% acerto ({data['wins']}/{data['total']})")
-    if macro_lines:
-        perf_txt += "\n\n=== PERFORMANCE DOS SINAIS MACRO (7d) ===\n" + "\n".join(macro_lines)
-
-    # Adicionar performance dos sinais detalhados (entradas)
-    detailed_perf = get_detailed_signal_performance()
-    if detailed_perf:
-        perf_txt += "\n\n=== PERFORMANCE DOS SINAIS DE ENTRADA ===\n"
-        for s, data in detailed_perf.items():
-            if data["total"] >= 3:
-                perf_txt += f"{s}: {data['winrate']:.0f}% acerto ({data['wins']}/{data['total']}) | retorno médio {data['avg_return']:+.1f}%\n"
-
-    cycle_stats = get_macro_cycle_stats()
-    if cycle_stats:
-        buy_total = cycle_stats.get("buy_cycles", {}).get("total", 0)
-        sell_total = cycle_stats.get("sell_cycles", {}).get("total", 0)
-        if buy_total >= 1 or sell_total >= 1:
-            perf_txt += "\n\n=== CICLOS COMPLETOS DE REGIME ===\n"
-            buy = cycle_stats["buy_cycles"]
-            sell = cycle_stats["sell_cycles"]
-            if buy_total >= 1:
-                perf_txt += f"Ciclos BUY: {buy.get('total',0)} | acerto {buy.get('winrate',0):.0f}% | retorno médio {buy.get('avg_return',0):+.1f}%\n"
-            if sell_total >= 1:
-                perf_txt += f"Ciclos SELL: {sell.get('total',0)} | acerto {sell.get('winrate',0):.0f}% | retorno médio {sell.get('avg_return',0):+.1f}%"
-
     # Contexto BTC — cache 1h, silencioso se offline
     btc_ctx = _fetch_btc_context()
 
@@ -1591,19 +1814,17 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
     dex_agg_df = aggregate_dex_data(days=7)
     if not dex_agg_df.empty:
         dex_df = dex_agg_df
-        # Opcional: log informativo
         print(f"[DEX] Agregado {len(dex_df)} tokens early stage (últimos 7 dias)")
     else:
         dex_df = None
 
-    # ── NOVO FLUXO PARA CICLO SEMANAL (análise individual) ──
+    # ── CICLO SEMANAL (análise individual profunda) ───────────────────────────
     if cycle == "weekly":
         print("🔍 Usando análise individual para 15 candidatas...")
 
         top_picks = _run_deep_analysis(agg_df, macro, confirmed, watchlist,
                                         btc_ctx, cycle, api_key, dex_df)
 
-        # Aplicar modelo ML nos picks semanais
         try:
             from ml_ranker import ml_predict_picks
             temp_result = {"top_picks": top_picks}
@@ -1612,14 +1833,12 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
         except ImportError:
             pass
 
-            # ── Preencher preços com delay entre chamadas ──
         for i, pick in enumerate(top_picks):
             sym = pick.get("symbol")
             if sym:
-                price = _fetch_coingecko_price(sym)   # agora é a versão robusta
-                pick["price_usd"] = price if price > 0 else None
+                price = _fetch_coingecko_price(sym)
+                pick["price_usd"]  = price if price > 0 else None
                 pick["price_date"] = datetime.now().isoformat()
-                # Aguarda 2 segundos entre chamadas (evita rate limit)
                 if i < len(top_picks) - 1:
                     time.sleep(3)
 
@@ -1638,16 +1857,26 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
             "avoid": [],
             "market_regime": _get_current_macro_regime()
         }
-        # Tentar adicionar setores em foco
         sectors = set()
         for p in top_picks:
             if "sector" in p:
                 sectors.add(p["sector"])
         result["sectors_in_focus"] = list(sectors)[:3]
 
-        # Salvar resultado
         results = _load_results()
         results["weekly"] = result
+        wh = results.setdefault("weekly_history", [])
+        wh.append({
+            "generated_at": result["generated_at"],
+            "top_picks": [{"symbol": p["symbol"], "rank": p.get("rank", 0),
+                           "composite_score": p.get("composite_score", 0),
+                           "key_flags": p.get("key_flags", []),
+                           "risk": p.get("risk", "MEDIUM"),
+                           "potential": p.get("potential", "x2-x5"),
+                           "confidence": p.get("confidence", 50)}
+                          for p in result.get("top_picks", [])]
+        })
+        results["weekly_history"] = wh[-8:]
         results.setdefault("history", []).append({
             "cycle": "weekly", "ts": datetime.now().isoformat(),
             "n_csvs": len(full_df), "n_coins": len(agg_df)
@@ -1656,18 +1885,84 @@ def run_analysis(cycle: str, api_key: str, force: bool = False) -> dict:
         _send_result_tg(result, "weekly")
         return result
 
-    # Construir system+user e chamar Claude
-    system_prompt, user_prompt = _build_prompt(
-        agg_df, macro, confirmed, watchlist, cycle, prev_top, perf_txt, btc_ctx, dex_df)
-    result = _call_claude(system_prompt, user_prompt, api_key)
-    result["market_regime"] = _get_current_macro_regime()
-    try:
-        from ml_ranker import ml_predict_picks
-        result = ml_predict_picks(result, agg_df)
-    except ImportError:
-        pass
-    if result_warning:
-        result["macro_note"] = result_warning + " " + result.get("macro_note","")
+    # ── CICLO MENSAL — Top 3 por convicção de médio/longo prazo ──────────────
+    if cycle == "monthly":
+        print("🏆 Sistema mensal: construindo candidatas por convicção histórica...")
+
+        candidates = _build_monthly_candidates(agg_df)
+
+        funding_negative = _check_funding_negative_last_2_days()
+        if funding_negative:
+            candidates["funding_squeeze"] = False
+            for idx in candidates.head(30).index:
+                sym = candidates.loc[idx, "symbol"]
+                if _has_higher_lows(sym):
+                    candidates.loc[idx, "funding_squeeze"] = True
+        else:
+            candidates["funding_squeeze"] = False
+
+        if "seller_exhaustion" in candidates.columns:
+            candidates["seller_exhaustion"] = candidates["seller_exhaustion"].astype(bool)
+        if "smart_money_div" in candidates.columns:
+            candidates["smart_money_div"] = candidates["smart_money_div"].astype(bool)
+
+        candidates = _build_monthly_conviction_score(candidates)
+
+        print(f"   → {len(candidates)} candidatas avaliadas, top 20 enviadas ao Claude")
+
+        prev_entry   = results.get("monthly")
+        prev_monthly = [p["symbol"] for p in prev_entry.get("top_picks", [])] if prev_entry else []
+
+        perf     = _load_performance()
+        perf_txt = _build_performance_summary(perf, lookback_runs=4)
+
+        system_prompt, user_prompt = _build_monthly_prompt(
+            candidates, macro, btc_ctx, perf_txt, prev_monthly)
+        result = _call_claude(system_prompt, user_prompt, api_key)
+
+        result["market_regime"]      = _get_current_macro_regime()
+        result["monthly_conviction"] = True
+
+        for pick in result.get("top_picks", []):
+            sym   = pick.get("symbol", "")
+            match = candidates[candidates["symbol"] == sym]
+            if not match.empty:
+                pick["monthly_conviction"] = float(match.iloc[0]["monthly_conviction"])
+                pick["weekly_frequency"]   = f"{int(round(match.iloc[0].get('weekly_freq', 0) * 4))}/4 semanas"
+
+        try:
+            from ml_ranker import ml_predict_picks
+            result = ml_predict_picks(result, candidates)
+        except ImportError:
+            pass
+
+        if result and "top_picks" in result:
+            for i, pick in enumerate(result["top_picks"]):
+                sym = pick.get("symbol")
+                if sym:
+                    price = _fetch_coingecko_price(sym)
+                    pick["price_usd"]  = price if price > 0 else None
+                    pick["price_date"] = datetime.now().isoformat()
+                    if i < len(result["top_picks"]) - 1:
+                        time.sleep(3)
+
+        history = _load_weekly_history()
+        if len(history) < 2:
+            result["macro_note"] = (
+                "⚠️ Histórico semanal insuficiente (< 2 semanas). "
+                "Rode a análise semanal nas próximas semanas para aumentar a precisão. "
+                + result.get("macro_note", "")
+            )
+
+        results["monthly"] = result
+        results.setdefault("history", []).append({
+            "cycle": "monthly", "ts": datetime.now().isoformat(),
+            "n_candidates": len(candidates), "n_weeks_history": len(history)
+        })
+        _save_results(results)
+        _send_result_tg(result, "monthly")
+        return result
+    # ─────────────────────────────────────────────────────────────────────────
 
     if result and "top_picks" in result:
         picks_list = result["top_picks"]
@@ -2079,27 +2374,27 @@ def get_performance_dashboard(lookback_picks: int = 60) -> dict:
         return {"error": "Sem dados recentes."}
 
     # Classifica picks com base no pct_change
-    winners = [p for p in recent if p.get("pct_change", 0) > 10]
-    losers  = [p for p in recent if p.get("pct_change", 0) < -10]
-    neutrals = [p for p in recent if -10 <= p.get("pct_change", 0) <= 10]
+    winners = [p for p in recent if (p.get("pct_change") or 0) > 10]
+    losers  = [p for p in recent if (p.get("pct_change") or 0) < -10]
+    neutrals = [p for p in recent if -10 <= (p.get("pct_change") or 0) <= 10]
 
     total = len(recent)
     win_rate = len(winners) / total * 100 if total else 0
     loss_rate = len(losers) / total * 100 if total else 0
 
-    avg_win = sum(p.get("pct_change", 0) for p in winners) / len(winners) if winners else 0
-    avg_loss = sum(p.get("pct_change", 0) for p in losers) / len(losers) if losers else 0
+    avg_win = sum((p.get("pct_change") or 0) for p in winners) / len(winners) if winners else 0
+    avg_loss = sum((p.get("pct_change") or 0) for p in losers) / len(losers) if losers else 0
     risk_reward = abs(avg_win / avg_loss) if avg_loss != 0 else 0
 
     # Melhores e piores
-    best = sorted(winners, key=lambda x: x.get("pct_change", 0), reverse=True)[:5]
-    worst = sorted(losers, key=lambda x: x.get("pct_change", 0))[:3]
+    best = sorted(winners, key=lambda x: (x.get("pct_change") or 0), reverse=True)[:5]
+    worst = sorted(losers, key=lambda x: (x.get("pct_change") or 0))[:3]
 
     # Por ciclo
     cycle_stats = {}
     for cycle in ["weekly", "monthly"]:
         picks_cycle = [p for p in recent if p.get("cycle") == cycle]
-        wins_cycle = [p for p in picks_cycle if p.get("pct_change", 0) > 10]
+        wins_cycle = [p for p in picks_cycle if (p.get("pct_change") or 0) > 10]
         cycle_stats[cycle] = {
             "total": len(picks_cycle),
             "wins": len(wins_cycle),
@@ -2116,8 +2411,8 @@ def get_performance_dashboard(lookback_picks: int = 60) -> dict:
         if r not in rank_stats:
             rank_stats[r] = {"total": 0, "wins": 0, "sum_pct": 0}
         rank_stats[r]["total"] += 1
-        rank_stats[r]["sum_pct"] += p.get("pct_change", 0)
-        if p.get("pct_change", 0) > 10:
+        rank_stats[r]["sum_pct"] += (p.get("pct_change") or 0)
+        if (p.get("pct_change") or 0) > 10:
             rank_stats[r]["wins"] += 1
     for r in rank_stats:
         rank_stats[r]["win_rate"] = rank_stats[r]["wins"] / rank_stats[r]["total"] * 100 if rank_stats[r]["total"] else 0

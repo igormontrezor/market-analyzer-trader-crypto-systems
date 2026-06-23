@@ -1,4 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-TRILLION,Trillion,2sDCRhLKeUF7c1dG2cqQFuY2VZQqPVrZRSGxqy8Gpump,solana,0.0002671,748.0,267141.0,36471.54,482184.06,12134,3913,0.76,11.7,https://dexscreener.com/solana/cbmjhm7vcbkxkcexu95xcxshmsd7k8cn9pzb3k4vwtat,2026-06-09T08:51:03.913514,dexscreener,19.404545579999997
-MAMO,Mamo,0x7300B37DfdfAb110d83290A29DfB31B1740219fE,base,0.008353,-0.91,4952945.0,345994.86,14758.89,189,74,0.72,,https://dexscreener.com/base/0xe2b3aa806e56603a244bfc111c9474f7dedd03db,2026-06-09T08:51:06.536695,dexscreener,17.807994019999995
-CGO,ClaudeGO,AdPAbURo4XpJabaxsv6qPD1267yAH92mNGDTncgUpump,solana,0.0003924,1367.0,392431.0,47051.72,1659067.85,14753,11898,0.55,8.8,https://dexscreener.com/solana/eelwckb5eqc58tdj7lyiqacsjqfy8da5ysubfr59e3y6,2026-06-09T08:51:03.913872,dexscreener,15.853318600000001

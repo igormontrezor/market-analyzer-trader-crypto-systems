@@ -1,0 +1,2 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+OGFLOKI,The Original Floki,4gZ8BDrhDcRjw9gDWEGeTyLT4iFejVoxVxdQFYsGpump,solana,0.0001885,-50.82,188527.0,35857.36,571263.34,5596,4796,0.54,39.4,https://dexscreener.com/solana/8drpkoihx9ybrmaw7nttpixvifsz3bnjv9guzb8fbasy,2026-06-18T08:46:01.492216,dexscreener,6.357967120000002

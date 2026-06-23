@@ -1,2 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-ICONS,ICONS,GnbJESynwagNRHsn8uVPHQzNpkcBVnkgM3MGe5YSpump,solana,9.484e-05,60.66,94842.0,31087.8,94737.63,1402,952,0.6,0.8,https://dexscreener.com/solana/2pn6afxqu5zmuyfxkfpnhzetlzwpysfzckz4xlnajdyl,2026-06-08T14:11:05.495967,dexscreener,6.2242180399999985

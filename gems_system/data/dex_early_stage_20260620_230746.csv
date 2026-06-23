@@ -1,0 +1,2 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+QAI,Qai,37Bk2fdJ4gNGXrYTjMdriaZUbBbhmoQGeQjHyih3pump,solana,0.001096,1085.0,1096190.0,80203.16,1734459.06,23277,12634,0.65,4.3,https://dexscreener.com/solana/curyxkdy33bux5hkl8distfwboru7mp72v84fb1pri8y,2026-06-20T23:07:39.945242,dexscreener,23.20371988

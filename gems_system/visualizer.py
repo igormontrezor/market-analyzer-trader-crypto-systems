@@ -173,6 +173,7 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
             usdt_weekly = tv.get_hist(symbol='USDT.D', exchange='CRYPTOCAP', interval=Interval.in_weekly, n_bars=200)
             usdt_monthly = tv.get_hist(symbol='USDT.D', exchange='CRYPTOCAP', interval=Interval.in_monthly, n_bars=100)
             others_weekly = tv.get_hist(symbol='OTHERS', exchange='CRYPTOCAP', interval=Interval.in_weekly, n_bars=200)
+            others_monthly = tv.get_hist(symbol='OTHERS', exchange='CRYPTOCAP', interval=Interval.in_monthly, n_bars=100)
 
             # Validar se os dados foram recebidos corretamente
             if usdt_weekly is None or usdt_weekly.empty:
@@ -181,6 +182,8 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
                 raise RuntimeError("Falha ao obter dados USDT.D monthly")
             if others_weekly is None or others_weekly.empty:
                 raise RuntimeError("Falha ao obter dados OTHERS weekly")
+            if others_monthly is None or others_monthly.empty:
+                raise RuntimeError("Falha ao obter dados OTHERS monthly")
 
             print("✅ Dados TradingView recebidos com sucesso")
             break  # Sucesso, sair do loop
@@ -202,11 +205,22 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
     w_usdt_bbp = _bb_percent(usdt_weekly['close'], bb_period, bb_std).dropna()
     m_usdt_bbp = _bb_percent(usdt_monthly['close'], 20, bb_std).dropna()
     w_others_bbp = _bb_percent(others_weekly['close'], bb_period, bb_std).dropna()
+    m_others_bbp = _bb_percent(others_monthly['close'], 20, bb_std).dropna()
+
+    # EMA 50/100 no OTHERS semanal — alerta de topo iminente das alts
+    _ow_close = others_weekly['close'].dropna()
+    _ema50_w  = _ow_close.ewm(span=50, adjust=False).mean()
+    _ema100_w = _ow_close.ewm(span=100, adjust=False).mean()
+    # Confirma cruzamento bullish (EMA50 > EMA100) nas últimas 2 velas fechadas
+    _ema_cross_now  = bool(_ema50_w.iloc[-1]  > _ema100_w.iloc[-1])
+    _ema_cross_prev = bool(_ema50_w.iloc[-2]  > _ema100_w.iloc[-2])
+    _ema_cross_warn = _ema_cross_now and _ema_cross_prev   # 2 semanas confirmadas
 
     curr_m_usdt = m_usdt_bbp.iloc[-1]
     prev_m_usdt = m_usdt_bbp.iloc[-2]
     curr_w_usdt = w_usdt_bbp.iloc[-1]
     curr_w_others = w_others_bbp.iloc[-1]
+    curr_m_others = m_others_bbp.iloc[-1]
 
     # --- 1. LÓGICA E REGISTRO DO FUNDING RATE PRIMEIRO ---
     import requests
@@ -255,6 +269,8 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
         "others_touch_low": bool(curr_w_others <= 0),
         "usdt_touch_high": bool(curr_w_usdt >= 1),
         "usdt_touch_low": bool(curr_w_usdt <= 0),
+        "others_ema50_above_ema100": bool(_ema_cross_now),
+        "others_ema_cross_warn": bool(_ema_cross_warn),
     }
 
     # --- 3. DEFINIÇÃO DE GATILHOS (SINAIS) ---
@@ -267,17 +283,45 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
         "weekly_sell_trigger": bool(sell_mode and (weekly_state["usdt_touch_low"] or curr_w_others >= 1)),
     }
 
+    # --- 4. FEAR & GREED + ALTCOIN SEASON (para sinal HIPER) ---
+    fear_greed_value = None
+    try:
+        import requests as _req
+        _fg = _req.get("https://api.alternative.me/fng/?limit=1", timeout=8)
+        if _fg.status_code == 200:
+            fear_greed_value = int(_fg.json()["data"][0]["value"])
+    except Exception:
+        pass
+
+    altcoin_season_value = None
+    try:
+        import requests as _req
+        _as = _req.get(
+            "https://www.blockchaincenter.net/altcoin-season-index/",
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=10,
+        )
+        if _as.status_code == 200:
+            import re as _re
+            _m = _re.search(r'"altcoinIndex"\s*:\s*(\d+)', _as.text)
+            if _m:
+                altcoin_season_value = int(_m.group(1))
+    except Exception:
+        pass
+
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "weekly": weekly_state,
-        "monthly": {"usdt_d_bbp": float(curr_m_usdt)},
+        "monthly": {"usdt_d_bbp": float(curr_m_usdt), "others_bbp": float(curr_m_others)},
         "regime": {
             "buy_mode": bool(buy_mode),
             "sell_mode": bool(sell_mode),
             "capitulation_lock": capitulation_lock
         },
         "signal": signal,
-        "funding_rate": funding_rate
+        "funding_rate": funding_rate,
+        "fear_greed": fear_greed_value,
+        "altcoin_season": altcoin_season_value,
     }
 
     with open(macro_path, 'w', encoding='utf-8') as f:

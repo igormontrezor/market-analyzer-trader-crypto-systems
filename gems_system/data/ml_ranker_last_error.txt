@@ -1,0 +1,21 @@
+[2026-06-19T08:31:02.014511] returncode=1
+
+--- STDOUT ---
+Iniciando treinamento do modelo ML...
+
+
+--- STDERR ---
+Traceback (most recent call last):
+  File "C:\market_montrezor_system\gems_system\ml_ranker.py", line 524, in <module>
+    train_model()
+    ~~~~~~~~~~~^^
+  File "C:\market_montrezor_system\gems_system\ml_ranker.py", line 251, in train_model
+    X, y = load_training_data()
+           ~~~~~~~~~~~~~~~~~~^^
+  File "C:\market_montrezor_system\gems_system\ml_ranker.py", line 89, in load_training_data
+    print(f"\U0001f527 Limiar dinâmico para target: {dynamic_threshold:.2f}% (baseado em {len(pos_returns)} retornos positivos)")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Montrezor-Note01\AppData\Local\Programs\Python\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f527' in position 0: character maps to <undefined>

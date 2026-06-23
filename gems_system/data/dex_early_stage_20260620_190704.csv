@@ -1,0 +1,2 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+CAMBRIA,Cambria,Gbnz9DsVWM7hCNv2PWD8SHZpaDPjNhwkWTNtXTrjpump,solana,0.0002484,242.0,248418.0,36856.1,552756.54,7776,2299,0.77,2.5,https://dexscreener.com/solana/dptn7yq3xwjzefhppzsrc7bctdyxyaz6kwgexzkwkjcf,2026-06-20T19:06:58.807572,dexscreener,20.599893820000002

@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-06-11T07:44:56.568173",
-  "total_candidates": 43,
+  "last_updated": "2026-06-21T10:47:39.987843",
+  "total_candidates": 52,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -560,6 +560,123 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "lumia",
+      "name": "Lumia",
+      "detected_at": "2026-06-11T21:31:43.062311",
+      "ratio_now": 1.3144062252024444,
+      "market_cap": 15151443,
+      "volume": 19915151,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 50.45479117071555
+    },
+    {
+      "symbol": "blast",
+      "name": "Blast",
+      "detected_at": "2026-06-11T21:31:43.062839",
+      "ratio_now": 0.8970570424550603,
+      "market_cap": 22293220,
+      "volume": 19998290,
+      "priority": "alta",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 42.107807515767874
+    },
+    {
+      "symbol": "waves",
+      "name": "Waves",
+      "detected_at": "2026-06-12T12:01:19.320246",
+      "ratio_now": 1.12309276245676,
+      "market_cap": 30415915,
+      "volume": 34159894,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 46.62852191580186
+    },
+    {
+      "symbol": "siren",
+      "name": "Siren",
+      "detected_at": "2026-06-13T10:04:50.056822",
+      "ratio_now": 2.4970270677070903,
+      "market_cap": 92960072,
+      "volume": 232123816,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "spell",
+      "name": "Spell",
+      "detected_at": "2026-06-15T07:04:54.870662",
+      "ratio_now": 1.1032269328591557,
+      "market_cap": 21902346,
+      "volume": 24163258,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 46.23120532384978
+    },
+    {
+      "symbol": "strax",
+      "name": "Xertra",
+      "detected_at": "2026-06-16T08:28:04.618962",
+      "ratio_now": 1.1016933594764866,
+      "market_cap": 23575325,
+      "volume": 25972779,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 46.2005338561964
+    },
+    {
+      "symbol": "syn",
+      "name": "Synapse",
+      "detected_at": "2026-06-19T08:49:40.983067",
+      "ratio_now": 2.9235678766095514,
+      "market_cap": 32816673,
+      "volume": 95941771,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "spcxb",
+      "name": "SpaceX (bStocks Tokenized Stock)",
+      "detected_at": "2026-06-19T08:49:40.983418",
+      "ratio_now": 1.2374176635451906,
+      "market_cap": 39331606,
+      "volume": 48669624,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 48.91501993757048
+    },
+    {
+      "symbol": "bico",
+      "name": "Biconomy",
+      "detected_at": "2026-06-19T08:49:40.983683",
+      "ratio_now": 0.8632443548352483,
+      "market_cap": 18638960,
+      "volume": 16089977,
+      "priority": "alta",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 41.43155376337163
     }
   ]
 }
