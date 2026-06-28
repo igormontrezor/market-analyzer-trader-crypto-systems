@@ -1,0 +1,3 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+SWIF,Sheep Wif Hat,21Xp1ukfzY6dWFYFRJmp59iCgKDJ61CHMJ8dmG9npump,solana,0.0001112,88.29,111276.0,34104.68,310304.9,5072,2803,0.64,1.9,https://dexscreener.com/solana/5shvebmbvbg2sghsekomey4qk2tszumx9wa2tzhfx5zf,2026-06-24T10:38:40.054167,dexscreener,10.4940094
+WBET,WORLD BET,31989YsfUahV66TGiMvdSyTj1AQNvcdT327Uiu9mpump,solana,0.0002936,175.0,293694.0,38737.09,103109.85,1060,838,0.56,44.7,https://dexscreener.com/solana/apzdirx3ee11c5ppapny5ecz29cdhgua76yoc1s7bs3e,2026-06-24T10:38:40.054139,dexscreener,3.905935150000002

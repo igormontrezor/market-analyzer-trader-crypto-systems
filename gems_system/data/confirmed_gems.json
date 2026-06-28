@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-06-23T08:42:50.568532",
-  "total_confirmed": 18,
+  "last_updated": "2026-06-27T18:01:54.682745",
+  "total_confirmed": 20,
   "confirmed_gems": [
     {
       "symbol": "act",
@@ -124,19 +124,36 @@
     {
       "symbol": "stg",
       "name": "Stargate Finance",
-      "confirmed_at": "2026-06-23T08:42:50.566296",
-      "ratio_now": 1.0313905514628134,
-      "ratio_24h_ago": 0.656573355962729,
-      "growth_percent": 57.08687263900505,
+      "confirmed_at": "2026-06-25T08:29:00.908646",
+      "ratio_now": 0.8312278137063278,
+      "ratio_24h_ago": 0.6903544665916675,
+      "growth_percent": 20.405944182582413,
       "strong_days": 3,
-      "acceleration_strength": 1.5950292487151643,
+      "acceleration_strength": 1.7988665124886918,
       "trend": "accelerating",
-      "market_cap": 25899099,
-      "volume": 26712086,
-      "priority": "maxima",
+      "market_cap": 23379581,
+      "volume": 19433758,
+      "priority": "alta",
       "status": "confirmed",
       "type": "lider_altseason",
-      "quality_score": 75.56567663819581
+      "quality_score": 74.1103876802352
+    },
+    {
+      "symbol": "g",
+      "name": "Gravity (by Galxe)",
+      "confirmed_at": "2026-06-26T09:23:56.055422",
+      "ratio_now": 3.74782216241239,
+      "ratio_24h_ago": 0.8709393985274134,
+      "growth_percent": 330.319511179448,
+      "strong_days": 3,
+      "acceleration_strength": 18.160668187068623,
+      "trend": "accelerating",
+      "market_cap": 25950397,
+      "volume": 97257473,
+      "priority": "extrema",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 100.0
     },
     {
       "symbol": "msusd",
@@ -241,6 +258,23 @@
       "quality_score": 73.61629842216763
     },
     {
+      "symbol": "celo",
+      "name": "Celo",
+      "confirmed_at": "2026-06-27T18:01:54.679884",
+      "ratio_now": 0.6505171707642693,
+      "ratio_24h_ago": 0.5244810243414934,
+      "growth_percent": 24.030639922773055,
+      "strong_days": 3,
+      "acceleration_strength": 2.242183888465032,
+      "trend": "accelerating",
+      "market_cap": 37991320,
+      "volume": 24714006,
+      "priority": "alta",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 73.01034341528538
+    },
+    {
       "symbol": "meme",
       "name": "Memecoin",
       "confirmed_at": "2026-06-05T08:50:15.944398",
@@ -275,23 +309,6 @@
       "quality_score": 86.97976357321721
     },
     {
-      "symbol": "syn",
-      "name": "Synapse",
-      "confirmed_at": "2026-06-22T06:37:41.590744",
-      "ratio_now": 1.9335031389161723,
-      "ratio_24h_ago": 1.4346963481035933,
-      "growth_percent": 34.76741203613647,
-      "strong_days": 3,
-      "acceleration_strength": 1.5917407911207753,
-      "trend": "accelerating",
-      "market_cap": 60109920,
-      "volume": 116222719,
-      "priority": "extrema",
-      "status": "confirmed",
-      "type": "lider_altseason",
-      "quality_score": 93.56682266733314
-    },
-    {
       "symbol": "usdon",
       "name": "Ondo U.S. Dollar Token",
       "confirmed_at": "2026-06-10T06:41:47.399317",
@@ -307,6 +324,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 68.47307014952688
+    },
+    {
+      "symbol": "syn",
+      "name": "Synapse",
+      "confirmed_at": "2026-06-26T09:23:56.054025",
+      "ratio_now": 2.3124369541529126,
+      "ratio_24h_ago": 1.5142109049435606,
+      "growth_percent": 52.71564526469346,
+      "strong_days": 3,
+      "acceleration_strength": 1.4815326711983468,
+      "trend": "accelerating",
+      "market_cap": 82840508,
+      "volume": 191563452,
+      "priority": "extrema",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 93.51915838997934
     }
   ]
 }

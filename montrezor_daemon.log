@@ -39585,3 +39585,2036 @@ WARNING:tvDat
 2026-06-23 20:21:06  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.68700 [4H] tfs=4H 1W VOL=0.5x
 2026-06-23 20:21:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90885 [4H] tfs=4H 1W VOL=0.7x
 2026-06-23 20:22:21  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98235 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:23:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90880 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:24:29  INFO     [TRADING] ↩ Sinal encerrado: AUDJPY# COMPRA COMUM
+2026-06-23 20:24:46  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 20:25:09  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98241 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:25:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90877 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:26:31  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98240 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:26:55  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90878 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:27:55  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98233 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:28:01  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.68900 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:28:21  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90884 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:29:07  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 20:29:27  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98230 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:29:31  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.68500 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:29:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90897 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:30:53  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98232 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:30:57  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.68100 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:31:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90897 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:32:22  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98221 [4H] tfs=4H 1W VOL=0.8x
+2026-06-23 20:32:27  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.66300 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:33:33  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90913 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:34:35  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98214 [4H] tfs=4H 1W VOL=0.8x
+2026-06-23 20:34:39  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.65500 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:34:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90925 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:35:42  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 20:36:00  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98212 [4H] tfs=4H 1W VOL=0.8x
+2026-06-23 20:36:05  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.65900 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:36:21  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90938 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:37:08  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98211 [4H] tfs=4H 1W VOL=0.8x
+2026-06-23 20:37:12  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.65400 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:37:29  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90935 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:38:25  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98201 [4H] tfs=4H 1W VOL=0.8x
+2026-06-23 20:38:29  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.64100 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:38:45  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90956 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:39:33  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98200 [4H] tfs=4H 1W VOL=0.8x
+2026-06-23 20:39:37  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.63500 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:39:53  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90959 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:40:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 20:40:58  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98198 [4H] tfs=4H 1W VOL=0.8x
+2026-06-23 20:41:03  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.63100 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:41:22  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90957 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:42:15  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98198 [4H] tfs=4H 1W VOL=0.8x
+2026-06-23 20:42:19  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.63000 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:42:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90963 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:43:32  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98200 [4H] tfs=4H 1W VOL=0.8x
+2026-06-23 20:43:36  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.63500 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:43:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90958 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:44:40  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98201 [4H] tfs=4H 1W VOL=0.8x
+2026-06-23 20:44:56  INFO       ✅ Telegram -> AUDCAD# COMPRA COMUM
+2026-06-23 20:45:00  INFO     [TRADING] COMUM AUDJPY#      COMPRA @ 111.65300 [4H] tfs=4H 1W VOL=0.5x
+2026-06-23 20:45:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90945 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:46:02  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 20:46:02  INFO     [PERF] 7d ok: BTCUSD#
+2026-06-23 20:46:02  INFO     [PERF] 7d ok: BTCUSD#
+2026-06-23 20:46:02  INFO     [PERF] 24h ok: GBPAUD# VENDA @ 1.8894600000000001 -> 1.90765
+2026-06-23 20:46:02  INFO     [PERF] 24h ok: GBPAUD# VENDA @ 1.89141 -> 1.90765
+2026-06-23 20:46:02  INFO     [PERF] 24h ok: GBPAUD# VENDA @ 1.8911799999999999 -> 1.90765
+2026-06-23 20:46:02  INFO     [PERF] Arquivo de performance atualizado
+2026-06-23 20:46:21  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98239 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:46:42  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90891 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:47:13  INFO     [TRADING] ↩ Sinal encerrado: AUDJPY# COMPRA COMUM
+2026-06-23 20:47:32  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98236 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:47:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90910 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:49:30  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-23 20:49:43  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98239 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:50:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90899 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:50:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 20:51:02  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98226 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:51:21  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90920 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:52:10  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98226 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:52:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90909 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:53:09  INFO     [AI] 📊 Total de picks avaliados no histórico: 47
+2026-06-23 20:53:09  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-23 20:53:13  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-23 20:53:13  INFO          [ML] Limiar dinamico para target: 10.00% (baseado em 9 retornos positivos)
+2026-06-23 20:53:13  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-23 20:53:13  INFO          Dados insuficientes para treinar.
+2026-06-23 20:53:26  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98235 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:53:52  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90901 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:54:48  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98242 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:55:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90898 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:56:16  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 20:56:34  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98236 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:56:53  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90877 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:57:44  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98239 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:58:04  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90869 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 20:58:52  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98244 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 20:59:12  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90865 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:00:09  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98247 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:00:29  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90839 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:01:23  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 21:01:45  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98275 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:02:08  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90826 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:02:57  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98280 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:03:19  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90814 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:04:08  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98286 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:04:28  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90832 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:05:23  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98276 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:05:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90849 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:06:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 21:06:44  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98292 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:07:05  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90796 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:08:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90791 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:08:45  INFO     [TRADING] ↩ Sinal encerrado: AUDCAD# COMPRA COMUM
+2026-06-23 21:09:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90798 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:10:15  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98297 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:10:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90801 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:11:48  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90773 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:12:18  INFO     [TRADING] ↩ Sinal encerrado: AUDCAD# COMPRA COMUM
+2026-06-23 21:12:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 21:13:15  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90786 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:14:09  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98290 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:14:30  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90811 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:15:23  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98294 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:15:46  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90787 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:17:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90778 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:17:47  INFO     [TRADING] ↩ Sinal encerrado: AUDCAD# COMPRA COMUM
+2026-06-23 21:18:04  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 21:19:20  INFO     [TRADING] ↩ Sinal encerrado: GBPAUD# VENDA COMUM
+2026-06-23 21:19:38  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98295 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:19:58  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90777 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:20:48  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98277 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:21:09  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90783 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:22:12  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98286 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:22:32  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90800 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:23:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 21:23:30  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98283 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:23:50  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90806 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:24:38  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98269 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:24:59  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90827 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:25:51  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98268 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:26:13  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90800 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:27:12  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98280 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:27:35  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90791 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:28:26  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98265 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:28:47  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90781 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:29:31  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 21:29:52  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98280 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:30:46  INFO     [TRADING] ↩ Sinal encerrado: GBPAUD# VENDA COMUM
+2026-06-23 21:31:05  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98295 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:32:22  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98290 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:33:37  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98293 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:34:42  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 21:35:00  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98298 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:36:11  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98292 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:37:30  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98292 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:38:45  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98289 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:39:55  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 21:40:13  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98280 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:40:34  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90773 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:41:25  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98283 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:41:49  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90766 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:42:48  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98289 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:43:13  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90763 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:44:03  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98288 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:44:23  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90761 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:45:20  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 21:45:41  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98289 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:46:34  INFO     [TRADING] ↩ Sinal encerrado: GBPAUD# VENDA COMUM
+2026-06-23 21:47:44  INFO     [TRADING] ↩ Sinal encerrado: AUDCAD# COMPRA COMUM
+2026-06-23 21:48:12  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98295 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:50:20  INFO     [TRADING] ↩ Sinal encerrado: AUDCAD# COMPRA COMUM
+2026-06-23 21:50:32  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 21:54:23  INFO     [AI] 📊 Total de picks avaliados no histórico: 47
+2026-06-23 21:54:23  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-23 21:54:27  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-23 21:54:27  INFO          [ML] Limiar dinamico para target: 10.00% (baseado em 9 retornos positivos)
+2026-06-23 21:54:27  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-23 21:54:27  INFO          Dados insuficientes para treinar.
+2026-06-23 21:54:40  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98294 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:55:02  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90765 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:55:58  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 21:56:16  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98289 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:56:38  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90769 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 21:57:28  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98293 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:58:25  INFO     [TRADING] ↩ Sinal encerrado: GBPAUD# VENDA COMUM
+2026-06-23 21:58:48  INFO     [TRADING] COMUM AUDCAD#      COMPRA @ 0.98289 [4H] tfs=4H 1W~ VOL=0.8x
+2026-06-23 21:59:10  INFO     [TRADING] COMUM GBPAUD#      VENDA  @ 1.90765 [4H] tfs=4H 1W VOL=0.7x
+2026-06-23 22:00:56  INFO     [TRADING] ↩ Sinal encerrado: AUDCAD# COMPRA COMUM
+2026-06-23 22:00:56  INFO     [TRADING] ↩ Sinal encerrado: GBPAUD# VENDA COMUM
+2026-06-23 22:01:21  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 22:06:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 22:12:05  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 22:17:25  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 22:23:36  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 22:29:35  INFO     [GEMS] macro_timing.json atualizado
+2026-06-23 22:35:32  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 08:16:22  INFO     ================================================================
+2026-06-24 08:16:22  INFO       MONTREZOR DAEMON UNIFICADO
+2026-06-24 08:16:22  INFO       Modo: ALL
+2026-06-24 08:16:22  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-06-24 08:16:22  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-06-24 08:16:22  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-06-24 08:16:22  INFO     ================================================================
+2026-06-24 08:16:22  INFO     MT5 conectado: XM Global MT5
+2026-06-24 08:17:53  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 08:17:53  INFO     [PERF] 7d ok: BTCUSD#
+2026-06-24 08:17:53  INFO     [PERF] Arquivo de performance atualizado
+2026-06-24 08:18:38  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-24 08:18:38  INFO     [AI] 📊 Total de picks avaliados no histórico: 47
+2026-06-24 08:18:38  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 08:18:43  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 08:18:43  INFO          [ML] Limiar dinamico para target: 10.00% (baseado em 9 retornos positivos)
+2026-06-24 08:18:43  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 08:18:43  INFO          Dados insuficientes para treinar.
+2026-06-24 08:24:22  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 08:25:33  INFO     [AI] ✅ 10 pick(s) avaliada(s) com preço final.
+2026-06-24 08:30:26  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 08:36:36  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 08:41:40  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 08:47:36  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 08:54:09  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 08:59:33  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 09:05:02  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 09:10:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 09:15:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 09:18:58  INFO     [AI] Rodando ciclo weekly...
+2026-06-24 09:30:44  INFO     [AI] ✅ weekly concluído — Telegram enviado
+2026-06-24 09:30:44  INFO     [AI] 🔧 3 pick(s) com 0% migradas para reavaliação.
+2026-06-24 09:30:44  INFO     [AI] 📊 Total de picks avaliados no histórico: 47
+2026-06-24 09:30:44  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 09:30:44  INFO     [AI] 📋 10 nova(s) pick(s) registrada(s) como pendente.
+2026-06-24 09:30:49  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 09:30:49  INFO          [ML] Limiar dinamico para target: 19.24% (baseado em 11 retornos positivos)
+2026-06-24 09:30:49  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 09:30:49  INFO          Dados insuficientes para treinar.
+2026-06-24 09:30:54  INFO     [AI] ✅ 3 pick(s) avaliada(s) com preço final.
+2026-06-24 09:32:09  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 09:32:29  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13323 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:33:02  INFO       ✅ Telegram -> EURUSD# COMPRA COMUM
+2026-06-24 09:34:19  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13302 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:35:36  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13321 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:36:58  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13320 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:38:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 09:39:31  INFO     [TRADING] ↩ Sinal encerrado: EURUSD# COMPRA COMUM
+2026-06-24 09:39:47  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13300 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:41:05  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13279 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:42:21  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13258 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:43:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 09:43:47  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13292 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:45:07  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13297 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:46:21  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13304 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:47:37  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13265 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:48:43  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 09:49:03  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13288 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:50:16  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13280 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:51:28  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13263 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:52:44  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13275 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:53:56  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 09:54:17  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13283 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:55:38  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13273 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:56:52  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13272 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:58:04  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13297 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 09:59:10  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 09:59:29  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13274 [1D] tfs=1D 1W~ 1M~ VOL=1.3x
+2026-06-24 10:00:48  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13280 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:02:04  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13265 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:03:20  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13277 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:04:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 10:04:51  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13289 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:06:05  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13277 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:07:18  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13270 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:08:32  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13256 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:09:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 10:10:06  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13255 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:11:19  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13252 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:12:32  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13251 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:13:50  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13255 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:15:20  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-06-24 10:15:42  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13255 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:17:12  INFO     [TRADING] COMUM EURUSD#      COMPRA @ 1.13255 [1D] tfs=1D 1W~ 1M~ VOL=1.5x
+2026-06-24 10:36:26  INFO     ================================================================
+2026-06-24 10:36:26  INFO       MONTREZOR DAEMON UNIFICADO
+2026-06-24 10:36:26  INFO       Modo: ALL
+2026-06-24 10:36:26  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-06-24 10:36:26  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-06-24 10:36:26  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-06-24 10:36:26  INFO     ================================================================
+2026-06-24 10:36:26  INFO     MT5 conectado: XM Global MT5
+2026-06-24 10:37:49  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 10:38:46  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-24 10:38:46  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-24 10:38:46  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 10:38:51  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 10:38:51  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-24 10:38:51  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 10:38:51  INFO          Dados insuficientes para treinar.
+2026-06-24 10:43:30  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 10:43:30  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0000%
+2026-06-24 10:43:46  INFO       ✅ Telegram -> BTC SUPER_BUY
+2026-06-24 10:48:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 10:48:38  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0005%
+2026-06-24 10:53:43  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 10:53:43  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0004%
+2026-06-24 10:58:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 10:58:52  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0005%
+2026-06-24 11:04:03  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 11:04:03  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0004%
+2026-06-24 11:09:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 11:09:12  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0001%
+2026-06-24 11:14:15  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-06-24 11:14:15  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0001%
+2026-06-24 11:20:37  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-06-24 11:20:37  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0000%
+2026-06-24 11:25:42  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 11:25:42  INFO     [GEMS] BUY             BTC  funding=0.0004%
+2026-06-24 11:25:59  INFO       ✅ Telegram -> BTC BUY
+2026-06-24 11:31:02  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 11:31:02  INFO     [GEMS] BUY             BTC  funding=0.0006%
+2026-06-24 11:36:58  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 11:36:58  INFO     [GEMS] BUY             BTC  funding=0.0008%
+2026-06-24 11:38:14  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-24 11:38:14  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 11:38:19  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 11:38:19  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-24 11:38:19  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 11:38:19  INFO          Dados insuficientes para treinar.
+2026-06-24 11:43:00  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 11:43:00  INFO     [GEMS] BUY             BTC  funding=0.0006%
+2026-06-24 11:48:53  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 11:48:53  INFO     [GEMS] BUY             BTC  funding=0.0006%
+2026-06-24 11:54:50  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 11:54:50  INFO     [GEMS] BUY             BTC  funding=0.0004%
+2026-06-24 12:00:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 12:00:47  INFO     [GEMS] BUY             BTC  funding=0.0004%
+2026-06-24 12:06:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 12:06:48  INFO     [GEMS] BUY             BTC  funding=0.0002%
+2026-06-24 12:12:41  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 12:12:41  INFO     [GEMS] BUY             BTC  funding=0.0002%
+2026-06-24 12:18:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 12:18:38  INFO     [GEMS] BUY             BTC  funding=0.0003%
+2026-06-24 12:24:42  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 12:24:42  INFO     [GEMS] BUY             BTC  funding=0.0005%
+2026-06-24 12:30:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 12:30:39  INFO     [GEMS] BUY             BTC  funding=0.0003%
+2026-06-24 12:30:56  INFO       ✅ Telegram -> BTC BUY
+2026-06-24 12:35:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 12:35:45  INFO     [GEMS] BUY             BTC  funding=0.0003%
+2026-06-24 12:38:50  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-24 12:39:58  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-24 12:39:58  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 12:40:02  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 12:40:02  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-24 12:40:02  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 12:40:02  INFO          Dados insuficientes para treinar.
+2026-06-24 12:41:13  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 12:41:13  INFO     [GEMS] BUY             BTC  funding=0.0003%
+2026-06-24 12:47:09  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 12:47:09  INFO     [GEMS] BUY             BTC  funding=0.0001%
+2026-06-24 12:53:04  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 12:53:04  INFO     [GEMS] BUY             BTC  funding=0.0001%
+2026-06-24 12:58:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 12:58:59  INFO     [GEMS] BUY             BTC  funding=0.0000%
+2026-06-24 13:05:02  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 13:05:02  INFO     [GEMS] BUY             BTC  funding=0.0003%
+2026-06-24 13:10:58  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 13:10:58  INFO     [GEMS] BUY             BTC  funding=0.0006%
+2026-06-24 13:16:53  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 13:16:53  INFO     [GEMS] BUY             BTC  funding=0.0008%
+2026-06-24 13:22:50  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 13:22:50  INFO     [GEMS] BUY             BTC  funding=0.0009%
+2026-06-24 13:28:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 13:28:47  INFO     [GEMS] BUY             BTC  funding=0.0008%
+2026-06-24 13:34:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 13:34:45  INFO     [GEMS] BUY             BTC  funding=0.0007%
+2026-06-24 13:35:01  INFO       ✅ Telegram -> BTC BUY
+2026-06-24 13:39:50  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 13:39:50  INFO     [GEMS] BUY             BTC  funding=0.0006%
+2026-06-24 13:41:03  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-24 13:41:03  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 13:41:08  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 13:41:08  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-24 13:41:08  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 13:41:08  INFO          Dados insuficientes para treinar.
+2026-06-24 13:45:54  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 13:45:54  INFO     [GEMS] BUY             BTC  funding=0.0004%
+2026-06-24 13:51:49  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 13:51:49  INFO     [GEMS] BUY             BTC  funding=0.0002%
+2026-06-24 13:57:43  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 13:57:43  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0007%
+2026-06-24 13:57:45  INFO       ✅ Telegram -> BTC SUPER_BUY
+2026-06-24 14:03:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 14:03:51  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0009%
+2026-06-24 14:08:53  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 14:08:53  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0014%
+2026-06-24 14:13:56  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 14:13:56  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0015%
+2026-06-24 14:19:00  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 14:19:00  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0020%
+2026-06-24 14:24:05  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 14:24:05  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0027%
+2026-06-24 14:29:09  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 14:29:09  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0027%
+2026-06-24 14:34:17  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 14:34:18  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0031%
+2026-06-24 14:38:04  INFO     [PERF] 24h ok: AUDCAD# COMPRA @ 0.98393 -> 0.98029
+2026-06-24 14:38:04  INFO     [PERF] 24h ok: AUDJPY# COMPRA @ 112.012 -> 111.46100
+2026-06-24 14:38:04  INFO     [PERF] 24h ok: GBPAUD# VENDA @ 1.90537 -> 1.90981
+2026-06-24 14:38:04  INFO     [PERF] Arquivo de performance atualizado
+2026-06-24 14:39:32  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 14:39:32  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0035%
+2026-06-24 14:40:11  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-24 14:41:27  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-24 14:41:27  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 14:41:32  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 14:41:32  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-24 14:41:32  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 14:41:32  INFO          Dados insuficientes para treinar.
+2026-06-24 14:45:14  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 14:45:14  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0040%
+2026-06-24 14:50:22  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 14:50:22  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0045%
+2026-06-24 14:55:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 14:55:38  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0044%
+2026-06-24 15:00:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 15:00:45  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0046%
+2026-06-24 15:01:01  INFO       ✅ Telegram -> BTC SUPER_BUY
+2026-06-24 15:06:11  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 15:06:11  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0048%
+2026-06-24 15:11:17  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 15:11:17  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0050%
+2026-06-24 15:16:19  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 15:16:19  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0053%
+2026-06-24 15:21:25  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 15:21:25  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0054%
+2026-06-24 15:26:33  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 15:26:33  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0055%
+2026-06-24 15:31:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 15:31:38  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0059%
+2026-06-24 15:36:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 15:36:44  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0061%
+2026-06-24 15:41:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 15:41:52  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0064%
+2026-06-24 15:41:57  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-24 15:41:57  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 15:42:03  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 15:42:03  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-24 15:42:03  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 15:42:03  INFO          Dados insuficientes para treinar.
+2026-06-24 15:47:01  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 15:47:01  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0066%
+2026-06-24 15:52:10  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 15:52:10  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0069%
+2026-06-24 15:57:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 15:57:18  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0068%
+2026-06-24 16:02:26  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 16:02:26  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0068%
+2026-06-24 16:02:43  INFO       ✅ Telegram -> BTC SUPER_BUY
+2026-06-24 16:07:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 16:07:48  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0069%
+2026-06-24 16:12:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 16:12:52  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0071%
+2026-06-24 16:18:03  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 16:18:03  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0073%
+2026-06-24 16:23:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 16:23:12  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0074%
+2026-06-24 16:28:15  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 16:28:15  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0073%
+2026-06-24 16:33:23  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 16:33:23  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0074%
+2026-06-24 16:38:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 16:38:38  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0073%
+2026-06-24 16:40:35  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-24 16:43:01  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-24 16:43:01  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 16:43:06  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 16:43:06  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-24 16:43:06  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 16:43:06  INFO          Dados insuficientes para treinar.
+2026-06-24 16:44:22  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 16:44:22  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0076%
+2026-06-24 16:49:31  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 16:49:31  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0076%
+2026-06-24 16:54:41  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 16:54:41  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0076%
+2026-06-24 16:59:46  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 16:59:46  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0077%
+2026-06-24 17:04:54  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 17:04:54  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0074%
+2026-06-24 17:05:10  INFO       ✅ Telegram -> BTC SUPER_BUY
+2026-06-24 17:10:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 17:10:18  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0071%
+2026-06-24 17:15:20  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 17:15:20  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0070%
+2026-06-24 17:21:31  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 17:21:31  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0070%
+2026-06-24 17:26:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 17:26:37  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0071%
+2026-06-24 17:31:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 17:31:38  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0070%
+2026-06-24 17:36:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 17:36:38  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0071%
+2026-06-24 17:42:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 17:42:52  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0068%
+2026-06-24 17:44:12  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-24 17:44:12  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 17:44:17  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 17:44:17  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-24 17:44:17  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 17:44:17  INFO          Dados insuficientes para treinar.
+2026-06-24 17:47:57  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 17:47:57  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0068%
+2026-06-24 17:53:03  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 17:53:03  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0064%
+2026-06-24 17:59:16  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 17:59:16  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0064%
+2026-06-24 18:05:21  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 18:05:21  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0066%
+2026-06-24 18:05:37  INFO       ✅ Telegram -> BTC SUPER_BUY
+2026-06-24 18:10:33  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 18:10:33  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0065%
+2026-06-24 18:16:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 18:16:47  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0065%
+2026-06-24 18:21:42  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 18:21:42  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0064%
+2026-06-24 18:27:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 18:27:47  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0064%
+2026-06-24 18:33:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 18:33:51  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0063%
+2026-06-24 18:38:42  INFO     [PERF] 24h ok: AUDCAD# COMPRA @ 0.98378 -> 0.98182
+2026-06-24 18:38:42  INFO     [PERF] 24h ok: AUDJPY# COMPRA @ 112.042 -> 111.58500
+2026-06-24 18:38:42  INFO     [PERF] 24h ok: GBPAUD# VENDA @ 1.9047 -> 1.90636
+2026-06-24 18:38:42  INFO     [PERF] Arquivo de performance atualizado
+2026-06-24 18:40:01  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 18:40:01  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0059%
+2026-06-24 18:40:41  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-24 18:44:17  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-24 18:44:17  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 18:44:22  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 18:44:22  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-24 18:44:22  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 18:44:22  INFO          Dados insuficientes para treinar.
+2026-06-24 18:45:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 18:45:38  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0058%
+2026-06-24 18:50:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 18:50:38  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0057%
+2026-06-24 18:56:46  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 18:56:46  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0058%
+2026-06-24 19:02:58  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 19:02:58  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0055%
+2026-06-24 19:09:17  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 19:09:17  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0055%
+2026-06-24 19:09:34  INFO       ✅ Telegram -> BTC SUPER_BUY
+2026-06-24 19:14:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 19:14:39  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0053%
+2026-06-24 19:19:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 19:19:44  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0052%
+2026-06-24 19:24:43  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 19:24:43  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0051%
+2026-06-24 19:29:49  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 19:29:49  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0050%
+2026-06-24 19:35:00  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 19:35:00  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0048%
+2026-06-24 19:40:13  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 19:40:13  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0046%
+2026-06-24 19:45:13  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 19:45:13  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0044%
+2026-06-24 19:45:18  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-24 19:45:18  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 19:45:22  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 19:45:22  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-24 19:45:22  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 19:45:22  INFO          Dados insuficientes para treinar.
+2026-06-24 19:50:38  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-06-24 19:50:38  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0044%
+2026-06-24 19:55:41  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 19:55:41  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0041%
+2026-06-24 20:00:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 20:00:47  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0039%
+2026-06-24 20:06:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 20:06:18  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0035%
+2026-06-24 20:11:53  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 20:11:53  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0033%
+2026-06-24 20:11:54  INFO       ✅ Telegram -> BTC SUPER_BUY
+2026-06-24 20:17:55  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 20:17:55  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0030%
+2026-06-24 20:23:57  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 20:23:57  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0027%
+2026-06-24 20:29:57  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 20:29:57  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0025%
+2026-06-24 20:36:07  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 20:36:07  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0021%
+2026-06-24 20:41:07  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 20:41:07  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0020%
+2026-06-24 20:41:46  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-24 20:45:22  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-24 20:45:22  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 20:45:27  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 20:45:27  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-24 20:45:27  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 20:45:27  INFO          Dados insuficientes para treinar.
+2026-06-24 20:46:54  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 20:46:54  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0018%
+2026-06-24 20:52:05  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 20:52:05  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0017%
+2026-06-24 20:57:10  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 20:57:10  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0015%
+2026-06-24 21:02:15  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 21:02:15  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0014%
+2026-06-24 21:07:24  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 21:07:24  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0012%
+2026-06-24 21:12:22  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 21:12:22  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0012%
+2026-06-24 21:12:39  INFO       ✅ Telegram -> BTC SUPER_BUY
+2026-06-24 21:17:46  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 21:17:46  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0012%
+2026-06-24 21:22:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 21:22:44  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0012%
+2026-06-24 21:29:03  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 21:29:03  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0012%
+2026-06-24 21:34:08  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 21:34:08  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0010%
+2026-06-24 21:39:11  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 21:39:11  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0009%
+2026-06-24 21:45:20  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 21:45:20  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0007%
+2026-06-24 21:45:29  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-24 21:45:29  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-24 21:45:33  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-24 21:45:33  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-24 21:45:33  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-24 21:45:33  INFO          Dados insuficientes para treinar.
+2026-06-24 21:50:26  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 21:50:26  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0006%
+2026-06-24 21:55:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 21:55:37  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0003%
+2026-06-24 22:00:36  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 22:00:36  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0002%
+2026-06-24 22:06:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-24 22:06:47  INFO     [GEMS] SUPER_BUY       BTC  funding=-0.0002%
+2026-06-25 08:28:59  INFO     ================================================================
+2026-06-25 08:28:59  INFO       MONTREZOR DAEMON UNIFICADO
+2026-06-25 08:28:59  INFO       Modo: ALL
+2026-06-25 08:28:59  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-06-25 08:28:59  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-06-25 08:28:59  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-06-25 08:28:59  INFO     ================================================================
+2026-06-25 08:28:59  INFO     MT5 conectado: XM Global MT5
+2026-06-25 08:30:13  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 08:30:13  INFO     [GEMS] BUY             BTC  funding=0.0039%
+2026-06-25 08:30:29  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 08:30:29  INFO     [PERF] 7d ok: AUDJPY#
+2026-06-25 08:30:30  INFO     [PERF] 7d ok: SILVER#
+2026-06-25 08:30:30  INFO     [PERF] 7d ok: CADJPY#
+2026-06-25 08:30:30  INFO     [PERF] 7d ok: GOLD#
+2026-06-25 08:30:30  INFO     [PERF] 7d ok: CHFJPY#
+2026-06-25 08:30:30  INFO     [PERF] 7d ok: CADJPY#
+2026-06-25 08:30:30  INFO     [PERF] 7d ok: AUDJPY#
+2026-06-25 08:30:30  INFO     [PERF] 7d ok: GBPUSD#
+2026-06-25 08:30:30  INFO     [PERF] 7d ok: AUDCHF#
+2026-06-25 08:30:30  INFO     [PERF] 24h ok: GBPAUD# VENDA @ 1.90605 -> 1.90636
+2026-06-25 08:30:30  INFO     [PERF] 24h ok: AUDCAD# COMPRA @ 0.98256 -> 0.98182
+2026-06-25 08:30:30  INFO     [PERF] 24h ok: AUDJPY# COMPRA @ 111.762 -> 111.58500
+2026-06-25 08:30:30  INFO     [PERF] 24h ok: GBPAUD# VENDA @ 1.9076499999999998 -> 1.90922
+2026-06-25 08:30:30  INFO     [PERF] 24h ok: AUDCAD# COMPRA @ 0.98184 -> 0.98156
+2026-06-25 08:30:30  INFO     [PERF] 24h ok: AUDJPY# COMPRA @ 111.653 -> 111.56100
+2026-06-25 08:30:30  INFO     [PERF] 24h ok: EURUSD# COMPRA @ 1.13297 -> 1.13372
+2026-06-25 08:30:30  INFO     [PERF] Arquivo de performance atualizado
+2026-06-25 08:31:09  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-25 08:31:09  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 08:31:09  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 08:31:13  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 08:31:13  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 08:31:13  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 08:31:13  INFO          Dados insuficientes para treinar.
+2026-06-25 08:36:09  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 08:36:09  INFO     [GEMS] BUY             BTC  funding=0.0041%
+2026-06-25 08:41:20  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 08:41:20  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-25 08:46:50  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-06-25 08:46:50  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-25 08:51:58  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 08:51:58  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-25 08:57:14  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 08:57:14  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-25 09:02:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 09:02:27  INFO     [GEMS] BUY             BTC  funding=0.0046%
+2026-06-25 09:07:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 09:07:37  INFO     [GEMS] BUY             BTC  funding=0.0048%
+2026-06-25 09:12:56  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 09:12:56  INFO     [GEMS] BUY             BTC  funding=0.0050%
+2026-06-25 09:18:07  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 09:18:07  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-25 09:23:29  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 09:23:29  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-25 09:28:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 09:28:48  INFO     [GEMS] BUY             BTC  funding=0.0055%
+2026-06-25 09:31:41  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 09:31:41  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 09:31:46  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 09:31:46  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 09:31:46  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 09:31:46  INFO          Dados insuficientes para treinar.
+2026-06-25 09:34:30  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-06-25 09:34:30  INFO     [GEMS] BUY             BTC  funding=0.0055%
+2026-06-25 09:34:47  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 09:40:21  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 09:40:21  INFO     [GEMS] BUY             BTC  funding=0.0060%
+2026-06-25 09:45:50  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 09:45:50  INFO     [GEMS] BUY             BTC  funding=0.0059%
+2026-06-25 09:51:39  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-06-25 09:51:39  INFO     [GEMS] BUY             BTC  funding=0.0059%
+2026-06-25 09:56:59  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-06-25 09:56:59  INFO     [GEMS] BUY             BTC  funding=0.0060%
+2026-06-25 10:02:19  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 10:02:19  INFO     [GEMS] BUY             BTC  funding=0.0059%
+2026-06-25 10:08:02  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 10:08:02  INFO     [GEMS] BUY             BTC  funding=0.0058%
+2026-06-25 10:13:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 10:13:12  INFO     [GEMS] BUY             BTC  funding=0.0060%
+2026-06-25 10:18:33  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-06-25 10:18:33  INFO     [GEMS] BUY             BTC  funding=0.0060%
+2026-06-25 10:23:54  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-06-25 10:23:54  INFO     [GEMS] BUY             BTC  funding=0.0063%
+2026-06-25 10:29:13  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-06-25 10:29:13  INFO     [GEMS] BUY             BTC  funding=0.0063%
+2026-06-25 10:31:19  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-25 10:32:38  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 10:32:38  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 10:32:43  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 10:32:43  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 10:32:43  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 10:32:43  INFO          Dados insuficientes para treinar.
+2026-06-25 10:35:40  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-06-25 10:35:40  INFO     [GEMS] BUY             BTC  funding=0.0063%
+2026-06-25 10:35:56  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 10:41:31  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-06-25 10:41:31  INFO     [GEMS] BUY             BTC  funding=0.0063%
+2026-06-25 10:47:35  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection timed out
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDatafeed.main:Connec
+2026-06-25 10:47:35  INFO     [GEMS] BUY             BTC  funding=0.0063%
+2026-06-25 10:53:37  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, data you access may be limited
+WARNING:tvDatafeed.main:you are using nologin method, 
+2026-06-25 10:53:37  INFO     [GEMS] BUY             BTC  funding=0.0063%
+2026-06-25 10:59:25  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 10:59:25  INFO     [GEMS] BUY             BTC  funding=0.0033%
+2026-06-25 11:05:35  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 11:05:35  INFO     [GEMS] BUY             BTC  funding=0.0028%
+2026-06-25 11:11:17  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 11:11:17  INFO     [GEMS] BUY             BTC  funding=0.0026%
+2026-06-25 11:16:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 11:16:47  INFO     [GEMS] BUY             BTC  funding=0.0017%
+2026-06-25 11:22:22  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 11:22:22  INFO     [GEMS] BUY             BTC  funding=0.0015%
+2026-06-25 11:27:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 11:27:51  INFO     [GEMS] BUY             BTC  funding=0.0012%
+2026-06-25 11:33:25  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 11:33:25  INFO     [GEMS] BUY             BTC  funding=0.0007%
+2026-06-25 11:33:34  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 11:33:34  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 11:33:38  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 11:33:38  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 11:33:38  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 11:33:38  INFO          Dados insuficientes para treinar.
+2026-06-25 11:39:05  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 11:39:05  INFO     [GEMS] BUY             BTC  funding=0.0010%
+2026-06-25 11:39:21  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 11:44:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 11:44:47  INFO     [GEMS] BUY             BTC  funding=0.0007%
+2026-06-25 11:50:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 11:50:12  INFO     [GEMS] BUY             BTC  funding=0.0006%
+2026-06-25 11:55:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 11:55:38  INFO     [GEMS] BUY             BTC  funding=0.0007%
+2026-06-25 12:01:06  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 12:01:06  INFO     [GEMS] BUY             BTC  funding=0.0006%
+2026-06-25 12:06:36  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 12:06:36  INFO     [GEMS] BUY             BTC  funding=0.0006%
+2026-06-25 12:11:55  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 12:11:55  INFO     [GEMS] BUY             BTC  funding=0.0009%
+2026-06-25 12:17:19  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 12:17:19  INFO     [GEMS] BUY             BTC  funding=0.0008%
+2026-06-25 12:22:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 12:22:51  INFO     [GEMS] BUY             BTC  funding=0.0010%
+2026-06-25 12:28:16  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 12:28:16  INFO     [GEMS] BUY             BTC  funding=0.0013%
+2026-06-25 12:31:01  INFO     [PERF] 7d ok: CHFJPY#
+2026-06-25 12:31:01  INFO     [PERF] 7d ok: GBPUSD#
+2026-06-25 12:31:01  INFO     [PERF] 7d ok: AUDJPY#
+2026-06-25 12:31:01  INFO     [PERF] 7d ok: USDCHF#
+2026-06-25 12:31:01  INFO     [PERF] 7d ok: SILVER#
+2026-06-25 12:31:01  INFO     [PERF] 7d ok: AUDCHF#
+2026-06-25 12:31:01  INFO     [PERF] Arquivo de performance atualizado
+2026-06-25 12:31:42  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-25 12:34:22  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-06-25 12:34:22  INFO     [GEMS] BUY             BTC  funding=0.0013%
+2026-06-25 12:34:32  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 12:34:32  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 12:34:37  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 12:34:37  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 12:34:37  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 12:34:37  INFO          Dados insuficientes para treinar.
+2026-06-25 12:39:54  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 12:39:54  INFO     [GEMS] BUY             BTC  funding=0.0013%
+2026-06-25 12:40:10  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 12:45:31  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 12:45:31  INFO     [GEMS] BUY             BTC  funding=0.0012%
+2026-06-25 12:50:57  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 12:50:57  INFO     [GEMS] BUY             BTC  funding=0.0013%
+2026-06-25 12:56:14  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 12:56:14  INFO     [GEMS] BUY             BTC  funding=0.0013%
+2026-06-25 13:01:33  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 13:01:33  INFO     [GEMS] BUY             BTC  funding=0.0016%
+2026-06-25 13:06:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 13:06:59  INFO     [GEMS] BUY             BTC  funding=0.0015%
+2026-06-25 13:12:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 13:12:18  INFO     [GEMS] BUY             BTC  funding=0.0019%
+2026-06-25 13:17:35  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 13:17:35  INFO     [GEMS] BUY             BTC  funding=0.0015%
+2026-06-25 13:22:54  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 13:22:54  INFO     [GEMS] BUY             BTC  funding=0.0015%
+2026-06-25 13:28:09  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 13:28:09  INFO     [GEMS] BUY             BTC  funding=0.0015%
+2026-06-25 13:33:46  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 13:33:46  INFO     [GEMS] BUY             BTC  funding=0.0013%
+2026-06-25 13:35:15  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 13:35:15  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 13:35:20  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 13:35:20  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 13:35:20  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 13:35:20  INFO          Dados insuficientes para treinar.
+2026-06-25 13:39:10  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 13:39:10  INFO     [GEMS] BUY             BTC  funding=0.0015%
+2026-06-25 13:44:23  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 13:44:23  INFO     [GEMS] BUY             BTC  funding=0.0016%
+2026-06-25 13:44:40  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 13:50:03  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 13:50:03  INFO     [GEMS] BUY             BTC  funding=0.0018%
+2026-06-25 13:55:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 13:55:18  INFO     [GEMS] BUY             BTC  funding=0.0019%
+2026-06-25 14:00:31  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 14:00:31  INFO     [GEMS] BUY             BTC  funding=0.0021%
+2026-06-25 14:05:46  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 14:05:46  INFO     [GEMS] BUY             BTC  funding=0.0021%
+2026-06-25 14:11:05  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 14:11:05  INFO     [GEMS] BUY             BTC  funding=0.0023%
+2026-06-25 14:16:15  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 14:16:15  INFO     [GEMS] BUY             BTC  funding=0.0028%
+2026-06-25 14:21:29  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 14:21:29  INFO     [GEMS] BUY             BTC  funding=0.0029%
+2026-06-25 14:26:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 14:26:37  INFO     [GEMS] BUY             BTC  funding=0.0030%
+2026-06-25 14:31:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 14:31:44  INFO     [GEMS] BUY             BTC  funding=0.0033%
+2026-06-25 14:32:31  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-25 14:36:13  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 14:36:13  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 14:36:18  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 14:36:18  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 14:36:18  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 14:36:18  INFO          Dados insuficientes para treinar.
+2026-06-25 14:37:33  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 14:37:33  INFO     [GEMS] BUY             BTC  funding=0.0034%
+2026-06-25 14:42:41  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 14:42:41  INFO     [GEMS] BUY             BTC  funding=0.0037%
+2026-06-25 14:47:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 14:47:44  INFO     [GEMS] BUY             BTC  funding=0.0036%
+2026-06-25 14:48:00  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 14:53:03  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 14:53:03  INFO     [GEMS] BUY             BTC  funding=0.0038%
+2026-06-25 14:58:08  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 14:58:08  INFO     [GEMS] BUY             BTC  funding=0.0040%
+2026-06-25 15:03:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 15:03:28  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-25 15:08:43  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 15:08:43  INFO     [GEMS] BUY             BTC  funding=0.0046%
+2026-06-25 15:13:50  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 15:13:50  INFO     [GEMS] BUY             BTC  funding=0.0047%
+2026-06-25 15:18:58  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 15:18:58  INFO     [GEMS] BUY             BTC  funding=0.0049%
+2026-06-25 15:24:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 15:24:18  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-25 15:29:25  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 15:29:25  INFO     [GEMS] BUY             BTC  funding=0.0056%
+2026-06-25 15:34:40  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 15:34:40  INFO     [GEMS] BUY             BTC  funding=0.0056%
+2026-06-25 15:37:13  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 15:37:13  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 15:37:19  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 15:37:19  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 15:37:19  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 15:37:19  INFO          Dados insuficientes para treinar.
+2026-06-25 15:39:50  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 15:39:50  INFO     [GEMS] BUY             BTC  funding=0.0055%
+2026-06-25 15:44:55  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 15:44:55  INFO     [GEMS] BUY             BTC  funding=0.0057%
+2026-06-25 15:50:01  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 15:50:01  INFO     [GEMS] BUY             BTC  funding=0.0059%
+2026-06-25 15:50:18  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 15:55:24  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 15:55:24  INFO     [GEMS] BUY             BTC  funding=0.0061%
+2026-06-25 16:00:34  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 16:00:34  INFO     [GEMS] BUY             BTC  funding=0.0061%
+2026-06-25 16:05:41  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 16:05:41  INFO     [GEMS] BUY             BTC  funding=0.0062%
+2026-06-25 16:10:49  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 16:10:49  INFO     [GEMS] BUY             BTC  funding=0.0063%
+2026-06-25 16:15:56  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 16:15:56  INFO     [GEMS] BUY             BTC  funding=0.0064%
+2026-06-25 16:20:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 16:20:59  INFO     [GEMS] BUY             BTC  funding=0.0066%
+2026-06-25 16:26:06  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 16:26:07  INFO     [GEMS] BUY             BTC  funding=0.0070%
+2026-06-25 16:31:19  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 16:31:19  INFO     [GEMS] BUY             BTC  funding=0.0072%
+2026-06-25 16:31:20  INFO     [PERF] 7d ok: AUDCHF#
+2026-06-25 16:31:20  INFO     [PERF] 7d ok: GBPUSD#
+2026-06-25 16:31:20  INFO     [PERF] 7d ok: CHFJPY#
+2026-06-25 16:31:20  INFO     [PERF] 7d ok: USDCHF#
+2026-06-25 16:31:20  INFO     [PERF] 7d ok: SILVER#
+2026-06-25 16:31:20  INFO     [PERF] Arquivo de performance atualizado
+2026-06-25 16:33:18  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-25 16:37:00  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 16:37:00  INFO     [GEMS] BUY             BTC  funding=0.0075%
+2026-06-25 16:38:20  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 16:38:20  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 16:38:25  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 16:38:25  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 16:38:25  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 16:38:25  INFO          Dados insuficientes para treinar.
+2026-06-25 16:42:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 16:42:12  INFO     [GEMS] BUY             BTC  funding=0.0078%
+2026-06-25 16:47:24  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 16:47:24  INFO     [GEMS] BUY             BTC  funding=0.0077%
+2026-06-25 16:52:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 16:52:38  INFO     [GEMS] BUY             BTC  funding=0.0078%
+2026-06-25 16:52:54  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 16:57:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 16:57:59  INFO     [GEMS] BUY             BTC  funding=0.0081%
+2026-06-25 17:03:21  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 17:03:21  INFO     [GEMS] BUY             BTC  funding=0.0083%
+2026-06-25 17:08:26  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 17:08:26  INFO     [GEMS] BUY             BTC  funding=0.0084%
+2026-06-25 17:14:32  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 17:14:32  INFO     [GEMS] BUY             BTC  funding=0.0084%
+2026-06-25 17:20:43  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 17:20:43  INFO     [GEMS] BUY             BTC  funding=0.0086%
+2026-06-25 17:25:40  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 17:25:40  INFO     [GEMS] BUY             BTC  funding=0.0087%
+2026-06-25 17:31:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 17:31:51  INFO     [GEMS] BUY             BTC  funding=0.0088%
+2026-06-25 17:36:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 17:36:48  INFO     [GEMS] BUY             BTC  funding=0.0087%
+2026-06-25 17:39:20  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 17:39:20  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 17:39:25  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 17:39:25  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 17:39:25  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 17:39:25  INFO          Dados insuficientes para treinar.
+2026-06-25 17:41:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 17:41:48  INFO     [GEMS] BUY             BTC  funding=0.0087%
+2026-06-25 17:48:01  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 17:48:01  INFO     [GEMS] BUY             BTC  funding=0.0090%
+2026-06-25 17:54:03  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 17:54:03  INFO     [GEMS] BUY             BTC  funding=0.0089%
+2026-06-25 17:54:19  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 17:59:19  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 17:59:19  INFO     [GEMS] BUY             BTC  funding=0.0090%
+2026-06-25 18:05:32  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 18:05:32  INFO     [GEMS] BUY             BTC  funding=0.0090%
+2026-06-25 18:11:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 18:11:38  INFO     [GEMS] BUY             BTC  funding=0.0090%
+2026-06-25 18:17:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 18:17:39  INFO     [GEMS] BUY             BTC  funding=0.0092%
+2026-06-25 18:23:40  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 18:23:40  INFO     [GEMS] BUY             BTC  funding=0.0091%
+2026-06-25 18:29:40  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 18:29:40  INFO     [GEMS] BUY             BTC  funding=0.0093%
+2026-06-25 18:33:57  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-25 18:35:16  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 18:35:16  INFO     [GEMS] BUY             BTC  funding=0.0094%
+2026-06-25 18:40:06  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 18:40:06  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 18:40:11  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 18:40:11  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 18:40:11  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 18:40:11  INFO          Dados insuficientes para treinar.
+2026-06-25 18:41:24  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 18:41:24  INFO     [GEMS] BUY             BTC  funding=0.0095%
+2026-06-25 18:47:36  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 18:47:36  INFO     [GEMS] BUY             BTC  funding=0.0095%
+2026-06-25 18:52:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 18:52:45  INFO     [GEMS] BUY             BTC  funding=0.0095%
+2026-06-25 18:58:54  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 18:58:54  INFO     [GEMS] BUY             BTC  funding=0.0095%
+2026-06-25 18:59:11  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 19:04:20  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 19:04:20  INFO     [GEMS] BUY             BTC  funding=0.0093%
+2026-06-25 19:09:16  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 19:09:16  INFO     [GEMS] BUY             BTC  funding=0.0089%
+2026-06-25 19:15:31  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 19:15:31  INFO     [GEMS] BUY             BTC  funding=0.0087%
+2026-06-25 19:20:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 19:20:37  INFO     [GEMS] BUY             BTC  funding=0.0086%
+2026-06-25 19:25:30  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 19:25:30  INFO     [GEMS] BUY             BTC  funding=0.0085%
+2026-06-25 19:31:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 19:31:48  INFO     [GEMS] BUY             BTC  funding=0.0082%
+2026-06-25 19:36:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 19:36:47  INFO     [GEMS] BUY             BTC  funding=0.0081%
+2026-06-25 19:40:29  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 19:40:29  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 19:40:33  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 19:40:33  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 19:40:33  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 19:40:33  INFO          Dados insuficientes para treinar.
+2026-06-25 19:41:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 19:41:47  INFO     [GEMS] BUY             BTC  funding=0.0080%
+2026-06-25 19:47:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 19:47:59  INFO     [GEMS] BUY             BTC  funding=0.0078%
+2026-06-25 19:54:01  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 19:54:01  INFO     [GEMS] BUY             BTC  funding=0.0075%
+2026-06-25 20:00:20  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 20:00:20  INFO     [GEMS] BUY             BTC  funding=0.0074%
+2026-06-25 20:00:22  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 20:05:19  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 20:05:19  INFO     [GEMS] BUY             BTC  funding=0.0073%
+2026-06-25 20:11:20  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 20:11:20  INFO     [GEMS] BUY             BTC  funding=0.0068%
+2026-06-25 20:17:25  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 20:17:25  INFO     [GEMS] BUY             BTC  funding=0.0067%
+2026-06-25 20:23:30  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 20:23:30  INFO     [GEMS] BUY             BTC  funding=0.0068%
+2026-06-25 20:29:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 20:29:39  INFO     [GEMS] BUY             BTC  funding=0.0065%
+2026-06-25 20:32:08  INFO     [PERF] 7d ok: AUDCHF#
+2026-06-25 20:32:08  INFO     [PERF] 7d ok: GBPUSD#
+2026-06-25 20:32:08  INFO     [PERF] 7d ok: USDCHF#
+2026-06-25 20:32:08  INFO     [PERF] 7d ok: SILVER#
+2026-06-25 20:32:08  INFO     [PERF] 7d ok: EURCHF#
+2026-06-25 20:32:08  INFO     [PERF] 7d ok: CHFJPY#
+2026-06-25 20:32:08  INFO     [PERF] Arquivo de performance atualizado
+2026-06-25 20:33:59  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-25 20:35:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 20:35:18  INFO     [GEMS] BUY             BTC  funding=0.0063%
+2026-06-25 20:40:23  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 20:40:24  INFO     [GEMS] BUY             BTC  funding=0.0061%
+2026-06-25 20:41:40  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 20:41:40  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 20:41:45  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 20:41:45  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 20:41:45  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 20:41:45  INFO          Dados insuficientes para treinar.
+2026-06-25 20:45:17  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 20:45:17  INFO     [GEMS] BUY             BTC  funding=0.0058%
+2026-06-25 20:51:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 20:51:44  INFO     [GEMS] BUY             BTC  funding=0.0054%
+2026-06-25 20:56:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 20:56:37  INFO     [GEMS] BUY             BTC  funding=0.0054%
+2026-06-25 21:02:57  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 21:02:57  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-25 21:03:13  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 21:08:22  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 21:08:22  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-25 21:13:34  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 21:13:34  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-25 21:18:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 21:18:45  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-25 21:23:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 21:23:44  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-25 21:29:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 21:29:52  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-25 21:35:00  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 21:35:00  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-25 21:40:02  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 21:40:02  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-25 21:42:34  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 21:42:34  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 21:42:39  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 21:42:39  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 21:42:39  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 21:42:39  INFO          Dados insuficientes para treinar.
+2026-06-25 21:45:11  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 21:45:11  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-25 21:50:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 21:50:12  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-25 21:56:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 21:56:28  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-25 22:01:43  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 22:01:43  INFO     [GEMS] BUY             BTC  funding=0.0049%
+2026-06-25 22:06:50  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 22:06:50  INFO     [GEMS] BUY             BTC  funding=0.0048%
+2026-06-25 22:07:07  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 22:12:11  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 22:12:11  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-25 22:17:14  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 22:17:14  INFO     [GEMS] BUY             BTC  funding=0.0049%
+2026-06-25 22:23:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 22:23:28  INFO     [GEMS] BUY             BTC  funding=0.0050%
+2026-06-25 22:28:26  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 22:28:26  INFO     [GEMS] BUY             BTC  funding=0.0048%
+2026-06-25 22:33:36  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 22:33:36  INFO     [GEMS] BUY             BTC  funding=0.0046%
+2026-06-25 22:34:21  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-25 22:39:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 22:39:27  INFO     [GEMS] BUY             BTC  funding=0.0048%
+2026-06-25 22:43:19  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-25 22:43:19  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-25 22:43:25  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-25 22:43:25  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-25 22:43:25  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-25 22:43:25  INFO          Dados insuficientes para treinar.
+2026-06-25 22:44:40  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 22:44:40  INFO     [GEMS] BUY             BTC  funding=0.0049%
+2026-06-25 22:49:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 22:49:47  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-25 22:54:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 22:54:51  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-25 22:59:50  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 22:59:50  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-25 23:04:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 23:04:52  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-25 23:09:53  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 23:09:53  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-25 23:10:10  INFO       ✅ Telegram -> BTC BUY
+2026-06-25 23:15:22  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 23:15:22  INFO     [GEMS] BUY             BTC  funding=0.0046%
+2026-06-25 23:20:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 23:20:38  INFO     [GEMS] BUY             BTC  funding=0.0041%
+2026-06-25 23:25:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-25 23:25:45  INFO     [GEMS] BUY             BTC  funding=0.0035%
+2026-06-26 09:23:48  INFO     ================================================================
+2026-06-26 09:23:48  INFO       MONTREZOR DAEMON UNIFICADO
+2026-06-26 09:23:48  INFO       Modo: ALL
+2026-06-26 09:23:48  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-06-26 09:23:48  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-06-26 09:23:48  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-06-26 09:23:48  INFO     ================================================================
+2026-06-26 09:23:48  INFO     MT5 conectado: XM Global MT5
+2026-06-26 09:25:06  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 09:25:07  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-26 09:25:23  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 09:25:23  INFO     [PERF] 7d ok: AUDCHF#
+2026-06-26 09:25:23  INFO     [PERF] 7d ok: GBPUSD#
+2026-06-26 09:25:23  INFO     [PERF] 7d ok: USDCHF#
+2026-06-26 09:25:23  INFO     [PERF] 7d ok: SILVER#
+2026-06-26 09:25:23  INFO     [PERF] Arquivo de performance atualizado
+2026-06-26 09:26:06  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-26 09:26:06  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 09:26:06  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 09:26:09  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 09:26:09  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 09:26:09  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 09:26:09  INFO          Dados insuficientes para treinar.
+2026-06-26 09:30:31  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 09:30:31  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-26 09:36:08  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 09:36:08  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-26 09:41:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 09:41:27  INFO     [GEMS] BUY             BTC  funding=0.0039%
+2026-06-26 09:46:33  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 09:46:33  INFO     [GEMS] BUY             BTC  funding=0.0037%
+2026-06-26 09:51:49  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 09:51:49  INFO     [GEMS] BUY             BTC  funding=0.0038%
+2026-06-26 09:56:55  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 09:56:55  INFO     [GEMS] BUY             BTC  funding=0.0039%
+2026-06-26 10:02:22  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 10:02:22  INFO     [GEMS] BUY             BTC  funding=0.0040%
+2026-06-26 10:07:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 10:07:45  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-26 10:12:58  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 10:12:58  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-26 10:18:09  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 10:18:09  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-26 10:23:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 10:23:39  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-26 10:26:18  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 10:26:18  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 10:26:23  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 10:26:23  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 10:26:23  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 10:26:23  INFO          Dados insuficientes para treinar.
+2026-06-26 10:29:05  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 10:29:05  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-26 10:29:21  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 10:34:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 10:34:52  INFO     [GEMS] BUY             BTC  funding=0.0043%
+2026-06-26 10:40:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 10:40:28  INFO     [GEMS] BUY             BTC  funding=0.0046%
+2026-06-26 10:45:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 10:45:48  INFO     [GEMS] BUY             BTC  funding=0.0048%
+2026-06-26 10:51:09  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 10:51:09  INFO     [GEMS] BUY             BTC  funding=0.0048%
+2026-06-26 10:56:31  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 10:56:31  INFO     [GEMS] BUY             BTC  funding=0.0050%
+2026-06-26 11:01:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 11:01:48  INFO     [GEMS] BUY             BTC  funding=0.0054%
+2026-06-26 11:07:05  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 11:07:05  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-26 11:12:23  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 11:12:23  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-26 11:17:35  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 11:17:35  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-26 11:22:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 11:22:44  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-26 11:27:15  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-26 11:27:15  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 11:27:15  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 11:27:20  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 11:27:20  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 11:27:20  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 11:27:20  INFO          Dados insuficientes para treinar.
+2026-06-26 11:28:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 11:28:37  INFO     [GEMS] BUY             BTC  funding=0.0057%
+2026-06-26 11:33:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 11:33:48  INFO     [GEMS] BUY             BTC  funding=0.0056%
+2026-06-26 11:34:04  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 11:39:14  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 11:39:14  INFO     [GEMS] BUY             BTC  funding=0.0055%
+2026-06-26 11:44:26  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 11:44:26  INFO     [GEMS] BUY             BTC  funding=0.0056%
+2026-06-26 11:49:33  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 11:49:33  INFO     [GEMS] BUY             BTC  funding=0.0057%
+2026-06-26 11:54:54  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 11:54:54  INFO     [GEMS] BUY             BTC  funding=0.0057%
+2026-06-26 12:00:21  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 12:00:21  INFO     [GEMS] BUY             BTC  funding=0.0058%
+2026-06-26 12:05:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 12:05:44  INFO     [GEMS] BUY             BTC  funding=0.0060%
+2026-06-26 12:10:56  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 12:10:56  INFO     [GEMS] BUY             BTC  funding=0.0062%
+2026-06-26 12:16:17  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 12:16:17  INFO     [GEMS] BUY             BTC  funding=0.0062%
+2026-06-26 12:21:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 12:21:27  INFO     [GEMS] BUY             BTC  funding=0.0063%
+2026-06-26 12:26:41  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 12:26:41  INFO     [GEMS] BUY             BTC  funding=0.0067%
+2026-06-26 12:26:50  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 12:26:50  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 12:26:54  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 12:26:54  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 12:26:54  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 12:26:54  INFO          Dados insuficientes para treinar.
+2026-06-26 12:32:03  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 12:32:03  INFO     [GEMS] BUY             BTC  funding=0.0068%
+2026-06-26 12:37:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 12:37:12  INFO     [GEMS] BUY             BTC  funding=0.0070%
+2026-06-26 12:37:28  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 12:42:40  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 12:42:40  INFO     [GEMS] BUY             BTC  funding=0.0073%
+2026-06-26 12:47:55  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 12:47:55  INFO     [GEMS] BUY             BTC  funding=0.0072%
+2026-06-26 12:53:08  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 12:53:08  INFO     [GEMS] BUY             BTC  funding=0.0072%
+2026-06-26 12:58:21  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 12:58:21  INFO     [GEMS] BUY             BTC  funding=0.0073%
+2026-06-26 13:03:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 13:03:39  INFO     [GEMS] BUY             BTC  funding=0.0074%
+2026-06-26 13:09:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 13:09:18  INFO     [GEMS] BUY             BTC  funding=0.0073%
+2026-06-26 13:14:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 13:14:37  INFO     [GEMS] BUY             BTC  funding=0.0072%
+2026-06-26 13:19:41  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 13:19:41  INFO     [GEMS] BUY             BTC  funding=0.0074%
+2026-06-26 13:25:00  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-06-26 13:25:00  INFO     [GEMS] BUY             BTC  funding=0.0074%
+2026-06-26 13:26:17  INFO     [PERF] 7d ok: GBPAUD#
+2026-06-26 13:26:17  INFO     [PERF] 7d ok: EURCHF#
+2026-06-26 13:26:17  INFO     [PERF] Arquivo de performance atualizado
+2026-06-26 13:28:13  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-26 13:28:13  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 13:28:13  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 13:28:18  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 13:28:18  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 13:28:18  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 13:28:18  INFO          Dados insuficientes para treinar.
+2026-06-26 13:30:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 13:30:47  INFO     [GEMS] BUY             BTC  funding=0.0076%
+2026-06-26 13:35:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 13:35:47  INFO     [GEMS] BUY             BTC  funding=0.0077%
+2026-06-26 13:40:46  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 13:40:46  INFO     [GEMS] BUY             BTC  funding=0.0077%
+2026-06-26 13:40:47  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 13:46:58  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 13:46:58  INFO     [GEMS] BUY             BTC  funding=0.0076%
+2026-06-26 13:53:01  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 13:53:01  INFO     [GEMS] BUY             BTC  funding=0.0077%
+2026-06-26 13:59:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 13:59:12  INFO     [GEMS] BUY             BTC  funding=0.0077%
+2026-06-26 14:04:11  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 14:04:11  INFO     [GEMS] BUY             BTC  funding=0.0079%
+2026-06-26 14:10:17  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 14:10:17  INFO     [GEMS] BUY             BTC  funding=0.0083%
+2026-06-26 14:16:26  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 14:16:27  INFO     [GEMS] BUY             BTC  funding=0.0084%
+2026-06-26 14:22:32  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 14:22:32  INFO     [GEMS] BUY             BTC  funding=0.0082%
+2026-06-26 14:28:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 14:28:39  INFO     [GEMS] BUY             BTC  funding=0.0082%
+2026-06-26 14:28:44  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 14:28:44  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 14:28:49  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 14:28:49  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 14:28:49  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 14:28:49  INFO          Dados insuficientes para treinar.
+2026-06-26 14:33:42  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 14:33:42  INFO     [GEMS] BUY             BTC  funding=0.0084%
+2026-06-26 14:39:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 14:39:52  INFO     [GEMS] BUY             BTC  funding=0.0083%
+2026-06-26 14:45:55  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 14:45:55  INFO     [GEMS] BUY             BTC  funding=0.0084%
+2026-06-26 14:46:12  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 14:51:05  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 14:51:05  INFO     [GEMS] BUY             BTC  funding=0.0084%
+2026-06-26 14:57:08  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 14:57:08  INFO     [GEMS] BUY             BTC  funding=0.0084%
+2026-06-26 15:03:20  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 15:03:20  INFO     [GEMS] BUY             BTC  funding=0.0085%
+2026-06-26 15:09:23  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 15:09:23  INFO     [GEMS] BUY             BTC  funding=0.0086%
+2026-06-26 15:15:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 15:15:28  INFO     [GEMS] BUY             BTC  funding=0.0086%
+2026-06-26 15:21:35  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 15:21:35  INFO     [GEMS] BUY             BTC  funding=0.0085%
+2026-06-26 15:27:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 15:27:45  INFO     [GEMS] BUY             BTC  funding=0.0086%
+2026-06-26 15:28:26  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-26 15:29:40  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 15:29:40  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 15:29:45  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 15:29:45  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 15:29:45  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 15:29:45  INFO          Dados insuficientes para treinar.
+2026-06-26 15:33:26  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 15:33:26  INFO     [GEMS] BUY             BTC  funding=0.0084%
+2026-06-26 15:39:30  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 15:39:30  INFO     [GEMS] BUY             BTC  funding=0.0086%
+2026-06-26 15:45:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 15:45:37  INFO     [GEMS] BUY             BTC  funding=0.0086%
+2026-06-26 15:51:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 15:51:51  INFO     [GEMS] BUY             BTC  funding=0.0086%
+2026-06-26 15:52:09  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 15:57:02  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 15:57:02  INFO     [GEMS] BUY             BTC  funding=0.0088%
+2026-06-26 16:03:16  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 16:03:16  INFO     [GEMS] BUY             BTC  funding=0.0091%
+2026-06-26 16:09:21  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 16:09:21  INFO     [GEMS] BUY             BTC  funding=0.0094%
+2026-06-26 16:15:26  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 16:15:26  INFO     [GEMS] BUY             BTC  funding=0.0096%
+2026-06-26 16:21:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 16:21:28  INFO     [GEMS] BUY             BTC  funding=0.0095%
+2026-06-26 16:27:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 16:27:45  INFO     [GEMS] BUY             BTC  funding=0.0094%
+2026-06-26 16:30:13  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 16:30:13  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 16:30:19  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 16:30:19  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 16:30:19  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 16:30:19  INFO          Dados insuficientes para treinar.
+2026-06-26 16:32:42  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 16:32:42  INFO     [GEMS] BUY             BTC  funding=0.0096%
+2026-06-26 16:38:53  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 16:38:53  INFO     [GEMS] BUY             BTC  funding=0.0096%
+2026-06-26 16:44:55  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 16:44:55  INFO     [GEMS] BUY             BTC  funding=0.0097%
+2026-06-26 16:51:02  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 16:51:02  INFO     [GEMS] BUY             BTC  funding=0.0097%
+2026-06-26 16:56:01  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 16:56:01  INFO     [GEMS] BUY             BTC  funding=0.0098%
+2026-06-26 16:56:18  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 17:01:25  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 17:01:25  INFO     [GEMS] BUY             BTC  funding=0.0097%
+2026-06-26 17:06:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 17:06:27  INFO     [GEMS] BUY             BTC  funding=0.0098%
+2026-06-26 17:12:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 17:12:27  INFO     [GEMS] BUY             BTC  funding=0.0097%
+2026-06-26 17:19:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 17:19:45  INFO     [GEMS] BUY             BTC  funding=0.0098%
+2026-06-26 17:25:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 17:25:45  INFO     [GEMS] BUY             BTC  funding=0.0099%
+2026-06-26 17:26:59  INFO     [PERF] 7d ok: EURCHF#
+2026-06-26 17:26:59  INFO     [PERF] 7d ok: GBPAUD#
+2026-06-26 17:26:59  INFO     [PERF] Arquivo de performance atualizado
+2026-06-26 17:28:49  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-26 17:31:26  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 17:31:26  INFO     [GEMS] BUY             BTC  funding=0.0099%
+2026-06-26 17:31:32  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 17:31:32  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 17:31:36  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 17:31:36  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 17:31:36  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 17:31:36  INFO          Dados insuficientes para treinar.
+2026-06-26 17:36:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 17:36:27  INFO     [GEMS] BUY             BTC  funding=0.0097%
+2026-06-26 17:42:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 17:42:37  INFO     [GEMS] BUY             BTC  funding=0.0097%
+2026-06-26 17:48:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 17:48:37  INFO     [GEMS] BUY             BTC  funding=0.0096%
+2026-06-26 17:54:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 17:54:52  INFO     [GEMS] BUY             BTC  funding=0.0098%
+2026-06-26 17:59:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 17:59:51  INFO     [GEMS] BUY             BTC  funding=0.0097%
+2026-06-26 17:59:52  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 18:05:41  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 18:05:41  INFO     [GEMS] BUY             BTC  funding=0.0096%
+2026-06-26 18:11:34  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 18:11:34  INFO     [GEMS] BUY             BTC  funding=0.0096%
+2026-06-26 18:17:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 18:17:28  INFO     [GEMS] BUY             BTC  funding=0.0095%
+2026-06-26 18:23:21  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 18:23:21  INFO     [GEMS] BUY             BTC  funding=0.0098%
+2026-06-26 18:29:13  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 18:29:13  INFO     [GEMS] BUY             BTC  funding=0.0100%
+2026-06-26 18:31:37  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 18:31:37  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 18:31:42  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 18:31:42  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 18:31:42  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 18:31:42  INFO          Dados insuficientes para treinar.
+2026-06-26 18:35:22  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 18:35:22  INFO     [GEMS] BUY             BTC  funding=0.0100%
+2026-06-26 18:41:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 18:41:12  INFO     [GEMS] BUY             BTC  funding=0.0100%
+2026-06-26 18:47:15  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-06-26 18:47:15  INFO     [GEMS] BUY             BTC  funding=0.0100%
+2026-06-26 18:53:08  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 18:53:08  INFO     [GEMS] BUY             BTC  funding=0.0100%
+2026-06-26 18:59:03  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 18:59:03  INFO     [GEMS] BUY             BTC  funding=0.0100%
+2026-06-26 19:04:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 19:04:59  INFO     [GEMS] BUY             BTC  funding=0.0100%
+2026-06-26 19:05:16  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 19:10:01  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 19:10:01  INFO     [GEMS] BUY             BTC  funding=0.0096%
+2026-06-26 19:15:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 19:15:59  INFO     [GEMS] BUY             BTC  funding=0.0095%
+2026-06-26 19:21:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 19:21:51  INFO     [GEMS] BUY             BTC  funding=0.0095%
+2026-06-26 19:27:53  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 19:27:54  INFO     [GEMS] BUY             BTC  funding=0.0092%
+2026-06-26 19:29:42  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-26 19:32:07  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 19:32:07  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 19:32:12  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 19:32:12  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 19:32:12  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 19:32:12  INFO          Dados insuficientes para treinar.
+2026-06-26 19:33:23  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 19:33:23  INFO     [GEMS] BUY             BTC  funding=0.0090%
+2026-06-26 19:39:24  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 19:39:24  INFO     [GEMS] BUY             BTC  funding=0.0087%
+2026-06-26 19:45:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 19:45:18  INFO     [GEMS] BUY             BTC  funding=0.0086%
+2026-06-26 19:51:17  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 19:51:18  INFO     [GEMS] BUY             BTC  funding=0.0083%
+2026-06-26 19:57:11  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 19:57:11  INFO     [GEMS] BUY             BTC  funding=0.0083%
+2026-06-26 20:03:07  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 20:03:07  INFO     [GEMS] BUY             BTC  funding=0.0078%
+2026-06-26 20:08:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 20:08:51  INFO     [GEMS] BUY             BTC  funding=0.0076%
+2026-06-26 20:09:08  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 20:14:57  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-06-26 20:14:57  INFO     [GEMS] BUY             BTC  funding=0.0071%
+2026-06-26 20:20:43  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 20:20:43  INFO     [GEMS] BUY             BTC  funding=0.0066%
+2026-06-26 20:26:30  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 20:26:30  INFO     [GEMS] BUY             BTC  funding=0.0065%
+2026-06-26 20:32:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 20:32:18  INFO     [GEMS] BUY             BTC  funding=0.0059%
+2026-06-26 20:32:23  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 20:32:23  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 20:32:27  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 20:32:27  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 20:32:27  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 20:32:27  INFO          Dados insuficientes para treinar.
+2026-06-26 20:38:07  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 20:38:07  INFO     [GEMS] BUY             BTC  funding=0.0058%
+2026-06-26 20:43:49  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 20:43:49  INFO     [GEMS] BUY             BTC  funding=0.0058%
+2026-06-26 20:49:33  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 20:49:33  INFO     [GEMS] BUY             BTC  funding=0.0056%
+2026-06-26 20:55:24  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 20:55:24  INFO     [GEMS] BUY             BTC  funding=0.0054%
+2026-06-26 21:01:02  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 21:01:02  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-26 21:06:46  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 21:06:46  INFO     [GEMS] BUY             BTC  funding=0.0050%
+2026-06-26 21:12:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 21:12:27  INFO     [GEMS] BUY             BTC  funding=0.0048%
+2026-06-26 21:12:43  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 21:18:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 21:18:28  INFO     [GEMS] BUY             BTC  funding=0.0045%
+2026-06-26 21:24:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 21:24:12  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-26 21:27:36  INFO     [PERF] 30d ok: GOLD# -> fechado
+2026-06-26 21:27:36  INFO     [PERF] 7d ok: EURCHF#
+2026-06-26 21:27:36  INFO     [PERF] 7d ok: GBPAUD#
+2026-06-26 21:27:36  INFO     [PERF] Arquivo de performance atualizado
+2026-06-26 21:30:06  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 21:30:06  INFO     [GEMS] BUY             BTC  funding=0.0041%
+2026-06-26 21:30:50  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-26 21:33:01  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 21:33:01  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 21:33:06  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 21:33:06  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 21:33:06  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 21:33:06  INFO          Dados insuficientes para treinar.
+2026-06-26 21:35:24  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 21:35:24  INFO     [GEMS] BUY             BTC  funding=0.0038%
+2026-06-26 21:41:05  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 21:41:05  INFO     [GEMS] BUY             BTC  funding=0.0039%
+2026-06-26 21:46:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 21:46:59  INFO     [GEMS] BUY             BTC  funding=0.0039%
+2026-06-26 21:52:42  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 21:52:42  INFO     [GEMS] BUY             BTC  funding=0.0041%
+2026-06-26 21:58:32  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 21:58:32  INFO     [GEMS] BUY             BTC  funding=0.0041%
+2026-06-26 22:04:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 22:04:18  INFO     [GEMS] BUY             BTC  funding=0.0041%
+2026-06-26 22:10:04  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 22:10:04  INFO     [GEMS] BUY             BTC  funding=0.0040%
+2026-06-26 22:15:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 22:15:52  INFO     [GEMS] BUY             BTC  funding=0.0040%
+2026-06-26 22:16:08  INFO       ✅ Telegram -> BTC BUY
+2026-06-26 22:21:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 22:21:51  INFO     [GEMS] BUY             BTC  funding=0.0041%
+2026-06-26 22:27:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 22:27:48  INFO     [GEMS] BUY             BTC  funding=0.0041%
+2026-06-26 22:33:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 22:33:39  INFO     [GEMS] BUY             BTC  funding=0.0040%
+2026-06-26 22:33:44  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-26 22:33:44  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-26 22:33:48  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-26 22:33:48  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-26 22:33:48  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-26 22:33:48  INFO          Dados insuficientes para treinar.
+2026-06-26 22:38:43  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 22:38:43  INFO     [GEMS] BUY             BTC  funding=0.0041%
+2026-06-26 22:44:37  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-06-26 22:44:37  INFO     [GEMS] BUY             BTC  funding=0.0041%
+2026-06-26 22:50:23  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 22:50:23  INFO     [GEMS] BUY             BTC  funding=0.0043%
+2026-06-26 22:56:08  INFO     [GEMS] macro_timing.json atualizado
+2026-06-26 22:56:08  INFO     [GEMS] BUY             BTC  funding=0.0043%
+2026-06-27 08:51:13  INFO     ================================================================
+2026-06-27 08:51:13  INFO       MONTREZOR DAEMON UNIFICADO
+2026-06-27 08:51:13  INFO       Modo: ALL
+2026-06-27 08:51:13  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-06-27 08:51:13  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-06-27 08:51:13  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-06-27 08:51:13  INFO     ================================================================
+2026-06-27 08:51:13  INFO     MT5 conectado: XM Global MT5
+2026-06-27 08:52:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 08:52:37  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-27 08:52:53  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 08:53:33  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-27 08:53:33  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 08:53:33  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 08:53:36  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 08:53:36  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 08:53:36  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 08:53:36  INFO          Dados insuficientes para treinar.
+2026-06-27 08:56:56  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 08:56:56  INFO     [GEMS] BUY             BTC  funding=0.0049%
+2026-06-27 09:02:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 09:02:51  INFO     [GEMS] BUY             BTC  funding=0.0047%
+2026-06-27 09:08:33  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 09:08:33  INFO     [GEMS] BUY             BTC  funding=0.0046%
+2026-06-27 09:14:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 09:14:12  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 09:19:49  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 09:19:49  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 09:25:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 09:25:28  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 09:31:05  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 09:31:05  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-27 09:36:43  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 09:36:43  INFO     [GEMS] BUY             BTC  funding=0.0041%
+2026-06-27 09:42:29  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 09:42:29  INFO     [GEMS] BUY             BTC  funding=0.0039%
+2026-06-27 09:48:14  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 09:48:14  INFO     [GEMS] BUY             BTC  funding=0.0037%
+2026-06-27 09:53:37  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 09:53:37  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 09:53:41  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 09:53:41  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 09:53:41  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 09:53:41  INFO          Dados insuficientes para treinar.
+2026-06-27 09:54:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 09:54:39  INFO     [GEMS] BUY             BTC  funding=0.0039%
+2026-06-27 09:54:55  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 09:59:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 09:59:44  INFO     [GEMS] BUY             BTC  funding=0.0040%
+2026-06-27 10:05:19  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 10:05:19  INFO     [GEMS] BUY             BTC  funding=0.0038%
+2026-06-27 10:11:10  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+WARNING:tvDat
+2026-06-27 10:11:10  INFO     [GEMS] BUY             BTC  funding=0.0038%
+2026-06-27 10:16:46  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 10:16:46  INFO     [GEMS] BUY             BTC  funding=0.0034%
+2026-06-27 10:22:30  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 10:22:30  INFO     [GEMS] BUY             BTC  funding=0.0031%
+2026-06-27 10:28:14  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 10:28:14  INFO     [GEMS] BUY             BTC  funding=0.0030%
+2026-06-27 10:33:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 10:33:47  INFO     [GEMS] BUY             BTC  funding=0.0029%
+2026-06-27 10:39:31  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 10:39:31  INFO     [GEMS] BUY             BTC  funding=0.0029%
+2026-06-27 10:45:13  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 10:45:13  INFO     [GEMS] BUY             BTC  funding=0.0029%
+2026-06-27 10:50:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 10:50:59  INFO     [GEMS] BUY             BTC  funding=0.0030%
+2026-06-27 10:53:34  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-27 10:54:30  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 10:54:30  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 10:54:33  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 10:54:33  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 10:54:33  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 10:54:33  INFO          Dados insuficientes para treinar.
+2026-06-27 10:56:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 10:56:51  INFO     [GEMS] BUY             BTC  funding=0.0029%
+2026-06-27 10:57:07  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 11:01:46  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 11:01:46  INFO     [GEMS] BUY             BTC  funding=0.0030%
+2026-06-27 11:07:19  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 11:07:19  INFO     [GEMS] BUY             BTC  funding=0.0028%
+2026-06-27 11:12:57  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 11:12:57  INFO     [GEMS] BUY             BTC  funding=0.0030%
+2026-06-27 11:18:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 11:18:44  INFO     [GEMS] BUY             BTC  funding=0.0030%
+2026-06-27 11:24:29  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 11:24:29  INFO     [GEMS] BUY             BTC  funding=0.0028%
+2026-06-27 11:30:14  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 11:30:14  INFO     [GEMS] BUY             BTC  funding=0.0026%
+2026-06-27 11:35:49  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 11:35:49  INFO     [GEMS] BUY             BTC  funding=0.0025%
+2026-06-27 11:41:25  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 11:41:25  INFO     [GEMS] BUY             BTC  funding=0.0024%
+2026-06-27 11:47:22  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 11:47:22  INFO     [GEMS] BUY             BTC  funding=0.0026%
+2026-06-27 11:53:58  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 11:53:58  INFO     [GEMS] BUY             BTC  funding=0.0027%
+2026-06-27 11:54:59  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 11:54:59  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 11:55:02  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 11:55:02  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 11:55:02  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 11:55:02  INFO          Dados insuficientes para treinar.
+2026-06-27 11:58:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 11:58:38  INFO     [GEMS] BUY             BTC  funding=0.0028%
+2026-06-27 11:58:55  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 12:04:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 12:04:37  INFO     [GEMS] BUY             BTC  funding=0.0028%
+2026-06-27 12:09:14  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 12:09:14  INFO     [GEMS] BUY             BTC  funding=0.0028%
+2026-06-27 12:14:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 12:14:59  INFO     [GEMS] BUY             BTC  funding=0.0031%
+2026-06-27 12:21:30  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 12:21:30  INFO     [GEMS] BUY             BTC  funding=0.0032%
+2026-06-27 12:26:08  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 12:26:08  INFO     [GEMS] BUY             BTC  funding=0.0032%
+2026-06-27 12:31:54  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 12:31:54  INFO     [GEMS] BUY             BTC  funding=0.0034%
+2026-06-27 12:37:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 12:37:39  INFO     [GEMS] BUY             BTC  funding=0.0035%
+2026-06-27 12:43:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 12:43:27  INFO     [GEMS] BUY             BTC  funding=0.0036%
+2026-06-27 12:49:58  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 12:49:58  INFO     [GEMS] BUY             BTC  funding=0.0035%
+2026-06-27 12:53:54  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-27 12:55:55  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 12:55:55  INFO     [GEMS] BUY             BTC  funding=0.0035%
+2026-06-27 12:56:00  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 12:56:00  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 12:56:04  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 12:56:04  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 12:56:04  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 12:56:04  INFO          Dados insuficientes para treinar.
+2026-06-27 13:01:25  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 13:01:25  INFO     [GEMS] BUY             BTC  funding=0.0037%
+2026-06-27 13:01:41  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 13:07:04  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 13:07:04  INFO     [GEMS] BUY             BTC  funding=0.0039%
+2026-06-27 13:11:42  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 13:11:42  INFO     [GEMS] BUY             BTC  funding=0.0039%
+2026-06-27 13:18:16  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 13:18:16  INFO     [GEMS] BUY             BTC  funding=0.0039%
+2026-06-27 13:22:56  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 13:22:56  INFO     [GEMS] BUY             BTC  funding=0.0039%
+2026-06-27 13:29:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 13:29:28  INFO     [GEMS] BUY             BTC  funding=0.0038%
+2026-06-27 13:34:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 13:34:48  INFO     [GEMS] BUY             BTC  funding=0.0037%
+2026-06-27 13:40:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 13:40:38  INFO     [GEMS] BUY             BTC  funding=0.0039%
+2026-06-27 13:46:03  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 13:46:03  INFO     [GEMS] BUY             BTC  funding=0.0040%
+2026-06-27 13:51:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 13:51:28  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-27 13:56:56  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 13:56:56  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 13:57:01  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 13:57:01  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 13:57:04  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 13:57:04  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 13:57:04  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 13:57:04  INFO          Dados insuficientes para treinar.
+2026-06-27 14:01:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 14:01:38  INFO     [GEMS] BUY             BTC  funding=0.0046%
+2026-06-27 14:08:17  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 14:08:17  INFO     [GEMS] BUY             BTC  funding=0.0046%
+2026-06-27 14:08:33  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 14:13:10  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 14:13:10  INFO     [GEMS] BUY             BTC  funding=0.0048%
+2026-06-27 14:19:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 14:19:44  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-27 14:25:16  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 14:25:16  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-27 14:30:43  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 14:30:43  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-27 14:36:11  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 14:36:11  INFO     [GEMS] BUY             BTC  funding=0.0054%
+2026-06-27 14:41:41  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 14:41:41  INFO     [GEMS] BUY             BTC  funding=0.0055%
+2026-06-27 14:46:17  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 14:46:17  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-27 14:52:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 14:52:52  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-27 14:54:26  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-27 14:57:40  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 14:57:40  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 14:57:44  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 14:57:44  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 14:57:44  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 14:57:44  INFO          Dados insuficientes para treinar.
+2026-06-27 14:58:42  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 14:58:42  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-27 15:04:07  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 15:04:07  INFO     [GEMS] BUY             BTC  funding=0.0050%
+2026-06-27 15:09:30  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 15:09:30  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-27 15:09:32  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 15:14:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 15:14:18  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-27 15:20:03  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 15:20:03  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-27 15:25:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 15:25:48  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-27 15:32:23  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 15:32:23  INFO     [GEMS] BUY             BTC  funding=0.0054%
+2026-06-27 15:37:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 15:37:48  INFO     [GEMS] BUY             BTC  funding=0.0057%
+2026-06-27 15:43:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 15:43:12  INFO     [GEMS] BUY             BTC  funding=0.0057%
+2026-06-27 15:48:38  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 15:48:38  INFO     [GEMS] BUY             BTC  funding=0.0058%
+2026-06-27 15:53:15  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 15:53:15  INFO     [GEMS] BUY             BTC  funding=0.0058%
+2026-06-27 15:57:37  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 15:57:37  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 15:57:41  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 15:57:41  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 15:57:41  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 15:57:41  INFO          Dados insuficientes para treinar.
+2026-06-27 15:59:40  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 15:59:40  INFO     [GEMS] BUY             BTC  funding=0.0059%
+2026-06-27 16:05:06  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 16:05:06  INFO     [GEMS] BUY             BTC  funding=0.0060%
+2026-06-27 16:09:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 16:09:45  INFO     [GEMS] BUY             BTC  funding=0.0061%
+2026-06-27 16:10:02  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 16:15:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 16:15:47  INFO     [GEMS] BUY             BTC  funding=0.0061%
+2026-06-27 16:21:14  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 16:21:14  INFO     [GEMS] BUY             BTC  funding=0.0058%
+2026-06-27 16:26:01  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 16:26:01  INFO     [GEMS] BUY             BTC  funding=0.0058%
+2026-06-27 16:32:45  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 16:32:45  INFO     [GEMS] BUY             BTC  funding=0.0056%
+2026-06-27 16:38:20  WARNING  [GEMS] rebuild falhou: you are using nologin method, data you access may be limited
+ERROR:tvDatafeed.main:Connection to remote host was lost.
+ERROR:tvDatafeed.main:no data, please check the exchange and symbol
+ERROR:tvDataf
+2026-06-27 16:38:20  INFO     [GEMS] BUY             BTC  funding=0.0056%
+2026-06-27 16:42:58  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 16:42:58  INFO     [GEMS] BUY             BTC  funding=0.0057%
+2026-06-27 16:49:31  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 16:49:31  INFO     [GEMS] BUY             BTC  funding=0.0056%
+2026-06-27 16:54:15  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 16:54:15  INFO     [GEMS] BUY             BTC  funding=0.0056%
+2026-06-27 16:54:54  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-27 16:58:04  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 16:58:04  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 16:58:07  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 16:58:07  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 16:58:07  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 16:58:07  INFO          Dados insuficientes para treinar.
+2026-06-27 16:59:36  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 16:59:36  INFO     [GEMS] BUY             BTC  funding=0.0056%
+2026-06-27 17:05:22  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 17:05:22  INFO     [GEMS] BUY             BTC  funding=0.0057%
+2026-06-27 17:11:06  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 17:11:06  INFO     [GEMS] BUY             BTC  funding=0.0056%
+2026-06-27 17:11:23  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 17:17:04  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 17:17:04  INFO     [GEMS] BUY             BTC  funding=0.0056%
+2026-06-27 17:21:48  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 17:21:48  INFO     [GEMS] BUY             BTC  funding=0.0055%
+2026-06-27 17:28:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 17:28:28  INFO     [GEMS] BUY             BTC  funding=0.0054%
+2026-06-27 17:33:57  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 17:33:57  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-27 17:38:34  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 17:38:34  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-27 17:45:10  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 17:45:10  INFO     [GEMS] BUY             BTC  funding=0.0049%
+2026-06-27 17:49:47  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 17:49:47  INFO     [GEMS] BUY             BTC  funding=0.0049%
+2026-06-27 17:55:32  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 17:55:32  INFO     [GEMS] BUY             BTC  funding=0.0049%
+2026-06-27 17:58:49  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 17:58:49  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 17:58:52  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 17:58:52  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 17:58:52  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 17:58:52  INFO          Dados insuficientes para treinar.
+2026-06-27 18:02:00  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 18:02:00  INFO     [GEMS] BUY             BTC  funding=0.0050%
+2026-06-27 18:06:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 18:06:39  INFO     [GEMS] BUY             BTC  funding=0.0050%
+2026-06-27 18:13:15  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 18:13:15  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-27 18:13:31  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 18:18:56  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 18:18:56  INFO     [GEMS] BUY             BTC  funding=0.0050%
+2026-06-27 18:23:39  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 18:23:39  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-27 18:30:14  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 18:30:14  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-27 18:34:53  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 18:34:53  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-27 18:41:32  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 18:41:32  INFO     [GEMS] BUY             BTC  funding=0.0047%
+2026-06-27 18:46:57  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 18:46:57  INFO     [GEMS] BUY             BTC  funding=0.0045%
+2026-06-27 18:52:26  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 18:52:26  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 18:55:06  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-27 18:58:20  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 18:58:20  INFO     [GEMS] BUY             BTC  funding=0.0045%
+2026-06-27 18:59:22  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 18:59:22  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 18:59:26  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 18:59:26  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 18:59:26  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 18:59:26  INFO          Dados insuficientes para treinar.
+2026-06-27 19:02:53  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 19:02:53  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 19:09:26  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 19:09:26  INFO     [GEMS] BUY             BTC  funding=0.0045%
+2026-06-27 19:14:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 19:14:52  INFO     [GEMS] BUY             BTC  funding=0.0047%
+2026-06-27 19:15:08  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 19:19:49  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 19:19:49  INFO     [GEMS] BUY             BTC  funding=0.0045%
+2026-06-27 19:25:35  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 19:25:35  INFO     [GEMS] BUY             BTC  funding=0.0047%
+2026-06-27 19:32:11  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 19:32:11  INFO     [GEMS] BUY             BTC  funding=0.0049%
+2026-06-27 19:37:41  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 19:37:41  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-27 19:42:19  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 19:42:19  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-27 19:48:04  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 19:48:04  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-27 19:53:54  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 19:53:54  INFO     [GEMS] BUY             BTC  funding=0.0052%
+2026-06-27 19:59:26  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 19:59:26  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 19:59:30  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 19:59:30  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 19:59:30  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 19:59:30  INFO          Dados insuficientes para treinar.
+2026-06-27 20:00:37  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 20:00:37  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-27 20:06:07  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 20:06:07  INFO     [GEMS] BUY             BTC  funding=0.0054%
+2026-06-27 20:10:50  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 20:10:50  INFO     [GEMS] BUY             BTC  funding=0.0053%
+2026-06-27 20:17:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 20:17:28  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-27 20:17:44  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 20:23:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 20:23:12  INFO     [GEMS] BUY             BTC  funding=0.0050%
+2026-06-27 20:27:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 20:27:52  INFO     [GEMS] BUY             BTC  funding=0.0049%
+2026-06-27 20:34:29  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 20:34:29  INFO     [GEMS] BUY             BTC  funding=0.0048%
+2026-06-27 20:39:54  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 20:39:54  INFO     [GEMS] BUY             BTC  funding=0.0049%
+2026-06-27 20:45:22  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 20:45:22  INFO     [GEMS] BUY             BTC  funding=0.0049%
+2026-06-27 20:50:54  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 20:50:54  INFO     [GEMS] BUY             BTC  funding=0.0046%
+2026-06-27 20:55:53  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-27 20:56:51  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 20:56:51  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 21:00:08  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 21:00:08  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 21:00:11  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 21:00:11  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 21:00:11  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 21:00:11  INFO          Dados insuficientes para treinar.
+2026-06-27 21:02:23  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 21:02:23  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-27 21:07:01  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 21:07:01  INFO     [GEMS] BUY             BTC  funding=0.0043%
+2026-06-27 21:13:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 21:13:44  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 21:18:25  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 21:18:25  INFO     [GEMS] BUY             BTC  funding=0.0045%
+2026-06-27 21:18:41  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 21:24:27  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 21:24:27  INFO     [GEMS] BUY             BTC  funding=0.0046%
+2026-06-27 21:29:52  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 21:29:52  INFO     [GEMS] BUY             BTC  funding=0.0045%
+2026-06-27 21:35:18  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 21:35:18  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 21:39:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 21:39:59  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 21:46:40  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 21:46:40  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 21:52:05  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 21:52:05  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-27 21:57:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 21:57:44  INFO     [GEMS] BUY             BTC  funding=0.0043%
+2026-06-27 22:00:58  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-27 22:00:58  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-27 22:01:01  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-27 22:01:01  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-27 22:01:01  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-27 22:01:01  INFO          Dados insuficientes para treinar.
+2026-06-27 22:02:25  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 22:02:25  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 22:09:12  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 22:09:12  INFO     [GEMS] BUY             BTC  funding=0.0042%
+2026-06-27 22:14:17  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 22:14:17  INFO     [GEMS] BUY             BTC  funding=0.0043%
+2026-06-27 22:18:59  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 22:18:59  INFO     [GEMS] BUY             BTC  funding=0.0044%
+2026-06-27 22:19:17  INFO       ✅ Telegram -> BTC BUY
+2026-06-27 22:24:49  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 22:24:49  INFO     [GEMS] BUY             BTC  funding=0.0047%
+2026-06-27 22:30:15  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 22:30:15  INFO     [GEMS] BUY             BTC  funding=0.0050%
+2026-06-27 22:35:42  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 22:35:42  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-27 22:41:08  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 22:41:08  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-27 22:45:46  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 22:45:46  INFO     [GEMS] BUY             BTC  funding=0.0051%
+2026-06-27 22:53:44  INFO     [GEMS] macro_timing.json atualizado
+2026-06-27 22:53:44  INFO     [GEMS] BUY             BTC  funding=0.0050%
+2026-06-27 22:56:27  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-28 09:27:24  INFO     ================================================================
+2026-06-28 09:27:24  INFO       MONTREZOR DAEMON UNIFICADO
+2026-06-28 09:27:24  INFO       Modo: ALL
+2026-06-28 09:27:24  INFO       Trading : ATIVO  (a cada 60s | cooldown 240min)
+2026-06-28 09:27:24  INFO       Gems    : ATIVO  (a cada 300s | cooldown 60min)
+2026-06-28 09:27:24  INFO       Log     : C:\market_montrezor_system\montrezor_daemon.log
+2026-06-28 09:27:24  INFO     ================================================================
+2026-06-28 09:27:24  INFO     MT5 conectado: XM Global MT5
+2026-06-28 09:29:28  INFO     [GEMS] macro_timing.json atualizado
+2026-06-28 09:29:28  INFO     [GEMS] BUY             BTC  funding=0.0068%
+2026-06-28 09:29:30  INFO       ✅ Telegram -> BTC BUY
+2026-06-28 09:29:30  INFO     [PERF] 30d ok: NZDCHF# -> fechado
+2026-06-28 09:29:30  INFO     [PERF] Arquivo de performance atualizado
+2026-06-28 09:30:28  INFO     [DEX] ✅ Early stage snapshot atualizado
+2026-06-28 09:30:28  INFO     [AI] 📊 Total de picks avaliados no histórico: 57
+2026-06-28 09:30:28  INFO     [AI] 🧠 Iniciando treinamento do modelo ML (30+ picks)...
+2026-06-28 09:30:35  INFO     [AI] ✅ Modelo ML treinado com sucesso.
+2026-06-28 09:30:35  INFO          [ML] Limiar dinamico para target: 20.98% (baseado em 13 retornos positivos)
+2026-06-28 09:30:35  INFO          Apenas 6 amostras com features, treino cancelado.
+2026-06-28 09:30:35  INFO          Dados insuficientes para treinar.
+2026-06-28 09:35:15  INFO     [GEMS] macro_timing.json atualizado
+2026-06-28 09:35:15  INFO     [GEMS] BUY             BTC  funding=0.0069%

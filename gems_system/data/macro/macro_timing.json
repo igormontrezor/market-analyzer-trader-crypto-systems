@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-06-23T23:29:07.668996+00:00",
+  "generated_at": "2026-06-28T12:35:14.802538+00:00",
   "weekly": {
     "date": "2026-06-21",
-    "others_bbp": 0.2931997985001865,
-    "usdt_d_bbp": 0.9530318817695473,
+    "others_bbp": 0.146214880724387,
+    "usdt_d_bbp": 1.0643754896905506,
     "others_touch_low": false,
-    "usdt_touch_high": false,
+    "usdt_touch_high": true,
     "usdt_touch_low": false,
     "others_ema50_above_ema100": false,
     "others_ema_cross_warn": false
   },
   "monthly": {
-    "usdt_d_bbp": 1.0021579035227832,
-    "others_bbp": 0.19600753302334262
+    "usdt_d_bbp": 1.038369153356916,
+    "others_bbp": 0.17101019321594374
   },
   "regime": {
     "buy_mode": true,
@@ -20,12 +20,12 @@
     "capitulation_lock": false
   },
   "signal": {
-    "weekly_buy_trigger": false,
+    "weekly_buy_trigger": true,
     "tactical_rebound": false,
     "tactical_rebound_super": false,
     "weekly_sell_trigger": false
   },
-  "funding_rate": 0.003349,
-  "fear_greed": 23,
+  "funding_rate": 0.006944,
+  "fear_greed": 18,
   "altcoin_season": null
 }

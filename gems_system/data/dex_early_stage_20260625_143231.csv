@@ -1,0 +1,2 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+DUMPSTR,Dump Strategy,7U74V3oJy4U2V2YmwJEQ1UcoZ5woTXGBvpKKXE4jpump,solana,0.0001973,241.0,197330.0,31682.13,494725.71,7089,2538,0.74,1.0,https://dexscreener.com/solana/ehvhezg15sztmpcbb2azmtvsfh1huh8ybprj5zetehbi,2026-06-25T14:32:25.527955,dexscreener,18.183037629999998

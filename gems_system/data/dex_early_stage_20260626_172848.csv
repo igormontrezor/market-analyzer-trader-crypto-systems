@@ -1,0 +1,4 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+BOO,BooBeat,Go6nQcPqwwvH4MBTcoFEZ2G3yULgkFctwLDUSLMNpump,solana,0.001577,4312.0,1577465.0,104439.37,3493802.32,11291,9258,0.55,3.4,https://dexscreener.com/solana/ghopf5hdyjkuialuaysm6wctxt7muxchigu53sh7fn5b,2026-06-26T17:28:43.400694,dexscreener,31.392009109999996
+TERRA,GPT‑5.6 Terra,2j6CApLFvzSaRZ21bAStanY5qKAJwkuit6yn7eQbpump,solana,0.0002648,421.0,264867.0,39260.7,1042710.93,16563,13287,0.55,2.6,https://dexscreener.com/solana/hpgkq2tbfaerwbbd63e99ubodz5olqots2et3kwp6rak,2026-06-26T17:28:43.400888,dexscreener,10.805597940000004
+REX,rex.fun,CmQJNJ185pjzQoebPbcqZu1kTykHxJbn4gER1Af7pump,solana,0.0001809,231.0,180957.0,30929.17,99045.75,1097,776,0.59,64.4,https://dexscreener.com/solana/8xzxttcfq49n5awdmtlaok7mkmz65aaatpqryd9m1jl7,2026-06-26T17:28:43.400576,dexscreener,5.631303549999997

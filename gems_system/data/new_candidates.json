@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-06-21T10:47:39.987843",
-  "total_candidates": 52,
+  "last_updated": "2026-06-27T18:01:54.685671",
+  "total_candidates": 61,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -677,6 +677,123 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 41.43155376337163
+    },
+    {
+      "symbol": "atm",
+      "name": "Atletico Madrid Fan Token",
+      "detected_at": "2026-06-25T08:29:00.907642",
+      "ratio_now": 2.789869968504058,
+      "market_cap": 17553055,
+      "volume": 48970741,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "popcat",
+      "name": "Popcat",
+      "detected_at": "2026-06-25T08:29:00.907965",
+      "ratio_now": 1.1297336442374866,
+      "market_cap": 42799900,
+      "volume": 48352487,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 46.7613395514164
+    },
+    {
+      "symbol": "celo",
+      "name": "Celo",
+      "detected_at": "2026-06-25T08:29:00.908086",
+      "ratio_now": 0.9481390270310236,
+      "market_cap": 38249051,
+      "volume": 36265418,
+      "priority": "alta",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 43.129447207287136
+    },
+    {
+      "symbol": "hei",
+      "name": "Heima",
+      "detected_at": "2026-06-26T09:23:56.054980",
+      "ratio_now": 6.316440573020659,
+      "market_cap": 16962809,
+      "volume": 107144575,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "pundix",
+      "name": "Pundi X",
+      "detected_at": "2026-06-26T09:23:56.057220",
+      "ratio_now": 0.8107894447395537,
+      "market_cap": 19838222,
+      "volume": 16084621,
+      "priority": "alta",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 40.38245556145774
+    },
+    {
+      "symbol": "agld",
+      "name": "Adventure Gold",
+      "detected_at": "2026-06-27T00:04:13.184458",
+      "ratio_now": 8.577144140668072,
+      "market_cap": 19798153,
+      "volume": 169811612,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "bel",
+      "name": "Bella Protocol",
+      "detected_at": "2026-06-27T00:04:13.184695",
+      "ratio_now": 2.4073817864633655,
+      "market_cap": 15230595,
+      "volume": 36665857,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "chr",
+      "name": "Chromia",
+      "detected_at": "2026-06-27T00:04:13.185068",
+      "ratio_now": 0.8100945849242694,
+      "market_cap": 14777725,
+      "volume": 11971355,
+      "priority": "alta",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 40.368558365152055
+    },
+    {
+      "symbol": "ark",
+      "name": "ARK",
+      "detected_at": "2026-06-27T18:01:54.679438",
+      "ratio_now": 1.4165242402535951,
+      "market_cap": 21563182,
+      "volume": 30544770,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 52.49715147173857
     }
   ]
 }

@@ -1,59 +1,63 @@
 {
-  "timestamp": "2026-06-23T20:27:20.867618",
+  "timestamp": "2026-06-28T09:37:01.750715",
   "hot": [
-    "Infra",
+    "L1",
     "Other",
     "Meme",
     "Gaming",
     "DeFi",
-    "L1",
-    "L2"
+    "Infra"
   ],
   "all_sectors": {
-    "Infra": {
-      "avg_score": 39.4,
+    "L1": {
+      "avg_score": 40.7,
       "count": 2,
-      "appearances": 4
-    },
-    "Other": {
-      "avg_score": 32.0,
-      "count": 73,
-      "appearances": 256
-    },
-    "Meme": {
-      "avg_score": 31.1,
-      "count": 9,
-      "appearances": 46
-    },
-    "Gaming": {
-      "avg_score": 30.8,
-      "count": 3,
-      "appearances": 9
-    },
-    "AI": {
-      "avg_score": 30.0,
-      "count": 1,
       "appearances": 6
-    },
-    "DeFi": {
-      "avg_score": 28.5,
-      "count": 6,
-      "appearances": 13
     },
     "Privacy": {
-      "avg_score": 28.0,
+      "avg_score": 36.9,
       "count": 1,
-      "appearances": 6
+      "appearances": 8
     },
-    "L1": {
-      "avg_score": 23.2,
+    "Other": {
+      "avg_score": 32.8,
+      "count": 89,
+      "appearances": 344
+    },
+    "Meme": {
+      "avg_score": 28.5,
+      "count": 9,
+      "appearances": 51
+    },
+    "Gaming": {
+      "avg_score": 26.9,
+      "count": 2,
+      "appearances": 10
+    },
+    "DeFi": {
+      "avg_score": 22.5,
+      "count": 8,
+      "appearances": 15
+    },
+    "Infra": {
+      "avg_score": 21.7,
       "count": 2,
       "appearances": 3
+    },
+    "AI": {
+      "avg_score": 21.5,
+      "count": 1,
+      "appearances": 8
     },
     "L2": {
-      "avg_score": 20.0,
-      "count": 2,
-      "appearances": 3
+      "avg_score": 17.1,
+      "count": 1,
+      "appearances": 2
+    },
+    "Social": {
+      "avg_score": 15.3,
+      "count": 1,
+      "appearances": 1
     }
   }
 }

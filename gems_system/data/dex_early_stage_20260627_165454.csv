@@ -1,0 +1,3 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+HODLY,Hodly,6oPG5q5SPNtQTxeu8RRWvh6mngsauznC2SVVtXqPpump,solana,0.0002468,-30.43,246801.0,37359.4,773505.47,14473,9918,0.59,29.5,https://dexscreener.com/solana/hetlzrhxijzqu5s79hucxxqlrhtuje4qu6kdcauabveu,2026-06-27T16:54:48.858551,dexscreener,11.123434759999997
+ELON55,Elon's 55th Birthday,5ZtVSswD6VetsdrdMHh6sPChAtfC2jyUx5XYkmnFpump,solana,0.0002003,195.0,200308.0,33332.85,740147.17,9098,7489,0.55,2.5,https://dexscreener.com/solana/7ej5d4fbjbcvt1aiaychqhbb16q5wsaqcu3cqfcdqv1q,2026-06-27T16:54:48.858436,dexscreener,8.296170110000002

@@ -641,12 +641,12 @@ def get_macro_data():
                 _sortino = (_r.rolling(60).mean() / (_dn.rolling(60).std() + 1e-10)) * np.sqrt(252)
                 _so_slow = _sortino.rolling(70).mean()
                 _so_fast = _sortino.rolling(20).mean()
-                # sh_b: sharpe cruza abaixo de 4.5 (sell=4.5 como em build_btc_d)
-                _sh_b = (_sharpe < 4.5) & (_sharpe.shift(1) >= 4.5)
-                # so_b: fast cruza acima de slow (sortino_ma_sig)
+                # sh_b: sharpe abaixo de -1.5 e candle anterior também <= -1.5 (idêntico ao _cross_below)
+                _sh_b = (_sharpe < -1.5) & (_sharpe.shift(1) <= -1.5)
+                # so_b: sortino fast SMA(20) cruza acima de slow SMA(70)
                 _so_b = (_so_fast > _so_slow) & (_so_fast.shift(1) <= _so_slow.shift(1))
-                # conf_b = combined([sh_b, so_b], [0.5, 0.5], th=1.0) → sh_b & so_b (pesos iguais, th=1)
-                _conf_b = _sh_b & _so_b
+                # conf_b = sh_b OR so_b — uma das duas condições ativa o sinal
+                _conf_b = _sh_b | _so_b
                 _last_confirmed = bool(_conf_b.iloc[-1]) if not _conf_b.empty else False
                 _last_date = str(_c.index[-1])[:10] if not _c.empty else ""
                 res["hiper_repique"]       = _last_confirmed
@@ -832,6 +832,127 @@ with col_right:
                 _save_last_state(_st)
         except Exception:
             pass
+    # ─────────────────────────────────────────────────────────────────────────
+
+    # ── BTC WEEKLY SHARPE+SORTINO CONFIRMED ALERT ─────────────────────────────
+    # Buy confirmed: 2x nas últimas 2 semanas | Sell confirmed: 3x nas últimas 3 semanas
+    try:
+        import numpy as np
+        import yfinance as yf
+        import json as _json
+
+        _WSIG_STATE_FILE = os.path.join("data", "macro", "btc_weekly_sig_state.json")
+
+        def _load_wsig_state():
+            try:
+                return _json.load(open(_WSIG_STATE_FILE, encoding="utf-8"))
+            except Exception:
+                return {"buy_history": [], "sell_history": [], "tg_sent_buy": "", "tg_sent_sell": ""}
+
+        def _save_wsig_state(s):
+            try:
+                os.makedirs(os.path.dirname(_WSIG_STATE_FILE), exist_ok=True)
+                _json.dump(s, open(_WSIG_STATE_FILE, "w", encoding="utf-8"), indent=2)
+            except Exception:
+                pass
+
+        _wdf = yf.download("BTC-USD", period="6mo", interval="1wk",
+                           auto_adjust=True, progress=False)
+        if isinstance(_wdf.columns, pd.MultiIndex):
+            _wdf.columns = [c[0] for c in _wdf.columns]
+
+        if not _wdf.empty:
+            _wc = _wdf["Close"].squeeze().dropna()
+            _wr = _wc.pct_change()
+            # Sharpe semanal (52, 60) — mesmo período do build_btc_w
+            _wsh = (_wr.rolling(60).mean() / (_wr.rolling(60).std() + 1e-10)) * np.sqrt(52)
+            # Sortino semanal
+            _wdn = _wr.clip(upper=0)
+            _wso = (_wr.rolling(60).mean() / (_wdn.rolling(60).std() + 1e-10)) * np.sqrt(52)
+            # sharpe_sig(buy=-1.5, sell=2.1): _cross_below = s < th & s.shift(1) <= th
+            # sortino_sig(buy=-1.7, sell=4.7): mesma lógica
+            _wsh_b = (_wsh < -1.5)  & (_wsh.shift(1) <= -1.5)
+            _wsh_s = (_wsh >  2.1)  & (_wsh.shift(1) >=  2.1)
+            _wso_b = (_wso < -1.7)  & (_wso.shift(1) <= -1.7)
+            _wso_s = (_wso >  4.7)  & (_wso.shift(1) >=  4.7)
+            # confirmed = sh & so (AND — ambos no mesmo candle)
+            _wconf_b = (_wsh_b & _wso_b)
+            _wconf_s = (_wsh_s & _wso_s)
+
+            # Últimas 3 semanas fechadas (excluindo candle atual em formação)
+            _closed = _wconf_b.iloc[:-1]  # exclui última barra (pode estar aberta)
+            _closed_s = _wconf_s.iloc[:-1]
+            _last2_b = _closed.iloc[-2:].tolist()
+            _last2_s = _closed_s.iloc[-2:].tolist()
+
+            # Condições: 2 semanas consecutivas fechadas para ambos
+            _weekly_buy_alert  = sum(_last2_b) >= 2
+            _weekly_sell_alert = sum(_last2_s) >= 2
+
+            _wsig_state = _load_wsig_state()
+            _today_str  = pd.Timestamp.now().strftime("%Y-%m-%d")
+
+            # ── BUY CONFIRMED ALERT ──
+            if _weekly_buy_alert:
+                st.markdown(
+                    '<div style="background:#0a2a12;border:2px solid #3fb950;border-radius:8px;'
+                    'padding:10px 16px;margin-top:8px;font-size:13px;color:#3fb950;">'
+                    '🟢 <b>BTC SEMANAL — COMPRA CONFIRMADA</b>: Sharpe ≤ -1.5 e Sortino ≤ -1.7 '
+                    'ativos por 2 semanas consecutivas fechadas. '
+                    'Sinal de recuperação de médio prazo — considere aumentar exposição.'
+                    '</div>',
+                    unsafe_allow_html=True
+                )
+                if st.session_state.get("ma_tg_enabled", True) and _wsig_state.get("tg_sent_buy") != _today_str:
+                    _token, _chat = _load_tg()
+                    if _token and _chat:
+                        import requests as _rq
+                        _rq.post(
+                            f"https://api.telegram.org/bot{_token}/sendMessage",
+                            json={"chat_id": _chat, "parse_mode": "HTML", "text": (
+                                "🟢 <b>BTC SEMANAL — COMPRA CONFIRMADA</b>\n"
+                                "━━━━━━━━━━━━━━━━━━\n"
+                                "Sharpe ≤ -1.5 e Sortino ≤ -1.7 confirmados no BTC semanal "
+                                "por 2 semanas consecutivas fechadas.\n\n"
+                                "<b>Ação sugerida:</b> considere aumentar exposição.\n\n"
+                                f"<b>Data:</b> {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}\n"
+                                "Montrezor Market Intelligence"
+                            )}, timeout=10
+                        )
+                        _wsig_state["tg_sent_buy"] = _today_str
+                        _save_wsig_state(_wsig_state)
+
+            # ── SELL CONFIRMED ALERT ──
+            if _weekly_sell_alert:
+                st.markdown(
+                    '<div style="background:#2a0a0a;border:2px solid #f85149;border-radius:8px;'
+                    'padding:10px 16px;margin-top:8px;font-size:13px;color:#f85149;">'
+                    '🔴 <b>BTC SEMANAL — VENDA CONFIRMADA</b>: Sharpe ≥ 2.1 e Sortino ≥ 4.7 '
+                    'ativos por 2 semanas consecutivas fechadas. '
+                    'Sinal de distribuição de médio prazo — considere reduzir exposição.'
+                    '</div>',
+                    unsafe_allow_html=True
+                )
+                if st.session_state.get("ma_tg_enabled", True) and _wsig_state.get("tg_sent_sell") != _today_str:
+                    _token, _chat = _load_tg()
+                    if _token and _chat:
+                        import requests as _rq
+                        _rq.post(
+                            f"https://api.telegram.org/bot{_token}/sendMessage",
+                            json={"chat_id": _chat, "parse_mode": "HTML", "text": (
+                                "🔴 <b>BTC SEMANAL — VENDA CONFIRMADA</b>\n"
+                                "━━━━━━━━━━━━━━━━━━\n"
+                                "Sharpe ≥ 2.1 e Sortino ≥ 4.7 confirmados no BTC semanal "
+                                "por 2 semanas consecutivas fechadas.\n\n"
+                                "<b>Ação sugerida:</b> considere reduzir exposição.\n\n"
+                                f"<b>Data:</b> {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}\n"
+                                "Montrezor Market Intelligence"
+                            )}, timeout=10
+                        )
+                        _wsig_state["tg_sent_sell"] = _today_str
+                        _save_wsig_state(_wsig_state)
+    except Exception:
+        pass
     # ─────────────────────────────────────────────────────────────────────────
 
 st.code("Montrezor Central - Mesa de Operações", language=None)
@@ -2385,8 +2506,8 @@ with tab5:
         <span class="cond-code">rebound = True</span> OU <span class="cond-code">rebound_super = True</span><br>
         <span class="cond-code">capitulation_lock = False</span><br>
         <span class="cond-code">status = "VENDA"</span><br>
-        <span class="cond-code">Sharpe diário (252, 60) cruza abaixo de 4.5</span><br>
-        <span class="cond-code">Sortino SMA fast (20) cruza acima de slow (70)</span>
+        <span class="cond-code">Sharpe(252,60) cruza abaixo de -1.5</span> OU<br>
+        <span class="cond-code">Sortino SMA fast(20) cruza acima de slow(70)</span>
       </td>
       <td class="fonte-txt">Repique macro ativo + círculo verde de confirmação de fundo no BTC diário (Sharpe + Sortino via yfinance — idêntico ao market_analysis_app.py)</td>
       <td class="fonte-txt">Repique tático com confirmação técnica de fundo: o macro indica stress de venda + o diário BTC confirma reversão de curto prazo via risco/retorno. Sinal mais exigente de repique</td>
@@ -2432,12 +2553,33 @@ with tab5:
     )
     st.markdown(
         "<div style='background:#2d1f00;border:1px solid #e3b341;border-radius:6px;"
-        "padding:10px 14px;font-size:12px;color:#8b949e;margin-bottom:20px;'>"
+        "padding:10px 14px;font-size:12px;color:#8b949e;margin-bottom:12px;'>"
         "⚠️ <b style='color:#e3b341;'>INDEPENDENT ALERT — Altcoin Top Alert</b> — "
         "Triggered when EMA50 crosses above EMA100 on the OTHERS weekly chart and holds for 2+ closed weeks. "
         "Not part of the signal hierarchy — it is an early warning of an altcoin cycle top. "
         "Historically the first alt top occurs weeks after this crossover. "
         "Appears as a yellow banner below the HUD and fires a Telegram message once on transition."
+        "</div>",
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        "<div style='background:#0a2a12;border:1px solid #3fb950;border-radius:6px;"
+        "padding:10px 14px;font-size:12px;color:#8b949e;margin-bottom:12px;'>"
+        "🟢 <b style='color:#3fb950;'>ALERTA INDEPENDENTE — BTC Semanal Compra Confirmada</b> — "
+        "Ativado quando Sharpe ≤ -1.5 E Sortino ≤ -1.7 no BTC semanal, "
+        "ambos permanecendo abaixo dos thresholds por 2 semanas consecutivas fechadas. "
+        "Sinal de recuperação de médio prazo. Telegram disparado uma vez por dia na primeira detecção."
+        "</div>",
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        "<div style='background:#2a0a0a;border:1px solid #f85149;border-radius:6px;"
+        "padding:10px 14px;font-size:12px;color:#8b949e;margin-bottom:20px;'>"
+        "🔴 <b style='color:#f85149;'>ALERTA INDEPENDENTE — BTC Semanal Venda Confirmada</b> — "
+        "Ativado quando Sharpe ≥ 2.1 E Sortino ≥ 4.7 no BTC semanal, "
+        "ambos permanecendo acima dos thresholds por 2 semanas consecutivas fechadas. "
+        "Na terceira semana com as duas anteriores confirmadas o alerta é gerado. "
+        "Sinal de distribuição de médio prazo. Telegram disparado uma vez por dia na primeira detecção."
         "</div>",
         unsafe_allow_html=True
     )

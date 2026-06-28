@@ -3045,10 +3045,10 @@ if __name__ == "__main__":
                     avg_high, wr_high, n_high = calc_group_metrics(df_ana, 'vol_high', True)
                     avg_low,  wr_low,  n_low  = calc_group_metrics(df_ana, 'vol_high', False)
                     with col_vol1:
-                        st.metric("Volume alto (🔥)", f"{avg_high:.2%}" if avg_high else "—", delta=f"WR: {wr_high:.1%}")
+                        st.metric("Volume alto (🔥)", f"{avg_high:.2%}" if avg_high else "—", delta=f"WR: {wr_high:.1%}" if wr_high is not None else "")
                         st.caption(f"N={n_high}")
                     with col_vol2:
-                        st.metric("Volume normal", f"{avg_low:.2%}" if avg_low else "—", delta=f"WR: {wr_low:.1%}")
+                        st.metric("Volume normal", f"{avg_low:.2%}" if avg_low else "—", delta=f"WR: {wr_low:.1%}" if wr_low is not None else "")
                         st.caption(f"N={n_low}")
 
                     st.markdown("---")
@@ -3059,10 +3059,10 @@ if __name__ == "__main__":
                     avg_atr_true, wr_atr_true, n_atr_true = calc_group_metrics(df_ana, 'atr_low', True)
                     avg_atr_false, wr_atr_false, n_atr_false = calc_group_metrics(df_ana, 'atr_low', False)
                     with col_atr1:
-                        st.metric("ATR baixo (⚠️)", f"{avg_atr_true:.2%}" if avg_atr_true else "—", delta=f"WR: {wr_atr_true:.1%}")
+                        st.metric("ATR baixo (⚠️)", f"{avg_atr_true:.2%}" if avg_atr_true else "—", delta=f"WR: {wr_atr_true:.1%}" if wr_atr_true is not None else "")
                         st.caption(f"N={n_atr_true}")
                     with col_atr2:
-                        st.metric("ATR normal", f"{avg_atr_false:.2%}" if avg_atr_false else "—", delta=f"WR: {wr_atr_false:.1%}")
+                        st.metric("ATR normal", f"{avg_atr_false:.2%}" if avg_atr_false else "—", delta=f"WR: {wr_atr_false:.1%}" if wr_atr_false is not None else "")
                         st.caption(f"N={n_atr_false}")
 
                     st.markdown("---")
@@ -3073,10 +3073,10 @@ if __name__ == "__main__":
                     avg_el, wr_el, n_el = calc_group_metrics(df_ana, 'elevated', True)
                     avg_not_el, wr_not_el, n_not_el = calc_group_metrics(df_ana, 'elevated', False)
                     with col_el1:
-                        st.metric("Elevado (COMUM→SUPER)", f"{avg_el:.2%}" if avg_el else "—", delta=f"WR: {wr_el:.1%}")
+                        st.metric("Elevado (COMUM→SUPER)", f"{avg_el:.2%}" if avg_el else "—", delta=f"WR: {wr_el:.1%}" if wr_el is not None else "")
                         st.caption(f"N={n_el}")
                     with col_el2:
-                        st.metric("Não elevado", f"{avg_not_el:.2%}" if avg_not_el else "—", delta=f"WR: {wr_not_el:.1%}")
+                        st.metric("Não elevado", f"{avg_not_el:.2%}" if avg_not_el else "—", delta=f"WR: {wr_not_el:.1%}" if wr_not_el is not None else "")
                         st.caption(f"N={n_not_el}")
 
                     st.markdown("---")
