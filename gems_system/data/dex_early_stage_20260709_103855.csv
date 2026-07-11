@@ -1,0 +1,4 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+PENDU,pendu,2awqPMds8Zi7WMWZ3nPTmoarWVGpeVzkKA1Q6ws6pump,solana,0.0001955,563.0,195522.0,37998.74,2251762.94,26074,19978,0.57,17.9,https://dexscreener.com/solana/6th25rjgyrmmd9vgzcjysk75cuvss1shh8xrery2corb,2026-07-09T10:38:48.808553,dexscreener,21.709084619999995
+DARK,Dark Arena,3LgNCFW7KjV34TePFih6wRtcWb7mSSByPLsRMxCPdArK,solana,0.0005059,2.02,505964.0,88371.3,71609.75,600,349,0.63,4.7,https://dexscreener.com/solana/dymkfevepticznbnsmtnvrjrzinoxyzujdblzgtxqdfb,2026-07-09T10:38:48.808782,dexscreener,8.7734475
+ANSEMWIFE,The Black Queen,8B3UJbbPWfg2DLF7iWzm9WnXH9y5jhYUUoZaLhqvpump,solana,0.0004201,-35.18,420108.0,57174.19,686713.58,8008,7101,0.53,47.0,https://dexscreener.com/solana/3nwzfjn3s1he8cgqqed7s5jtrecclstdkhrvljvf7uwp,2026-07-09T10:38:48.808824,dexscreener,6.976321490000001

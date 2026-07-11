@@ -76,12 +76,16 @@ def _macro_gems_signal_type(m):
     if m.get("sell_risk"):
         return "SELL_RISK"
     if m.get("rebound_super") and not m.get("capitulation_lock") and m.get("status") == "VENDA":
-        if m.get("hiper_repique"):
+        if m.get("hiper_repique") and m.get("funding_rate", 0) < 0:
             return "HIPER_REPIQUE"
-        return "SUPER_REPIQUE"
+        if m.get("hiper_repique"):
+            return "SUPER_REPIQUE"
+        return "REPIQUE"
     if m.get("rebound") and not m.get("capitulation_lock") and m.get("status") == "VENDA":
-        if m.get("hiper_repique"):
+        if m.get("hiper_repique") and m.get("funding_rate", 0) < 0:
             return "HIPER_REPIQUE"
+        if m.get("hiper_repique"):
+            return "SUPER_REPIQUE"
         return "REPIQUE"
     if m.get("funding_signal") == "BUY":
         return "BUY"
@@ -585,35 +589,36 @@ def get_macro_data():
 
                 res["funding_signal"] = "NEUTRAL"
                 res["super_alert"] = "OFF"
+                res["hiper_alert"] = "OFF"
 
-                # SUPER: regime + gatilho semanal + funding (confluência completa)
-                # BUY/SELL (HUD / Telegram base): regime + weekly_* apenas (funding não exige)
+                # Ler fear_greed e altcoin_season sempre — usados tanto no buy quanto no sell
+                fear_greed     = data.get("fear_greed")
+                altcoin_season = data.get("altcoin_season")
+                res["fear_greed"]     = fear_greed
+                res["altcoin_season"] = altcoin_season
+
                 if buy_mode:
                     if weekly_buy_trigger and funding_rate < 0:
                         res["super_alert"] = "SUPER_BUY"
                     elif weekly_buy_trigger:
                         res["funding_signal"] = "BUY"
                 elif sell_mode:
-                    if weekly_sell_trigger and funding_rate > 0.08:
+                    _alt_season_sell = (altcoin_season is not None and altcoin_season > 79)
+                    _fg_sell         = (fear_greed is not None and fear_greed > 79)
+                    _fg_or_alt       = _alt_season_sell or _fg_sell
+
+                    if weekly_sell_trigger and _fg_or_alt and funding_rate > 0.08:
+                        res["super_alert"] = "SUPER_SELL"
+                        res["hiper_alert"] = "HIPER_SELL"
+                    elif weekly_sell_trigger and _fg_or_alt:
                         res["super_alert"] = "SUPER_SELL"
                     elif weekly_sell_trigger:
                         res["funding_signal"] = "SELL"
 
-                # HIPER: SUPER + Fear&Greed / Altcoin Season extremos
-                fear_greed = data.get("fear_greed")       # int ou None
-                altcoin_season = data.get("altcoin_season")  # int ou None
-                res["fear_greed"] = fear_greed
-                res["altcoin_season"] = altcoin_season
-                res["hiper_alert"] = "OFF"
-
+                # HIPER_BUY: SUPER_BUY + fear<10
                 if res["super_alert"] == "SUPER_BUY":
                     if fear_greed is not None and fear_greed < 10:
                         res["hiper_alert"] = "HIPER_BUY"
-                elif res["super_alert"] == "SUPER_SELL":
-                    _alt_season_sell = (altcoin_season is not None and altcoin_season > 79)
-                    _fg_sell         = (fear_greed is not None and fear_greed > 79)
-                    if _alt_season_sell or _fg_sell:
-                        res["hiper_alert"] = "HIPER_SELL"
 
                 gen_at = data.get("generated_at", "")
                 if gen_at:
@@ -733,11 +738,16 @@ with col_right:
         if fg is not None: extra.append(f"F&G: {fg}")
         if alt is not None: extra.append(f"AltSzn: {alt}")
         extra_txt = " | " + " | ".join(extra) if extra else ""
-        super_html = f'<div class="super-sell-alert" style="background:#4a0000; border: 2px solid #ff1744;">🔱 HIPER ALERTA: VENDA{extra_txt}</div>'
+        super_html = f'<div class="super-sell-alert" style="background:#4a0000; border: 2px solid #ff1744;">🔱 HIPER ALERTA: VENDA · Funding>{f_rate:.2f}%{extra_txt}</div>'
     elif m['super_alert'] == "SUPER_BUY":
         super_html = '<div class="super-buy-alert">⚡ SUPER ALERTA: COMPRA</div>'
     elif m['super_alert'] == "SUPER_SELL":
-        super_html = '<div class="super-sell-alert">🚨 SUPER ALERTA: VENDA</div>'
+        fg = m.get("fear_greed"); alt = m.get("altcoin_season")
+        extra = []
+        if fg is not None: extra.append(f"F&G: {fg}")
+        if alt is not None: extra.append(f"AltSzn: {alt}")
+        extra_txt = " | " + " | ".join(extra) if extra else ""
+        super_html = f'<div class="super-sell-alert">🚨 SUPER ALERTA: VENDA{extra_txt}</div>'
     elif m.get("sell_risk"):
         _om = m.get("others_monthly_bbp", 0.0)
         super_html = (
@@ -745,22 +755,35 @@ with col_right:
             f'⚠️ SELL RISK · OTHERS Mensal BB%B: {_om:.2f} &lt; 0.8 — Divergência de ciclo confirmada</div>'
         )
     elif m.get("rebound_super") and not m.get("capitulation_lock") and m.get("status") == "VENDA":
-        if m.get("hiper_repique"):
-            _hr_tipo = "SUPER REPIQUE" if m.get("hiper_repique_super") else "REPIQUE"
+        _hr = m.get("hiper_repique")
+        _funding_neg = m.get("funding_rate", 0) < 0
+        if _hr and _funding_neg:
             super_html = (
-                f'<div class="neutral-alert" style="background:#1a0a2e; border: 2px solid #a371f7; color: white;">'
-                f'🔱 HIPER REPIQUE ({_hr_tipo}) · Sharpe+Sortino Diário ✅</div>'
+                '<div class="neutral-alert" style="background:#1a0a2e; border: 2px solid #a371f7; color: white;">'
+                f'🔱 HIPER REPIQUE · Sharpe+Sortino ✅ + Funding: {f_rate:.4f}%</div>'
+            )
+        elif _hr:
+            super_html = (
+                '<div class="neutral-alert" style="background:#4a2080; border: 2px solid #a371f7; color: white;">'
+                '⚡ SUPER REPIQUE · Sharpe+Sortino Diário ✅</div>'
             )
         else:
             super_html = (
-            '<div class="neutral-alert" style="background:#6e40c9; border: 2px solid #a371f7; color: white;">'
-            "⚡ SUPER REPIQUE (semanal + funding < 0)</div>"
-        )
+                '<div class="neutral-alert" style="background:#1f6feb; border: 1px solid #58a6ff; color: white;">'
+                "🔵 REPIQUE TÁTICO (regime venda + USDT.D sem. no topo)</div>"
+            )
     elif m.get("rebound") and not m.get("capitulation_lock") and m.get("status") == "VENDA":
-        if m.get("hiper_repique"):
+        _hr = m.get("hiper_repique")
+        _funding_neg = m.get("funding_rate", 0) < 0
+        if _hr and _funding_neg:
             super_html = (
                 '<div class="neutral-alert" style="background:#1a0a2e; border: 2px solid #a371f7; color: white;">'
-                '🔱 HIPER REPIQUE · Sharpe+Sortino Diário ✅</div>'
+                f'🔱 HIPER REPIQUE · Sharpe+Sortino ✅ + Funding: {f_rate:.4f}%</div>'
+            )
+        elif _hr:
+            super_html = (
+                '<div class="neutral-alert" style="background:#4a2080; border: 2px solid #a371f7; color: white;">'
+                '⚡ SUPER REPIQUE · Sharpe+Sortino Diário ✅</div>'
             )
         else:
             super_html = (
@@ -1548,18 +1571,27 @@ with col1:
     st.markdown("### 📊 Snapshot Mais Recente")
     if snapshots_list:
         latest = snapshots_list[0]
-        df = pd.read_csv(latest)
-        df.columns = [c.strip().lower() for c in df.columns]
-        c1, c2 = st.columns(2)
-        c1.metric("Moedas Mapeadas", len(df))
-        score_col = next((c for c in df.columns if 'score' in c or 'final_score' in c), None)
-        avg_score = df[score_col].mean() if score_col else 0
-        c2.metric("Score Médio", f"{avg_score:.2f}")
-        if st.button("🖥️ GERAR SUPER DASHBOARD", type="primary"): visualizer.show_latest_csv(latest)
-        st.markdown("---")
-        st.markdown("**Preview Sinais (Top 10)**")
-        disp_cols = [c for c in ['symbol', 'score', 'final_score', 'momentum', 'sector'] if c in df.columns]
-        st.dataframe(df[disp_cols].head(10), width='stretch', height=350)
+        try:
+            if os.path.getsize(latest) == 0:
+                st.warning(f"⚠️ Arquivo vazio: {os.path.basename(latest)}")
+            else:
+                df = pd.read_csv(latest)
+                if df.empty or len(df.columns) == 0:
+                    st.warning(f"⚠️ Arquivo sem dados: {os.path.basename(latest)}")
+                else:
+                    df.columns = [c.strip().lower() for c in df.columns]
+                    c1, c2 = st.columns(2)
+                    c1.metric("Moedas Mapeadas", len(df))
+                    score_col = next((c for c in df.columns if 'score' in c or 'final_score' in c), None)
+                    avg_score = df[score_col].mean() if score_col else 0
+                    c2.metric("Score Médio", f"{avg_score:.2f}")
+                    if st.button("🖥️ GERAR SUPER DASHBOARD", type="primary"): visualizer.show_latest_csv(latest)
+                    st.markdown("---")
+                    st.markdown("**Preview Sinais (Top 10)**")
+                    disp_cols = [c for c in ['symbol', 'score', 'final_score', 'momentum', 'sector'] if c in df.columns]
+                    st.dataframe(df[disp_cols].head(10), width='stretch', height=350)
+        except (pd.errors.EmptyDataError, Exception) as e:
+            st.warning(f"⚠️ Erro ao ler snapshot: {os.path.basename(latest)}")
     else: st.error("Execute o Finder para gerar dados.")
 
 with col2:
@@ -1679,7 +1711,10 @@ def plot_institucional_chart():
             st.warning("❌ Sem dados de funding rate históricos")
             return
 
-        df_funding = pd.read_csv(funding_path)
+        df_funding = pd.read_csv(funding_path) if os.path.getsize(funding_path) > 0 else pd.DataFrame()
+        if df_funding.empty:
+            st.warning("❌ Arquivo de funding rate vazio")
+            return
         # Corrigir formato de data - handle diferentes formatos
         df_funding['timestamp'] = pd.to_datetime(df_funding['timestamp'], format='mixed')
 
@@ -2147,136 +2182,135 @@ with tab4:
     # Dataframe atualizado sempre que vem do gems_finder.py
     if snapshots_list:
         latest = snapshots_list[0]
-        df = pd.read_csv(latest)
-        df.columns = [c.strip().lower() for c in df.columns]
+        try:
+            df = pd.read_csv(latest) if os.path.getsize(latest) > 0 else pd.DataFrame()
+        except Exception:
+            df = pd.DataFrame()
+        if df.empty:
+            st.warning(f"⚠️ Snapshot sem dados: {os.path.basename(latest)}")
+        else:
+            df.columns = [c.strip().lower() for c in df.columns]
 
-        st.markdown("**📊 Selecione as moedas para adicionar à Watchlist:**")
+            st.markdown("**📊 Selecione as moedas para adicionar à Watchlist:**")
 
-        # Preparar dataframe com colunas principais
-        df_display = df.head(20).copy()
+            # Preparar dataframe com colunas principais
+            df_display = df.head(20).copy()
 
-        # Adicionar coluna de seleção
-        if 'total_volume' in df_display.columns and 'market_cap' in df_display.columns:
-            df_display['Ratio'] = (df_display['total_volume'] / df_display['market_cap']).round(2)
+            # Adicionar coluna de seleção
+            if 'total_volume' in df_display.columns and 'market_cap' in df_display.columns:
+                df_display['Ratio'] = (df_display['total_volume'] / df_display['market_cap']).round(2)
 
-        # Selecionar colunas para exibir
-        display_cols = ['symbol', 'name']
-        if 'market_cap' in df_display.columns:
-            display_cols.append('market_cap')
-        if 'total_volume' in df_display.columns:
-            display_cols.append('total_volume')
-        if 'Ratio' in df_display.columns:
-            display_cols.append('Ratio')
-        if 'final_score' in df_display.columns:
-            display_cols.append('final_score')
-        if 'momentum' in df_display.columns:
-            display_cols.append('momentum')
+            # Selecionar colunas para exibir
+            display_cols = ['symbol', 'name']
+            if 'market_cap' in df_display.columns:
+                display_cols.append('market_cap')
+            if 'total_volume' in df_display.columns:
+                display_cols.append('total_volume')
+            if 'Ratio' in df_display.columns:
+                display_cols.append('Ratio')
+            if 'final_score' in df_display.columns:
+                display_cols.append('final_score')
+            if 'momentum' in df_display.columns:
+                display_cols.append('momentum')
 
-        # Adicionar coluna de seleção com checkboxes
-        df_display['Selecionar'] = False
+            # Adicionar coluna de seleção com checkboxes
+            df_display['Selecionar'] = False
 
-        # Exibir dataframe com checkboxes
-        selected_rows = []
-        for i, row in df_display.iterrows():
-            symbol = row.get('symbol', '')
-            name = row.get('name', '')
-            ratio = row.get('Ratio', 0)
-            score = row.get('final_score', 0)
+            # Exibir dataframe com checkboxes
+            selected_rows = []
+            for i, row in df_display.iterrows():
+                symbol = row.get('symbol', '')
+                name = row.get('name', '')
+                ratio = row.get('Ratio', 0)
+                score = row.get('final_score', 0)
 
-            # Dados de movimento
-            price_change_24h = row.get('price_change_percentage_24h', 0)
-            price_change_7d = row.get('price_change_percentage_7d_in_currency', 0)
-            price_change_30d = row.get('price_change_percentage_30d_in_currency', 0)
+                # Dados de movimento
+                price_change_24h = row.get('price_change_percentage_24h', 0)
+                price_change_7d = row.get('price_change_percentage_7d_in_currency', 0)
+                price_change_30d = row.get('price_change_percentage_30d_in_currency', 0)
 
-            # Zone, volume e market cap
-            zone = row.get('zone', 'N/A')
-            status = get_exhaustion_status(row)  # Adicionar coluna Status
-            volume = row.get('total_volume', 0)
-            market_cap = row.get('market_cap', 0)
+                # Zone, volume e market cap
+                zone = row.get('zone', 'N/A')
+                status = get_exhaustion_status(row)
+                volume = row.get('total_volume', 0)
+                market_cap = row.get('market_cap', 0)
 
-            # Formatar valores
-            volume_formatted = f"{volume/1000000:.1f}M" if volume > 1000000 else f"{volume/1000:.1f}K"
-            market_cap_formatted = f"{market_cap/1000000:.1f}M" if market_cap > 1000000 else f"{market_cap/1000:.1f}K"
+                # Formatar valores
+                volume_formatted = f"{volume/1000000:.1f}M" if volume > 1000000 else f"{volume/1000:.1f}K"
+                market_cap_formatted = f"{market_cap/1000000:.1f}M" if market_cap > 1000000 else f"{market_cap/1000:.1f}K"
 
-            # Formatar porcentagens
-            change_24h_str = f"{price_change_24h:+.2f}%" if price_change_24h != 0 else "0.00%"
-            change_7d_str = f"{price_change_7d:+.2f}%" if price_change_7d != 0 else "N/A"
-            change_30d_str = f"{price_change_30d:+.2f}%" if price_change_30d != 0 else "N/A"
+                # Formatar porcentagens
+                change_24h_str = f"{price_change_24h:+.2f}%" if price_change_24h != 0 else "0.00%"
+                change_7d_str = f"{price_change_7d:+.2f}%" if price_change_7d != 0 else "N/A"
+                change_30d_str = f"{price_change_30d:+.2f}%" if price_change_30d != 0 else "N/A"
 
-            # Cor para 24h
-            color_24h = "🟢" if price_change_24h > 0 else "🔴" if price_change_24h < 0 else "⚪"
+                # Cor para 24h
+                color_24h = "🟢" if price_change_24h > 0 else "🔴" if price_change_24h < 0 else "⚪"
 
-            col_check, col_info = st.columns([1, 5])
+                col_check, col_info = st.columns([1, 5])
 
-            with col_check:
-                selected = st.checkbox(f"**{symbol}**", key=f"select_{symbol}_{i}")
-                if selected:
-                    selected_rows.append(row)
+                with col_check:
+                    selected = st.checkbox(f"**{symbol}**", key=f"select_{symbol}_{i}")
+                    if selected:
+                        selected_rows.append(row)
 
-            with col_info:
-                # Montar string de informações
-                info_parts = [
-                    f"**{name[:30]}** ({market_cap_formatted})",
-                    f"Ratio: {ratio:.2f}",
-                    f"Score: {score:.1f}",
-                    f"Zone: {zone}",
-                    f"Status: {status}",
-                    f"Vol: {volume_formatted}",
-                    f"24h: {color_24h} {change_24h_str}"
-                ]
+                with col_info:
+                    info_parts = [
+                        f"**{name[:30]}** ({market_cap_formatted})",
+                        f"Ratio: {ratio:.2f}",
+                        f"Score: {score:.1f}",
+                        f"Zone: {zone}",
+                        f"Status: {status}",
+                        f"Vol: {volume_formatted}",
+                        f"24h: {color_24h} {change_24h_str}"
+                    ]
 
-                # Adicionar 7d e 30d se existirem
-                if price_change_7d != 0:
-                    info_parts.append(f"7d: {change_7d_str}")
-                if price_change_30d != 0:
-                    info_parts.append(f"30d: {change_30d_str}")
+                    if price_change_7d != 0:
+                        info_parts.append(f"7d: {change_7d_str}")
+                    if price_change_30d != 0:
+                        info_parts.append(f"30d: {change_30d_str}")
 
-                st.markdown(" | ".join(info_parts))
+                    st.markdown(" | ".join(info_parts))
 
-        st.markdown("---")
+            st.markdown("---")
 
-        # Botões de gestão
-        col_save, col_manage = st.columns([1, 1])
+            # Botões de gestão
+            col_save, col_manage = st.columns([1, 1])
 
-        with col_save:
-            if st.button("💾 SALVAR SELEÇÃO EM CSV", type="primary"):
-                if selected_rows:
-                    # Salvar moedas selecionadas em CSV
-                    watchlist_file = os.path.join("data", "watchlist_selecionada.csv")
-                    os.makedirs(os.path.dirname(watchlist_file), exist_ok=True)
+            with col_save:
+                if st.button("💾 SALVAR SELEÇÃO EM CSV", type="primary"):
+                    if selected_rows:
+                        watchlist_file = os.path.join("data", "watchlist_selecionada.csv")
+                        os.makedirs(os.path.dirname(watchlist_file), exist_ok=True)
 
-                    # Adicionar data de adição às novas seleções
-                    from datetime import datetime
-                    current_date = datetime.now().strftime('%Y-%m-%d %H:%M')
+                        from datetime import datetime
+                        current_date = datetime.now().strftime('%Y-%m-%d %H:%M')
 
-                    df_selected = pd.DataFrame(selected_rows)
-                    df_selected['data_adicionada'] = current_date
+                        df_selected = pd.DataFrame(selected_rows)
+                        df_selected['data_adicionada'] = current_date
 
-                    # Verificar se já existe watchlist para adicionar em vez de sobreescrever
-                    if os.path.exists(watchlist_file):
-                        try:
-                            df_existing = pd.read_csv(watchlist_file)
-                            # Remover duplicatas pelos símbolos das novas seleções
-                            new_symbols = [row.get('symbol', '') for row in selected_rows]
-                            df_filtered = df_existing[~df_existing['symbol'].isin(new_symbols)]
-                            # Combinar watchlist existente com novas seleções
-                            df_final = pd.concat([df_filtered, df_selected], ignore_index=True)
-                        except:
+                        if os.path.exists(watchlist_file):
+                            try:
+                                df_existing = pd.read_csv(watchlist_file)
+                                new_symbols = [row.get('symbol', '') for row in selected_rows]
+                                df_filtered = df_existing[~df_existing['symbol'].isin(new_symbols)]
+                                df_final = pd.concat([df_filtered, df_selected], ignore_index=True)
+                            except:
+                                df_final = df_selected
+                        else:
                             df_final = df_selected
+
+                        df_final.to_csv(watchlist_file, index=False)
+
+                        symbols = [row.get('symbol', '') for row in selected_rows]
+                        st.success(f"✅ Adicionadas {len(selected_rows)} moedas à watchlist: {', '.join(symbols)}")
                     else:
-                        df_final = df_selected
+                        st.warning("⚠️ Selecione pelo menos uma moeda para salvar!")
 
-                    df_final.to_csv(watchlist_file, index=False)
-
-                    symbols = [row.get('symbol', '') for row in selected_rows]
-                    st.success(f"✅ Adicionadas {len(selected_rows)} moedas à watchlist: {', '.join(symbols)}")
-                else:
-                    st.warning("⚠️ Selecione pelo menos uma moeda para salvar!")
-
-        with col_manage:
-            if st.button("🗑️ GERENCIAR WATCHLIST", type="secondary"):
-                st.session_state.show_manage = not st.session_state.get('show_manage', False)
-                st.rerun()
+            with col_manage:
+                if st.button("🗑️ GERENCIAR WATCHLIST", type="secondary"):
+                    st.session_state.show_manage = not st.session_state.get('show_manage', False)
+                    st.rerun()
 
     # Área de gestão da watchlist
     if st.session_state.get('show_manage', False):
@@ -2439,10 +2473,11 @@ with tab5:
       <td><span class="badge s-hiper-sell">🔱 HIPER_SELL</span></td>
       <td>
         <span class="cond-code">super_alert = SUPER_SELL</span><br>
-        <span class="cond-code">fear_greed &gt; 79</span> OU <span class="cond-code">altcoin_season &gt; 79</span>
+        <span class="cond-code">fear_greed &gt; 79</span> OU <span class="cond-code">altcoin_season &gt; 79</span><br>
+        <span class="cond-code">funding_rate &gt; 0.08%</span>
       </td>
-      <td class="fonte-txt">SUPER_SELL já confirmado + Fear &amp; Greed em Ganância Extrema (&gt;79) OU Altcoin Season Index &gt; 79</td>
-      <td class="fonte-txt">Confluência máxima de venda com euforia de mercado confirmada externamente. Sinal de topo histórico com maior probabilidade de reversão</td>
+      <td class="fonte-txt">SUPER_SELL confirmado + Fear &amp; Greed OU AltSzn em euforia extrema + Funding excessivo — confirmação da confirmação</td>
+      <td class="fonte-txt">Confluência máxima de venda: euforia de mercado persistente E funding mostrando alavancagem extrema. O sinal mais raro e preciso de topo do ciclo</td>
     </tr>
     <tr>
       <td class="pri">3º</td>
@@ -2461,10 +2496,10 @@ with tab5:
       <td>
         <span class="cond-code">sell_mode = True</span><br>
         <span class="cond-code">weekly_sell_trigger = True</span><br>
-        <span class="cond-code">funding_rate &gt; 0.08%</span>
+        <span class="cond-code">fear_greed &gt; 79</span> OU <span class="cond-code">altcoin_season &gt; 79</span>
       </td>
-      <td class="fonte-txt">USDT.D BB%B mensal (alto) + Others ou USDT.D semanal (toque) + Funding BTC excessivo</td>
-      <td class="fonte-txt">Regime macro defensivo + gatilho semanal + mercado long demais (funding alto = sobrecompra alavancada)</td>
+      <td class="fonte-txt">USDT.D BB%B mensal (alto) + Others ou USDT.D semanal (toque) + euforia confirmada via Fear&amp;Greed OU Altcoin Season</td>
+      <td class="fonte-txt">Regime defensivo + gatilho semanal + mercado em euforia extrema. Indicadores mais persistentes e confiáveis que o funding para identificar topos</td>
     </tr>
     <tr>
       <td class="pri">5º</td>
@@ -2506,24 +2541,24 @@ with tab5:
         <span class="cond-code">rebound = True</span> OU <span class="cond-code">rebound_super = True</span><br>
         <span class="cond-code">capitulation_lock = False</span><br>
         <span class="cond-code">status = "VENDA"</span><br>
-        <span class="cond-code">Sharpe(252,60) cruza abaixo de -1.5</span> OU<br>
-        <span class="cond-code">Sortino SMA fast(20) cruza acima de slow(70)</span>
+        <span class="cond-code">Sharpe(252,60) ≤ -1.5</span> OU <span class="cond-code">Sortino SMA fast(20) &gt; slow(70)</span><br>
+        <span class="cond-code">funding_rate &lt; 0</span>
       </td>
-      <td class="fonte-txt">Repique macro ativo + círculo verde de confirmação de fundo no BTC diário (Sharpe + Sortino via yfinance — idêntico ao market_analysis_app.py)</td>
-      <td class="fonte-txt">Repique tático com confirmação técnica de fundo: o macro indica stress de venda + o diário BTC confirma reversão de curto prazo via risco/retorno. Sinal mais exigente de repique</td>
+      <td class="fonte-txt">Círculo verde BTC diário confirmado + funding negativo — confirmação da confirmação do repique</td>
+      <td class="fonte-txt">Máxima confluência de repique: técnico diário confirmado E mercado posicionado short demais. Sinal mais raro e preciso de reversão tática</td>
     </tr>
     <tr>
       <td class="pri">9º</td>
       <td><span class="badge s-repsuper">⚡ SUPER_REPIQUE</span></td>
       <td>
-        <span class="cond-code">rebound_super = True</span><br>
+        <span class="cond-code">rebound = True</span> OU <span class="cond-code">rebound_super = True</span><br>
         <span class="cond-code">capitulation_lock = False</span><br>
         <span class="cond-code">status = "VENDA"</span><br>
-        <span class="cond-code">funding_rate &lt; 0</span><br>
-        <span style="font-size:11px;color:#6e7681;">(círculo verde diário NÃO confirmado)</span>
+        <span class="cond-code">Sharpe(252,60) ≤ -1.5</span> OU <span class="cond-code">Sortino SMA fast(20) &gt; slow(70)</span><br>
+        <span style="font-size:11px;color:#6e7681;">(funding NÃO confirmado)</span>
       </td>
-      <td class="fonte-txt">USDT.D semanal no topo + funding negativo dentro de regime de venda</td>
-      <td class="fonte-txt">Repique técnico com força extra via funding. Sem confirmação do diário BTC — potencial tático mas menos preciso que o HIPER_REPIQUE</td>
+      <td class="fonte-txt">Repique macro ativo + círculo verde de confirmação de fundo no BTC diário (Sharpe + Sortino)</td>
+      <td class="fonte-txt">Repique com confirmação técnica sólida mas sem funding negativo — forte sinal tático de reversão de curto prazo</td>
     </tr>
     <tr>
       <td class="pri">10º</td>
@@ -3165,8 +3200,8 @@ with tab7:
                     ml_html = f'<div class="ml">🧠 ML {ml_score*100:.0f}%</div>' if ml_score else ''
                     import re as _re
                     _rat = pick.get('rationale', '—')
-                    _rat = _re.sub(r'\*\*(.+?)\*\*', r'<b>\\1</b>', _rat)
-                    _rat = _re.sub(r'\*(.+?)\*', r'<i>\\1</i>', _rat)
+                    _rat = _re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', _rat)
+                    _rat = _re.sub(r'\*(.+?)\*', r'<i>\1</i>', _rat)
                     _rat = _rat.replace('\\n- ', '<br>• ').replace('\\n', '<br>').replace('\n', '<br>')
                     rationale = _rat
                     st.markdown(f"""

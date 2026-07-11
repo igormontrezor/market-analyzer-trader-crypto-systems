@@ -1,0 +1,4 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+MESSIGOAT,The Argentine Goat,J2Yv2umBhjP2Q7xT5tkYK4cceogqgkVrGXvb3a35pump,solana,0.0003361,476.0,336132.0,46765.06,1247060.5,18385,4259,0.81,3.3,https://dexscreener.com/solana/53sjhii65wo3tovwhbfynawoejzdmjowyutxl6ljkbtz,2026-07-07T14:47:07.792171,dexscreener,28.8029599
+XXX,XXXToken,0xc667FD9d72d9104946c83c00d13FeD420D1F4444,bsc,0.0001725,133.0,172509.0,39718.13,1356150.35,4704,3878,0.55,1.8,https://dexscreener.com/bsc/0x8a1cfb0add8d1318d0855961415646bd0eca8bba,2026-07-07T14:46:45.324706,dexscreener,13.319974750000002
+SKILL,SkillChain,0xA0981e3AF019bbB451837CcaE89E6EC5A1Da553B,base,0.0002097,74.95,209799.0,40231.56,399928.54,3416,2955,0.54,30.9,https://dexscreener.com/base/0xd65d4bd2a19f10f072018b2312981e1fcfbfae8e,2026-07-07T14:47:10.330107,dexscreener,5.052901720000001

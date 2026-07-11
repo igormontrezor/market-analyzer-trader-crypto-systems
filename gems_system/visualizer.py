@@ -274,12 +274,13 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
     }
 
     # --- 3. DEFINIÇÃO DE GATILHOS (SINAIS) ---
-    # Repique: só geometria semanal em regime venda | Super repique: mesmo + funding BTC < 0
+    # Repique: geometria semanal em regime venda
+    # Super repique: repique + círculo verde diário (Sharpe/Sortino) — funding passa para HIPER
     _repique_base = bool(sell_mode and weekly_state["usdt_touch_high"] and not capitulation_lock)
     signal = {
         "weekly_buy_trigger": bool(buy_mode and (weekly_state["others_touch_low"] or weekly_state["usdt_touch_high"])),
         "tactical_rebound": _repique_base,
-        "tactical_rebound_super": bool(_repique_base and funding_rate < 0),
+        "tactical_rebound_super": bool(_repique_base),  # agora igual ao base — círculo verde calculado em app.py
         "weekly_sell_trigger": bool(sell_mode and (weekly_state["usdt_touch_low"] or curr_w_others >= 1)),
     }
 

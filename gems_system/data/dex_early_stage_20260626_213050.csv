@@ -1,3 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-LIQUITITTY,liquititty,9Cn7or8TVicZYjSUEmgRk4A9XdXFzkBS8vn1ebt6pump,solana,0.000202,248.0,202003.0,47042.26,817993.01,10583,6948,0.6,15.5,https://dexscreener.com/solana/7qv8syy4z5w1irkzexwzgyl7qiexlbduuarxwgryqrry,2026-06-26T21:30:44.667134,dexscreener,12.249577979999998
-REX,rex.fun,CmQJNJ185pjzQoebPbcqZu1kTykHxJbn4gER1Af7pump,solana,0.0002109,275.0,210970.0,33237.26,101929.34,979,707,0.58,68.5,https://dexscreener.com/solana/8xzxttcfq49n5awdmtlaok7mkmz65aaatpqryd9m1jl7,2026-06-26T21:30:44.667908,dexscreener,5.063993619999996

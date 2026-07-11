@@ -542,7 +542,7 @@ def build_btc_d(A):
     _ln(fig, stoch["k"], "lightblue",  "StochRSI K Daily", 3)   # notebook usa stochrsi_daily_values (k)
     _mk(fig, stoch["d"].index, stoch["d"], stch_b, "green", "triangle-up",   "StochRSI Buy Daily Signals",  3, 10)
     _mk(fig, stoch["d"].index, stoch["d"], stch_s, "red",   "triangle-down", "StochRSI Sell Daily Signals", 3, 10)
-    _ln(fig, rsi, "lightblue", "RSI Daily", 3)     # notebook plota RSI novamente na row3
+    _ln(fig, rsi, "yellow", "RSI Daily", 3)     # notebook plota RSI novamente na row3
     for y, col in [(5,"lightgreen"),(50,"gray"),(90,"lightcoral")]:
         _hl(fig, y, col, 3)
 
@@ -627,8 +627,9 @@ def build_btc_w(A):
     for y, col in [(20,"lightgreen"),(50,"gray"),(80,"lightcoral")]:
         _hl(fig, y, col, 2)
 
-    _ln(fig, stoch["d"], "lightcoral", "StochRSI d", 3)
-    _ln(fig, rsi, "lightblue", "RSI", 3)      # notebook plota RSI junto
+    _ln(fig, stoch["d"], "lightcoral", "StochRSI d Weekly", 3)
+    _ln(fig, stoch["k"], "lightblue",  "StochRSI K Weekly", 3)
+    _ln(fig, rsi, "yellow", "RSI Weekly", 3)
     _mk(fig, stoch["d"].index, stoch["d"], stch_b, "green","triangle-up",   "StochRSI Buy Signals",  3, 10)
     _mk(fig, stoch["d"].index, stoch["d"], stch_s, "red",  "triangle-down", "StochRSI Sell Signals", 3, 10)
     for y, col in [(5,"lightgreen"),(50,"gray"),(90,"lightcoral")]:
@@ -736,8 +737,9 @@ def build_btc_m(A):
         _hl(fig, y, col, 3)
 
     # row 4 — StochRSI
-    _ln(fig, stoch["d"], "lightcoral", "StochRSI d", 4)
-    _ln(fig, rsi, "lightblue", "StochRSI", 4)
+    _ln(fig, stoch["d"], "lightcoral", "StochRSI d Monthly", 4)
+    _ln(fig, stoch["k"], "lightblue",  "StochRSI K Monthly", 4)
+    _ln(fig, rsi, "yellow", "RSI Monthly", 4)
     _mk(fig, stoch["d"].index, stoch["d"], stch_b, "green","triangle-up",   "StochRSI Buy Signals",  4, 10)
     _mk(fig, stoch["d"].index, stoch["d"], stch_s, "red",  "triangle-down", "StochRSI Sell Signals", 4, 10)
     for y, col in [(10,"lightgreen"),(50,"gray"),(90,"lightcoral")]:

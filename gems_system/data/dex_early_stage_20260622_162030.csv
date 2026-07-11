@@ -1,4 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-MAMO,Mamo,0x7300B37DfdfAb110d83290A29DfB31B1740219fE,base,0.008318,-4.67,4942353.0,349665.18,19036.46,152,98,0.61,,https://dexscreener.com/base/0xe2b3aa806e56603a244bfc111c9474f7dedd03db,2026-06-22T16:20:27.340136,dexscreener,11.02226938
-UPPY,Uppy,2jbA4D1YSPnH9beyUCPQSBhHqaDhbix8HYYrWQokpump,solana,0.000244,707.0,243922.0,36432.33,406019.35,9819,7296,0.57,4.7,https://dexscreener.com/solana/axj9bnpyhq3mc1frscn2e7xengatbuajvbydmpztxlsf,2026-06-22T16:20:24.836649,dexscreener,6.919639749999995
-$DUDU,Dudu,SwuKQSbzNVcc2Gh7PTLskGu5U9v9w8Lgv2NnA292uok,solana,4.233e-05,505.0,42340.0,34661.96,173874.32,2157,1495,0.59,1.0,https://dexscreener.com/solana/8y5pnxrfxqqsvxw5mpkxbakaejrptnqkvjqervqdwxuk,2026-06-22T16:20:24.836423,dexscreener,6.285923959999998

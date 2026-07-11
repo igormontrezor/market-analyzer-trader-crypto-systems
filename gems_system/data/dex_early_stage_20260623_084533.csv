@@ -1,4 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-CATWIF,catwifhat,5pYB12kEhfhSFXJjZ7JtyqDpt6uUqhsF6iu6Ee9spump,solana,0.0003861,152.0,386146.0,65323.13,891193.38,26180,6992,0.79,28.8,https://dexscreener.com/solana/4dytblybdqyqjavjlrht4xtqkvm7qayzuttjfsicromp,2026-06-23T08:45:27.801890,dexscreener,24.984393990000004
-MAMO,Mamo,0x7300B37DfdfAb110d83290A29DfB31B1740219fE,base,0.007968,-7.87,4754875.0,337610.08,22630.27,204,99,0.67,,https://dexscreener.com/base/0xe2b3aa806e56603a244bfc111c9474f7dedd03db,2026-06-23T08:45:29.941990,dexscreener,14.620193360000004
-POKÉFIGHT,PokéFight,AzdSZX3bGj2FGR8rEeH4fhrUpQhLAxvypUJMX3BDpump,solana,0.0002957,1314.0,295585.0,41658.13,989982.43,7632,6773,0.53,63.2,https://dexscreener.com/solana/7aeowdhefqotcdwrydn8bxjusndvlcag3xmc6nczsvbm,2026-06-23T08:45:27.801957,dexscreener,9.16973139

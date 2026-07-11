@@ -1502,19 +1502,34 @@ def build_chart(all_data, symbol, chart_tf, athena_levels):
 
     df = all_data[chart_tf]
     na = athena_levels.get(symbol, {})
+    _is_w1_mn = chart_tf in ("1wk", "1mo")
 
-    # ── Layout: Price | RSI multi-TF | Stoch multi-TF ──
-    fig = make_subplots(
-        rows=3, cols=1,
-        shared_xaxes=True,
-        vertical_spacing=0.02,
-        row_heights=[0.58, 0.22, 0.20],
-        subplot_titles=[
-            f"Preço — {symbol} ({chart_tf.upper()})",
-            f"RSI + Canal ({chart_tf.upper()})",
-            f"Stochastic RSI ({chart_tf.upper()})"
-        ]
-    )
+    # ── Layout: Price | RSI multi-TF | Stoch multi-TF | MACD (W1/MN only) ──
+    if _is_w1_mn:
+        fig = make_subplots(
+            rows=4, cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.02,
+            row_heights=[0.48, 0.18, 0.17, 0.17],
+            subplot_titles=[
+                f"Preço — {symbol} ({chart_tf.upper()})",
+                f"RSI + Canal ({chart_tf.upper()})",
+                f"Stochastic RSI ({chart_tf.upper()})",
+                f"MACD (12/26/9) — {chart_tf.upper()}"
+            ]
+        )
+    else:
+        fig = make_subplots(
+            rows=3, cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.02,
+            row_heights=[0.58, 0.22, 0.20],
+            subplot_titles=[
+                f"Preço — {symbol} ({chart_tf.upper()})",
+                f"RSI + Canal ({chart_tf.upper()})",
+                f"Stochastic RSI ({chart_tf.upper()})"
+            ]
+        )
 
     # ─── ROW 1: PREÇO ───────────────────────────────────────
     fig.add_trace(go.Candlestick(
@@ -1704,10 +1719,38 @@ def build_chart(all_data, symbol, chart_tf, athena_levels):
     fig.add_hline(y=80, line_dash="dot", line_color="rgba(255,80,80,0.4)",  row=3, col=1)
     fig.add_hline(y=20, line_dash="dot", line_color="rgba(80,255,160,0.4)", row=3, col=1)
 
+    # ─── ROW 4: MACD (apenas W1 e MN) ──────────────────────
+    _is_w1_mn = chart_tf in ("1wk", "1mo")
+    if _is_w1_mn:
+        _ema12  = df['Close'].ewm(span=12, adjust=False).mean()
+        _ema26  = df['Close'].ewm(span=26, adjust=False).mean()
+        _macd   = _ema12 - _ema26
+        _signal = _macd.ewm(span=9, adjust=False).mean()
+        _hist   = _macd - _signal
+        _colors_hist = ["#3fb950" if v >= 0 else "#f85149" for v in _hist]
+
+        fig.add_trace(go.Bar(
+            x=df.index, y=_hist,
+            marker_color=_colors_hist,
+            name="MACD Hist", opacity=0.7
+        ), row=4, col=1)
+        fig.add_trace(go.Scatter(
+            x=df.index, y=_macd,
+            line=dict(color="#58a6ff", width=1.5),
+            name="MACD"
+        ), row=4, col=1)
+        fig.add_trace(go.Scatter(
+            x=df.index, y=_signal,
+            line=dict(color="#e3b341", width=1.2, dash="dot"),
+            name="Signal"
+        ), row=4, col=1)
+        fig.add_hline(y=0, line_dash="dot",
+                      line_color="rgba(200,200,200,0.25)", row=4, col=1)
+
     # ─── LAYOUT ─────────────────────────────────────────────
     fig.update_layout(
         template="plotly_dark",
-        height=900,
+        height=1050 if _is_w1_mn else 900,
         paper_bgcolor="#0b0e11",
         plot_bgcolor="#0f1319",
         font=dict(family="JetBrains Mono", color="#c9d1d9", size=11),
@@ -1716,7 +1759,8 @@ def build_chart(all_data, symbol, chart_tf, athena_levels):
                     xanchor="left", x=0, font_size=10, bgcolor="rgba(0,0,0,0)"),
         margin=dict(l=10, r=10, t=60, b=10),
     )
-    for i in range(1, 4):
+    n_rows = 4 if _is_w1_mn else 3
+    for i in range(1, n_rows + 1):
         fig.update_xaxes(gridcolor="#1e2530", row=i, col=1, showspikes=True,
                          spikecolor="#444", spikethickness=1)
         fig.update_yaxes(gridcolor="#1e2530", row=i, col=1)
@@ -2137,7 +2181,7 @@ if __name__ == "__main__":
             tf_labels_ui = {"4h": "H4", "1d": "D1", "1wk": "W1", "1mo": "MN"}
             tf_cols = st.columns(4)
             selected_tfs = []
-            defaults = {"4h": True, "1d": True, "1wk": False, "1mo": False}
+            defaults = {"4h": False, "1d": False, "1wk": True, "1mo": True}
             for col, (tf_key, tf_lbl) in zip(tf_cols, tf_labels_ui.items()):
                 if col.checkbox(tf_lbl, value=defaults[tf_key], key=f"mtf_{tf_key}"):
                     selected_tfs.append(tf_key)
@@ -3093,9 +3137,9 @@ if __name__ == "__main__":
                             st.markdown(f"**{label}**")
                             col1, col2 = st.columns(2)
                             col1.metric("Presente", f"{avg_true:.2%}" if avg_true else "—")
-                            col1.caption(f"WR: {wr_true:.1%} (n={n_true})")
+                            col1.caption(f"WR: {wr_true:.1%} (n={n_true})" if wr_true is not None else f"WR: — (n={n_true})")
                             col2.metric("Ausente", f"{avg_false:.2%}" if avg_false else "—")
-                            col2.caption(f"WR: {wr_false:.1%} (n={n_false})")
+                            col2.caption(f"WR: {wr_false:.1%} (n={n_false})" if wr_false is not None else f"WR: — (n={n_false})")
 
                     st.markdown("---")
                     st.caption("ℹ️ Sinais antigos (sem os campos enriquecidos) são ignorados nas análises acima.")

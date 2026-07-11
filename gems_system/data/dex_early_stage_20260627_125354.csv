@@ -1,2 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-HODLY,Hodly,6oPG5q5SPNtQTxeu8RRWvh6mngsauznC2SVVtXqPpump,solana,0.0002887,121.0,288786.0,40587.96,955317.02,13394,9640,0.58,25.5,https://dexscreener.com/solana/hetlzrhxijzqu5s79hucxxqlrhtuje4qu6kdcauabveu,2026-06-27T12:53:49.302848,dexscreener,12.001355559999997

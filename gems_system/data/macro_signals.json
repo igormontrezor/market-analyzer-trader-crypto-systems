@@ -26,8 +26,8 @@
     "btc_price_usd": 67551.0,
     "evaluated_7d": true,
     "outcome_7d": "LOSS",
-    "evaluated_30d": false,
-    "outcome_30d": null
+    "evaluated_30d": true,
+    "outcome_30d": "LOSS"
   },
   {
     "timestamp": "2026-06-10T06:55:42.346143",
@@ -41,8 +41,8 @@
     "btc_price_usd": 61288.0,
     "evaluated_7d": true,
     "outcome_7d": "WIN",
-    "evaluated_30d": false,
-    "outcome_30d": null
+    "evaluated_30d": true,
+    "outcome_30d": "LOSS"
   },
   {
     "timestamp": "2026-06-17T08:42:04.822479",
@@ -69,8 +69,8 @@
     "weekly_sell": false,
     "funding_rate": 0.002875,
     "btc_price_usd": 64100.0,
-    "evaluated_7d": false,
-    "outcome_7d": null,
+    "evaluated_7d": true,
+    "outcome_7d": "LOSS",
     "evaluated_30d": false,
     "outcome_30d": null
   },
@@ -84,6 +84,36 @@
     "weekly_sell": false,
     "funding_rate": 0.002541,
     "btc_price_usd": 62541.0,
+    "evaluated_7d": true,
+    "outcome_7d": "LOSS",
+    "evaluated_30d": false,
+    "outcome_30d": null
+  },
+  {
+    "timestamp": "2026-07-01T14:09:10.459686",
+    "date": "2026-07-01",
+    "regime": "BUY_MACRO",
+    "buy_mode": true,
+    "sell_mode": false,
+    "weekly_buy": false,
+    "weekly_sell": false,
+    "funding_rate": 0.007542000000000001,
+    "btc_price_usd": 59835.0,
+    "evaluated_7d": true,
+    "outcome_7d": "WIN",
+    "evaluated_30d": false,
+    "outcome_30d": null
+  },
+  {
+    "timestamp": "2026-07-09T08:33:47.486563",
+    "date": "2026-07-09",
+    "regime": "BUY_MACRO",
+    "buy_mode": true,
+    "sell_mode": false,
+    "weekly_buy": false,
+    "weekly_sell": false,
+    "funding_rate": 0.005874,
+    "btc_price_usd": 62647.0,
     "evaluated_7d": false,
     "outcome_7d": null,
     "evaluated_30d": false,

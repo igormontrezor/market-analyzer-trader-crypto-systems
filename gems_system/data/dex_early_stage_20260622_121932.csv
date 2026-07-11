@@ -1,4 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-RDR2,RDR2,DtgneYfuPv3Jt8PzfMXYq9opRNU2UVtgrLYFdC4Vpump,solana,0.001423,3865.0,1423987.0,90603.69,1561191.83,16168,6587,0.71,10.4,https://dexscreener.com/solana/4oghdthswcuddvhyutaoegujldswocofqqykzqpht1xs,2026-06-22T12:19:26.665978,dexscreener,25.723589989999994
-MAMO,Mamo,0x7300B37DfdfAb110d83290A29DfB31B1740219fE,base,0.008408,-3.7,4985450.0,352833.21,18347.36,126,91,0.58,,https://dexscreener.com/base/0xe2b3aa806e56603a244bfc111c9474f7dedd03db,2026-06-22T12:19:29.140288,dexscreener,9.189277029999996
-AFKHERO,AFK Heroes Idle RPG,9kwT8gUEMKQhnmc4mVb2iUAybfjzvVMM5LwffKFcpump,solana,0.0004205,346.0,397357.0,49622.96,395023.5,4987,3291,0.6,67.4,https://dexscreener.com/solana/dgx9ygesb5ac7jtu9imjtf8kmrrzdfpbmfenmdkfcv4u,2026-06-22T12:19:26.665746,dexscreener,8.904532399999997

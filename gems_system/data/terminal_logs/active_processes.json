@@ -110,5 +110,19 @@
     "log_file": "data/terminal_logs/command_20260621_105635.txt",
     "timestamp": "2026-06-21T10:56:35.392075",
     "description": "Executando busca de gems no mercado..."
+  },
+  {
+    "pid": 1268,
+    "command": "C:\\market_montrezor_system\\.venv\\Scripts\\python.exe gems_finder.py",
+    "log_file": "data/terminal_logs/command_20260709_083655.txt",
+    "timestamp": "2026-07-09T08:36:55.254415",
+    "description": "Executando busca de gems no mercado..."
+  },
+  {
+    "pid": 9004,
+    "command": "C:\\market_montrezor_system\\.venv\\Scripts\\python.exe gems_finder.py",
+    "log_file": "data/terminal_logs/command_20260709_084023.txt",
+    "timestamp": "2026-07-09T08:40:23.156718",
+    "description": "Executando busca de gems no mercado..."
   }
 ]

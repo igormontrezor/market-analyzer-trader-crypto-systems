@@ -1,2 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-HODL,Hold On for Dear Life,FqyUkVeDRXhxtGoiH5yeEDk3oQragkvEmnrL3yKQpump,solana,0.0002201,311.0,220165.0,33743.98,493453.21,5758,4042,0.59,0.6,https://dexscreener.com/solana/f2svjebj6vojeushh1m9vmnjxxtuqu7k53s9octg5phn,2026-06-25T20:33:53.479117,dexscreener,8.828785379999998

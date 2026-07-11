@@ -1,0 +1,115 @@
+feat: signal hierarchy inversion, weekly/monthly MACD chart, markdown fix, bug fixes
+
+=== SIGNAL HIERARCHY INVERSION — SELL side (app.py + visualizer.py) ===
+
+Inverted SUPER_SELL and HIPER_SELL conditions:
+  Before:
+    SUPER_SELL = sell_mode + weekly_sell_trigger + funding > 0.08%
+    HIPER_SELL = SUPER_SELL + Fear&Greed > 79 OR AltSzn > 79
+
+  After:
+    SUPER_SELL = sell_mode + weekly_sell_trigger + Fear&Greed > 79 OR AltSzn > 79
+    HIPER_SELL = SUPER_SELL + funding > 0.08%  (confirmation of the confirmation)
+
+Rationale: Fear&Greed and AltSzn are persistent indicators that stay elevated for weeks,
+making them more reliable for identifying cycle tops. Funding is short-lived and was
+absent during the BTC top — using it as the base condition missed the signal entirely.
+
+HIPER_BUY unchanged: SUPER_BUY + Fear&Greed < 10
+
+=== SIGNAL HIERARCHY INVERSION — REPIQUE side (app.py + visualizer.py) ===
+
+Inverted SUPER_REPIQUE and HIPER_REPIQUE conditions:
+  Before:
+    SUPER_REPIQUE = rebound + funding < 0
+    HIPER_REPIQUE = rebound + BTC daily Sharpe/Sortino green circle confirmed
+
+  After:
+    SUPER_REPIQUE = rebound + BTC daily Sharpe/Sortino green circle confirmed
+    HIPER_REPIQUE = SUPER_REPIQUE + funding < 0  (confirmation of the confirmation)
+
+visualizer.py: tactical_rebound_super is now identical to tactical_rebound
+  — funding evaluation moved entirely to app.py signal resolution
+
+app.py _macro_gems_signal_type() updated:
+  rebound + hiper_repique + funding < 0 → HIPER_REPIQUE
+  rebound + hiper_repique              → SUPER_REPIQUE
+  rebound only                         → REPIQUE
+
+HUD banners updated to reflect new hierarchy with correct labels and funding value display
+
+=== BUG FIX — fear_greed NameError in buy_mode (app.py) ===
+
+fear_greed and altcoin_season were only read inside the elif sell_mode branch,
+causing NameError when checking HIPER_BUY condition (which runs after the if/elif block).
+Fixed by reading both values before the buy/sell branch, available to both paths.
+
+=== MARKDOWN RENDERING FIX — pick cards (app.py) ===
+
+Fixed double-escaped backreference in weekly pick card rationale regex:
+  Before: r'<b>\\\\1</b>'  →  rendered as literal \1 in output
+  After:  r'<b>\1</b>'    →  correctly substitutes captured group
+
+Affected: **bold** and *italic* markdown in rationale text
+Result: raw \1 artifacts no longer appear in pick card descriptions
+
+=== WEEKLY/MONTHLY MACD CHART (trading_system.py) ===
+
+Added MACD (12/26/9) as a 4th panel in build_chart() for W1 and MN timeframes only
+  - H4 and D1 charts unchanged (3 panels)
+  - MACD calculated inline via ewm(span, adjust=False)
+  - Histogram: green bars above zero, red bars below zero
+  - MACD line: blue (#58a6ff)
+  - Signal line: yellow dashed (#e3b341)
+  - Zero line: dotted gray reference
+
+Layout adjustments for W1/MN:
+  - make_subplots: 4 rows with heights [0.48, 0.18, 0.17, 0.17]
+  - Chart height increased from 900px to 1050px
+  - Subplot title added: "MACD (12/26/9) — {TF}"
+  - update_xaxes/update_yaxes now iterates n_rows dynamically (3 or 4)
+
+Default TF checkboxes changed:
+  Before: H4 ✓  D1 ✓  W1 ☐  MN ☐
+  After:  H4 ☐  D1 ☐  W1 ✓  MN ✓
+
+=== BUG FIXES — empty CSV handling (app.py) ===
+
+Fixed pandas.errors.EmptyDataError on snapshot read (line 1551):
+  - All pd.read_csv() calls on snapshot files now check os.path.getsize() first
+  - Empty or missing files show st.warning() instead of crashing
+  - Entire watchlist block (df_display, loop, buttons) correctly indented inside else block
+    to prevent NameError: name 'df_display' is not defined
+
+Fixed same issue on funding_rate_history.csv read
+
+=== BUG FIXES — NoneType format errors (trading_system.py) ===
+
+Fixed TypeError: unsupported format string passed to NoneType.__format__
+  st.metric delta=f"WR: {wr:.1%}" crashed when wr variables are None
+  Applied guard: delta=f"WR: {wr:.1%}" if wr is not None else ""
+  Affected: wr_high, wr_low, wr_atr_true, wr_atr_false, wr_el, wr_not_el
+
+Fixed same issue on col1/col2.caption() lines:
+  col1.caption(f"WR: {wr_true:.1%} (n={n_true})")
+  col2.caption(f"WR: {wr_false:.1%} (n={n_false})")
+  Applied: show "WR: — (n=X)" when value is None
+
+=== SIGNALS TAB UPDATED (app.py) ===
+
+All 10 signals and 3 independent alerts updated to reflect inverted hierarchy:
+  1.  HIPER_BUY       — SUPER_BUY + Fear&Greed < 10
+  2.  HIPER_SELL      — SUPER_SELL + Fear&Greed>79 or AltSzn>79 + funding>0.08%
+  3.  SUPER_BUY       — buy_mode + weekly_buy_trigger + funding < 0
+  4.  SUPER_SELL      — sell_mode + weekly_sell_trigger + Fear&Greed>79 or AltSzn>79
+  5.  SELL_RISK       — sell_mode + weekly_sell_trigger + OTHERS monthly BB%B < 0.8
+  6.  BUY             — buy_mode + weekly_buy_trigger
+  7.  SELL            — sell_mode + weekly_sell_trigger
+  8.  HIPER_REPIQUE   — rebound + Sharpe/Sortino daily confirmed + funding < 0
+  9.  SUPER_REPIQUE   — rebound + Sharpe/Sortino daily confirmed
+  10. REPIQUE         — rebound only (sell_mode + USDT.D weekly at top)
+
+=== FILES CHANGED ===
+- app.py
+- visualizer.py
+- trading_system.py

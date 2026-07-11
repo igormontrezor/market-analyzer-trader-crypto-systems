@@ -1,3 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-CATWIF,catwifhat,5pYB12kEhfhSFXJjZ7JtyqDpt6uUqhsF6iu6Ee9spump,solana,0.0005806,63.51,580646.0,84961.05,2743667.51,23249,20348,0.53,52.3,https://dexscreener.com/solana/4dytblybdqyqjavjlrht4xtqkvm7qayzuttjfsicromp,2026-06-24T08:18:32.951484,dexscreener,23.848755829999998
-FINE,THIS IS FINE,EKbauFR5WtEHbDds3AzF5zziRGsSXAPWmshvWstpump,solana,0.0002007,496.0,200714.0,33466.54,1008016.76,8782,6315,0.58,6.3,https://dexscreener.com/solana/8cxpdeh4uqeqvow68tpoag68dc7nowi6nhiscdvuhrrm,2026-06-24T08:18:32.951351,dexscreener,12.316132179999999

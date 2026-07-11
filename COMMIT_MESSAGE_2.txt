@@ -1,0 +1,134 @@
+feat: signal system additions — Hiper Repique refinement, BTC weekly alerts, Altcoin Top Alert, monthly conviction engine, bug fixes
+
+=== HIPER REPIQUE — LOGIC REFINEMENT (app.py) ===
+
+Fixed Sharpe threshold: was incorrectly using sell=4.5, now correctly uses buy=-1.5
+  - Before: _sh_b = (_sharpe < 4.5) & (_sharpe.shift(1) >= 4.5)  [wrong — this was the sell threshold]
+  - After:  _sh_b = (_sharpe < -1.5) & (_sharpe.shift(1) <= -1.5) [correct — matches _cross_below in market_analysis_app.py]
+
+Changed activation logic from AND to OR:
+  - Before: _conf_b = _sh_b & _so_b  (both conditions required simultaneously)
+  - After:  _conf_b = _sh_b | _so_b  (either Sharpe OR Sortino confirms the bottom)
+
+Sortino condition unchanged: SMA fast(20) crosses above slow(70) on BTC daily — specific to daily timeframe
+
+=== BTC WEEKLY CONFIRMED ALERTS — NEW INDEPENDENT ALERTS (app.py) ===
+
+Two new independent alerts (same pattern as Altcoin Top Alert — banner + Telegram, not part of signal hierarchy):
+
+BTC Semanal — Compra Confirmada (green banner)
+  - Condition: Sharpe ≤ -1.5 AND Sortino ≤ -1.7 on BTC weekly
+  - Both values must remain below thresholds for 2 consecutive closed weeks
+  - Uses _cross_below logic: (s < th) & (s.shift(1) <= th) — identical to market_analysis_app.py
+
+BTC Semanal — Venda Confirmada (red banner)
+  - Condition: Sharpe ≥ 2.1 AND Sortino ≥ 4.7 on BTC weekly
+  - Both values must remain above thresholds for 2 consecutive closed weeks
+  - Alert fires on the 3rd week when the 2 previous weeks are confirmed
+
+State persistence: saves tg_sent_buy / tg_sent_sell date in data/macro/btc_weekly_sig_state.json
+Telegram fires once per day on first detection — does not re-fire on every Streamlit rerun
+Historical data: uses yfinance period="6mo" interval="1wk" — no need to store weekly history,
+  past candles are already in the downloaded series (iloc[:-1] excludes current open candle)
+
+Sharpe parameters: buy=-1.5, sell=2.1 | Sortino parameters: buy=-1.7, sell=4.7
+  — identical to build_btc_w() confirmed cell in market_analysis_app.py
+
+=== ALTCOIN TOP ALERT — NEW INDEPENDENT ALERT (app.py + visualizer.py) ===
+
+Independent alert triggered when EMA50 crosses above EMA100 on OTHERS weekly and holds for 2+ closed weeks
+Historically the first altcoin cycle top occurs weeks after this crossover
+Yellow banner below HUD + single Telegram on state transition
+State cleared automatically when signal deactivates
+
+visualizer.py changes:
+  - Calculates EMA50 and EMA100 via ewm(span, adjust=False) on OTHERS weekly close
+  - Saves others_ema50_above_ema100 and others_ema_cross_warn to macro_timing.json weekly section
+
+=== SELL_RISK SIGNAL (app.py + visualizer.py) ===
+
+New signal in hierarchy (rank 5, between SUPER_SELL and BUY):
+  - Condition: sell_mode=True + weekly_sell_trigger=True + OTHERS monthly BB%B < 0.8
+  - Structural divergence: weekly still generating sell trigger but monthly OTHERS has lost momentum
+  - End-of-cycle exit signal — after this, capitulation_lock imminent and rebounds blocked
+
+visualizer.py: now fetches OTHERS monthly data and saves others_bbp under monthly key in macro_timing.json
+
+=== SELL RISK REFINEMENT — EXIT SIGNAL IN GUIA OPERACIONAL (guia_operacional.html) ===
+
+Added SELL RISK as step 7 in the confluence hierarchy:
+  "Saída final de ciclo quando o SELL semanal está ativo e o BB%B do OTHERS no mensal está abaixo de 0.8"
+  Divergência estrutural entre timeframes confirmando exaustão do ciclo de alta
+
+=== MONTHLY TOP 3 CONVICTION ENGINE (gems_ai_filter.py) ===
+
+Complete rewrite of the monthly analysis cycle
+
+New functions:
+  _load_weekly_history()
+    Loads last 8 weeks of weekly top picks from gems_ai_results.json
+
+  _build_monthly_candidates()
+    Phase 1: coins that appeared in weekly top 10 over last 4 weeks + top 15 from monthly scan
+    Enriches each candidate with: weekly_freq, weekly_best_rank, weekly_avg_conf, recurring_flags
+
+  _build_monthly_conviction_score()
+    Phase 2: conviction score 0-100 with 5 weighted components:
+      30% weekly frequency history
+      25% mid-term fundamentals (drawdown recovery + smart_money_div + rank_up)
+      20% silent accumulation (ratio + accumulation_score + vol_up)
+      15% consistency and temporal trend (consistency_score + weekly_trend)
+      10% historical AI confidence across previous weeks
+    Bonuses: HOT_NARRATIVE+SMART_MONEY_DIV (+5), SELLER_EXHAUSTION (+4), max frequency (+5)
+
+  _build_monthly_prompt()
+    Phase 3: surgical prompt focused on 30-90 day timeframe
+    Explicit priority criteria, monthly_thesis field, top3_comparison, sectors_in_focus
+
+Weekly results now saved to weekly_history[] (last 8 entries) in gems_ai_results.json
+Monthly result includes monthly_conviction score, weekly_frequency and timeframe per pick
+
+=== UI UPDATES (app.py) ===
+
+Signals tab (aba Sinais) updated with complete 10-signal hierarchy:
+  1. HIPER_BUY       — SUPER_BUY + Fear&Greed < 10
+  2. HIPER_SELL      — SUPER_SELL + Fear&Greed > 79 or AltSzn > 79
+  3. SUPER_BUY       — buy_mode + weekly_buy_trigger + funding < 0
+  4. SUPER_SELL      — sell_mode + weekly_sell_trigger + funding > 0.08%
+  5. SELL_RISK       — sell_mode + weekly_sell_trigger + OTHERS monthly BB%B < 0.8
+  6. BUY             — buy_mode + weekly_buy_trigger
+  7. SELL            — sell_mode + weekly_sell_trigger
+  8. HIPER_REPIQUE   — rebound + BTC daily Sharpe ≤ -1.5 OR Sortino SMA crossover
+  9. SUPER_REPIQUE   — rebound_super (rebound + funding < 0)
+ 10. REPIQUE         — rebound (sell_mode + USDT.D weekly at top, no capitulation_lock)
+
+Independent alerts documented in signals tab:
+  - Altcoin Top Alert (yellow)
+  - BTC Semanal Compra Confirmada (green)
+  - BTC Semanal Venda Confirmada (red)
+
+Monthly tab redesigned:
+  - System badge with weeks of history count
+  - Monthly thesis banner (gold)
+  - Conviction bar per pick with dynamic color (green ≥70 / yellow ≥45 / red <45)
+  - Weekly frequency alongside conviction score
+  - Estimated timeframe (30d/60d/90d) per pick
+  - Purple card border to distinguish from weekly picks
+
+Markdown rendering fixed in pick cards (weekly + monthly):
+  **bold** → <b>bold</b> | *italic* → <i>italic</i> | \n- item → <br>• item
+
+=== BUG FIX (trading_system.py) ===
+
+Fixed: TypeError: unsupported format string passed to NoneType.__format__
+  Line 3048: st.metric delta=f"WR: {wr_high:.1%}" crashed when wr_high is None
+  Fix applied to all 6 affected st.metric calls:
+    Volume alto, Volume normal, ATR baixo, ATR normal, Elevado, Não elevado
+  Pattern: delta=f"WR: {wr:.1%}" if wr is not None else ""
+
+=== FILES CHANGED ===
+- app.py
+- visualizer.py
+- gems_ai_filter.py
+- trading_system.py
+- guia_operacional.html

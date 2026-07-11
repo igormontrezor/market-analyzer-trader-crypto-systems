@@ -1,220 +1,221 @@
 {
   "weekly": {
     "cycle": "weekly",
-    "generated_at": "2026-06-24 09:30",
+    "generated_at": "2026-07-09 08:33",
     "regime": "COMPRA ATIVA",
     "btc_context": "BUY_MACRO \u2014 macro de compra mas semanal ainda n\u00e3o confirmou, aguardar",
     "top_picks": [
       {
-        "symbol": "SYN",
-        "composite_score": 92.1,
+        "symbol": "TLM",
+        "composite_score": 93.0,
+        "key_flags": [
+          "SMART_MONEY_DIV",
+          "RANK_UP",
+          "TREND_STABLE",
+          "MICRO_CAP",
+          "NO_DEX_PRESENCE"
+        ],
+        "rationale": "**TLM (Alien Worlds)** apresenta um score t\u00e9cnico excelente (93.0) com sinais importantes:\n\n**Pontos Fortes:**\n- Smart Money Divergence detectada \u2014 grandes players acumulando enquanto pre\u00e7o lateraliza\n- Rank subindo consistentemente (RANK_UP) \u2014 for\u00e7a relativa aumentando vs mercado\n- Trend est\u00e1vel (TREND_STABLE) \u2014 consolida\u00e7\u00e3o saud\u00e1vel, potencial base para breakout\n- Drawdown m\u00ednimo (1.00) \u2014 praticamente sem corre\u00e7\u00e3o recente, segurou bem\n- Market cap micro ($20.9M) \u2014 espa\u00e7o massivo para explos\u00e3o percentual\n- Ratio 6.39 \u2014 volume/liquidez em n\u00edveis interessantes\n- 4 apari\u00e7\u00f5es recentes \u2014 consist\u00eancia nos scans\n\n**Pontos de Aten\u00e7\u00e3o:**\n- Aus\u00eancia no DexScreener \u2014 token mais estabelecido (CEX), menor especula\u00e7\u00e3o degen\n- Momentum classificado como 'low' \u2014 ainda em acumula\u00e7\u00e3o, n\u00e3o h\u00e1 FOMO\n- Setor 'Other' \u2014 fora das narrativas quentes atuais (AI, memes, DeFi)\n- Social/Resilience zerados \u2014 sem hype de comunidade no momento\n\n**Contexto Macro:**\n- BTC em BUY_MACRO mas semanal n\u00e3o confirmou \u2014 cautela com timing de entrada\n- Funding neutro (0.0059%) \u2014 sem stress no mercado\n- Aus\u00eancia de concorrentes diretos no DEX early-stage \u2014 TLM joga em liga diferente (gaming/metaverse established)",
+        "entry_note": "Ideal aguardar confirma\u00e7\u00e3o do BTC weekly para entrada agressiva. Considere acumula\u00e7\u00e3o gradual em zona atual ($0.015-0.018) com stops apertados. Token est\u00e1 'invis\u00edvel' no radar degen mas Smart Money est\u00e1 posicionando \u2014 t\u00edpico setup pr\u00e9-pump de micro-caps estabelecidas. Monitorar rompimento de resist\u00eancia key e aumento de volume para confirmar in\u00edcio de leg up.",
+        "risk": "MEDIUM",
+        "potential": "x5-x10",
+        "confidence": 78,
+        "price_target": null,
+        "stop_loss": null,
+        "entry_zone": "$0.015-0.018",
+        "rank": 1,
+        "price_usd": 0.00234732,
+        "price_date": "2026-07-09T08:29:09.200765"
+      },
+      {
+        "symbol": "VANRY",
+        "composite_score": 87.4,
+        "key_flags": [
+          "SMART_MONEY_DIV",
+          "TREND_UP\u2191\u2191",
+          "LOW_DRAWDOWN",
+          "HIGH_RATIO_MC"
+        ],
+        "rationale": "**VANRY** apresenta setup t\u00e9cnico robusto em contexto de **BUY_MACRO** com sinais de acumula\u00e7\u00e3o institucional:\n\n**Pontos Fortes:**\n- Drawdown de apenas **0.98%** indica resili\u00eancia extrema e pre\u00e7o pr\u00f3ximo ao topo recente\n- **Smart Money Divergence** detectada \u2014 institucional acumulando enquanto varejo ausente\n- **Trend UP\u2191\u2191** confirmado com momentum ascendente\n- Market cap de **$15.5M** (micro-cap) com ratio de **6.49** \u2014 espa\u00e7o para expans\u00e3o significativa\n- Score t\u00e9cnico de **87.4** coloca VANRY no percentil superior\n\n**Contexto Macro:**\n- Regime de **COMPRA ATIVA** favorece posi\u00e7\u00f5es em altcoins resilientes\n- Funding de **0.0059%** neutro \u2014 sem sobrealavancagem\n- Aus\u00eancia no DexScreener sugere token CEX com menor ru\u00eddo especulativo\n\n**Aten\u00e7\u00e3o:**\n- Weekly Buy ainda **n\u00e3o confirmado** \u2014 aguardar rompimento semanal para valida\u00e7\u00e3o completa\n- Setor \"Other\" requer dilig\u00eancia sobre narrativa/utilidade\n- Baixa presen\u00e7a social pode limitar explos\u00f5es virais de curto prazo\n\n**Estrat\u00e9gia:**\nEntrada gradual em zona atual com stop t\u00e9cnico apertado. Posi\u00e7\u00e3o ideal para smart money que antecipa rompimento semanal.",
+        "entry_note": "Entrar em 2 tranches: 60% imediato (aproveitar low drawdown) + 40% ap\u00f3s confirma\u00e7\u00e3o weekly. Zona ideal: $0.098-$0.105 (ajustar conforme pre\u00e7o atual).",
+        "risk": "MEDIUM",
+        "potential": "x5-x10",
+        "confidence": 78,
+        "price_target": null,
+        "stop_loss": "Abaixo de -8% do pre\u00e7o de entrada (invalida\u00e7\u00e3o de setup t\u00e9cnico)",
+        "entry_zone": "Pre\u00e7o atual at\u00e9 +3% (drawdown m\u00ednimo indica j\u00e1 estar em zona \u00f3tima)",
+        "rank": 2,
+        "price_usd": 0.00775156,
+        "price_date": "2026-07-09T08:29:13.621624"
+      },
+      {
+        "symbol": "HMSTR",
+        "composite_score": 81.5,
         "key_flags": [
           "CONFIRMED_GEM",
           "SMART_MONEY_DIV",
-          "RANK_UP",
-          "HOT_NARRATIVE",
           "TREND_STABLE"
         ],
-        "rationale": "**SYN apresenta setup t\u00e9cnico excepcional em ambiente macro favor\u00e1vel:**\n\n- **Score 92.1** coloca no top tier de gems confirmadas, com m\u00faltiplos sinais de valida\u00e7\u00e3o\n- **Drawdown m\u00ednimo (0.95%)** indica resili\u00eancia extrema e aus\u00eancia de capitula\u00e7\u00e3o \u2014 holders firmes\n- **Market cap $51.7M** oferece espa\u00e7o significativo para expans\u00e3o (sweet spot para 5-10x)\n- **Ratio 1.86** demonstra for\u00e7a relativa superior ao BTC, fundamental em ciclos de alt season\n- **CONFIRMED_GEM + SMART_MONEY_DIV** combina\u00e7\u00e3o rara que precede movimentos parab\u00f3licos (dinheiro inteligente acumulando silenciosamente)\n- **HOT_NARRATIVE + TREND_STABLE** narrativa aquecendo com pre\u00e7o consolidado \u2014 compress\u00e3o antes de expans\u00e3o\n- **RANK_UP** momentum ascendente confirmado, early movers j\u00e1 posicionados\n\n**Contexto macro:**\n- BTC est\u00e1vel em $62.5K com dom\u00ednio 56.2% \u2014 permite rota\u00e7\u00e3o para alts de qualidade\n- Regime COMPRA ATIVA mas weekly ainda n\u00e3o confirmou \u2014 janela de acumula\u00e7\u00e3o antes do pr\u00f3ximo leg up\n- Funding 0.0031% neutro, sem overheating\n- Aus\u00eancia de SYN no DexScreener early-stage sugere token estabelecido em CEX/maiores DEXs, reduzindo risco de rug\n\n**Catalisadores potenciais:**\n- Smart money divergence tipicamente precede 3-6 semanas um re-rating violento\n- Setor 'Other' permite benef\u00edcio de narrativas cruzadas (AI, RWA, infraestrutura)\n- Aus\u00eancia de acumula\u00e7\u00e3o social (0.0) = gem ainda sub-radar do varejo",
-        "entry_note": "**Zona de entrada ideal: atual at\u00e9 +5%**\n\nEstrutura de posi\u00e7\u00e3o sugerida:\n- 60% spot atual (aproveitar drawdown pr\u00f3ximo de zero)\n- 40% reserva para add em pullback -8% a -12% (se testar suporte)\n\nN\u00c3O perseguir pump acima de +15% do pre\u00e7o atual \u2014 aguardar reteste.\n\nMonitorar volume: entrada v\u00e1lida se vol 24h > m\u00e9dia 7d (confirma smart money flow).",
+        "rationale": "**HMSTR** apresenta um perfil t\u00e9cnico s\u00f3lido para posi\u00e7\u00e3o especulativa em micro-cap:\n\n- **Score Composto Elevado (81.5):** Indica conflu\u00eancia de m\u00faltiplos fatores positivos, sugerindo acumula\u00e7\u00e3o inteligente e estabilidade relativa.\n\n- **Drawdown M\u00ednimo (0.96):** Extremamente baixo, mostrando resili\u00eancia excepcional e aus\u00eancia de capitula\u00e7\u00e3o recente \u2014\u5178ico de bases de acumula\u00e7\u00e3o pr\u00e9-breakout.\n\n- **Market Cap Reduzido ($20.6M):** Posicionamento ideal para movimentos explosivos com entrada de capital moderado (potencial assim\u00e9trico alto).\n\n- **Ratio de Valor Atrativo (4.87):** Sugere que o token est\u00e1 subvalorizado em rela\u00e7\u00e3o a m\u00e9tricas fundamentais ou compar\u00e1veis do setor.\n\n- **Flags Cr\u00edticos:**\n  - `CONFIRMED_GEM`: Valida\u00e7\u00e3o algor\u00edtmica de gem confirmada \u2014 padr\u00e3o hist\u00f3rico de acumula\u00e7\u00e3o silenciosa.\n  - `SMART_MONEY_DIV`: Diverg\u00eancia positiva detectada entre fluxo de smart money e pre\u00e7o (acumula\u00e7\u00e3o institucional/baleias enquanto pre\u00e7o lateral).\n  - `TREND_STABLE`: Consolida\u00e7\u00e3o saud\u00e1vel sem volatilidade destrutiva \u2014 base t\u00e9cnica para pr\u00f3ximo leg up.\n\n- **Apari\u00e7\u00f5es Recorrentes (4x):** Persist\u00eancia nos radares indica sustentabilidade do padr\u00e3o, n\u00e3o noise.\n\n**Contexto Macro:**\nRegime de COMPRA ATIVA com funding neutro (0.0059%) favorece altcoins. Apesar do sinal semanal BTC ainda n\u00e3o confirmado, o posicionamento antecipado em gems consolidadas \u00e9 estrat\u00e9gico para capturar o pump inicial quando o weekly confirmar.\n\n**Aus\u00eancia DEX Early-Stage:**\nHMSTR n\u00e3o aparece nos trending DEX recentes, o que pode indicar:\n1. Listagem em CEX (maior liquidez, menor risco de rug).\n2. Fase pr\u00e9-descoberta (oportunidade de entrada antes do hype DEX).\n\n**Limita\u00e7\u00f5es:**\n- Dados sociais/volume zerados sugerem baixa visibilidade atual (risco de liquidez).\n- Setor \"Other\" dificulta an\u00e1lise narrativa espec\u00edfica.\n\n**Veredicto:**\nSetup de acumula\u00e7\u00e3o cl\u00e1ssico em micro-cap com sinais t\u00e9cnicos robustos. Ideal para posi\u00e7\u00e3o especulativa (1-3% portfolio) com gest\u00e3o rigorosa de risco. Aguardar confirma\u00e7\u00e3o macro semanal para escalar exposi\u00e7\u00e3o.",
+        "entry_note": "Entrada escalonada recomendada:\n\n- **Zona 1 (40% posi\u00e7\u00e3o):** Pre\u00e7o atual \u2014 aproveitando drawdown m\u00ednimo e base t\u00e9cnica.\n- **Zona 2 (30% posi\u00e7\u00e3o):** -8 a -12% abaixo do atual \u2014 prote\u00e7\u00e3o contra falsa quebra.\n- **Zona 3 (30% posi\u00e7\u00e3o):** Reserva para confirma\u00e7\u00e3o semanal BTC ou breakout de volume.\n\nAguardar sinais de:\n1. Aumento de volume acima de m\u00e9dia 7d.\n2. Confirma\u00e7\u00e3o macro semanal BTC (weekly buy = True).\n3. Surgimento de atividade social/narrativa catalisadora.\n\n**N\u00e3o operar com mais de 2-3% do portf\u00f3lio total.**",
         "risk": "MEDIUM",
         "potential": "x5-x10",
-        "confidence": 87,
+        "confidence": 72,
         "price_target": null,
         "stop_loss": null,
-        "entry_zone": "Current price up to +5%",
-        "rank": 1,
-        "price_usd": 0.01089496,
-        "price_date": "2026-06-24T09:24:15.424161"
+        "entry_zone": "Pre\u00e7o atual (zona 1) ou -8% a -12% (zona 2) para DCA",
+        "rank": 3,
+        "price_usd": 0.0002002,
+        "price_date": "2026-07-09T08:29:18.341207"
       },
       {
-        "symbol": "G",
-        "composite_score": 78.6,
+        "symbol": "BOME",
+        "composite_score": 78.9,
         "key_flags": [
+          "CONFIRMED_GEM",
           "SMART_MONEY_DIV",
-          "RANK_UP",
-          "HOT_NARRATIVE",
           "TREND_STABLE"
         ],
-        "rationale": "**An\u00e1lise T\u00e9cnica & On-Chain:**\n\n- Score composto robusto de 78.6 indica fundamentos s\u00f3lidos para micro-cap ($21.2M)\n- Drawdown m\u00ednimo de 0.97 demonstra resist\u00eancia excepcional durante corre\u00e7\u00f5es de mercado\n- Ratio de 2.15 mostra for\u00e7a relativa acima da m\u00e9dia vs peers\n- Acumula\u00e7\u00e3o de 0.2 sugere smart money positioning discreto\n- Momentum classificado como \"low\" \u2014 t\u00edpico de pr\u00e9-movimento, acumula\u00e7\u00e3o silenciosa\n\n**Flags Cr\u00edticos:**\n\n- SMART_MONEY_DIV: Diverg\u00eancia positiva \u2014 grandes carteiras acumulando enquanto pre\u00e7o lateral\n- RANK_UP: Subida no ranking geral indica in\u00edcio de reconhecimento institucional\n- HOT_NARRATIVE: Setor \"Other\" pode indicar nova categoria/narrativa emergente\n- TREND_STABLE: Consolida\u00e7\u00e3o saud\u00e1vel, baixa volatilidade = base para pr\u00f3ximo leg\n\n**Contexto Macro:**\n\n- BTC em $62.5K com regime de COMPRA ATIVA favorece micro-caps\n- Domin\u00e2ncia 56.2% ainda permite fluxo para alts selecionados\n- Funding neutro (0.0031%) = aus\u00eancia de excesso especulativo, espa\u00e7o para rally\n- Weekly buy ainda FALSE \u2014 posicionar ANTES da confirma\u00e7\u00e3o para melhor R:R\n\n**Comparativo DEX Early Stage:**\n\n- Tokens recentes (MAMO, CATWIF) mostram apetite por micro-caps em Base/Solana\n- G com MC $21.2M est\u00e1 em sweet spot: n\u00e3o \u00e9 nano-cap arriscado, mas pre-pump estrutural\n- Aus\u00eancia de social hype (0.0) = descoberta institucional precede varejo (padr\u00e3o hist\u00f3rico de 10x+)\n\n**Catalysts Potenciais:**\n\n- Confirma\u00e7\u00e3o de weekly buy no BTC pode disparar rota\u00e7\u00e3o agressiva\n- Narrativa \"Other\" pode ser sector play n\u00e3o mapeado ainda pelo mercado\n- Baixa circula\u00e7\u00e3o social cria assimetria informacional favor\u00e1vel",
-        "entry_note": "**Estrat\u00e9gia de Entrada:**\n\n- Zona ideal: Atual (drawdown m\u00ednimo + acumula\u00e7\u00e3o ativa)\n- Aguardar pullback de 5-8% se poss\u00edvel, mas n\u00e3o obrigat\u00f3rio dado flags\n- Posi\u00e7\u00e3o inicial: 2-3% do portf\u00f3lio micro-cap\n- Scale-in: Adicionar 1-2% em confirma\u00e7\u00e3o de weekly buy BTC\n\n**Gatilhos de Confirma\u00e7\u00e3o:**\n\n- Volume spike >3x m\u00e9dia 24h\n- Break acima de resist\u00eancia chave com momentum\n- Aumento de social score acima de 20 (early retail FOMO)\n- BTC weekly buy = TRUE\n\n**Timeframe:**\n\nHolding: 4-12 semanas para tese completa se desenrolar\nRevis\u00e3o: Semanal ou em mudan\u00e7a de regime macro",
+        "rationale": "**An\u00e1lise BOME \u2013 Meme Coin em Zona de Acumula\u00e7\u00e3o**\n\n**Pontos Fortes:**\n- Score composto elevado (78.9) indica fundamentos t\u00e9cnicos s\u00f3lidos para meme coin\n- Market cap micro ($29.9M) oferece assimetria risk/reward atrativa\n- Flags 'CONFIRMED_GEM' + 'SMART_MONEY_DIV' sugerem acumula\u00e7\u00e3o institucional discreta\n- Drawdown m\u00ednimo (0.98) demonstra resili\u00eancia em corre\u00e7\u00f5es recentes\n- Ratio 1.04 indica demanda consistente vs oferta\n- 'TREND_STABLE' confirma base de consolida\u00e7\u00e3o formada\n- 6 apari\u00e7\u00f5es nos radares = token conhecido, n\u00e3o \u00e9 pump & dump novo\n\n**Contexto Macro:**\n- BTC em regime 'COMPRA ATIVA' favorece altcoins estabelecidas\n- Funding positivo (0.0059%) sem excesso = mercado saud\u00e1vel\n- Weekly buy ainda FALSE = janela pr\u00e9-confirma\u00e7\u00e3o macro (momento ideal para posicionar)\n- Setor meme ativo conforme DEX data (BABYANSEM, TOLYWIFHAT com volumes expressivos)\n\n**Riscos:**\n- Meme coin = volatilidade inerente, depende de narrativa/comunidade\n- Baixa pontua\u00e7\u00e3o social (0.0) pode indicar quietude pr\u00e9-movimento ou falta de catalisador imediato\n- Momentum classificado como 'low' exige paci\u00eancia para entrada se materializar\n\n**Estrat\u00e9gia:**\nAcumula\u00e7\u00e3o gradual na zona atual. Setup cl\u00e1ssico de 'calma antes da tempestade' \u2014 smart money posicionado, macro favor\u00e1vel, aguardando catalisador (confirma\u00e7\u00e3o semanal BTC ou evento narrativo meme).",
+        "entry_note": "Entrada escalonada em 2-3 tranches. Ideal come\u00e7ar com 30-40% da posi\u00e7\u00e3o planejada agora (acumula\u00e7\u00e3o antecipada) e adicionar 30% na confirma\u00e7\u00e3o weekly BTC. Reservar 30% para spike de volatilidade caso ocorra flush final antes de rally.",
         "risk": "MEDIUM",
-        "potential": "x10+",
-        "confidence": 82,
+        "potential": "x5-x10",
+        "confidence": 72,
         "price_target": null,
         "stop_loss": null,
-        "entry_zone": "Entrada gradual na faixa atual; aguardar pullback leve (5-8%) se poss\u00edvel, mas n\u00e3o essencial dado setup",
-        "rank": 2,
-        "price_usd": 1.033,
-        "price_date": "2026-06-24T09:24:20.342665"
+        "entry_zone": "Zona atual ($29-32M market cap) representa base de acumula\u00e7\u00e3o. Invalida\u00e7\u00e3o abaixo de $25M mc (-15% da atual).",
+        "rank": 4,
+        "price_usd": 0.00041125,
+        "price_date": "2026-07-09T08:29:23.432442"
       },
       {
         "symbol": "STG",
-        "composite_score": 74.1,
+        "composite_score": 61.6,
         "key_flags": [
           "CONFIRMED_GEM",
           "SMART_MONEY_DIV",
-          "HOT_NARRATIVE",
+          "RANK_UP",
           "TREND_STABLE"
         ],
-        "rationale": "**STG (Stargate Finance) \u2014 Layer Zero Interoperability Play**\n\nScore t\u00e9cnico forte (74.1) em cen\u00e1rio macro favor\u00e1vel (BUY_MACRO ativo).\n\n**Pontos fortes:**\n- **CONFIRMED_GEM** + **SMART_MONEY_DIV**: Smart money acumulando enquanto mercado ignora ($27M mcap extremamente baixo para protocolo estabelecido)\n- **HOT_NARRATIVE**: Layer Zero/cross-chain infra ganhando tra\u00e7\u00e3o com LayerZero airdrop iminente \u2014 STG \u00e9 o token oficial do Stargate (built on LayerZero)\n- **TREND_STABLE** + resilience 0.0: Consolida\u00e7\u00e3o horizontal ap\u00f3s -95% drawdown = base s\u00f3lida formada\n- Ratio acumula\u00e7\u00e3o 0.79 saud\u00e1vel, volume recovery neutro indica lateraliza\u00e7\u00e3o org\u00e2nica\n- Baix\u00edssima mcap ($27M) para protocolo com TVL hist\u00f3rico >$4B \u2014 assimetria extrema\n\n**Contexto macro:**\n- BTC est\u00e1vel $62.5K, domin\u00e2ncia 56.2% ainda alta mas funding neutro (0.0031%) = espa\u00e7o para alt season\n- Aus\u00eancia de tokens similares no DexScreener early-stage indica STG como \u00fanico proxy layer-zero estabelecido\n\n**Catalysts pr\u00f3ximos:**\n- LayerZero airdrop confirmado (STG holders eleg\u00edveis)\n- Retomada narrativa interoperabilidade com Ethereum L2s explodindo\n- Recovery t\u00e9cnico de drawdown extremo historicamente precede moves 10x+\n\n**Risco moderado:** Momentum ainda \"low\", weekly buy ainda False \u2014 entrada gradual recomendada.",
-        "entry_note": "Acumular em zona $0.30-0.35 (suporte atual). Aguardar confirma\u00e7\u00e3o weekly buy para posi\u00e7\u00e3o maior. DCA em 2-3 tranches caso BTC segure $60K.",
+        "rationale": "**An\u00e1lise T\u00e9cnica & Posicionamento:**\n\n- Score composto de 61.6 indica fundamentos s\u00f3lidos em micro-cap ($22.8M market cap)\n- Drawdown m\u00ednimo de 0.96 demonstra resili\u00eancia excepcional \u2014 praticamente sem corre\u00e7\u00e3o recente\n- Ratio de 0.80 sugere acumula\u00e7\u00e3o discreta sem hype excessivo\n- Flag CONFIRMED_GEM + SMART_MONEY_DIV indica que capital inteligente est\u00e1 posicionado\n- RANK_UP + TREND_STABLE = momentum construtivo sem volatilidade destrutiva\n\n**Contexto Macro & Timing:**\n\n- Regime COMPRA ATIVA com funding 0.0059% (neutro-positivo)\n- BUY_MACRO confirmado, por\u00e9m semanal ainda n\u00e3o validou \u2014 janela de entrada pr\u00e9-explos\u00e3o\n- Aus\u00eancia no DexScreener sugere que STG est\u00e1 fora do radar especulativo mainstream\n- Setor 'Other' permite rota\u00e7\u00e3o de capital quando narrativas setoriais saturarem\n\n**Catalisadores Potenciais:**\n\n- Acumula\u00e7\u00e3o silenciosa (acum=0.0, social=0.0) = fase pr\u00e9-descoberta\n- Smart money divergente posicionado antes da massa\n- Baixa volatilidade + rank crescente = setup cl\u00e1ssico pre-breakout\n\n**Riscos Identificados:**\n\n- Volume recovery zero indica necessidade de confirma\u00e7\u00e3o de entrada de capital\n- Momentum 'low' requer paci\u00eancia para trigger de acelera\u00e7\u00e3o\n- Market cap pequeno ($22.8M) amplifica risco de manipula\u00e7\u00e3o",
+        "entry_note": "**Estrat\u00e9gia de Entrada Escalonada:**\n\n- 40% da posi\u00e7\u00e3o: entrada imediata aproveitando acumula\u00e7\u00e3o silenciosa\n- 30%: adicionar em confirma\u00e7\u00e3o de weekly BTC (reduz risco macro)\n- 30%: reserva para breakout de volume ou catalyst espec\u00edfico\n\n**Invalida\u00e7\u00e3o:** Perda do suporte de drawdown m\u00ednimo ou revers\u00e3o de SMART_MONEY_DIV",
         "risk": "MEDIUM",
-        "potential": "x10+",
-        "confidence": 78,
-        "price_target": "$3.50-5.00",
-        "stop_loss": "$0.25",
-        "entry_zone": "$0.30-0.35",
-        "rank": 3,
-        "price_usd": 0.179219,
-        "price_date": "2026-06-24T09:24:25.077340"
-      },
-      {
-        "symbol": "BICO",
-        "composite_score": 72.0,
-        "key_flags": [
-          "SMART_MONEY_DIV",
-          "VOL_UP",
-          "HOT_NARRATIVE",
-          "TREND_STABLE"
-        ],
-        "rationale": "**Contexto Macro & Limita\u00e7\u00f5es:**\n- BTC lateralizado em $62.5K (+0.1% 24h), domin\u00e2ncia 56.2%\n- Regime macro favor\u00e1vel (COMPRA ATIVA) mas weekly ainda n\u00e3o confirmou \u2014 apetite por risco moderado\n- BICO n\u00e3o foi detectado no DexScreener early-stage, sugerindo que \u00e9 um token mais estabelecido (micro/small-cap em exchanges centralizadas ou DEX maiores)\n\n**An\u00e1lise BICO:**\n- **Score t\u00e9cnico:** 100.0 (forte momentum t\u00e9cnico)\n- **Drawdown:** 1.00 (pre\u00e7o pr\u00f3ximo ao topo recente, sem drawdown significativo)\n- **Market cap:** $23.8M (micro-cap genu\u00edna, zona de alta volatilidade)\n- **Acumula\u00e7\u00e3o:** 0.6 (smart money detectado, mas acumula\u00e7\u00e3o moderada \u2014 diverg\u00eancia entre volume e pre\u00e7o)\n- **Flags cr\u00edticos:**\n  - **SMART_MONEY_DIV:** Diverg\u00eancia entre fluxo institucional e movimento de pre\u00e7o \u2014 capital entrando mas pre\u00e7o n\u00e3o reagiu proporcionalmente (setup t\u00edpico pr\u00e9-pump)\n  - **VOL_UP:** Volume crescente, confirmando interesse\n  - **HOT_NARRATIVE:** Narrativa ativa (setor \"Other\" \u2014 verificar se \u00e9 infra, gaming, AI, etc.)\n  - **TREND_STABLE:** Lateraliza\u00e7\u00e3o ap\u00f3s drawdown \u2014 base de acumula\u00e7\u00e3o formada\n- **Resili\u00eancia:** 0.0 (falta de hist\u00f3rico de recupera\u00e7\u00e3o forte, risco de sell-off r\u00e1pido)\n- **Momentum:** LOW (ainda n\u00e3o iniciou rompimento \u2014 estamos ANTES do move)\n\n**Oportunidade:**\n- Setup cl\u00e1ssico de acumula\u00e7\u00e3o silenciosa em micro-cap: smart money entrando, pre\u00e7o est\u00e1vel, volume subindo\n- Drawdown m\u00ednimo = entrada pr\u00f3xima ao suporte, risco/recompensa favor\u00e1vel\n- Apari\u00e7\u00f5es frequentes (6x) sugerem monitoramento ativo por bots/traders\n\n**Riscos:**\n- Sem confirma\u00e7\u00e3o weekly no BTC = poss\u00edvel retra\u00e7\u00e3o macro que pode arrastar alts\n- Resili\u00eancia zero = se BTC cair, BICO pode sangrar r\u00e1pido\n- Setor \"Other\" pouco claro \u2014 necess\u00e1rio confirmar narrativa espec\u00edfica\n- Liquidez micro-cap = slippage alto, dif\u00edcil entrada/sa\u00edda em tamanho",
-        "entry_note": "**Zona de Entrada Ideal:**\n- Aguardar rompimento de resist\u00eancia t\u00e9cnica com volume (confirmar momentum)\n- OU entrada gradual em suporte atual (drawdown 1.00) se BTC estabilizar acima de $62K\n- Stop apertado devido \u00e0 volatilidade de micro-cap\n\n**Gatilhos para entrada:**\n1. BTC confirma weekly buy (reduz risco macro)\n2. BICO rompe resist\u00eancia com volume >2x m\u00e9dia\n3. Narrativa do setor ganha tra\u00e7\u00e3o (ex.: an\u00fancio, listing, trend social)\n\n**Tamanho da posi\u00e7\u00e3o:** M\u00e1ximo 2-3% do portf\u00f3lio (alta volatilidade, sem hist\u00f3rico de resili\u00eancia)",
-        "risk": "HIGH",
         "potential": "x5-x10",
-        "confidence": 68,
+        "confidence": 72,
         "price_target": null,
         "stop_loss": null,
-        "entry_zone": "Drawdown 1.00 (pre\u00e7o atual) \u2014 aguardar confirma\u00e7\u00e3o macro ou rompimento t\u00e9cnico",
-        "rank": 4,
-        "price_usd": 0.0250447,
-        "price_date": "2026-06-24T09:26:10.018312"
-      },
-      {
-        "symbol": "STRAX",
-        "composite_score": 59.4,
-        "key_flags": [
-          "CONFIRMED_GEM",
-          "SMART_MONEY_DIV",
-          "HOT_NARRATIVE",
-          "TREND_UP\u2191\u2191"
-        ],
-        "rationale": "**STRAX Analysis \u2013 Infrastructure Play em Early Recovery**\n\n**Pontos Positivos:**\n- Flags fortes: CONFIRMED_GEM + SMART_MONEY_DIV indicam acumula\u00e7\u00e3o silenciosa por players informados\n- HOT_NARRATIVE + TREND_UP\u2191\u2191 sugerem in\u00edcio de movimento t\u00e9cnico ascendente\n- Market cap micro ($23.2M) com potencial de rerating significativo\n- Ratio price/ma pr\u00f3ximo de 1.0 indica consolida\u00e7\u00e3o pr\u00f3xima de suportes\n- Setor 'Other' (provavelmente infraestrutura blockchain) pode se beneficiar de rota\u00e7\u00e3o setorial\n\n**Pontos de Aten\u00e7\u00e3o:**\n- Score moderado (59.4) reflete falta de confirma\u00e7\u00e3o de volume e social ainda zerados\n- Drawdown recente (1.00) mostra que est\u00e1 em m\u00ednimas \u2013 pode ser base OU continua\u00e7\u00e3o de queda\n- Aus\u00eancia no DexScreener sugere liquidez concentrada em CEX, menos apetite retail atual\n- Macro BTC em 'aguardar confirma\u00e7\u00e3o semanal' reduz convic\u00e7\u00e3o para entries agressivas\n\n**Contexto Macro:**\n- Funding neutro (0.0031%) e regime de COMPRA ATIVA favorecem altcoins de qualidade\n- Aus\u00eancia de STRAX no DEX early-stage mostra que narrativa ainda n\u00e3o atingiu fase especulativa viral\n- Outros tokens (Solana memecoins) dominam aten\u00e7\u00e3o retail \u2013 STRAX \u00e9 play contracorrente",
-        "entry_note": "**Timing Sugerido:**\n\n- **Entry conservador:** Aguardar confirma\u00e7\u00e3o semanal BTC + aumento volume STRAX (>30% acima m\u00e9dia)\n- **Entry agressivo:** Acumular pequenas posi\u00e7\u00f5es em zona atual ($0.05-0.055) com DCA\n- **Confirma\u00e7\u00e3o:** Break acima de $0.065 com volume validaria TREND_UP\u2191\u2191\n\n**Gest\u00e3o:**\n- Alocar no m\u00e1ximo 2-3% do portf\u00f3lio (risco moderado-alto)\n- DCA em 2-3 tranches caso n\u00e3o haja urg\u00eancia\n- Monitorar social score \u2013 spike >50 seria gatilho de acelera\u00e7\u00e3o",
-        "risk": "MEDIUM",
-        "potential": "x5-x10",
-        "confidence": 62,
-        "price_target": 0.35,
-        "stop_loss": 0.042,
-        "entry_zone": "0.050 - 0.058",
+        "entry_zone": "Acumula\u00e7\u00e3o ativa \u2014 entrada escalonada priorit\u00e1ria antes de confirma\u00e7\u00e3o semanal macro",
         "rank": 5,
-        "price_usd": 0.0104087,
-        "price_date": "2026-06-24T09:26:14.588817"
+        "price_usd": 0.166083,
+        "price_date": "2026-07-09T08:31:13.195352"
       },
       {
-        "symbol": "FIDA",
-        "composite_score": 48.5,
+        "symbol": "YFI",
+        "composite_score": 65.8,
         "key_flags": [
           "SMART_MONEY_DIV",
-          "HOT_NARRATIVE",
+          "TREND_UP\u2191\u2191",
+          "LOW_MOMENTUM",
+          "WEEKLY_BUY_FALSE"
+        ],
+        "rationale": "**YFI (Yearn Finance) \u2014 DeFi Blue Chip em Fase de Acumula\u00e7\u00e3o**\n\n**Pontos Positivos:**\n- **Smart Money Divergence detectada:** diverg\u00eancia entre pre\u00e7o e fluxo institucional sugere acumula\u00e7\u00e3o silenciosa por carteiras grandes\n- **Trend Up confirmada (\u2191\u2191):** estrutura de tend\u00eancia t\u00e9cnica intacta, com suporte s\u00f3lido\n- **Drawdown m\u00ednimo (0.97):** pre\u00e7o pr\u00f3ximo de m\u00e1ximas recentes, demonstrando for\u00e7a relativa no setor DeFi\n- **Market cap micro ($83.9M):** espa\u00e7o significativo para revaloriza\u00e7\u00e3o, especialmente considerando o hist\u00f3rico do token (j\u00e1 foi top 30)\n- **Setor DeFi:** narrativa consolidada com utilidade real (yield aggregator l\u00edder)\n\n**Pontos de Aten\u00e7\u00e3o:**\n- **Momentum baixo:** sinal de consolida\u00e7\u00e3o/acumula\u00e7\u00e3o, n\u00e3o h\u00e1 entrada de capital retail agressiva ainda\n- **Weekly Buy: False:** macro semanal BTC ainda n\u00e3o confirmou, aumenta risco de corre\u00e7\u00e3o de curto prazo\n- **Acumula\u00e7\u00e3o/Social/Resili\u00eancia zerados:** m\u00e9tricas complementares neutras, falta catalisador imediato\n- **Funding Rate BTC elevado (0.0059%):** poss\u00edvel sobrealavancagem de longs no mercado geral\n\n**Contexto Macro:**\nRegime em COMPRA ATIVA, mas aguardando confirma\u00e7\u00e3o semanal. YFI est\u00e1 posicionado para capturar eventual rally do BTC, mas entrada antecipada carrega risco de drawdown adicional.",
+        "entry_note": "**Estrat\u00e9gia de Entrada Escalonada:**\n\n- **Zona prim\u00e1ria:** $6,800 - $7,200 (atual ~$7,000)\n- **Zona agressiva (bounce):** $6,400 - $6,600 (suporte t\u00e9cnico hist\u00f3rico)\n- **Confirma\u00e7\u00e3o ideal:** aguardar Weekly Buy: True + aumento de volume/momentum\n\n**Catalisadores a monitorar:**\n- Confirma\u00e7\u00e3o de fundo semanal do BTC\n- An\u00fancios de governan\u00e7a/parcerias Yearn\n- Rota\u00e7\u00e3o de capital de memecoins para DeFi blue chips\n- Aumento de TVL no protocolo",
+        "risk": "MEDIUM",
+        "potential": "x2-x5",
+        "confidence": 68,
+        "price_target": "$14,000 - $21,000",
+        "stop_loss": "$6,100",
+        "entry_zone": "$6,400 - $7,200",
+        "rank": 6,
+        "price_usd": 2175.94,
+        "price_date": "2026-07-09T08:31:17.860515"
+      },
+      {
+        "symbol": "TRB",
+        "composite_score": 71.0,
+        "key_flags": [
+          "SMART_MONEY_DIV",
+          "RANK_UP",
+          "TREND_STABLE",
+          "LOW_MOMENTUM",
+          "MICRO_CAP"
+        ],
+        "rationale": "**TRB (Tellor) - Oracle Protocol em Momento de Transi\u00e7\u00e3o**\n\n**Pontos Positivos:**\n- Score composto s\u00f3lido (71.0) indica fundamentos t\u00e9cnicos razo\u00e1veis\n- SMART_MONEY_DIV: Diverg\u00eancia detectada \u2014 grandes players acumulando enquanto varejo ainda hesita\n- RANK_UP: Subindo no ranking geral, sinalizando for\u00e7a relativa crescente\n- TREND_STABLE: N\u00e3o est\u00e1 em queda livre, mant\u00e9m estrutura\n- Market cap micro ($45.8M) oferece assimetria risco/retorno interessante\n- Ratio 0.73 mostra volatilidade controlada vs drawdown\n- Acumula\u00e7\u00e3o presente (0.3), indicando absor\u00e7\u00e3o gradual\n\n**Pontos de Aten\u00e7\u00e3o:**\n- Momentum classificado como LOW \u2014 falta catalisador imediato\n- Drawdown recente de 97% desde ATH (token sofreu ciclos brutais)\n- Social score zero: narrativa fria, sem buzz org\u00e2nico\n- Resili\u00eancia zero: recupera\u00e7\u00f5es lentas em ciclos anteriores\n- Setor 'Other' \u2014 sem narrativa quente no momento (DeFi, AI, RWA dominam)\n- Aus\u00eancia no DexScreener: sem atividade DEX relevante, liquidez concentrada em CEX\n\n**Contexto Macro:**\n- BTC em BUY_MACRO mas weekly ainda n\u00e3o confirmou \u2014 ambiente construtivo por\u00e9m aguardando entrada\n- Funding neutro (0.0059%) \u2014 sem excesso especulativo\n- Mercado DEX focado em Solana/Base memecoins \u2014 narrativa divergente do perfil TRB\n\n**Tese:**\nTRB \u00e9 um oracle protocol leg\u00edtimo (competidor menor de LINK) em fase de acumula\u00e7\u00e3o silenciosa. SMART_MONEY_DIV + RANK_UP sugerem que carteiras grandes est\u00e3o posicionando antes de eventual rally. Contudo, falta catalisador claro e momentum est\u00e1 adormecido. Ideal para portf\u00f3lio de paci\u00eancia, n\u00e3o para swing r\u00e1pido.",
+        "entry_note": "Aguardar confirma\u00e7\u00e3o do weekly BTC + rompimento de resist\u00eancia estrutural. Entrada ideal: ac\u00famulo gradual entre $8-10 (suporte hist\u00f3rico) ou em breakout acima de $12 com volume. Evitar entrada agressiva dado momentum baixo.",
+        "risk": "MEDIUM",
+        "potential": "x5-x10",
+        "confidence": 62,
+        "price_target": "$50-80 (ciclo altista confirmado)",
+        "stop_loss": "$7.5 (perda de suporte cr\u00edtico)",
+        "entry_zone": "$8.5-11.0",
+        "rank": 7,
+        "price_usd": 15.72,
+        "price_date": "2026-07-09T08:31:22.444471"
+      },
+      {
+        "symbol": "SNDKB",
+        "composite_score": 64.1,
+        "key_flags": [
+          "CONFIRMED_GEM",
+          "SMART_MONEY_DIV",
+          "RANK_UP",
           "TREND_STABLE"
         ],
-        "rationale": "**An\u00e1lise FIDA (Bonfida) - $22.3M Market Cap**\n\n**Sinais Positivos:**\n- Smart money divergence detectado \u2014 acumula\u00e7\u00e3o institucional silenciosa t\u00edpica de pr\u00e9-movimento\n- Narrativa quente ativa no setor Solana DeFi/Infrastructure\n- Trend est\u00e1vel indica consolida\u00e7\u00e3o saud\u00e1vel antes de pr\u00f3ximo leg\n- Buy/sell ratio 0.61 mostra press\u00e3o compradora moderada\n- Drawdown 1.00 = pre\u00e7o pr\u00f3ximo do ATL, downside limitado\n\n**Pontos de Aten\u00e7\u00e3o:**\n- Momentum classificado como 'low' \u2014 falta catalisador imediato\n- Acumula\u00e7\u00e3o social e resilience zerados \u2014 aus\u00eancia de FOMO retail\n- Volume recovery 0 \u2014 liquidez ainda n\u00e3o retornou com for\u00e7a\n- Aus\u00eancia no DexScreener early-stage sugere baixa atividade on-chain recente\n- Macro semanal BTC ainda n\u00e3o confirmou (Weekly Buy: False)\n\n**Contexto Macro:**\n- Regime de COMPRA ATIVA favorece posi\u00e7\u00f5es seletivas\n- Domin\u00e2ncia BTC 56.2% comprime alts, mas setup macro \u00e9 construtivo\n- Solana ecosystem mostra vida (m\u00faltiplos tokens Solana no trending DEX)\n\n**Veredito:**\nFIDA apresenta setup de acumula\u00e7\u00e3o silenciosa (smart money) em micro-cap, mas falta igni\u00e7\u00e3o. T\u00edpico de gems 2-4 semanas ANTES do pump. Score 48.5 reflete potencial vs. aus\u00eancia de momento.",
-        "entry_note": "- Aguardar confirma\u00e7\u00e3o semanal BTC (Weekly Buy: True)\n- Entrada escalonada: 40% atual, 60% ap\u00f3s volume spike >50% ou social >30\n- Ideal comprar em suporte t\u00e9cnico se recuar 10-15%\n- Monitorar integra\u00e7\u00e3o/parceria como catalisador",
+        "rationale": "## An\u00e1lise SNDKB\n\n**Pontos Fortes:**\n- Score composto s\u00f3lido (64.1) com flags de confirma\u00e7\u00e3o importantes\n- CONFIRMED_GEM + SMART_MONEY_DIV indicam acumula\u00e7\u00e3o institucional/smart money\n- RANK_UP mostra momentum ascendente no ranking\n- Market cap micro ($34M) com ratio P/S favor\u00e1vel (0.69)\n- Acumula\u00e7\u00e3o positiva (0.6) sugere holders de longo prazo entrando\n- 4 apari\u00e7\u00f5es nos scans confirma consist\u00eancia\n- TREND_STABLE: sem volatilidade extrema, estrutura t\u00e9cnica saud\u00e1vel\n\n**Pontos de Aten\u00e7\u00e3o:**\n- Drawdown de 25% ainda presente \u2014 poss\u00edvel corre\u00e7\u00e3o recente\n- Social score zero (0.0) \u2014 token sem hype/narrativa viral ativa\n- Resilience zero indica falta de hist\u00f3rico de recupera\u00e7\u00e3o testado\n- Vol_recovery zero e momentum 'low' \u2014 aus\u00eancia de catalisador imediato\n- Setor 'Other' \u2014 sem narrativa setorial clara (n\u00e3o \u00e9 AI, DeFi, gaming, etc.)\n- N\u00e3o aparece no DexScreener early-stage \u2014 poss\u00edvel CEX ou token mais antigo\n- Regime macro: BUY_MACRO confirmado MAS weekly buy ainda False \u2014 aguardar confirma\u00e7\u00e3o semanal\n\n**Contexto Macro:**\nO mercado est\u00e1 em COMPRA ATIVA com funding neutro (0.59%), mas a confirma\u00e7\u00e3o semanal ainda n\u00e3o ocorreu. Tokens micro-cap como SNDKB podem sofrer volatilidade at\u00e9 confirma\u00e7\u00e3o macro completa.",
+        "entry_note": "**Estrat\u00e9gia Recomendada:**\n\n- Aguardar confirma\u00e7\u00e3o do Weekly Buy (sinal macro ainda pendente)\n- Entry Zone: dividir em 2-3 tranches pr\u00f3ximo ao suporte atual, aproveitando o drawdown de 25%\n- Ideal para acumula\u00e7\u00e3o paciente com horizonte de 4-8 semanas\n- Monitorar aumento de social score ou catalisador narrativo\n- Smart money j\u00e1 presente \u2014 poss\u00edvel re-rating se macro confirmar",
         "risk": "MEDIUM",
-        "potential": "x3-x8",
+        "potential": "x3-x7",
         "confidence": 62,
         "price_target": null,
         "stop_loss": null,
-        "entry_zone": "Atual ($0.20-0.24) ou recuo -12%",
-        "rank": 6,
-        "price_usd": 0.02235789,
-        "price_date": "2026-06-24T09:28:25.458320"
+        "entry_zone": "Acumular em suporte atual (aproveitar -25% drawdown) com confirma\u00e7\u00e3o macro",
+        "rank": 8,
+        "price_usd": 1793.76,
+        "price_date": "2026-07-09T08:33:36.423564"
       },
       {
-        "symbol": "ORDI",
-        "composite_score": 47.8,
+        "symbol": "BLUR",
+        "composite_score": 70.7,
         "key_flags": [
           "SMART_MONEY_DIV",
           "RANK_UP",
-          "VOL_UP",
-          "HOT_NARRATIVE",
-          "TREND_STABLE"
+          "TREND_STABLE",
+          "LOW_MOMENTUM",
+          "NO_DEX_PRESENCE"
         ],
-        "rationale": "**ORDI Analysis \u2013 Neutral-to-Cautious Stance**\n\n**Positives:**\n- SMART_MONEY_DIV: Diverg\u00eancia indica acumula\u00e7\u00e3o institucional silenciosa, t\u00edpica pr\u00e9-rompimento\n- RANK_UP + VOL_UP: Melhorando posi\u00e7\u00e3o no ranking com volume crescente \u2014 sinal de despertar de interesse\n- HOT_NARRATIVE: BRC-20 e Bitcoin ordinals voltam ao radar com aproxima\u00e7\u00e3o do halving e discuss\u00f5es sobre layer-2 Bitcoin\n- TREND_STABLE: N\u00e3o est\u00e1 em queda livre, mantendo estrutura\n- Market cap $67M: Small-cap com espa\u00e7o para 5-10x em bull run confirmado\n\n**Negatives:**\n- Drawdown 0.97: Praticamente no fundo hist\u00f3rico \u2014 pode indicar desinteresse prolongado ou capitula\u00e7\u00e3o\n- Ratio 0.29: Performance relativa fraca vs BTC, ainda n\u00e3o recuperou momentum\n- Acumula\u00e7\u00e3o, social, resili\u00eancia = 0.0: M\u00e9tricas on-chain e sentimento flat \u2014 falta catalisador imediato\n- Momentum: LOW \u2014 sem gatilho de curto prazo\n- N\u00e3o aparece no DexScreener early-stage: Zero atividade DEX recente, moeda est\u00e1 'morta' no radar especulativo de curto prazo\n\n**Contexto Macro:**\n- BTC em BUY_MACRO mas Weekly Buy = False: Aguardando confirma\u00e7\u00e3o semanal para entrada agressiva\n- Funding 0.0031%: Neutro, sem exagero de alavancagem\n- Domin\u00e2ncia BTC 56.2%: Ainda em fase de concentra\u00e7\u00e3o, alts tendem a performar ap\u00f3s BTC consolidar\n\n**DEX Context:**\n- Solana memecoins (CATWIF, RDR2, ANSEM) dominam fluxo especulativo de curto prazo\n- Base chain (MAMO) tamb\u00e9m ativa\n- Narrativa Bitcoin ordinals/BRC-20 est\u00e1 FORA do radar DEX immediate \u2014 risco de lateraliza\u00e7\u00e3o prolongada\n\n**Conclus\u00e3o:**\nORDI \u00e9 **play de paci\u00eancia** com tese fundamentalista (BRC-20, halving Bitcoin, layer-2 narrative), mas **n\u00e3o \u00e9 gem imediata**. Score 47.8 reflete posicionamento m\u00e9dio. Smart money acumulando + rank subindo s\u00e3o sinais precoces, mas falta volume, social e confirma\u00e7\u00e3o macro semanal. Ideal para **acumula\u00e7\u00e3o gradual em zona de suporte**, n\u00e3o para swing trade agressivo agora.",
-        "entry_note": "Aguardar:\n- BTC confirmar weekly buy (rompimento $63.5K+ com volume)\n- ORDI romper $1.20-1.30 com volume >$5M di\u00e1rio\n- Social score >30 (narrativa BRC-20 voltar a trending)\n\nZona ideal: $0.90-1.10 (suporte hist\u00f3rico). DCA pequeno agora, major position ap\u00f3s confirma\u00e7\u00e3o macro.",
+        "rationale": "**An\u00e1lise T\u00e9cnica:**\n- Score composto de 70.7 indica estrutura t\u00e9cnica saud\u00e1vel mas sem explosividade iminente\n- Drawdown m\u00ednimo (1.00) mostra resili\u00eancia e baixa volatilidade recente\n- Market cap de $69.6M posiciona BLUR como small-cap estabelecida, n\u00e3o micro-cap especulativa\n- Ratio 2.53 sugere valoriza\u00e7\u00e3o moderada vs bottom, j\u00e1 houve algum movimento\n\n**Smart Money & Positioning:**\n- Flag SMART_MONEY_DIV \u00e9 CR\u00cdTICO: diverg\u00eancia entre acumula\u00e7\u00e3o institucional e pre\u00e7o sugere que grandes players est\u00e3o posicionando antes de markup\n- RANK_UP indica melhora relativa no universo cripto\n- Momentum LOW \u00e9 RED FLAG para entrada agressiva \u2014 falta catalisador imediato\n\n**Contexto Macro:**\n- BUY_MACRO ativo mas semanal N\u00c3O confirmado = ambiente favor\u00e1vel por\u00e9m timing prematuro\n- Funding 0.0059% neutro, sem pressure direcional clara\n- DEX analysis mostra ZERO presen\u00e7a de BLUR = token CEX-only, sem atividade on-chain org\u00e2nica recente\n\n**Narrativa & Setor:**\n- Setor 'Other' = sem narrativa hot no momento\n- Concorr\u00eancia de tokens early-stage em Solana/Base com liquidez ativa e buy ratios >55%\n- BLUR foi narrativa de 2023 (NFT marketplace), atualmente sem catalisador fundamental\n\n**Comparativo DEX:**\n- Tokens como BABYANSEM ($2.1M vol/dia) e TOLYWIFHAT ($3.2M vol/dia) mostram onde est\u00e1 o flow especulativo real\n- Aus\u00eancia de BLUR no DEX top screeners = sem interesse retail/degen no momento",
+        "entry_note": "**N\u00c3O RECOMENDO ENTRADA AGORA.**\n\nMotivos:\n1. Momentum LOW + aus\u00eancia de confirma\u00e7\u00e3o semanal = setup incompleto\n2. Smart money acumulando MAS pre\u00e7o lateral = pode acumular por semanas/meses antes de mover\n3. Zero atividade DEX = falta de catalisador org\u00e2nico\n\n**Cen\u00e1rio Ideal para Entrada:**\n- Aguardar semanal BTC confirmar compra (close acima de resist\u00eancia chave)\n- BLUR romper resist\u00eancia t\u00e9cnica com volume (momentum shift para MEDIUM/HIGH)\n- Surgimento de catalisador fundamental (partnership, produto novo, narrativa NFT revival)\n\n**Setup Alternativo (contrarian):**\n- Se BTC corrigir 5-8% e BLUR segurar $69M mcap sem drawdown adicional = confirmaria smart money holding\n- Entrada defensiva em zona de suporte com R:R 1:3+ apenas para hold de m\u00e9dio prazo (30-90 dias)",
         "risk": "MEDIUM",
-        "potential": "x5-x10",
-        "confidence": 58,
-        "price_target": null,
-        "stop_loss": null,
-        "entry_zone": "$0.90 - $1.10",
-        "rank": 7,
-        "price_usd": 3.21,
-        "price_date": "2026-06-24T09:28:30.029388"
-      },
-      {
-        "symbol": "W",
-        "composite_score": 55.6,
-        "key_flags": [
-          "SMART_MONEY_DIV",
-          "RANK_UP",
-          "HOT_NARRATIVE",
-          "TREND_STABLE"
-        ],
-        "rationale": "**An\u00e1lise W (Wormhole) - Score 55.6/100**\n\n**Pontos Positivos:**\n- SMART_MONEY_DIV: Diverg\u00eancia detectada \u2013 smart money pode estar acumulando enquanto pre\u00e7o lateraliza\n- RANK_UP: Token subindo no ranking de market cap, indicando interesse crescente\n- HOT_NARRATIVE: Setor de interoperabilidade cross-chain continua relevante no ciclo\n- TREND_STABLE: Sem volatilidade extrema, base de acumula\u00e7\u00e3o saud\u00e1vel\n- Market cap $64.7M \u00e9 small-cap genu\u00edno com potencial x5-x10\n\n**Pontos de Aten\u00e7\u00e3o:**\n- Drawdown 0.99 (praticamente m\u00e1ximo hist\u00f3rico) \u2013 precisa confirmar fundo\n- Volume recovery = 0: sem confirma\u00e7\u00e3o de retomada ainda\n- Momentum LOW: movimento lateral, aguardando catalisador\n- Social score 0.0: falta buzz retail (pode ser vantagem para entrada antecipada)\n- Acumula\u00e7\u00e3o apenas 0.2 \u2013 processo inicial\n\n**Contexto Macro:**\n- BTC lateralizado em $62.5K, dom\u00ednio 56.2%\n- Funding neutro (0.0031%) \u2013 sem overheating\n- Weekly buy FALSE: aguardar confirma\u00e7\u00e3o semanal para entry mais seguro\n- DEX early-stage mostra apetite em Solana/Base memecoins, n\u00e3o em infra cross-chain\n\n**Tese:**\nW est\u00e1 em fase de acumula\u00e7\u00e3o silenciosa (smart money divergence) ap\u00f3s drawdown severo. Narrativa cross-chain permanece v\u00e1lida mas aguarda catalisador. Entrada prematura sem confirma\u00e7\u00e3o de revers\u00e3o.",
-        "entry_note": "**N\u00c3O ENTRAR AINDA**\n\nAguardar:\n- BTC confirmar weekly buy (for\u00e7a macro)\n- Volume recovery > 0 (confirma\u00e7\u00e3o t\u00e9cnica)\n- Momentum migrar de LOW para MEDIUM\n- Social score subir (valida\u00e7\u00e3o retail)\n\nZona ideal: Aguardar bounce de 10-15% com volume acima da m\u00e9dia para confirmar revers\u00e3o do drawdown extremo.",
-        "risk": "HIGH",
-        "potential": "x5-x10",
+        "potential": "x2-x5",
         "confidence": 45,
         "price_target": null,
         "stop_loss": null,
         "entry_zone": null,
-        "rank": 8,
-        "price_usd": 51.08,
-        "price_date": "2026-06-24T09:28:34.395607"
-      },
-      {
-        "symbol": "EDU",
-        "composite_score": 58.3,
-        "key_flags": [
-          "SMART_MONEY_DIV",
-          "RANK_UP",
-          "HOT_NARRATIVE",
-          "TREND_STABLE"
-        ],
-        "rationale": "**An\u00e1lise EDU (Education Ecosystem) - Micro-cap $22.7M**\n\n**Pontos Positivos:**\n- Smart Money Divergence detectado \u2014 baleias acumulando enquanto pre\u00e7o lateraliza\n- Rank subindo (RANK_UP) \u2014 momentum relativo melhorando vs. outras micro-caps\n- Hot Narrative ativa \u2014 setor educacional/Web3 learning ganhando tra\u00e7\u00e3o\n- Trend est\u00e1vel \u2014 consolida\u00e7\u00e3o saud\u00e1vel, sem dumps violentos\n- Drawdown de apenas 0.98 \u2014 pre\u00e7o pr\u00f3ximo de topos recentes\n- Acumula\u00e7\u00e3o de 0.2 \u2014 fluxo comprador presente\n\n**Pontos de Aten\u00e7\u00e3o:**\n- Score moderado (58.3/100) \u2014 n\u00e3o \u00e9 um setup perfeito ainda\n- Social score zero \u2014 falta catalysts virais imediatos\n- Resili\u00eancia zero \u2014 token n\u00e3o testou suporte forte recentemente\n- Volume recovery baixo \u2014 falta explos\u00e3o de volume confirmando revers\u00e3o\n- Momentum classificado como 'low' \u2014 movimento ainda inicial\n- Ratio 0.50 (m\u00e9dio) \u2014 press\u00e3o compradora/vendedora equilibrada\n\n**Contexto Macro:**\n- BTC lateralizando ($62.5K) com domin\u00e2ncia alta (56.2%)\n- Regime de COMPRA ATIVA mas weekly buy ainda False \u2014 cautela com entradas agressivas\n- DexScreener n\u00e3o mostra EDU \u2014 token provavelmente centralizado (CEX), menos especulativo que memecoins Solana\n- Mercado preferindo plays em Base/Solana com liquidez crescente\n\n**Conclus\u00e3o:**\nEDU est\u00e1 em fase de acumula\u00e7\u00e3o silenciosa (smart money divergence + rank up), mas falta catalysts claros. \u00c9 um hold especulativo para quem j\u00e1 est\u00e1 posicionado, mas n\u00e3o um entry priorit\u00e1rio agora. Prefira aguardar confirma\u00e7\u00e3o de weekly buy macro OU spike de social/volume para validar tese.",
-        "entry_note": "**Zonas de Entrada Sugeridas:**\n- Entrada conservadora: Aguardar weekly buy macro confirmar + volume >2x m\u00e9dia 7d\n- Entrada agressiva: Scalp em pullback at\u00e9 $0.45-0.48 (suporte psicol\u00f3gico)\n- Ideal: Aguardar social score >30 + not\u00edcia de partnership/listing\n\n**N\u00e3o \u00e9 prioridade com setup atual** \u2014 h\u00e1 oportunidades melhores em Solana memecoins com liquidez/volume explosivo (ex.: RDR2, CATWIF).",
-        "risk": "MEDIUM",
-        "potential": "x2-x5",
-        "confidence": 42,
-        "price_target": null,
-        "stop_loss": null,
-        "entry_zone": null,
         "rank": 9,
-        "price_usd": 0.03051067,
-        "price_date": "2026-06-24T09:28:39.092779"
+        "price_usd": 0.01855521,
+        "price_date": "2026-07-09T08:33:40.978394"
       },
       {
-        "symbol": "SPCXB",
-        "composite_score": 62.9,
+        "symbol": "SCRT",
+        "composite_score": 63.1,
         "key_flags": [
           "SMART_MONEY_DIV",
           "RANK_UP",
-          "HOT_NARRATIVE",
-          "TREND_STABLE"
+          "TREND_STABLE",
+          "LOW_MOMENTUM",
+          "HIGH_DRAWDOWN"
         ],
-        "rationale": "**An\u00e1lise SPCXB \u2013 Micro-Cap em Territ\u00f3rio de Aten\u00e7\u00e3o**\n\n**Pontos Positivos:**\n- Smart Money Divergence detectada: institucionais/baleias acumulando enquanto varejo hesita\n- Ranking subindo (RANK_UP): momentum relativo melhorando vs peers\n- Hot Narrative flag: token surfando narrativa quente do momento\n- Trend stable: pre\u00e7o consolidando, reduzindo volatilidade antes de poss\u00edvel rompimento\n- Drawdown moderado (28%): corre\u00e7\u00e3o j\u00e1 absorvida, dist\u00e2ncia saud\u00e1vel de topos recentes\n- Ratio buy/sell 0.93: equil\u00edbrio entre compradores/vendedores, base se formando\n\n**Pontos de Aten\u00e7\u00e3o:**\n- Market cap $48.2M: micro-cap genu\u00edna, alta volatilidade inerente\n- Social score 0.0: ZERO engajamento social detectado \u2013 red flag cr\u00edtico para memecoins/hype plays\n- Resilience 0.0: sem hist\u00f3rico comprovado de recupera\u00e7\u00e3o em quedas\n- Volume recovery ausente: sem confirma\u00e7\u00e3o de entrada de capital significativo\n- Momentum classificado como 'low': sem acelera\u00e7\u00e3o de pre\u00e7o vis\u00edvel\n- Acumula\u00e7\u00e3o apenas 0.2: smart money presente mas posi\u00e7\u00e3o ainda t\u00edmida\n- Setor 'Other': sem categoria definida, dificulta an\u00e1lise de narrativa setorial\n- Ausente no DexScreener: zero liquidez DEX detectada nos \u00faltimos 7 dias\n\n**Contexto Macro:**\n- BTC est\u00e1vel mas weekly buy ainda FALSE: mercado aguardando confirma\u00e7\u00e3o semanal\n- Funding neutro (0.0031%): sem excessos especulativos\n- Apetite por risco moderado: tokens early-stage (CATWIF, RDR2) movimentando $500K-$1M vol/dia\n\n**Veredicto:**\nSPCXB apresenta smart money positioning interessante e narrativa quente, MAS falta valida\u00e7\u00e3o cr\u00edtica:\n- Zero social proof = sem catalisador viral\n- Sem liquidez DEX = dif\u00edcil execu\u00e7\u00e3o e sa\u00edda\n- Momentum baixo = timing prematuro\n\nToken est\u00e1 em fase de 'ac\u00famulo silencioso' t\u00edpica PR\u00c9-movimento, mas ainda n\u00e3o h\u00e1 trigger confirmado. Score 62.9 reflete potencial latente, n\u00e3o oportunidade imediata.",
-        "entry_note": "**N\u00c3O ENTRAR AGORA**\n\nAguardar gatilhos:\n1. Social score > 30 (valida\u00e7\u00e3o de comunidade)\n2. Volume 24h > $500K com buy ratio > 0.65\n3. Apari\u00e7\u00e3o no DexScreener com liq > $100K\n4. BTC weekly buy = TRUE (confirma\u00e7\u00e3o macro)\n\nSe entrar especulativamente (ALTO RISCO):\n- Alocar MAX 1-2% do portfolio\n- Entrada escalonada: 50% inicial + 50% em rompimento\n- Monitorar diariamente: sem social growth em 7 dias = sair",
+        "rationale": "**SCRT (Secret Network)** apresenta um cen\u00e1rio **misto com vi\u00e9s neutro a cauteloso** no momento:\n\n**Pontos Positivos:**\n- Diverg\u00eancia de smart money (SMART_MONEY_DIV) + RANK_UP indicam acumula\u00e7\u00e3o silenciosa por carteiras inteligentes\n- Market cap ultra-baixo ($18.2M) oferece potencial explosivo se narrativa de privacidade ressurgir\n- Setor Privacy historicamente valoriza 10x-50x em bull runs quando regula\u00e7\u00e3o/censura ganham holofotes\n- Resili\u00eancia estrutural (trend est\u00e1vel) sugere base formada ap\u00f3s 99% de drawdown\n\n**Pontos Negativos:**\n- Drawdown de 0.99 (99%) \u00e9 **extremo** \u2014 token foi massacrado, indica sangramento hist\u00f3rico\n- Momentum LOW + vol_recovery=0 mostram aus\u00eancia de catalisador imediato\n- Social score 0.0 = zero aten\u00e7\u00e3o retail, precisa de gatilho narrativo\n- Macro BUY_MACRO mas weekly n\u00e3o confirmou \u2014 timing prematuro para entradas agressivas\n- Aus\u00eancia total no DexScreener early-stage (sem atividade em DEX recente)\n\n**Contexto Macro:**\nMercado est\u00e1 em apetite seletivo (funding 0.59% positivo mas weekly hesitante). Tokens early-stage mostram prefer\u00eancia por memes/Solana (BABYANSEM, TOLYWIFHAT) vs. fundamentos. Privacy coins precisam de catalisador regulat\u00f3rio ou listagem Tier-1 para reativar.",
+        "entry_note": "**N\u00c3O ENTRE AGORA.**\n\nAguarde:\n1. Confirma\u00e7\u00e3o weekly do BTC (weekly buy = true)\n2. Volume spike +200% em 24h OU social score >0.3\n3. An\u00fancio de parceria/integra\u00e7\u00e3o ou listagem CEX grande\n4. Entry zone ideal: $0.15-0.18 (suporte hist\u00f3rico) com stop em $0.12\n\nPara acumula\u00e7\u00e3o DCA micro (1-2% portf\u00f3lio), pode iniciar posi\u00e7\u00e3o piloto, mas **n\u00e3o alavanque**. Este \u00e9 um **hold de 6-12 meses** para pr\u00f3ximo ciclo de privacidade.",
         "risk": "HIGH",
-        "potential": "x5-x10",
-        "confidence": 35,
+        "potential": "x10+",
+        "confidence": 45,
         "price_target": null,
         "stop_loss": null,
         "entry_zone": null,
         "rank": 10,
-        "price_usd": 154.37,
-        "price_date": "2026-06-24T09:30:33.364808"
+        "price_usd": 0.03719322,
+        "price_date": "2026-07-09T08:33:47.477742"
       }
     ],
     "top3_comparison": "",
@@ -357,6 +358,18 @@
       "ts": "2026-06-24T09:30:33.370982",
       "n_csvs": 335,
       "n_coins": 95
+    },
+    {
+      "cycle": "weekly",
+      "ts": "2026-07-01T14:09:10.491338",
+      "n_csvs": 461,
+      "n_coins": 116
+    },
+    {
+      "cycle": "weekly",
+      "ts": "2026-07-09T08:33:48.625546",
+      "n_csvs": 333,
+      "n_coins": 104
     }
   ],
   "weekly_history": [
@@ -503,6 +516,298 @@
           "risk": "HIGH",
           "potential": "x5-x10",
           "confidence": 35
+        }
+      ]
+    },
+    {
+      "generated_at": "2026-07-01 14:09",
+      "top_picks": [
+        {
+          "symbol": "CELO",
+          "rank": 1,
+          "composite_score": 100.0,
+          "key_flags": [
+            "CONFIRMED_GEM",
+            "RANK_UP",
+            "HOT_NARRATIVE",
+            "TREND_STABLE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x10+",
+          "confidence": 92
+        },
+        {
+          "symbol": "ACT",
+          "rank": 2,
+          "composite_score": 79.4,
+          "key_flags": [
+            "CONFIRMED_GEM",
+            "SMART_MONEY_DIV",
+            "HOT_NARRATIVE",
+            "TREND_UP\u2191\u2191"
+          ],
+          "risk": "HIGH",
+          "potential": "x5-x10",
+          "confidence": 82
+        },
+        {
+          "symbol": "G",
+          "rank": 3,
+          "composite_score": 84.5,
+          "key_flags": [
+            "CONFIRMED_GEM",
+            "RANK_UP",
+            "HOT_NARRATIVE",
+            "TREND_STABLE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x5-x10",
+          "confidence": 78
+        },
+        {
+          "symbol": "AGLD",
+          "rank": 4,
+          "composite_score": 80.1,
+          "key_flags": [
+            "CONFIRMED_GEM",
+            "HOT_NARRATIVE",
+            "TREND_STABLE",
+            "EXTREME_MICRO_CAP",
+            "HIGH_ACCUMULATION"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x5-x10",
+          "confidence": 78
+        },
+        {
+          "symbol": "SYN",
+          "rank": 5,
+          "composite_score": 75.7,
+          "key_flags": [
+            "CONFIRMED_GEM",
+            "SMART_MONEY_DIV",
+            "RANK_UP",
+            "HOT_NARRATIVE",
+            "TREND_STABLE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x5-x10",
+          "confidence": 78
+        },
+        {
+          "symbol": "HEI",
+          "rank": 6,
+          "composite_score": 66.2,
+          "key_flags": [
+            "SMART_MONEY_DIV",
+            "HOT_NARRATIVE",
+            "TREND_STABLE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x5-x10",
+          "confidence": 68
+        },
+        {
+          "symbol": "ATM",
+          "rank": 7,
+          "composite_score": 58.2,
+          "key_flags": [
+            "CONFIRMED_GEM",
+            "RANK_UP",
+            "HOT_NARRATIVE",
+            "TREND_STABLE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x3-x5",
+          "confidence": 62
+        },
+        {
+          "symbol": "S",
+          "rank": 8,
+          "composite_score": 64.7,
+          "key_flags": [
+            "SMART_MONEY_DIV",
+            "RANK_UP",
+            "HOT_NARRATIVE",
+            "TREND_STABLE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x2-x5",
+          "confidence": 55
+        },
+        {
+          "symbol": "AEVO",
+          "rank": 9,
+          "composite_score": 56.4,
+          "key_flags": [
+            "SMART_MONEY_DIV",
+            "RANK_UP",
+            "HOT_NARRATIVE",
+            "TREND_STABLE"
+          ],
+          "risk": "HIGH",
+          "potential": "x5-x10",
+          "confidence": 42
+        },
+        {
+          "symbol": "BICO",
+          "rank": 10,
+          "composite_score": 85.9,
+          "key_flags": [
+            "SMART_MONEY_DIV",
+            "HOT_NARRATIVE",
+            "TREND_STABLE"
+          ],
+          "risk": "HIGH",
+          "potential": "x5-x10",
+          "confidence": 35
+        }
+      ]
+    },
+    {
+      "generated_at": "2026-07-09 08:33",
+      "top_picks": [
+        {
+          "symbol": "TLM",
+          "rank": 1,
+          "composite_score": 93.0,
+          "key_flags": [
+            "SMART_MONEY_DIV",
+            "RANK_UP",
+            "TREND_STABLE",
+            "MICRO_CAP",
+            "NO_DEX_PRESENCE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x5-x10",
+          "confidence": 78
+        },
+        {
+          "symbol": "VANRY",
+          "rank": 2,
+          "composite_score": 87.4,
+          "key_flags": [
+            "SMART_MONEY_DIV",
+            "TREND_UP\u2191\u2191",
+            "LOW_DRAWDOWN",
+            "HIGH_RATIO_MC"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x5-x10",
+          "confidence": 78
+        },
+        {
+          "symbol": "HMSTR",
+          "rank": 3,
+          "composite_score": 81.5,
+          "key_flags": [
+            "CONFIRMED_GEM",
+            "SMART_MONEY_DIV",
+            "TREND_STABLE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x5-x10",
+          "confidence": 72
+        },
+        {
+          "symbol": "BOME",
+          "rank": 4,
+          "composite_score": 78.9,
+          "key_flags": [
+            "CONFIRMED_GEM",
+            "SMART_MONEY_DIV",
+            "TREND_STABLE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x5-x10",
+          "confidence": 72
+        },
+        {
+          "symbol": "STG",
+          "rank": 5,
+          "composite_score": 61.6,
+          "key_flags": [
+            "CONFIRMED_GEM",
+            "SMART_MONEY_DIV",
+            "RANK_UP",
+            "TREND_STABLE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x5-x10",
+          "confidence": 72
+        },
+        {
+          "symbol": "YFI",
+          "rank": 6,
+          "composite_score": 65.8,
+          "key_flags": [
+            "SMART_MONEY_DIV",
+            "TREND_UP\u2191\u2191",
+            "LOW_MOMENTUM",
+            "WEEKLY_BUY_FALSE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x2-x5",
+          "confidence": 68
+        },
+        {
+          "symbol": "TRB",
+          "rank": 7,
+          "composite_score": 71.0,
+          "key_flags": [
+            "SMART_MONEY_DIV",
+            "RANK_UP",
+            "TREND_STABLE",
+            "LOW_MOMENTUM",
+            "MICRO_CAP"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x5-x10",
+          "confidence": 62
+        },
+        {
+          "symbol": "SNDKB",
+          "rank": 8,
+          "composite_score": 64.1,
+          "key_flags": [
+            "CONFIRMED_GEM",
+            "SMART_MONEY_DIV",
+            "RANK_UP",
+            "TREND_STABLE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x3-x7",
+          "confidence": 62
+        },
+        {
+          "symbol": "BLUR",
+          "rank": 9,
+          "composite_score": 70.7,
+          "key_flags": [
+            "SMART_MONEY_DIV",
+            "RANK_UP",
+            "TREND_STABLE",
+            "LOW_MOMENTUM",
+            "NO_DEX_PRESENCE"
+          ],
+          "risk": "MEDIUM",
+          "potential": "x2-x5",
+          "confidence": 45
+        },
+        {
+          "symbol": "SCRT",
+          "rank": 10,
+          "composite_score": 63.1,
+          "key_flags": [
+            "SMART_MONEY_DIV",
+            "RANK_UP",
+            "TREND_STABLE",
+            "LOW_MOMENTUM",
+            "HIGH_DRAWDOWN"
+          ],
+          "risk": "HIGH",
+          "potential": "x10+",
+          "confidence": 45
         }
       ]
     }

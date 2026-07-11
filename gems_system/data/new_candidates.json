@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-06-27T18:01:54.685671",
-  "total_candidates": 61,
+  "last_updated": "2026-07-11T08:39:35.432888",
+  "total_candidates": 72,
   "new_candidates": [
     {
       "symbol": "giggle",
@@ -794,6 +794,149 @@
       "reason": "Nova entrada forte (> 0.8)",
       "type": "potencial_lider",
       "quality_score": 52.49715147173857
+    },
+    {
+      "symbol": "hunt",
+      "name": "Hunt",
+      "detected_at": "2026-06-29T08:41:51.575421",
+      "ratio_now": 0.9958262059005153,
+      "market_cap": 17016412,
+      "volume": 16945389,
+      "priority": "alta",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 44.08319078467697
+    },
+    {
+      "symbol": "slp",
+      "name": "Smooth Love Potion",
+      "detected_at": "2026-07-02T09:06:56.377753",
+      "ratio_now": 1.2330774056251457,
+      "market_cap": 17224265,
+      "volume": 21238852,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 48.82821477916958
+    },
+    {
+      "symbol": "tlm",
+      "name": "Alien Worlds",
+      "detected_at": "2026-07-04T08:04:53.736218",
+      "ratio_now": 9.267930100548798,
+      "market_cap": 19180637,
+      "volume": 177764803,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "manlet",
+      "name": "manlet",
+      "detected_at": "2026-07-04T08:04:53.736609",
+      "ratio_now": 1.0634652358440864,
+      "market_cap": 14985133,
+      "volume": 15936168,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 45.43597138354839
+    },
+    {
+      "symbol": "rpl",
+      "name": "Rocket Pool",
+      "detected_at": "2026-07-05T08:31:47.803963",
+      "ratio_now": 0.9085064102397932,
+      "market_cap": 46291560,
+      "volume": 42056179,
+      "priority": "alta",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 42.33679487146253
+    },
+    {
+      "symbol": "vanry",
+      "name": "Vanar Chain",
+      "detected_at": "2026-07-06T09:21:20.239731",
+      "ratio_now": 5.852949745014552,
+      "market_cap": 15786195,
+      "volume": 92395806,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "blur",
+      "name": "Blur",
+      "detected_at": "2026-07-07T08:44:03.936259",
+      "ratio_now": 2.9751631415612265,
+      "market_cap": 74675024,
+      "volume": 222170379,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "yfi",
+      "name": "yearn.finance",
+      "detected_at": "2026-07-07T08:44:03.947603",
+      "ratio_now": 1.0438449981764975,
+      "market_cap": 83890755,
+      "volume": 87568945,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 45.043566630196615
+    },
+    {
+      "symbol": "skyai",
+      "name": "SkyAI",
+      "detected_at": "2026-07-09T08:24:49.145789",
+      "ratio_now": 1.0235164815908835,
+      "market_cap": 38920363,
+      "volume": 39835633,
+      "priority": "maxima",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 44.636996298484334
+    },
+    {
+      "symbol": "weth",
+      "name": "Robinhood Wrapped ETH (Robinhood Chain)",
+      "detected_at": "2026-07-10T08:12:44.782461",
+      "ratio_now": 7.794849010211282,
+      "market_cap": 19376509,
+      "volume": 151036962,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
+    },
+    {
+      "symbol": "skl",
+      "name": "SKALE",
+      "detected_at": "2026-07-10T08:12:44.782616",
+      "ratio_now": 3.4723877511018313,
+      "market_cap": 35436918,
+      "volume": 123050720,
+      "priority": "extrema",
+      "status": "new_strong_candidate",
+      "reason": "Nova entrada forte (> 0.8)",
+      "type": "potencial_lider",
+      "quality_score": 64.16666666666666
     }
   ]
 }

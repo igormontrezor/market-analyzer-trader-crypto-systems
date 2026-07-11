@@ -1,0 +1,105 @@
+=== Executando busca de gems no mercado... ===
+Timestamp: 2026-07-09 08:36:55
+Comando: C:\market_montrezor_system\.venv\Scripts\python.exe gems_finder.py
+================================================================================
+
+ Testando GEMS FINDER - Faixas + Snapshots...
+🚀 GEMS FINDER - Busca por Faixas Específicas
+==================================================
+⏱️ Cache válido por: 12:00:00
+✅ Usando cache (válido até: 20:24:04)
+✅ Usando cache existente: 47 gems
+
+🔍 Processando faixa 50m_range: MC $50,000,000-$100,000,000
+📋 Cache: 9 gems encontradas
+✅ 50m_range: 9 gems
+
+🔍 Processando faixa 10_49m_range: MC $10,000,000-$49,000,000
+📋 Cache: 15 gems encontradas
+✅ 10_49m_range: 15 gems
+📋 Cache válido - Nenhum cache atualizado
+
+📊 ANÁLISE - 50M_RANGE:
+
+📊 ANÁLISE DAS 9 GEMS:
+================================================================================
+Market Cap - Médio: $75,049,220
+Market Cap - Min: $52,598,204, Max: $92,106,487
+Volume - Médio: $24,682,280
+Volume - Min: $13,311,401, Max: $43,204,248
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 7 gems
+  🟠 Strong (0.5-1.0): 2 gems
+  🔥 Breakout (>1.0): 0 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/9 (0.0%)
+  💪 Resiliência de Preço: 0/9 (0.0%)
+  👑 POTENCIAL OURO: 0/9 (0.0%)
+  🚨 WASH TRADING: 0/9 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 9 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. blur     | MC: $  52,598,204 | Vol: $  31,579,749 | Ratio: 0.60 | S 📊📈    📊 | Blur
+ 2. syn      | MC: $  76,720,072 | Vol: $  43,204,248 | Ratio: 0.56 | S 📊📈    📊 | Synapse
+ 3. spcxb    | MC: $  88,994,169 | Vol: $  39,491,887 | Ratio: 0.44 | E 📊📈    📊 | SpaceX (bStocks Tokenized Stock)
+ 4. sndkb    | MC: $  72,209,802 | Vol: $  19,421,256 | Ratio: 0.27 | E 📊📈    📊 | SanDisk (bStocks Tokenized Stock)
+ 5. yfi      | MC: $  77,760,656 | Vol: $  19,607,381 | Ratio: 0.25 | E 📊📈    📊 | yearn.finance
+ 6. egld     | MC: $  92,106,487 | Vol: $  22,255,606 | Ratio: 0.24 | E 📊📈    📊 | MultiversX
+ 7. usdon    | MC: $  65,866,909 | Vol: $  15,049,883 | Ratio: 0.23 | E 📊📈    📊 | Ondo U.S. Dollar Token
+ 8. bio      | MC: $  60,539,308 | Vol: $  13,311,401 | Ratio: 0.22 | E 📊📈    📊 | Bio Protocol
+ 9. mub      | MC: $  88,647,370 | Vol: $  18,219,111 | Ratio: 0.21 | E 📊📈    📊 | Micron Technology (bStocks Tokenized Stock)
+
+📊 ANÁLISE - 10_49M_RANGE:
+
+📊 ANÁLISE DAS 15 GEMS:
+================================================================================
+Market Cap - Médio: $24,399,786
+Market Cap - Min: $15,930,267, Max: $40,239,411
+Volume - Médio: $18,154,718
+Volume - Min: $5,266,757, Max: $52,916,619
+
+🔥 ANÁLISE DAS ZONAS:
+  🟡 Early Accumulation (fundo): 10 gems
+  🟠 Strong (0.5-1.0): 1 gems
+  🔥 Breakout (>1.0): 4 gems
+
+💪 ANÁLISE DOS FILTROS:
+  📊 Recuperação de Volume: 0/15 (0.0%)
+  💪 Resiliência de Preço: 0/15 (0.0%)
+  👑 POTENCIAL OURO: 0/15 (0.0%)
+  🚨 WASH TRADING: 0/15 (0.0%)
+
+🚀 ANÁLISE DE MOMENTUM (INTERESSE REAL):
+  🔥 MOMENTUM ALTO (>20%): 0 gems
+  📈 MOMENTUM MÉDIO (10-20%): 0 gems
+  📊 MOMENTUM BAIXO (<10%): 15 gems
+
+💎 TOP 10 GEMS:
+----------------------------------------------------------------------------------------------------
+ 1. vanry    | MC: $  16,332,614 | Vol: $  52,916,619 | Ratio: 3.24 | B 📊📈    📊 | Vanar Chain
+ 2. tlm      | MC: $  16,482,008 | Vol: $  41,195,863 | Ratio: 2.50 | B 📊📈    📊 | Alien Worlds
+ 3. spell    | MC: $  15,930,267 | Vol: $  23,942,020 | Ratio: 1.50 | B 📊📈    📊 | Spell
+ 4. skyai    | MC: $  38,920,363 | Vol: $  39,835,633 | Ratio: 1.02 | B 📊📈    📊 | SkyAI
+ 5. stg      | MC: $  23,404,482 | Vol: $  14,846,738 | Ratio: 0.63 | S 📊📈    📊 | Stargate Finance
+ 6. blast    | MC: $  19,606,771 | Vol: $   9,705,373 | Ratio: 0.50 | E 📊📈    📊 | Blast
+ 7. people   | MC: $  28,891,165 | Vol: $  12,440,882 | Ratio: 0.43 | E 📊📈    📊 | ConstitutionDAO
+ 8. auction  | MC: $  24,856,735 | Vol: $  10,390,195 | Ratio: 0.42 | E 📊📈    📊 | Bounce
+ 9. giggle   | MC: $  26,003,732 | Vol: $  10,705,625 | Ratio: 0.41 | E 📊📈    📊 | Giggle Fund
+10. usdp     | MC: $  31,940,699 | Vol: $  13,004,047 | Ratio: 0.41 | E 📊📈    📊 | Pax Dollar
+
+📋 Usando dados existentes - Nenhum snapshot criado
+
+🎉 GEMS FINDER CONCLUÍDO!
+📊 Total de gems: 24
+📁 Arquivos salvos para análise histórica:
+   - snapshots/gems_*.csv (por faixa)
+   - snapshots/gems_consolidated_*.csv (completo)
+   - Cache válido por 12 horas (evita requisições excessivas)
+   - Snapshots criados apenas com dados novos
