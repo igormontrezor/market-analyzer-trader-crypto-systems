@@ -1,3 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-CASHCAT,CASHCAT,3grmULXrnQyN2A5LFStKFeSQsWvZjzNDsDVVLknFpump,solana,0.0009706,483.0,970669.0,78930.08,2726610.23,29040,17137,0.63,28.7,https://dexscreener.com/solana/9asrux6bowivf5mjfbuus1bpszqvoajmftkhpdqvkojx,2026-07-10T18:16:56.826294,dexscreener,29.871833040000002
-MAMO,Mamo,0x7300B37DfdfAb110d83290A29DfB31B1740219fE,base,0.009093,2.66,5434868.0,363224.61,16188.61,173,76,0.69,,https://dexscreener.com/base/0xe2b3aa806e56603a244bfc111c9474f7dedd03db,2026-07-10T18:16:59.167596,dexscreener,16.202878029999994

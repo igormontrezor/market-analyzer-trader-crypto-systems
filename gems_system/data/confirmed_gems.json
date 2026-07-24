@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-07-07T08:44:03.966573",
-  "total_confirmed": 24,
+  "last_updated": "2026-07-24T09:18:02.916473",
+  "total_confirmed": 29,
   "confirmed_gems": [
     {
       "symbol": "agld",
@@ -156,6 +156,40 @@
       "quality_score": 84.36288761532028
     },
     {
+      "symbol": "soxlb",
+      "name": "Semicon Bull 3X ETF (bStocks Tokenized Stock)",
+      "confirmed_at": "2026-07-22T09:25:55.222793",
+      "ratio_now": 0.7292731899997068,
+      "ratio_24h_ago": 0.540942318147683,
+      "growth_percent": 34.81533345309609,
+      "strong_days": 3,
+      "acceleration_strength": 1.9497844339801245,
+      "trend": "accelerating",
+      "market_cap": 19374472,
+      "volume": 14129283,
+      "priority": "alta",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 73.95776922474569
+    },
+    {
+      "symbol": "dodo",
+      "name": "DODO",
+      "confirmed_at": "2026-07-22T09:25:55.221839",
+      "ratio_now": 1.513611140922191,
+      "ratio_24h_ago": 0.7167836596319831,
+      "growth_percent": 111.16708236615236,
+      "strong_days": 2,
+      "acceleration_strength": 1.2735857831954387,
+      "trend": "accelerating",
+      "market_cap": 19502443,
+      "volume": 29519115,
+      "priority": "extrema",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 69.52537844172014
+    },
+    {
       "symbol": "hmstr",
       "name": "Hamster Kombat",
       "confirmed_at": "2026-07-07T08:44:03.953287",
@@ -188,6 +222,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 53.18809151519509
+    },
+    {
+      "symbol": "jimothy",
+      "name": "Jimothy The Raccoon",
+      "confirmed_at": "2026-07-24T09:18:02.906073",
+      "ratio_now": 1.7604956080976872,
+      "ratio_24h_ago": 1.1110890726307292,
+      "growth_percent": 58.447747481608836,
+      "strong_days": 3,
+      "acceleration_strength": 1.2896823078795412,
+      "trend": "accelerating",
+      "market_cap": 24281847,
+      "volume": 42748085,
+      "priority": "extrema",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 86.33094101044802
     },
     {
       "symbol": "stg",
@@ -256,6 +307,23 @@
       "status": "confirmed",
       "type": "lider_altseason",
       "quality_score": 64.3747582538989
+    },
+    {
+      "symbol": "pons",
+      "name": "Pons",
+      "confirmed_at": "2026-07-23T09:29:40.223856",
+      "ratio_now": 0.6659681164936824,
+      "ratio_24h_ago": 0.5097002444776535,
+      "growth_percent": 30.65877909793313,
+      "strong_days": 3,
+      "acceleration_strength": 1.8101607191264553,
+      "trend": "accelerating",
+      "market_cap": 27280312,
+      "volume": 18167818,
+      "priority": "alta",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 70.94637131895433
     },
     {
       "symbol": "dogs",
@@ -354,6 +422,23 @@
       "trend": "accelerating",
       "market_cap": 40563275,
       "volume": 901580462,
+      "priority": "extrema",
+      "status": "confirmed",
+      "type": "lider_altseason",
+      "quality_score": 100.0
+    },
+    {
+      "symbol": "weth",
+      "name": "Robinhood Wrapped ETH (Robinhood Chain)",
+      "confirmed_at": "2026-07-24T09:18:02.905847",
+      "ratio_now": 5.2122286076186795,
+      "ratio_24h_ago": 1.3622181446311066,
+      "growth_percent": 282.6280414896521,
+      "strong_days": 3,
+      "acceleration_strength": 10.919442642642517,
+      "trend": "accelerating",
+      "market_cap": 42417274,
+      "volume": 221088529,
       "priority": "extrema",
       "status": "confirmed",
       "type": "lider_altseason",

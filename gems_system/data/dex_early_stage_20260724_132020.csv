@@ -1,0 +1,2 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+CRICKET,Cricket The Dog,J33WbCWN2m1EpoNUP9Ch6cWoV5j6BFJervDfgPk3pump,solana,0.0001677,238.0,161336.0,33540.29,1617841.57,10017,8712,0.53,69.7,https://dexscreener.com/solana/9ysevy9uagzud6un1p79l8lxnvb5nzm6ej38eimyhhby,2026-07-24T13:20:15.100621,dexscreener,14.07083691

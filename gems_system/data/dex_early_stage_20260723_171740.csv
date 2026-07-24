@@ -1,0 +1,2 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+UNCLEAR,The Unclarity Act,qXjNksWUsHjK7QUsKb7RkEnEddtS44nUriV4ny9pump,solana,0.0002086,259.0,206717.0,33192.29,676530.87,5326,3547,0.6,4.2,https://dexscreener.com/solana/4b1zh3bgd9skgy7ipk98vw4eyldaaxgbf3f9wb92czhq,2026-07-23T17:17:34.620885,dexscreener,10.910131309999999

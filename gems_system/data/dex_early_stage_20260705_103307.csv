@@ -1,3 +1,0 @@
-symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
-MUTUMBO,mutumbo,nVhTvcZXm2DQLoMhyrC5nw2noTvbGf7nsapiehtpump,solana,0.000253,452.0,253025.0,39836.6,905354.1,6291,5514,0.53,22.8,https://dexscreener.com/solana/2bynftipyr9p58rgtnxxd9jbtgshr9er9akpb2plnags,2026-07-05T10:33:01.558374,dexscreener,8.465381800000001
-PUMPERS,Pumpers,8wQydVUD4MuZG5KCgMmSWDBbjeujwA2ak6es2Yxapump,solana,0.0001846,350.0,184648.0,32823.96,163015.2,2181,1344,0.62,0.4,https://dexscreener.com/solana/h7qkydlrb4znnurjxd7z2aj4ruj98jnnwcemk6s4946a,2026-07-05T10:33:01.557995,dexscreener,8.046480999999998

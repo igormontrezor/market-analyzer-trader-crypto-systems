@@ -1,0 +1,2 @@
+symbol,name,token_address,chain,price_usd,price_change_24h,market_cap_usd,liquidity_usd,volume_24h_usd,buys_24h,sells_24h,buy_ratio,age_hours,pair_url,last_updated,source,dex_score
+CBMEGA,Coinbase Wrapped MEGA,0xcb111E6A2a3bde90856D299d61341ac302167D23,base,0.04355,-0.46,1127383.0,140552.97,373839.31,774,664,0.54,,https://dexscreener.com/base/0x0150e3d89e161518c044ad191c4bdf6b40df6e83,2026-07-24T11:19:43.726024,dexscreener,6.349009030000001

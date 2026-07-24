@@ -25,6 +25,49 @@ from subprocess import Popen, DEVNULL
 # Importa as bibliotecas do sistema
 import visualizer
 
+# ── Telegram helpers (config + estado de alertas com dedupe por transição) ──
+# NOTA: essas funções eram chamadas em 3 lugares (EMA CROSS WARN e BTC SEMANAL
+# COMPRA/VENDA CONFIRMADA) mas nunca existiam no arquivo — o envio ao Telegram
+# falhava sempre, silenciosamente, engolido por "except: pass". Implementadas aqui.
+_TG_CONFIG_FILE   = os.path.join(os.path.expanduser("~"), ".montrezor_telegram.json")
+_ALERT_STATE_FILE = os.path.join("data", "macro", "alert_last_state.json")
+
+def _load_tg():
+    """Retorna (token, chat_id). Ordem: variáveis de ambiente > arquivo de config local."""
+    _token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+    _chat  = os.environ.get("TELEGRAM_CHAT_ID", "")
+    if not (_token and _chat):
+        try:
+            _cfg = json.load(open(_TG_CONFIG_FILE, encoding="utf-8"))
+            _token = _token or _cfg.get("bot_token", "")
+            _chat  = _chat  or _cfg.get("chat_id", "")
+        except Exception:
+            pass
+    return (_token or None), (_chat or None)
+
+def _load_last_state():
+    try:
+        return json.load(open(_ALERT_STATE_FILE, encoding="utf-8"))
+    except Exception:
+        return {}
+
+def _save_last_state(state):
+    try:
+        os.makedirs(os.path.dirname(_ALERT_STATE_FILE), exist_ok=True)
+        json.dump(state, open(_ALERT_STATE_FILE, "w", encoding="utf-8"), indent=2)
+    except Exception:
+        pass
+
+def _has_changed(key, label):
+    """True apenas quando o valor salvo pra essa key mudou (evita reenviar o mesmo alerta)."""
+    _st = _load_last_state()
+    return _st.get(key) != label
+
+def _update_state(key, label):
+    _st = _load_last_state()
+    _st[key] = label
+    _save_last_state(_st)
+
 def _tooltip(text, icon="ℹ️"):
     """Retorna um span com tooltip (title) sem poluir o layout."""
     return f'<span style="cursor:help; border-bottom:1px dotted #484f58;" title="{text}">{icon}</span>'
@@ -76,16 +119,10 @@ def _macro_gems_signal_type(m):
     if m.get("sell_risk"):
         return "SELL_RISK"
     if m.get("rebound_super") and not m.get("capitulation_lock") and m.get("status") == "VENDA":
-        if m.get("hiper_repique") and m.get("funding_rate", 0) < 0:
-            return "HIPER_REPIQUE"
         if m.get("hiper_repique"):
-            return "SUPER_REPIQUE"
-        return "REPIQUE"
+            return "HIPER_REPIQUE"
+        return "SUPER_REPIQUE"
     if m.get("rebound") and not m.get("capitulation_lock") and m.get("status") == "VENDA":
-        if m.get("hiper_repique") and m.get("funding_rate", 0) < 0:
-            return "HIPER_REPIQUE"
-        if m.get("hiper_repique"):
-            return "SUPER_REPIQUE"
         return "REPIQUE"
     if m.get("funding_signal") == "BUY":
         return "BUY"
@@ -542,9 +579,10 @@ def get_macro_data():
         "rebound": False, "rebound_super": False,
         "funding_rate": 0.01, "funding_signal": "NEUTRAL", "super_alert": "OFF",
         "hiper_alert": "OFF", "fear_greed": None, "altcoin_season": None,
-        "hiper_repique": False, "hiper_repique_super": False, "hiper_repique_date": "",
+        "hiper_repique": False, "hiper_repique_date": "",
         "others_monthly_bbp": 1.0, "sell_risk": False,
         "others_ema_cross_warn": False, "others_ema50_above_ema100": False,
+        "others_ema_death_cross_warn": False, "others_ema50_below_ema100": False,
     }
 
     if os.path.exists(path):
@@ -577,11 +615,15 @@ def get_macro_data():
                 # EMA CROSS WARN: EMA50 > EMA100 no OTHERS semanal por 2+ semanas
                 res["others_ema_cross_warn"]     = bool(data.get("weekly", {}).get("others_ema_cross_warn", False))
                 res["others_ema50_above_ema100"] = bool(data.get("weekly", {}).get("others_ema50_above_ema100", False))
+                # EMA DEATH CROSS WARN (invertido): EMA50 < EMA100 no OTHERS semanal por 2+ semanas — fim de ciclo
+                res["others_ema_death_cross_warn"] = bool(data.get("weekly", {}).get("others_ema_death_cross_warn", False))
+                res["others_ema50_below_ema100"]   = bool(data.get("weekly", {}).get("others_ema50_below_ema100", False))
 
                 res["buy_trigger"] = weekly_buy_trigger
                 res["sell_trigger"] = weekly_sell_trigger
                 res["rebound"] = signal.get("tactical_rebound", False)
-                res["rebound_super"] = signal.get("tactical_rebound_super", False)
+                # rebound_super agora depende da confirmação técnica diária (Sharpe/Sortino) — definido mais abaixo, junto com hiper_repique
+                res["_funding_rebound_ok"] = signal.get("tactical_rebound_super", False)  # geometria semanal + funding < 0 (não usado mais como gatilho — mantido só de referência)
 
                 # Puxa o dado mastigado que o visualizer.py já salvou no JSON
                 funding_rate = data.get("funding_rate", 0.01)
@@ -627,9 +669,9 @@ def get_macro_data():
                     except:
                         res["last_update"] = datetime.fromtimestamp(os.path.getmtime(path)).strftime('%d/%m %H:%M')
         except: pass
-    # ── HIPER REPIQUE: repique macro ativo + círculo verde diário BTC ─────────
+    # ── REPIQUE (invertido): SUPER agora exige confirmação técnica diária BTC; HIPER = SUPER + funding < 0 ──
     try:
-        _any_rebound = (res["rebound"] or res["rebound_super"]) and not res.get("capitulation_lock", False) and res["status"] == "VENDA"
+        _any_rebound = res["rebound"] and not res.get("capitulation_lock", False) and res["status"] == "VENDA"
         if _any_rebound:
             import numpy as np
             import yfinance as yf
@@ -654,9 +696,11 @@ def get_macro_data():
                 _conf_b = _sh_b | _so_b
                 _last_confirmed = bool(_conf_b.iloc[-1]) if not _conf_b.empty else False
                 _last_date = str(_c.index[-1])[:10] if not _c.empty else ""
-                res["hiper_repique"]       = _last_confirmed
-                res["hiper_repique_super"] = _last_confirmed and res["rebound_super"]
-                res["hiper_repique_date"]  = _last_date if _last_confirmed else ""
+                # SUPER_REPIQUE (novo): repique base + círculo verde diário confirmado (Sharpe/Sortino)
+                res["rebound_super"]      = bool(_last_confirmed)
+                # HIPER_REPIQUE (novo): SUPER_REPIQUE + funding < 0 (confirmação extra, curta e nem sempre presente)
+                res["hiper_repique"]      = bool(res["rebound_super"] and res.get("funding_rate", 1) < 0)
+                res["hiper_repique_date"] = _last_date if _last_confirmed else ""
     except Exception:
         pass
     # ─────────────────────────────────────────────────────────────────────────
@@ -756,40 +800,21 @@ with col_right:
         )
     elif m.get("rebound_super") and not m.get("capitulation_lock") and m.get("status") == "VENDA":
         _hr = m.get("hiper_repique")
-        _funding_neg = m.get("funding_rate", 0) < 0
-        if _hr and _funding_neg:
+        if _hr:
             super_html = (
                 '<div class="neutral-alert" style="background:#1a0a2e; border: 2px solid #a371f7; color: white;">'
                 f'🔱 HIPER REPIQUE · Sharpe+Sortino ✅ + Funding: {f_rate:.4f}%</div>'
             )
-        elif _hr:
+        else:
             super_html = (
                 '<div class="neutral-alert" style="background:#4a2080; border: 2px solid #a371f7; color: white;">'
                 '⚡ SUPER REPIQUE · Sharpe+Sortino Diário ✅</div>'
-            )
-        else:
-            super_html = (
-                '<div class="neutral-alert" style="background:#1f6feb; border: 1px solid #58a6ff; color: white;">'
-                "🔵 REPIQUE TÁTICO (regime venda + USDT.D sem. no topo)</div>"
             )
     elif m.get("rebound") and not m.get("capitulation_lock") and m.get("status") == "VENDA":
-        _hr = m.get("hiper_repique")
-        _funding_neg = m.get("funding_rate", 0) < 0
-        if _hr and _funding_neg:
-            super_html = (
-                '<div class="neutral-alert" style="background:#1a0a2e; border: 2px solid #a371f7; color: white;">'
-                f'🔱 HIPER REPIQUE · Sharpe+Sortino ✅ + Funding: {f_rate:.4f}%</div>'
-            )
-        elif _hr:
-            super_html = (
-                '<div class="neutral-alert" style="background:#4a2080; border: 2px solid #a371f7; color: white;">'
-                '⚡ SUPER REPIQUE · Sharpe+Sortino Diário ✅</div>'
-            )
-        else:
-            super_html = (
-                '<div class="neutral-alert" style="background:#1f6feb; border: 1px solid #58a6ff; color: white;">'
-                "🔵 REPIQUE TÁTICO (regime venda + USDT.D sem. no topo)</div>"
-            )
+        super_html = (
+            '<div class="neutral-alert" style="background:#1f6feb; border: 1px solid #58a6ff; color: white;">'
+            "🔵 REPIQUE TÁTICO (regime venda + USDT.D sem. no topo)</div>"
+        )
     elif m['funding_signal'] == "BUY":
         super_html = '<div class="neutral-alert" style="background:#238636; border: 1px solid #3fb950; color: white;">🟢 SINAL DE COMPRA (Semanal)</div>'
     elif m['funding_signal'] == "SELL":
@@ -852,6 +877,53 @@ with col_right:
             _st = _load_last_state()
             if "others_ema_cross_warn" in _st:
                 del _st["others_ema_cross_warn"]
+                _save_last_state(_st)
+        except Exception:
+            pass
+    # ─────────────────────────────────────────────────────────────────────────
+
+    # ── EMA DEATH CROSS WARN (invertido) — confirmação de fim de ciclo ────────
+    if m.get("others_ema_death_cross_warn"):
+        st.markdown(
+            '<div style="background:#0d1f0d;border:2px solid #3fb950;border-radius:8px;'
+            'padding:10px 16px;margin-top:8px;font-size:13px;color:#3fb950;">'
+            '✅ <b>CYCLE END CONFIRMATION — OTHERS Weekly</b>: EMA50 below EMA100 for 2+ weeks. '
+            'Historically confirms the altcoin cycle has ended and bottom formation is underway. '
+            'Consider watching for accumulation opportunities.'
+            '</div>',
+            unsafe_allow_html=True
+        )
+        # Telegram: envia apenas na transição (estado salvo em disco)
+        if st.session_state.get("ma_tg_enabled", True):
+            try:
+                _ema_death_state_key = "others_ema_death_cross_warn"
+                if _has_changed(_ema_death_state_key, "EMA_DEATH_CROSS_WARN"):
+                    _token, _chat = _load_tg()
+                    if _token and _chat:
+                        import requests as _rq
+                        _msg = (
+                            "✅ <b>CYCLE END CONFIRMATION — OTHERS Weekly</b>\n"
+                            "━━━━━━━━━━━━━━━━━━\n"
+                            "EMA50 crossed below EMA100 on OTHERS weekly and has held for 2+ closed weeks.\n\n"
+                            "Historically confirms the altcoin cycle has ended and bottom formation is underway.\n\n"
+                            "<b>Suggested action:</b> watch for accumulation opportunities.\n\n"
+                            f"<b>Date:</b> {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}\n"
+                            "Montrezor Market Intelligence"
+                        )
+                        _rq.post(
+                            f"https://api.telegram.org/bot{_token}/sendMessage",
+                            json={"chat_id": _chat, "text": _msg, "parse_mode": "HTML"},
+                            timeout=10
+                        )
+                        _update_state(_ema_death_state_key, "EMA_DEATH_CROSS_WARN")
+            except Exception:
+                pass
+    else:
+        # Limpa estado quando sinal não está mais ativo
+        try:
+            _st = _load_last_state()
+            if "others_ema_death_cross_warn" in _st:
+                del _st["others_ema_death_cross_warn"]
                 _save_last_state(_st)
         except Exception:
             pass
@@ -1633,9 +1705,12 @@ with col2:
             acao_sugerida = "AGUARDANDO AÇÃO"
             acao_cor = "#c9d1d9" # Cinza
 
-    # 4. Sobrescrita: Super repique / repique (se não houver capitulação)
-    if macro_data.get("rebound_super") and not macro_data.get("capitulation_lock"):
-        acao_sugerida = "⚡ SUPER REPIQUE (funding < 0)"
+    # 4. Sobrescrita: Hiper/Super repique / repique (se não houver capitulação)
+    if macro_data.get("hiper_repique") and not macro_data.get("capitulation_lock"):
+        acao_sugerida = "🔱 HIPER REPIQUE (Sharpe+Sortino + funding < 0)"
+        acao_cor = "#a371f7"
+    elif macro_data.get("rebound_super") and not macro_data.get("capitulation_lock"):
+        acao_sugerida = "⚡ SUPER REPIQUE (Sharpe+Sortino diário)"
         acao_cor = "#a371f7"
     elif macro_data.get("rebound") and not macro_data.get("capitulation_lock"):
         acao_sugerida = "🔵 REPIQUE TÁTICO (só semanal)"
@@ -1808,17 +1883,18 @@ def plot_institucional_chart():
         u_stoch_k = _uraw_k.rolling(3).mean()
         u_stoch_d = u_stoch_k.rolling(3).mean()
 
-        # 4. Criar figura com 4 subplots (USDT.D+indicadores, BB%B, Estocástico, Funding)
+        # 4. Criar figura com 4 subplots USDT.D (preço, BB%B, Estocástico, MACD)
+        # Funding fica em gráfico separado pois tem timeframe diferente (horário vs semanal)
         fig = make_subplots(
             rows=4, cols=1,
             shared_xaxes=True,
             vertical_spacing=0.02,
-            row_heights=[0.45, 0.18, 0.18, 0.19],
+            row_heights=[0.46, 0.18, 0.18, 0.18],
             subplot_titles=[
                 "USDT.D — Preço + MAs + SuperTrend ATR",
                 "USDT.D — BB%B (Bollinger Bands %)",
                 "Estocástico (14·3·3)",
-                "Funding Rate — Histórico"
+                "MACD (12/26/9)"
             ]
         )
 
@@ -1879,6 +1955,27 @@ def plot_institucional_chart():
         fig.add_hline(y=80, line_dash="dash", line_color="red",   opacity=0.6, row=3, col=1)
         fig.add_hline(y=20, line_dash="dash", line_color="green", opacity=0.6, row=3, col=1)
 
+        # 7b. MACD USDT.D (12/26/9)
+        _u_ema12  = ucl.ewm(span=12, adjust=False).mean()
+        _u_ema26  = ucl.ewm(span=26, adjust=False).mean()
+        _u_macd   = _u_ema12 - _u_ema26
+        _u_signal = _u_macd.ewm(span=9, adjust=False).mean()
+        _u_hist   = _u_macd - _u_signal
+        _u_colors = ["#3fb950" if v >= 0 else "#f85149" for v in _u_hist]
+        fig.add_trace(go.Bar(
+            x=_u_hist.index, y=_u_hist,
+            marker_color=_u_colors, name="MACD Hist USDT.D", opacity=0.7, showlegend=False
+        ), row=4, col=1)
+        fig.add_trace(go.Scatter(
+            x=_u_macd.index, y=_u_macd, mode="lines",
+            name="MACD USDT.D", line=dict(color="#58a6ff", width=1.5)
+        ), row=4, col=1)
+        fig.add_trace(go.Scatter(
+            x=_u_signal.index, y=_u_signal, mode="lines",
+            name="Signal USDT.D", line=dict(color="#e3b341", width=1.2, dash="dot")
+        ), row=4, col=1)
+        fig.add_hline(y=0, line_dash="dot", line_color="rgba(200,200,200,0.25)", row=4, col=1)
+
         # 8. Regime label
         if buy_mode:
             regime_label = "🟩 REGIME: COMPRA (Bear Market)"
@@ -1887,278 +1984,200 @@ def plot_institucional_chart():
         else:
             regime_label = "⬜ REGIME: NEUTRO"
 
-        # 9. Funding Rate
+        # 9. Funding Rate (row 5)
         colors = ['green' if val < 0 else 'red' for val in df_funding['funding_rate']]
         hover_text = [
             f"Data: {ts.strftime('%d/%m %H:%M')}<br>Funding: {rate:.4f}%<br>Status: {'🟢 Oportunidade' if rate < 0 else '🔴 Alavancado'}"
             for ts, rate in zip(df_funding['timestamp'], df_funding['funding_rate'])
         ]
-        fig.add_trace(go.Scatter(
-            x=df_funding['timestamp'], y=df_funding['funding_rate'],
-            mode='lines', name='Funding Background',
-            line=dict(color='rgba(128,128,128,0.3)', width=1),
-            fill='tozeroy', fillcolor='rgba(128,128,128,0.2)', hoverinfo='skip'
-        ), row=4, col=1)
-        fig.add_trace(go.Bar(
-            x=df_funding['timestamp'], y=df_funding['funding_rate'],
-            marker_color=colors, name='Funding Rate',
-            opacity=0.9, text=hover_text, hoverinfo='text',
-            textposition='outside', width=7200000, showlegend=True
-        ), row=4, col=1)
-        fig.add_hline(y=0.08, line_dash="dash", line_color="red", opacity=0.8, row=4, col=1)
 
-        # 10. Layout
+        # 10. Layout USDT.D
         fig.update_layout(
             title={
-                'text': f"🏛️ MESA DE OPERAÇÕES INSTITUCIONAL | {regime_label}",
+                'text': f"🏛️ USDT.D — ANÁLISE MACRO | {regime_label}",
                 'x': 0.5, 'xanchor': 'center',
                 'font': {'size': 16, 'color': 'white'}
             },
             template="plotly_dark",
-            height=1000,
+            height=950,
             showlegend=True,
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-            bargap=0.1, barmode='relative'
         )
-        fig.update_xaxes(title_text="Data", row=4, col=1)
         fig.update_xaxes(rangeslider_visible=False)
-        fig.update_yaxes(title_text="USDT.D (%)",      row=1, col=1)
-        fig.update_yaxes(title_text="BB%B (0-1)",       row=2, col=1)
-        fig.update_yaxes(title_text="Estocástico",      row=3, col=1, range=[0, 100])
-        fig.update_yaxes(title_text="Funding Rate (%)", row=4, col=1, range=[-0.02, 0.10])
+        fig.update_yaxes(title_text="USDT.D (%)",  row=1, col=1)
+        fig.update_yaxes(title_text="BB%B (0-1)",   row=2, col=1)
+        fig.update_yaxes(title_text="Estocástico",  row=3, col=1, range=[0, 100])
+        fig.update_yaxes(title_text="MACD",         row=4, col=1)
 
-        # 11. Exibir no Streamlit
+        # 11. Exibir USDT.D no Streamlit
         st.plotly_chart(fig, width='stretch')
 
-        # 12. Informações adicionais
-        with st.expander("📊 Análise do Heatmap"):
-            col1, col2, col3 = st.columns(3)
-
-            with col1:
-                st.metric(
-                    "� USDT.D Atual",
-                    f"{usdt_weekly['close'].iloc[-1]:.2f}%",
-                    f"{((usdt_weekly['close'].iloc[-1] / usdt_weekly['close'].iloc[-2]) - 1) * 100:+.2f}%"
-                )
-
-            with col2:
-                st.metric(
-                    "💰 Funding Rate Atual",
-                    f"{df_funding['funding_rate'].iloc[-1]:.4f}%",
-                    "Negativo = Oportunidade" if df_funding['funding_rate'].iloc[-1] < 0 else "Positivo = Alavancado"
-                )
-
-            with col3:
-                st.metric(
-                    "📈 BB%B Atual",
-                    f"{usdt_bbp.iloc[-1]:.4f}",
-                    "Zona de Compra" if usdt_bbp.iloc[-1] < 0.2 else "Zona de Venda" if usdt_bbp.iloc[-1] > 0.8 else "Neutro"
-                )
-
-        # Métrica adicional do Regime
-        st.markdown("---")
-        col_regime = st.columns(1)[0]
-        with col_regime:
-            st.metric(
-                "🎯 Regime Macro",
-                regime_label.split(":")[1].strip(),
-                "Foco em Compras" if buy_mode else "Cuidado com Vendas" if sell_mode else "Aguardando"
-            )
-
-        st.success("✅ Heatmap Institucional carregado com dados reais!")
+        # ── GRÁFICO FUNDING RATE (separado para não distorcer eixo X semanal) ──
+        st.markdown("### ⚡ Funding Rate — Histórico")
+        fig_f = make_subplots(rows=1, cols=1)
+        fig_f.add_trace(go.Scatter(
+            x=df_funding['timestamp'], y=df_funding['funding_rate'],
+            mode='lines', name='Funding Background',
+            line=dict(color='rgba(128,128,128,0.3)', width=1),
+            fill='tozeroy', fillcolor='rgba(128,128,128,0.2)', hoverinfo='skip'
+        ))
+        fig_f.add_trace(go.Bar(
+            x=df_funding['timestamp'], y=df_funding['funding_rate'],
+            marker_color=colors, name='Funding Rate',
+            opacity=0.9, text=hover_text, hoverinfo='text',
+            textposition='outside', width=7200000, showlegend=True
+        ))
+        fig_f.add_hline(y=0.08, line_dash="dash", line_color="red", opacity=0.8)
+        fig_f.add_hline(y=0,    line_dash="dot",  line_color="gray", opacity=0.5)
+        fig_f.update_layout(
+            template="plotly_dark", height=300,
+            showlegend=True, bargap=0.1, barmode='relative',
+            margin=dict(l=10, r=10, t=30, b=10)
+        )
+        fig_f.update_yaxes(title_text="Funding Rate (%)", range=[-0.02, 0.10])
+        fig_f.update_xaxes(title_text="Data")
+        st.plotly_chart(fig_f, width='stretch')
 
         # ══════════════════════════════════════════════════════════════════════
-        # GRÁFICO OTHERS — via tvDatafeed + Plotly (mesmo padrão do heatmap)
-        # Indicadores: MA 20/50/100/200 · SuperTrend ATR · BB%B · Estocástico
+        # GRÁFICO OTHERS — Preço · BB%B · Estocástico · MACD
         # ══════════════════════════════════════════════════════════════════════
         st.markdown("---")
         st.markdown("### 📊 OTHERS — Mercado de Altcoins (CRYPTOCAP)")
-        st.caption("Indicadores: MA 20 · 50 · 100 · 200 · SuperTrend ATR(10,3) · BB%B · Estocástico(14,3,3)")
+        st.caption("Indicadores: MA 20 · 50 · 100 · 200 · BB%B · Estocástico(14,3,3) · MACD(12/26/9)")
 
         try:
-            import numpy as np
-
-            with st.spinner("🔄 Obtendo dados de OTHERS..."):
-                others = tv.get_hist(symbol='OTHERS', exchange='CRYPTOCAP',
-                                     interval=Interval.in_weekly, n_bars=300)
-
-            if others is None or others.empty:
+            others_weekly = tv.get_hist(symbol='OTHERS', exchange='CRYPTOCAP',
+                                        interval=Interval.in_weekly, n_bars=300)
+            if others_weekly is None or others_weekly.empty:
                 st.warning("⚠️ Não foi possível obter dados de OTHERS via tvDatafeed.")
             else:
-                cl = others["close"]
-                hi = others["high"]
-                lo = others["low"]
+                ocl = others_weekly["close"]
+                ohi = others_weekly["high"]
+                olo = others_weekly["low"]
 
-                # ── MAs ───────────────────────────────────────────────────────
-                ma20  = cl.rolling(20).mean()
-                ma50  = cl.rolling(50).mean()
-                ma100 = cl.rolling(100).mean()
-                ma200 = cl.rolling(200).mean()
+                # MAs
+                oma20  = ocl.rolling(20).mean()
+                oma50  = ocl.rolling(50).mean()
+                oma100 = ocl.rolling(100).mean()
+                oma200 = ocl.rolling(200).mean()
 
-                # ── BB%B (período 20, 2σ) — reutiliza ma20 já calculada ───────
-                _sd20    = cl.rolling(20).std(ddof=0)
-                bb_upper = ma20 + 2 * _sd20
-                bb_lower = ma20 - 2 * _sd20
-                bbpb     = ((cl - bb_lower) / (bb_upper - bb_lower)).clip(-0.5, 1.5)
+                # BB%B OTHERS (20, 2.0)
+                others_bbp = _bb_percent(ocl, 20, 2.0).dropna()
 
-                # ── SuperTrend ATR(10, 3) — numpy arrays (compatível pandas 2.x)
-                _atr_period = 10
-                _factor     = 3.0
-                _cl  = cl.values.astype(float)
-                _hi  = hi.values.astype(float)
-                _lo  = lo.values.astype(float)
-                _n   = len(_cl)
+                # Estocástico(14·3·3) — idêntico ao USDT.D
+                _olo_min  = olo.rolling(14).min()
+                _ohi_max  = ohi.rolling(14).max()
+                _oraw_k   = 100 * (ocl - _olo_min) / (_ohi_max - _olo_min).replace(0, np.nan)
+                o_stoch_k = _oraw_k.rolling(3).mean()
+                o_stoch_d = o_stoch_k.rolling(3).mean()
 
-                _tr  = np.maximum.reduce([_hi - _lo,
-                                           np.abs(_hi - np.roll(_cl, 1)),
-                                           np.abs(_lo - np.roll(_cl, 1))])
-                _tr[0] = _hi[0] - _lo[0]
-                _alpha = 1.0 / _atr_period
-                _atr   = np.empty(_n)
-                _atr[0] = _tr[0]
-                for _i in range(1, _n):
-                    _atr[_i] = _alpha * _tr[_i] + (1 - _alpha) * _atr[_i-1]
+                # MACD(12/26/9)
+                _o_ema12  = ocl.ewm(span=12, adjust=False).mean()
+                _o_ema26  = ocl.ewm(span=26, adjust=False).mean()
+                _o_macd   = _o_ema12 - _o_ema26
+                _o_signal = _o_macd.ewm(span=9, adjust=False).mean()
+                _o_hist   = _o_macd - _o_signal
+                _o_colors = ["#3fb950" if v >= 0 else "#f85149" for v in _o_hist]
 
-                _hl2 = (_hi + _lo) / 2
-                _ub  = _hl2 + _factor * _atr
-                _lb  = _hl2 - _factor * _atr
-
-                _st    = np.empty(_n);  _st[0]  = _ub[0]
-                _dir   = np.ones(_n, dtype=int)  # 1=bearish(upper), -1=bullish(lower)
-                for _i in range(1, _n):
-                    _ub[_i] = min(_ub[_i], _ub[_i-1]) if _cl[_i-1] <= _ub[_i-1] else _ub[_i]
-                    _lb[_i] = max(_lb[_i], _lb[_i-1]) if _cl[_i-1] >= _lb[_i-1] else _lb[_i]
-                    if _st[_i-1] == _ub[_i-1]:
-                        _dir[_i] = -1 if _cl[_i] > _ub[_i] else 1
-                    else:
-                        _dir[_i] = 1  if _cl[_i] < _lb[_i] else -1
-                    _st[_i] = _lb[_i] if _dir[_i] == -1 else _ub[_i]
-
-                supertrend = pd.Series(_st,  index=cl.index)
-                st_dir     = pd.Series(_dir, index=cl.index)
-
-                # ── Estocástico(14, 3, 3) ─────────────────────────────────────
-                _stoch_k = 14
-                _stoch_d = 3
-                _stoch_sm = 3
-                low_min  = lo.rolling(_stoch_k).min()
-                high_max = hi.rolling(_stoch_k).max()
-                _raw_k   = 100 * (cl - low_min) / (high_max - low_min).replace(0, np.nan)
-                stoch_k  = _raw_k.rolling(_stoch_sm).mean()  # %K suavizado
-                stoch_d  = stoch_k.rolling(_stoch_d).mean()  # %D
-
-                # ── Subplots: preço+MAs+ST | BB%B | Estocástico ───────────────
-                fig_others = make_subplots(
-                    rows=3, cols=1,
+                fig_o = make_subplots(
+                    rows=4, cols=1,
                     shared_xaxes=True,
-                    vertical_spacing=0.03,
-                    row_heights=[0.55, 0.20, 0.25],
+                    vertical_spacing=0.02,
+                    row_heights=[0.46, 0.18, 0.18, 0.18],
                     subplot_titles=[
-                        "OTHERS — Preço + MAs + SuperTrend ATR",
-                        "BB%B  (Bollinger Bands %)",
-                        "Estocástico (14·3·3)"
+                        "OTHERS — Preço + MAs",
+                        "OTHERS — BB%B (Bollinger Bands %)",
+                        "Estocástico (14·3·3)",
+                        "OTHERS — MACD (12/26/9)"
                     ]
                 )
 
-                # Candles OTHERS
-                fig_others.add_trace(go.Candlestick(
-                    x=others.index,
-                    open=others["open"], high=hi, low=lo, close=cl,
+                # Candles
+                fig_o.add_trace(go.Candlestick(
+                    x=others_weekly.index,
+                    open=others_weekly["open"], high=ohi, low=olo, close=ocl,
                     name="OTHERS",
                     increasing_line_color="#26a69a",
                     decreasing_line_color="#ef5350",
-                    showlegend=True
                 ), row=1, col=1)
 
                 # MAs
-                ma_cfg = [
-                    (ma20,  "#ffffff", 1,  "MA 20"),
-                    (ma50,  "#00ffff", 1,  "MA 50"),
-                    (ma100, "#ff00ff", 1.5,"MA 100"),
-                    (ma200, "#ffca28", 2,  "MA 200"),
-                ]
-                for _ma, _col, _lw, _name in ma_cfg:
-                    fig_others.add_trace(go.Scatter(
-                        x=_ma.index, y=_ma,
-                        mode="lines", name=_name,
-                        line=dict(color=_col, width=_lw)
+                for _oma, _ocol, _olw, _oname in [
+                    (oma20,  "#ffffff", 1,   "MA 20"),
+                    (oma50,  "#00ffff", 1,   "MA 50"),
+                    (oma100, "#ff00ff", 1.5, "MA 100"),
+                    (oma200, "#ffca28", 2,   "MA 200"),
+                ]:
+                    fig_o.add_trace(go.Scatter(
+                        x=_oma.index, y=_oma, mode="lines",
+                        name=_oname, line=dict(color=_ocol, width=_olw)
                     ), row=1, col=1)
 
-                # SuperTrend — duas cores (verde tendência alta, vermelho tendência baixa)
-                st_up   = supertrend.where(st_dir == -1)  # preço acima = bullish = verde
-                st_down = supertrend.where(st_dir == 1)   # preço abaixo = bearish = vermelho
-                fig_others.add_trace(go.Scatter(
-                    x=st_up.index, y=st_up,
-                    mode="lines", name="SuperTrend ↑",
-                    line=dict(color="#00e676", width=2, dash="solid"),
-                    connectgaps=False
-                ), row=1, col=1)
-                fig_others.add_trace(go.Scatter(
-                    x=st_down.index, y=st_down,
-                    mode="lines", name="SuperTrend ↓",
-                    line=dict(color="#ff1744", width=2, dash="solid"),
-                    connectgaps=False
-                ), row=1, col=1)
-
                 # BB%B
-                fig_others.add_trace(go.Scatter(
-                    x=bbpb.index, y=bbpb,
-                    mode="lines", name="BB%B",
-                    line=dict(color="#00ffff", width=1.5),
-                    fill="tozeroy",
-                    fillcolor="rgba(0,255,255,0.07)"
+                fig_o.add_trace(go.Scatter(
+                    x=others_bbp.index, y=others_bbp, mode="lines",
+                    name="BB%B OTHERS", line=dict(color="#00ffff", width=2),
+                    fill="tozeroy", fillcolor="rgba(0,255,255,0.07)"
                 ), row=2, col=1)
-                for _yv, _col, _lbl in [(0, "red", "0"), (0.5, "gray", "0.5"), (1, "green", "1")]:
-                    fig_others.add_hline(y=_yv, line_dash="dash",
-                                         line_color=_col, opacity=0.6, row=2, col=1)
+                for _yv, _yc in [(0, "red"), (0.5, "gray"), (0.8, "orange"), (1, "green")]:
+                    fig_o.add_hline(y=_yv, line_dash="dash", line_color=_yc, opacity=0.7, row=2, col=1)
 
                 # Estocástico
-                fig_others.add_trace(go.Scatter(
-                    x=stoch_k.index, y=stoch_k,
-                    mode="lines", name="%K",
-                    line=dict(color="#29b6f6", width=1.5)
+                fig_o.add_trace(go.Scatter(
+                    x=o_stoch_k.index, y=o_stoch_k, mode="lines",
+                    name="%K", line=dict(color="#29b6f6", width=1.5)
                 ), row=3, col=1)
-                fig_others.add_trace(go.Scatter(
-                    x=stoch_d.index, y=stoch_d,
-                    mode="lines", name="%D",
-                    line=dict(color="#ff9800", width=1.5, dash="dot")
+                fig_o.add_trace(go.Scatter(
+                    x=o_stoch_d.index, y=o_stoch_d, mode="lines",
+                    name="%D", line=dict(color="#ff9800", width=1.5, dash="dot")
                 ), row=3, col=1)
-                fig_others.add_hline(y=80, line_dash="dash", line_color="red",   opacity=0.6, row=3, col=1)
-                fig_others.add_hline(y=20, line_dash="dash", line_color="green", opacity=0.6, row=3, col=1)
+                fig_o.add_hline(y=80, line_dash="dash", line_color="red",   opacity=0.6, row=3, col=1)
+                fig_o.add_hline(y=20, line_dash="dash", line_color="green", opacity=0.6, row=3, col=1)
 
-                # Layout
-                fig_others.update_layout(
-                    template="plotly_dark",
-                    height=900,
+                # MACD
+                fig_o.add_trace(go.Bar(
+                    x=_o_hist.index, y=_o_hist,
+                    marker_color=_o_colors, name="MACD Hist", opacity=0.7, showlegend=False
+                ), row=4, col=1)
+                fig_o.add_trace(go.Scatter(
+                    x=_o_macd.index, y=_o_macd, mode="lines",
+                    name="MACD OTHERS", line=dict(color="#58a6ff", width=1.5)
+                ), row=4, col=1)
+                fig_o.add_trace(go.Scatter(
+                    x=_o_signal.index, y=_o_signal, mode="lines",
+                    name="Signal", line=dict(color="#e3b341", width=1.2, dash="dot")
+                ), row=4, col=1)
+                fig_o.add_hline(y=0, line_dash="dot", line_color="rgba(200,200,200,0.25)", row=4, col=1)
+
+                fig_o.update_layout(
+                    template="plotly_dark", height=950,
                     showlegend=True,
+                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
                     xaxis_rangeslider_visible=False,
-                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
                 )
-                fig_others.update_yaxes(title_text="Preço (USD)",  row=1, col=1)
-                fig_others.update_yaxes(title_text="BB%B",          row=2, col=1)
-                fig_others.update_yaxes(title_text="Estocástico",   row=3, col=1, range=[0, 100])
-                fig_others.update_xaxes(title_text="Data",          row=3, col=1)
-                fig_others.update_xaxes(rangeslider_visible=False)  # desativa rangeslider em todos os eixos
+                fig_o.update_xaxes(rangeslider_visible=False)
+                fig_o.update_yaxes(title_text="OTHERS (USD)", row=1, col=1)
+                fig_o.update_yaxes(title_text="BB%B (0-1)",   row=2, col=1)
+                fig_o.update_yaxes(title_text="Estocástico",  row=3, col=1, range=[0, 100])
+                fig_o.update_yaxes(title_text="MACD",         row=4, col=1)
 
-                st.plotly_chart(fig_others, width="stretch")
+                st.plotly_chart(fig_o, width='stretch')
 
-                # Métricas rápidas
-                _c1, _c2, _c3 = st.columns(3)
-                with _c1:
-                    st.metric("OTHERS Atual", f"${cl.iloc[-1]:,.0f}",
-                              f"{(cl.iloc[-1]/cl.iloc[-2]-1)*100:+.2f}%")
-                with _c2:
-                    _st_label = "🟢 Tendência Alta" if st_dir.iloc[-1] == -1 else "🔴 Tendência Baixa"
-                    st.metric("SuperTrend", _st_label,
-                              f"Linha: ${supertrend.iloc[-1]:,.0f}")
-                with _c3:
-                    _k = stoch_k.iloc[-1]
-                    _zone = "Sobrecomprado" if _k > 80 else ("Sobrevendido" if _k < 20 else "Neutro")
-                    st.metric("Estocástico %K", f"{_k:.1f}", _zone)
+                # Métricas
+                with st.expander("📊 Análise OTHERS"):
+                    co1, co2, co3 = st.columns(3)
+                    co1.metric("OTHERS Atual", f"${ocl.iloc[-1]/1e9:.2f}B",
+                               f"{((ocl.iloc[-1]/ocl.iloc[-2])-1)*100:+.2f}%")
+                    co2.metric("BB%B Semanal", f"{others_bbp.iloc[-1]:.4f}",
+                               "Topo" if others_bbp.iloc[-1] > 0.8 else ("Fundo" if others_bbp.iloc[-1] < 0.2 else "Neutro"))
+                    _macd_v = float(_o_macd.iloc[-1]); _sig_v = float(_o_signal.iloc[-1])
+                    co3.metric("MACD vs Signal", f"{_macd_v:.2f}",
+                               "Alta" if _macd_v > _sig_v else "Baixa")
 
-        except Exception as e_others:
-            st.warning(f"⚠️ Gráfico OTHERS indisponível: {e_others}")
-        # ══════════════════════════════════════════════════════════════════════
+        except Exception as e_o:
+            st.warning(f"⚠️ Gráfico OTHERS indisponível: {e_o}")
+
+
 
     except Exception as e:
         st.error(f"❌ Erro ao gerar heatmap: {e}")
@@ -2538,24 +2557,22 @@ with tab5:
       <td class="pri">8º</td>
       <td><span class="badge s-hiper-rep">🔱 HIPER_REPIQUE</span></td>
       <td>
-        <span class="cond-code">rebound = True</span> OU <span class="cond-code">rebound_super = True</span><br>
+        <span class="cond-code">rebound_super = True</span><br>
         <span class="cond-code">capitulation_lock = False</span><br>
         <span class="cond-code">status = "VENDA"</span><br>
-        <span class="cond-code">Sharpe(252,60) ≤ -1.5</span> OU <span class="cond-code">Sortino SMA fast(20) &gt; slow(70)</span><br>
         <span class="cond-code">funding_rate &lt; 0</span>
       </td>
-      <td class="fonte-txt">Círculo verde BTC diário confirmado + funding negativo — confirmação da confirmação do repique</td>
+      <td class="fonte-txt">SUPER_REPIQUE já confirmado (Sharpe/Sortino diário ✅) + funding negativo — confirmação da confirmação do repique</td>
       <td class="fonte-txt">Máxima confluência de repique: técnico diário confirmado E mercado posicionado short demais. Sinal mais raro e preciso de reversão tática</td>
     </tr>
     <tr>
       <td class="pri">9º</td>
       <td><span class="badge s-repsuper">⚡ SUPER_REPIQUE</span></td>
       <td>
-        <span class="cond-code">rebound = True</span> OU <span class="cond-code">rebound_super = True</span><br>
+        <span class="cond-code">rebound = True</span><br>
         <span class="cond-code">capitulation_lock = False</span><br>
         <span class="cond-code">status = "VENDA"</span><br>
-        <span class="cond-code">Sharpe(252,60) ≤ -1.5</span> OU <span class="cond-code">Sortino SMA fast(20) &gt; slow(70)</span><br>
-        <span style="font-size:11px;color:#6e7681;">(funding NÃO confirmado)</span>
+        <span class="cond-code">Sharpe(252,60) ≤ -1.5</span> OU <span class="cond-code">Sortino SMA fast(20) &gt; slow(70)</span>
       </td>
       <td class="fonte-txt">Repique macro ativo + círculo verde de confirmação de fundo no BTC diário (Sharpe + Sortino)</td>
       <td class="fonte-txt">Repique com confirmação técnica sólida mas sem funding negativo — forte sinal tático de reversão de curto prazo</td>

@@ -1,0 +1,53 @@
+feat: alerta de fim de ciclo (EMA death cross) + correções de bugs em Telegram e sinais de repique
+
+## Adicionado
+- Novo alerta invertido no OTHERS semanal: EMA50 cruzando ABAIXO da EMA100
+  confirmado por 2 semanas fechadas (espelho do alerta de topo já existente).
+  - visualizer.py: calcula `others_ema_death_cross_warn` / `others_ema50_below_ema100`
+  - app.py: banner "CYCLE END CONFIRMATION" + envio Telegram na transição de estado
+
+## Corrigido
+- BUG CRÍTICO: Telegram de 3 alertas (EMA CROSS WARN, BTC SEMANAL COMPRA
+  CONFIRMADA, BTC SEMANAL VENDA CONFIRMADA) nunca disparava. As funções
+  `_load_tg`, `_has_changed`, `_update_state`, `_load_last_state`,
+  `_save_last_state` eram chamadas mas não existiam no arquivo — erro
+  engolido silenciosamente por `except: pass`. Implementadas em app.py
+  (token via env vars TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID, com fallback
+  para ~/.montrezor_telegram.json).
+
+- BUG: fallback de exibição do REPIQUE (HUD e _macro_gems_signal_type)
+  mostrava "REPIQUE TÁTICO" (nível base) quando na verdade a confirmação
+  diária Sharpe/Sortino já estava ativa mas o funding não confirmava —
+  deveria mostrar "SUPER_REPIQUE". Corrigido em ambos os pontos de exibição.
+
+- BUG: gráfico OTHERS estava duplicado (dois blocos renderizando o mesmo
+  ativo, um sem Estocástico e outro com, causando chamada dupla ao
+  tv.get_hist e falha silenciosa do segundo). Unificado em um único
+  gráfico de 4 painéis: Preço+MAs+SuperTrend | BB%B | MACD | Estocástico.
+
+## Alterado
+- Lógica de SUPER_SELL / HIPER_SELL invertida: SUPER_SELL agora é
+  acionado por Fear&Greed ou Altcoin Season em extremo (>79); HIPER_SELL
+  passou a exigir SUPER_SELL + funding_rate > 0.08% como confirmação
+  extra (antes era o contrário). Funding é mais volátil e de curto
+  prazo — usá-lo como confirmação final em vez de gatilho principal
+  evita falsos negativos em topos onde o funding não acompanha
+  (ex: topo do BTC com Altcoin Season alto e funding baixo).
+
+- Lógica de SUPER_REPIQUE / HIPER_REPIQUE invertida na mesma linha:
+  SUPER_REPIQUE agora exige confirmação técnica diária do BTC
+  (Sharpe/Sortino); HIPER_REPIQUE = SUPER_REPIQUE + funding_rate < 0
+  como confirmação extra (antes era o contrário).
+
+- Diário: linha de RSI que duplicava a cor do StochRSI K (lightblue)
+  agora usa cor distinta (yellow) — StochRSI D, StochRSI K e RSI ficam
+  visualmente diferenciáveis.
+
+- Gráficos semanal e mensal do BTC no market_analysis_app.py agora
+  exibem as mesmas 3 linhas (StochRSI D, StochRSI K, RSI) e cores do
+  diário, que antes só apareciam no diário.
+
+## Arquivos alterados
+- app.py
+- visualizer.py
+- market_analysis_app.py

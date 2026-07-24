@@ -215,6 +215,10 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
     _ema_cross_now  = bool(_ema50_w.iloc[-1]  > _ema100_w.iloc[-1])
     _ema_cross_prev = bool(_ema50_w.iloc[-2]  > _ema100_w.iloc[-2])
     _ema_cross_warn = _ema_cross_now and _ema_cross_prev   # 2 semanas confirmadas
+    # Confirma cruzamento bearish (EMA50 < EMA100) nas últimas 2 velas fechadas — invertido, sinaliza fim de ciclo
+    _ema_death_now  = bool(_ema50_w.iloc[-1]  < _ema100_w.iloc[-1])
+    _ema_death_prev = bool(_ema50_w.iloc[-2]  < _ema100_w.iloc[-2])
+    _ema_death_warn = _ema_death_now and _ema_death_prev   # 2 semanas confirmadas
 
     curr_m_usdt = m_usdt_bbp.iloc[-1]
     prev_m_usdt = m_usdt_bbp.iloc[-2]
@@ -271,6 +275,8 @@ def _build_macro_timing(days: int = 730, bb_period: int = 20, bb_std: float = 2.
         "usdt_touch_low": bool(curr_w_usdt <= 0),
         "others_ema50_above_ema100": bool(_ema_cross_now),
         "others_ema_cross_warn": bool(_ema_cross_warn),
+        "others_ema50_below_ema100": bool(_ema_death_now),
+        "others_ema_death_cross_warn": bool(_ema_death_warn),
     }
 
     # --- 3. DEFINIÇÃO DE GATILHOS (SINAIS) ---
